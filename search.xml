@@ -4,16 +4,16 @@
   
     
     <entry>
-      <title><![CDATA[免费ShadowSocks账号]]></title>
-      <url>%2Ffree-shadowsocks-account%2F</url>
-      <content type="text"><![CDATA[0x01 &nbsp;免费提供SS账号的网站在这里我列出几个免费提供SS账户的网站： 免费ShadowSocks账号 世界那么大，我想去看看 SS ISS 这里需要注意的是： 以上这些网站提供的ss账号都会不断更新的，所以如果你使用这些免费的服务的话，可能需要及时更新。当然了，如果你是Programmer，你当然可以写脚本去爬取了对吧 :) 如果这些网站访问不了，可能是换网址了 or 被墙了 or 其他不可抗力的原因… 0x02 &nbsp;搭建自己的梯子之前是自己在网上找的免费的SS账户，这些免费的SS账户虽然可以提供免费的科学上网服务，但是不是特别稳定。再者，如果你对网络安全性比较在意的话，可能你需要考虑自己搭梯子了。所以，我就自己自己搭建了梯子，我采取的方案是VPS+ShadowSocks，VPS需要自己购买，我用的是搬瓦工的VPS，这里给个链接Mass VPS hosting on Enterprise equipment - Bandwagon Host,按月付的话最便宜的是2.99刀，当然了如果年付的话就更便宜了。当然了，还有其他的VPS提供商供大家选择，由于我没有尝试其他的，就不在这里列出来了。具体搭梯子的教程网上有很多，在这里贴几个： 搭建自己的Shadowsocks服务器 在 Ubuntu 服务器上部署 shadowsocks 科学上网之 Shadowsocks 安装及优化加速 ss优化加速 - 需翻墙如果感觉以上链接不太适合你的话，利用搜索引擎，多找找吧 :) 0x03 &nbsp;免费SS账户在这里我把我搭的SS Server的账号提供出来，反正流量比较多，造福下大家咯。当然了，如果它不生效了，恕不通知哈。可能是没再续费了，也可能是换账号了，etc. 服务器地址服务器端口密码加密方式23.106.133.12655501zljw5501aes-256-cfb]]></content>
+      <title><![CDATA[Hello World]]></title>
+      <url>%2Fhello-world%2F</url>
+      <content type="text"><![CDATA[Hello World&nbsp;&nbsp;:) Welcome to my blog, have a nice day!&nbsp; ^_^ 12345public class HelloWorld &#123; public static void main(String[] args) &#123; System.out.println("Hello World."); &#125;&#125; Everthing will be okay in the end. If it’s not okay, it’s not the end. 有志者 事竟成 破釜沉舟 百二秦关终属楚苦心人 天不负 卧薪尝胆 三千越甲可吞吴]]></content>
     </entry>
 
     
     <entry>
-      <title><![CDATA[Hello World]]></title>
-      <url>%2Fhello-world%2F</url>
-      <content type="text"><![CDATA[Hello World&nbsp;&nbsp;:) Welcome to my blog, have a nice day!&nbsp; ^_^ 12345public class HelloWorld &#123; public static void main(String[] args) &#123; System.out.println("Hello World."); &#125;&#125; Everthing will be okay in the end. If it’s not okay, it’s not the end. 有志者 事竟成 破釜沉舟 百二秦关终属楚苦心人 天不负 卧薪尝胆 三千越甲可吞吴]]></content>
+      <title><![CDATA[免费ShadowSocks账号]]></title>
+      <url>%2Ffree-shadowsocks-account%2F</url>
+      <content type="text"><![CDATA[0x01 &nbsp;免费提供SS账号的网站在这里我列出几个免费提供SS账户的网站： 免费ShadowSocks账号 世界那么大，我想去看看 SS ISS 这里需要注意的是： 以上这些网站提供的ss账号都会不断更新的，所以如果你使用这些免费的服务的话，可能需要及时更新。当然了，如果你是Programmer，你当然可以写脚本去爬取了对吧 :) 如果这些网站访问不了，可能是换网址了 or 被墙了 or 其他不可抗力的原因… 0x02 &nbsp;搭建自己的梯子之前是自己在网上找的免费的SS账户，这些免费的SS账户虽然可以提供免费的科学上网服务，但是不是特别稳定。再者，如果你对网络安全性比较在意的话，可能你需要考虑自己搭梯子了。所以，我就自己自己搭建了梯子，我采取的方案是VPS+ShadowSocks，VPS需要自己购买，我用的是搬瓦工的VPS，这里给个链接Mass VPS hosting on Enterprise equipment - Bandwagon Host,按月付的话最便宜的是2.99刀，当然了如果年付的话就更便宜了。当然了，还有其他的VPS提供商供大家选择，由于我没有尝试其他的，就不在这里列出来了。具体搭梯子的教程网上有很多，在这里贴几个： 搭建自己的Shadowsocks服务器 在 Ubuntu 服务器上部署 shadowsocks 科学上网之 Shadowsocks 安装及优化加速 ss优化加速 - 需翻墙如果感觉以上链接不太适合你的话，利用搜索引擎，多找找吧 :) 0x03 &nbsp;免费SS账户在这里我把我搭的SS Server的账号提供出来，反正流量比较多，造福下大家咯。当然了，如果它不生效了，恕不通知哈。可能是没再续费了，也可能是换账号了，etc. 服务器地址服务器端口密码加密方式23.106.133.12655501zljw5501aes-256-cfb]]></content>
     </entry>
 
     
