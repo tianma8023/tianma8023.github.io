@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="网络监测,network monitor," />
 
 
 
@@ -84,15 +84,40 @@
 
 
 
-<meta name="description" content="Everything will be okay in the end.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tianma">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="0x01 目标在实际开发中，我们不可避免地需要对请求错误进行处理，通常情况下，我们会这样去处理错误请求：
+
+没有网络的情况下，提示用户网络连接不可用，引导用户打开网络或重新刷新等
+有网络的情况下，则是客户端或服务端的错误，给用户相应的提示
+
+如果针对第一种情况,我们需要在网络恢复的时候重新刷新数据或进行其他操作,又应该如何实现呢？以下就是我们的目标：
+
+监听Android设备网络状态
+在网络状态发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="监听Android设备网络变化">
+<meta property="og:url" content="http://yoursite.com/monitor-network-changes/index.html">
 <meta property="og:site_name" content="Tianma">
-<meta property="og:description" content="Everything will be okay in the end.">
+<meta property="og:description" content="0x01 目标在实际开发中，我们不可避免地需要对请求错误进行处理，通常情况下，我们会这样去处理错误请求：
+
+没有网络的情况下，提示用户网络连接不可用，引导用户打开网络或重新刷新等
+有网络的情况下，则是客户端或服务端的错误，给用户相应的提示
+
+如果针对第一种情况,我们需要在网络恢复的时候重新刷新数据或进行其他操作,又应该如何实现呢？以下就是我们的目标：
+
+监听Android设备网络状态
+在网络状态发">
+<meta property="og:updated_time" content="2017-01-04T18:25:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tianma">
-<meta name="twitter:description" content="Everything will be okay in the end.">
+<meta name="twitter:title" content="监听Android设备网络变化">
+<meta name="twitter:description" content="0x01 目标在实际开发中，我们不可避免地需要对请求错误进行处理，通常情况下，我们会这样去处理错误请求：
+
+没有网络的情况下，提示用户网络连接不可用，引导用户打开网络或重新刷新等
+有网络的情况下，则是客户端或服务端的错误，给用户相应的提示
+
+如果针对第一种情况,我们需要在网络恢复的时候重新刷新数据或进行其他操作,又应该如何实现呢？以下就是我们的目标：
+
+监听Android设备网络状态
+在网络状态发">
 
 
 
@@ -113,10 +138,10 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/monitor-network-changes/"/>
 
 
-  <title> Tianma </title>
+  <title> 监听Android设备网络变化 | Tianma </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -146,9 +171,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -278,9 +301,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -300,10 +323,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/monitor-network-changes/" itemprop="url">
-                  监听Android设备网络变化
-                </a>
+                监听Android设备网络变化
               
             
           </h1>
@@ -378,9 +398,7 @@
       
 
       
-        
-          
-            <h2 id="0x01-目标"><a href="#0x01-目标" class="headerlink" title="0x01 目标"></a>0x01 目标</h2><p>在实际开发中，我们不可避免地需要对请求错误进行处理，通常情况下，我们会这样去处理错误请求：</p>
+        <h2 id="0x01-目标"><a href="#0x01-目标" class="headerlink" title="0x01 目标"></a>0x01 目标</h2><p>在实际开发中，我们不可避免地需要对请求错误进行处理，通常情况下，我们会这样去处理错误请求：</p>
 <ol>
 <li>没有网络的情况下，提示用户网络连接不可用，引导用户打开网络或重新刷新等</li>
 <li>有网络的情况下，则是客户端或服务端的错误，给用户相应的提示</li>
@@ -428,321 +446,82 @@
 <p>需要实现网络监听的 Activity 只需要复写 <code>needRegisterNetworkChangeObserver</code> 并返回 true ，并复写相关回调函数即可。</p>
 <p>github源码地址:<br><a href="https://github.com/tianma8023/NetDetector" target="_blank" rel="external">NetDetector</a></p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>生活不止眼前的苟且，还有诗和远方的田野</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="Tianma WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="Tianma Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
     </div>
+  </div>
 
-    <div>
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T23:40:03+08:00" content="2016-11-03">
-              2016-11-03
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Diary/" itemprop="url" rel="index">
-                    <span itemprop="name">Diary</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
+            <a href="/tags/网络监测/" rel="tag">#网络监测</a>
           
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="/hello-world/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
+            <a href="/tags/network-monitor/" rel="tag">#network monitor</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Hello World&nbsp;&nbsp;:)</p>
-<p>Welcome to my blog, have a nice day!&nbsp; ^_^</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Hello World."</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>Everthing will be okay in the end. If it’s not okay, it’s not the end.</li>
-<li>有志者 事竟成 破釜沉舟 百二秦关终属楚<br>苦心人 天不负 卧薪尝胆 三千越甲可吞吴</li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/free-shadowsocks-account/" itemprop="url">
-                  免费ShadowSocks账号
-                </a>
-              
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-29T23:44:43+08:00" content="2016-10-29">
-              2016-10-29
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/科学上网/" itemprop="url" rel="index">
-                    <span itemprop="name">科学上网</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/free-shadowsocks-account/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="/free-shadowsocks-account/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/free-shadowsocks-account/" class="leancloud_visitors" data-flag-title="免费ShadowSocks账号">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="0x01-nbsp-免费提供SS账号的网站"><a href="#0x01-nbsp-免费提供SS账号的网站" class="headerlink" title="0x01 &nbsp;免费提供SS账号的网站"></a>0x01 &nbsp;免费提供SS账号的网站</h1><p>在这里我列出几个免费提供SS账户的网站：</p>
-<ul>
-<li><a href="http://freessr.top/" target="_blank" rel="external">免费ShadowSocks账号</a></li>
-<li><a href="http://freevpnss.cc/" target="_blank" rel="external">世界那么大，我想去看看</a></li>
-<li><a href="http://www.getshadowsocks.com/" target="_blank" rel="external">SS</a></li>
-<li><a href="http://www.ishadowsocks.org/" target="_blank" rel="external">ISS</a></li>
-</ul>
-<p>这里需要注意的是：</p>
-<ol>
-<li>以上这些网站提供的ss账号都会不断更新的，所以如果你使用这些免费的服务的话，可能需要及时更新。当然了，如果你是Programmer，你当然可以写脚本去爬取了对吧 :)</li>
-<li>如果这些网站访问不了，可能是换网址了 or 被墙了 or 其他不可抗力的原因…</li>
-</ol>
-<h1 id="0x02-nbsp-搭建自己的梯子"><a href="#0x02-nbsp-搭建自己的梯子" class="headerlink" title="0x02 &nbsp;搭建自己的梯子"></a>0x02 &nbsp;搭建自己的梯子</h1><p>之前是自己在网上找的免费的SS账户，这些免费的SS账户虽然可以提供免费的科学上网服务，但是不是特别稳定。再者，如果你对网络安全性比较在意的话，可能你需要考虑自己搭梯子了。<br>所以，我就自己自己搭建了梯子，我采取的方案是VPS+ShadowSocks，VPS需要自己购买，我用的是搬瓦工的VPS，这里给个链接<a href="https://bandwagonhost.com/" target="_blank" rel="external">Mass VPS hosting on Enterprise equipment - Bandwagon Host</a>,按月付的话最便宜的是2.99刀，当然了如果年付的话就更便宜了。当然了，还有其他的VPS提供商供大家选择，由于我没有尝试其他的，就不在这里列出来了。<br>具体搭梯子的教程网上有很多，在这里贴几个：</p>
-<ul>
-<li><a href="http://itcoding.tk/2016/06/04/fuckGFW01/" target="_blank" rel="external">搭建自己的Shadowsocks服务器</a></li>
-<li><a href="http://felixqu.com/2014/06/23/setup-shadowsocks-on-ubuntu/" target="_blank" rel="external">在 Ubuntu 服务器上部署 shadowsocks</a></li>
-<li><a href="http://wuchong.me/blog/2015/02/02/shadowsocks-install-and-optimize/" target="_blank" rel="external">科学上网之 Shadowsocks 安装及优化加速</a></li>
-<li><a href="http://gooday.xyz/shadowsocks%E4%BC%98%E5%8C%96%E5%8A%A0%E9%80%9F/" target="_blank" rel="external">ss优化加速 - 需翻墙</a><br>如果感觉以上链接不太适合你的话，利用搜索引擎，多找找吧 :)</li>
-</ul>
-<h1 id="0x03-nbsp-免费SS账户"><a href="#0x03-nbsp-免费SS账户" class="headerlink" title="0x03 &nbsp;免费SS账户"></a>0x03 &nbsp;免费SS账户</h1><p>在这里我把我搭的SS Server的账号提供出来，反正流量比较多，造福下大家咯。当然了，如果它不生效了，恕不通知哈。可能是没再续费了，也可能是换账号了，etc.</p>
-<table id="free-shadowsocks-account" border="1" align="center"><tr align="center"><th>服务器地址</th><th>服务器端口</th><th>密码</th><th>加密方式</th></tr><tr align="center"><td>23.106.133.126</td><td>55501</td><td>zljw5501</td><td>aes-256-cfb</td></tr></table>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -750,6 +529,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="/monitor-network-changes/"
+           data-title="监听Android设备网络变化" data-url="http://yoursite.com//monitor-network-changes/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -769,8 +556,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -820,6 +616,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-目标"><span class="nav-number">1.</span> <span class="nav-text">0x01 目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-思路"><span class="nav-number">2.</span> <span class="nav-text">0x02 思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-实现"><span class="nav-number">3.</span> <span class="nav-text">0x03 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加权限"><span class="nav-number">3.0.1.</span> <span class="nav-text">添加权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义网络类型"><span class="nav-number">3.0.2.</span> <span class="nav-text">定义网络类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义观察者"><span class="nav-number">3.0.3.</span> <span class="nav-text">定义观察者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-BroadcastReceiver"><span class="nav-number">3.0.4.</span> <span class="nav-text">实现 BroadcastReceiver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Application-注册-BroadcastReceiver"><span class="nav-number">3.0.5.</span> <span class="nav-text">Application 注册 BroadcastReceiver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BaseActivity-抽取"><span class="nav-number">3.0.6.</span> <span class="nav-text">BaseActivity 抽取</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -923,6 +730,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
 
   
 
