@@ -106,7 +106,7 @@
 
 监听Android设备网络状态
 在网络状态发">
-<meta property="og:updated_time" content="2017-01-04T18:25:44.000Z">
+<meta property="og:updated_time" content="2017-01-04T18:59:25.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="监听Android设备网络变化">
 <meta name="twitter:description" content="0x01 目标在实际开发中，我们不可避免地需要对请求错误进行处理，通常情况下，我们会这样去处理错误请求：
@@ -408,7 +408,7 @@
 <li>监听Android设备网络状态</li>
 <li>在网络状态发生改变时,做出相应操作</li>
 </ul>
-<p>在示例中，我们在网络状态发生变化时，显示当前网络变化的类型。</p>
+<p>在示例中，我们在网络状态发生变化时，显示当前网络变化的类型。<br><a id="more"></a></p>
 <h2 id="0x02-思路"><a href="#0x02-思路" class="headerlink" title="0x02 思路"></a>0x02 思路</h2><p>在Android系统在网络变化的情况下，会发出 action 为 <code>ConnectivityManager.CONNECTIVITY_ACTION</code> 的系统广播，我们只需要注册 <code>BroadcastReceiver</code> 去监听该广播即可监听设备的网络变化情况。</p>
 <p>那么，注册  <code>BroadcastReceiver</code> 是静态注册呢，还是动态注册呢？</p>
 <ul>
