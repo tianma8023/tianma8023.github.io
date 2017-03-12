@@ -10,7 +10,7 @@
     
     <title>
         
-            归档: 2017/3 | 
+            Java反射修改final修饰的属性值 | 
         
         Tianma
     </title>
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="Tianma">
     <meta name="description" content="Everything will be okay in the end.">
-    <meta name="keywords" content="hexo, material">
+    <meta name="keywords" content="hexo, material,Java反射">
 
     <!--iOS -->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -48,9 +48,9 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://tianma.pro">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="归档: 2017/3 | Tianma">
+    <meta property="og:title" content="Java反射修改final修饰的属性值 | Tianma">
     <meta property="og:description" content="Everything will be okay in the end.">
-    
+    <meta property="og:article:tag" content="Java反射"> 
 
     <!--[if lte IE 9]>
         <link rel="stylesheet" href="/css/ie-blocker.css">
@@ -61,8 +61,8 @@
     <![endif]-->
 
     <!-- Import CSS -->
-    <link rel="stylesheet" href="../../../css/material.min.css">
-    <link rel="stylesheet" href="../../../css/style.min.css">
+    <link rel="stylesheet" href="../../css/material.min.css">
+    <link rel="stylesheet" href="../../css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -161,14 +161,14 @@
 
 
 
-    <script src="../../../js/jquery.min.js"></script>
-    <script src="../../../js/queue.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/queue.js"></script>
 
     <!-- UC Browser Compatible -->
     <script>
         var agent = navigator.userAgent.toLowerCase();
         if(agent.indexOf('ucbrowser')>0) {
-            document.write("<link rel=\"stylesheet\" href=\"../../../css/uc.css\">");
+            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
             alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
         }
     </script>
@@ -212,168 +212,256 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
     
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
 
-    <!-- Normal Post -->
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方案"><span class="post-toc-number">1.</span> <span class="post-toc-text">解决方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">2.</span> <span class="post-toc-text">参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         
             <!-- Random Thumbnail -->
             <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../../post/463108745/">Java反射修改final修饰的属性值</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="../../../post/463108745/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>3月 13, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../../categories/Java/">Java</a>
-            </span>
-
-            
-                <!-- Comment Number -->
-                &nbsp;|&nbsp;
-                <span class="post_entry-comment" >
-                        <span class="ds-thread-count" data-thread-key="post/463108745/" data-count-type="comments"></span>
-                </span>
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../../post/1634332613/">处理PopupWindow在Android 7.x中兼容性问题</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            问题描述PopupWindow 中的 showAsDropDown(View anchor) 用于在指定锚点View下方显示 PopupWindow，在Android 7.0 (api&lt;=23) 以前是没什么问题的，但是在Android 7.x系统上，会在某些情况下出现兼容问题：
-
-如果指定 PopupWindow 的高度为 MATCH_PARENT，调用 showAsDropDown(View anchor) 时，在 7.0 之前，会在锚点 anchor 下边缘到屏幕底部之间显示 PopupWindow；而在 7.0、7.1 系统上的 PopupWindow 会占据整个屏幕（除状态栏之外）。
-
-如果指定 PopupWindow 的高度为 WRAP_CONTENT, 调用 showAsDropDown(View anchor) 时，便不会出现兼容性的问题。
-
-如果指定 PopupWindow 的高度为自定义的值height，调用 showAsDropDown(View anchor)时， 如果 height &gt; 锚点 anchor 下边缘与屏幕底部的距离， 则还是会出现7.0、7.1上显示异常的问题；否则，不会出现该问题。可以看出，情况1和2是情况3的特例。
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="../../../post/1634332613/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/avatar.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>3月 07, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../../categories/Android/">Android</a>
-            </span>
-
-            
-                <!-- Comment Number -->
-                &nbsp;|&nbsp;
-                <span class="post_entry-comment" >
-                        <span class="ds-thread-count" data-thread-key="post/1634332613/" data-count-type="comments"></span>
-                </span>
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-
-    
-
-    
-        <script>
-    var randomNum;
-
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 8; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
-
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').css('background-image', 'url(' + '/img/random/material-' + randomNum + '.png' + ')')
-
-        locatePost = locatePost.next();
-    }
+    $('.post_thumbnail-random').css('background-image', 'url(' + '/img/random/material-' + randomNum + '.png' + ')');
 </script>
 
+        
+    
+            <p class="article-headline-p">
+                Java反射修改final修饰的属性值
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>3月 13, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACbklEQVR42u3aQW7EMAgF0Ln/pdttpXbcDzhONHpeRVEn4WVhXOD19dHrhYeHh4eHh4eH9zDeK17vfvXzzu/rP17/5snrO4XY8PDw8I7w/tlq3/DWT0h+lXyIcmx4eHh4B3nrLTsPcR16kgx6seHh4eE9mZe8ppoq8PDw8D6blxymq+khTyF4eHh4z+ElG/q6kNorMWxONnh4eHhHeHmT6fz10f4eHh4eXsArjzQtS7e9cPM0EEWIh4eHdzEv34jXyOQvk4N4Lx48PDy887xdo1dV5ORjlYsReHh4eJfxqmmgWsJIGmD5+EI5MeDh4eFt4k3GAnqjWrsab+XJCDw8PLxNvEnhNR8FmCSVwtvx8PDwjvCSsJLyRPLkXoGj0IrDw8PDu4mXv2Be2J0kqmZ/Dw8PD2/A6w0NJCNZ89TSK2Tg4eHhneH12vx5UskPxxuSEx4eHt7FvDwNJO2xZFWTUPIR8fDw8O7lzccCCqG0PmjhSI2Hh4d3AS/frHPkpNAwL0ng4eHhXc3rbf15KNc1zPDw8PDu5eVjAZND9rx0G93Bw8PDO8jLC6zVV1bHBSbPwcPDwzvJK2/BxbGq6jBBrySBh4eHdxevd4zuJZtq+23Dfwx4eHh4A1515eAkPVRTQlTwxcPDw7uYN9+Ue+WMfGxrfV3u7+Hh4eFt4vUKCsm4QKGIECcMPDw8vOfwJmMB1ZQwKUxs6+/h4eHhHeetG2O9kYIcXK5S4+Hh4d3K64WVHJHz4/uFR2o8PDy8rcWI6kBA/pz5qBYeHh7eSV61BFBNFVFYxfJuoRiBh4eHt5X3eQsPDw8PDw8PD+8B6xsIc9gkt4Ks2wAAAABJRU5ErkJggg==">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/Java反射/">Java反射</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="" class="leancloud-views_num" data-flag-title="Java反射修改final修饰的属性值">
+     &nbsp;浏览量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Java反射修改final修饰的属性值&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？<br><a id="more"></a></p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>使用Java反射，通过 <code>Field#setAccessible(true)</code> 将 private 修饰的字段变为 accessible；再将 final 修饰符去掉；最后再设置新值即可。当然，如果涉及到 Java 内联优化，则会失效。具体见示例代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.tianma.sample;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.lang.reflect.Field;</div><div class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChangeStaticFinalFieldSample</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">changeStaticFinal</span><span class="params">(Field field, Object newValue)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		field.setAccessible(<span class="keyword">true</span>); <span class="comment">// 如果field为private,则需要使用该方法使其可被访问</span></div><div class="line"></div><div class="line">		Field modifersField = Field.class.getDeclaredField(<span class="string">"modifiers"</span>);</div><div class="line">		modifersField.setAccessible(<span class="keyword">true</span>);</div><div class="line">		<span class="comment">// 把指定的field中的final修饰符去掉</span></div><div class="line">		modifersField.setInt(field, field.getModifiers() &amp; ~Modifier.FINAL);</div><div class="line"></div><div class="line">		field.set(<span class="keyword">null</span>, newValue); <span class="comment">// 为指定field设置新值</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		Sample.print();</div><div class="line">		</div><div class="line">		Field canChangeField = Sample.class.getDeclaredField(<span class="string">"CAN_CHANGE"</span>);</div><div class="line">		Field cannotChangeField = Sample.class.getDeclaredField(<span class="string">"CANNOT_CHANGE"</span>);</div><div class="line">		changeStaticFinal(canChangeField, <span class="number">2</span>);</div><div class="line">		changeStaticFinal(cannotChangeField, <span class="number">3</span>);</div><div class="line">		</div><div class="line">		Sample.print();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CAN_CHANGE = <span class="keyword">new</span> Integer(<span class="number">1</span>); <span class="comment">// 未内联优化</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANNOT_CHANGE = <span class="number">1</span>; <span class="comment">// 内联优化</span></div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"CAN_CHANGE = "</span> + CAN_CHANGE);</div><div class="line">		System.out.println(<span class="string">"CANNOT_CHANGE = "</span> + CANNOT_CHANGE);</div><div class="line">		System.out.println(<span class="string">"------------------------"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>打印结果为：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CAN_CHANGE = <span class="number">1</span></div><div class="line">CANNOT_CHANGE = <span class="number">1</span></div><div class="line">------------------------</div><div class="line">CAN_CHANGE = <span class="number">2</span></div><div class="line">CANNOT_CHANGE = <span class="number">1</span></div><div class="line">------------------------</div></pre></td></tr></table></figure></p>
+<p>通过以上输出结果可以看出， <code>CAN_CHANGE</code> 和 <code>CANNOT_CHANGE</code> 字段同属于 final 修饰符修饰的常量字段，但是由于 <code>CANNOT_CHANGE</code> 常量在 Java 编译过程中使用了内联优化，其值在编译阶段就被编译为常量值 <code>1</code>，故而使用内联优化的 final 字段更改其值是无效的； 而 <code>CAN_CHANGE</code> 字段未被内联优化，故而能通过 Java 反射对其值进行修改。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://stackoverflow.com/questions/3301635/change-private-static-final-field-using-java-reflection" target="_blank" rel="external">Change private static final field using Java reflection</a></p>
+
+    
+
     
 </div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用多说评论 -->
+    <link rel="stylesheet" href="../../css/duoshuo.min.css">
+<style>
+    #ds-thread #ds-reset .ds-post-button{
+        background-color: #0097A7 !important;
+    }
+    #ds-wrapper #ds-reset .ds-icons-32{
+        background-color: #0097A7 !important;
+    }
+    #ds-reset .ds-highlight {
+        color: #0097A7 !important;
+    }
+</style>
+<div id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread"
+        data-thread-key="post/463108745/"
+        data-url="http://tianma.pro/post/463108745/"
+        data-title="Java反射修改final修饰的属性值">
+    </div>
+    <!-- 多说评论框 end -->
+</div>
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/1634332613/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     
@@ -453,7 +541,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a>
+                <a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a>
             </ul>
         </li>
         
@@ -471,7 +559,7 @@
             </a>
             <ul class="dropdown-menu">
                 <li>
-                <a class="sidebar_archives-link" href="../../../categories/Android/">Android<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../../categories/Diary/">Diary<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../../categories/Java/">Java<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../../categories/科学上网/">科学上网<span class="sidebar_archives-count">1</span></a>
+                <a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Diary/">Diary<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">1</span></a>
             </ul>
         </li>
         
@@ -644,9 +732,9 @@ It will not impact the appearance and can give developers a lot of support :)
 
 
                     <!-- Import File -->
-<script src="../../../js/lazyload.min.js"></script>
-<script src="../../../js/js.min.js"></script>
-<script src="../../../js/nprogress.js"></script>
+<script src="../../js/lazyload.min.js"></script>
+<script src="../../js/js.min.js"></script>
+<script src="../../js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({
