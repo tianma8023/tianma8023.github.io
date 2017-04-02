@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!-- 
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.0 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            KMP字符串模式匹配算法Java实现 | 
+        
+        Tianma
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon_t.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon_t.png">
+    <link rel="apple-touch-icon" href="/img/favicon_t.png">
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="Tianma">
+    <meta name="description" content="Everything will be okay in the end.">
+    <meta name="keywords" content="hexo, material,KMP,字符串模式匹配">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tianma">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://tianma.pro">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="KMP字符串模式匹配算法Java实现 | Tianma">
+    <meta property="og:description" content="Everything will be okay in the end.">
+    <meta property="og:article:tag" content="KMP"> <meta property="og:article:tag" content="字符串模式匹配"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="../../css/material.min.css">
+    <link rel="stylesheet" href="../../css/style.min.css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #EEEEEE;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/queue.js"></script>
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-84178484-1', 'auto');ga('send', 'pageview');
+    </script>
+    
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-朴素算法"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. 朴素算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-KMP算法"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. KMP算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-优化的KMP算法（改进next数组）"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 优化的KMP算法（改进next数组）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-花絮"><span class="post-toc-number">4.</span> <span class="post-toc-text">4. 花絮</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        <!-- Custom Thumbnail -->
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/java-design.png)">
+    
+            <p class="article-headline-p">
+                KMP字符串模式匹配算法Java实现
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>4月 10, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaklEQVR42u3aUW6DQAwE0Nz/0u0BosKMFzY0enxFiMA+KmXdsV8/X3288PDw8PDw8PDwHsZ7xcfxt97Pv1+fXPPXlcXa8PDw8LbwTn5q/7imZR+D8+eerAEPDw9vIy9Z3PHnBHy86OT+Jy8ODw8P75G8vGg+/tFvXyUeHh7et/LyM/9yY8DDw8MbPbKNelvGx7IWPDw8vJiXN5n2f97a38PDw8MLePVI08KWMCuyl4au8PDw8G7gzcrlhNpuMO3QFR4eHt6neMeLTlpWSUCQl8j5GqIwAg8PD+823skXFs60jbQ26o02Bjw8PLzbeMkoVfSAhUJ8JQTBw8PD28NrQ4Slpv7CVpEU03h4eHh7eG1hPYtl27slhXs9OoCHh4d3Ke/4a7PNY6U0T87X/zHg4eHhXcSbxQHrEXD+3Ha1eHh4eHfz8uK1pV5VXichBR4eHt5OXh6brjSx2pJ9KWLGw8PD28JLYtn2dazjLxi6wsPDw7uBd9VxbdSbN9WK/h4eHh7ebby82E2K7LYoX9lg8PDw8PbwZuFpu8SVsDj/Y+Dh4eHt5LWBQl5AJ+HC+nrw8PDwnsNLfsSXyt94IKDYrvDw8PC282YNqjaYyF9QPliAh4eHt4c3a3Tl20aCn90fDw8P71O8NkRohwZmQUNexNcNMDw8PLyLeO0wwSzOmLXN6tAEDw8PbyOvDQ7W44P2bsOhKzw8PLwH8GYLzZ9bRA+zoSs8PDy87bxkWXnjP7l/ETTj4eHhbeTlTa92e5iVy8NYGQ8PD28LL39w3uxvN496uCqPcfHw8PAu5X3fgYeHh4eHh4eH94DjFxfExHAw+K3OAAAAAElFTkSuQmCC">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/KMP/">KMP</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/字符串模式匹配/">字符串模式匹配</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/3825161135/" class="leancloud-views_num" data-flag-title="KMP字符串模式匹配算法Java实现">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=KMP字符串模式匹配算法Java实现&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>本文灵感来自于July的博客<a href="http://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">从头到尾彻底理解KMP</a>，并着重于Java实现 :)。  现有字符串匹配算法有不少，如简单暴力的朴素算法(暴力匹配算法)、KMP算法、BM算法以及Sunday算法等，在这里仅介绍前两种算法。<br><a id="more"></a></p>
+<h2 id="1-朴素算法"><a href="#1-朴素算法" class="headerlink" title="1. 朴素算法"></a>1. 朴素算法</h2><p>朴素算法即暴力匹配算法，对于长度为n的文本串S和长度为m模式串P，在文本串S中是否存在一个有效偏移i，其中 0≤ i &lt; n - m + 1，使得 S[i… i+m - 1] = P[0 … m-1]（注：下标从0开始），如果存在则匹配成功，否则匹配失败。由于在匹配过程中一旦不匹配，就要让模式串P相对于文本串S右移1，即i需要进行回溯，其时间复杂度为O(n*m)。<br>Java实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">// 定义接口</span></div><div class="line">   <span class="class"><span class="keyword">interface</span> <span class="title">StringMatcher</span> </span>&#123;</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 从原字符串中查找模式字符串的位置,如果模式字符串存在,则返回模式字符串第一次出现的位置,否则返回-1</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> source</div><div class="line">	 *            原字符串</div><div class="line">	 * <span class="doctag">@param</span> pattern</div><div class="line">	 *            模式字符串</div><div class="line">	 * <span class="doctag">@return</span> if substring exists, return the first occurrence of pattern</div><div class="line">	 *         substring, return -1 if not.</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String source, String pattern)</span></span>;</div><div class="line">&#125;</div><div class="line">   <span class="comment">/**</span></div><div class="line"> * 暴力匹配</div><div class="line"> * &lt;p&gt;</div><div class="line"> * 时间复杂度: O(m*n), m = pattern.length, n = source.length</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViolentStringMatcher</span> <span class="keyword">implements</span> <span class="title">StringMatcher</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String source, String pattern)</span> </span>&#123;</div><div class="line">		<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</div><div class="line">		<span class="keyword">int</span> sLen = source.length(), pLen = pattern.length();</div><div class="line">		<span class="keyword">char</span>[] src = source.toCharArray();</div><div class="line">		<span class="keyword">char</span>[] ptn = pattern.toCharArray();</div><div class="line">		<span class="keyword">while</span> (i &lt; sLen &amp;&amp; j &lt; pLen) &#123;</div><div class="line">			<span class="keyword">if</span> (src[i] == ptn[j]) &#123;</div><div class="line">				<span class="comment">// 如果当前字符匹配成功,则将两者各自增1,继续比较后面的字符</span></div><div class="line">				i++;</div><div class="line">				j++;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// 如果当前字符匹配不成功,则i回溯到此次匹配最开始的位置+1处,也就是i = i - j + 1</span></div><div class="line">				<span class="comment">// (因为i,j是同步增长的), j = 0;</span></div><div class="line">				i = i - j + <span class="number">1</span>;</div><div class="line">				j = <span class="number">0</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 匹配成功,则返回模式字符串在原字符串中首次出现的位置;否则返回-1</span></div><div class="line">		<span class="keyword">if</span> (j == pLen)</div><div class="line">			<span class="keyword">return</span> i - j;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="2-KMP算法"><a href="#2-KMP算法" class="headerlink" title="2. KMP算法"></a>2. KMP算法</h2><p>与朴素算法不同，朴素算法是当遇到不匹配字符时，向后移动一位继续匹配，而KMP算法是当遇到不匹配字符时，不是简单的向后移一位字符，而是根据前面已匹配的字符数和模式串前缀和后缀的最大相同字符串长度数组next的元素来确定向后移动的位数，所以KMP算法的时间复杂度比朴素算法的要少，并且是线性时间复杂度，即预处理时间复杂度是O(m)，匹配时间复杂度是O(n)。</p>
+<p>next数组含义：代表在模式串P中，当前下标对应的字符之前的字符串中，有多大长度的相同前缀后缀。例如如果next [j] = k，代表在模式串P中，下标为j的字符之前的字符串中有最大长度为<em>k</em> 的相同前缀后缀。</p>
+<p>KMP算法的核心就是求next数组，在字符串匹配的过程中，一旦某个字符匹配不成功，next数组就会指导模式串P到底该相对于S右移多少位再进行下一次匹配，从而避免无效的匹配。</p>
+<p>next数组求解方法：</p>
+<ul>
+<li>next[0] = -1。</li>
+<li>如果已知next[j] = k,如何求出next[j+1]呢?具体算法如下:<ol>
+<li>如果p[j] = p[k], 则next[j+1] = next[k] + 1;</li>
+<li>如果p[j] != p[k], 则令k=next[k],如果此时p[j]==p[k],则next[j+1]=k+1,如果不相等,则继续递归前缀索引,令 k=next[k],继续判断,直至k=-1(即k=next[0])或者p[j]=p[k]为止</li>
+</ol>
+</li>
+</ul>
+<p>详细的介绍及分析还请移步<a href="http://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">从头到尾彻底理解KMP</a>，在下语拙 :(<br>Java实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">/**</span></div><div class="line"> * KMP模式匹配</div><div class="line"> * <span class="doctag">@author</span> Tianma</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">KMPStringMatcher</span> <span class="keyword">implements</span> <span class="title">StringMatcher</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 获取KMP算法中pattern字符串对应的next数组</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> p</div><div class="line">	 *            模式字符串对应的字符数组</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="keyword">protected</span> <span class="keyword">int</span>[] getNext(<span class="keyword">char</span>[] p) &#123;</div><div class="line">		<span class="comment">// 已知next[j] = k,利用递归的思想求出next[j+1]的值</span></div><div class="line">		<span class="comment">// 如果已知next[j] = k,如何求出next[j+1]呢?具体算法如下:</span></div><div class="line">		<span class="comment">// 1. 如果p[j] = p[k], 则next[j+1] = next[k] + 1;</span></div><div class="line">		<span class="comment">// 2. 如果p[j] != p[k], 则令k=next[k],如果此时p[j]==p[k],则next[j+1]=k+1,</span></div><div class="line">		<span class="comment">// 如果不相等,则继续递归前缀索引,令 k=next[k],继续判断,直至k=-1(即k=next[0])或者p[j]=p[k]为止</span></div><div class="line">		<span class="keyword">int</span> pLen = p.length;</div><div class="line">		<span class="keyword">int</span>[] next = <span class="keyword">new</span> <span class="keyword">int</span>[pLen];</div><div class="line">		<span class="keyword">int</span> k = -<span class="number">1</span>;</div><div class="line">		<span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">		next[<span class="number">0</span>] = -<span class="number">1</span>; <span class="comment">// next数组中next[0]为-1</span></div><div class="line">		<span class="keyword">while</span> (j &lt; pLen - <span class="number">1</span>) &#123;</div><div class="line">			<span class="keyword">if</span> (k == -<span class="number">1</span> || p[j] == p[k]) &#123;</div><div class="line">				k++;</div><div class="line">				j++;</div><div class="line">				next[j] = k;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				k = next[k];</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> next;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String source, String pattern)</span> </span>&#123;</div><div class="line">		<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</div><div class="line">		<span class="keyword">char</span>[] src = source.toCharArray();</div><div class="line">		<span class="keyword">char</span>[] ptn = pattern.toCharArray();</div><div class="line">		<span class="keyword">int</span> sLen = src.length;</div><div class="line">		<span class="keyword">int</span> pLen = ptn.length;</div><div class="line">		<span class="keyword">int</span>[] next = getNext(ptn);</div><div class="line">		<span class="keyword">while</span> (i &lt; sLen &amp;&amp; j &lt; pLen) &#123;</div><div class="line">			<span class="comment">// 如果j = -1,或者当前字符匹配成功(src[i] = ptn[j]),都让i++,j++</span></div><div class="line">			<span class="keyword">if</span> (j == -<span class="number">1</span> || src[i] == ptn[j]) &#123;</div><div class="line">				i++;</div><div class="line">				j++;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// 如果j!=-1且当前字符匹配失败,则令i不变,j=next[j],即让pattern模式串右移j-next[j]个单位</span></div><div class="line">				j = next[j];</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (j == pLen)</div><div class="line">			<span class="keyword">return</span> i - j;</div><div class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="3-优化的KMP算法（改进next数组）"><a href="#3-优化的KMP算法（改进next数组）" class="headerlink" title="3. 优化的KMP算法（改进next数组）"></a>3. 优化的KMP算法（改进next数组）</h2><p>具体过程移步<a href="http://blog.csdn.net/v_july_v/article/details/7041827#" target="_blank" rel="external">从头到尾彻底理解KMP</a>的<em>3.3.8 Next 数组的优化</em><br>在这里给出Java实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">/**</span></div><div class="line"> * 优化的KMP算法(对next数组的获取进行优化)</div><div class="line"> * </div><div class="line"> * <span class="doctag">@author</span> Tianma</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OptimizedKMPStringMatcher</span> <span class="keyword">extends</span> <span class="title">KMPStringMatcher</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="keyword">protected</span> <span class="keyword">int</span>[] getNext(<span class="keyword">char</span>[] p) &#123;</div><div class="line">		<span class="comment">// 已知next[j] = k,利用递归的思想求出next[j+1]的值</span></div><div class="line">		<span class="comment">// 如果已知next[j] = k,如何求出next[j+1]呢?具体算法如下:</span></div><div class="line">		<span class="comment">// 1. 如果p[j] = p[k], 则next[j+1] = next[k] + 1;</span></div><div class="line">		<span class="comment">// 2. 如果p[j] != p[k], 则令k=next[k],如果此时p[j]==p[k],则next[j+1]=k+1,</span></div><div class="line">		<span class="comment">// 如果不相等,则继续递归前缀索引,令 k=next[k],继续判断,直至k=-1(即k=next[0])或者p[j]=p[k]为止</span></div><div class="line">		<span class="keyword">int</span> pLen = p.length;</div><div class="line">		<span class="keyword">int</span>[] next = <span class="keyword">new</span> <span class="keyword">int</span>[pLen];</div><div class="line">		<span class="keyword">int</span> k = -<span class="number">1</span>;</div><div class="line">		<span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">		next[<span class="number">0</span>] = -<span class="number">1</span>; <span class="comment">// next数组中next[0]为-1</span></div><div class="line">		<span class="keyword">while</span> (j &lt; pLen - <span class="number">1</span>) &#123;</div><div class="line">			<span class="keyword">if</span> (k == -<span class="number">1</span> || p[j] == p[k]) &#123;</div><div class="line">				k++;</div><div class="line">				j++;</div><div class="line">				<span class="comment">// 修改next数组求法</span></div><div class="line">				<span class="keyword">if</span> (p[j] != p[k]) &#123;</div><div class="line">					next[j] = k;<span class="comment">// KMPStringMatcher中只有这一行</span></div><div class="line">				&#125; <span class="keyword">else</span> &#123;</div><div class="line">					<span class="comment">// 不能出现p[j] = p[next[j]],所以如果出现这种情况则继续递归,如 k = next[k],</span></div><div class="line">					<span class="comment">// k = next[[next[k]]</span></div><div class="line">					next[j] = next[k];</div><div class="line">				&#125;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				k = next[k];</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> next;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="4-花絮"><a href="#4-花絮" class="headerlink" title="4. 花絮"></a>4. 花絮</h2><p>提到字符串匹配，或者说字符串查找，我们会想到Java中的String类就有一个String.indexOf(String str);方法，那它使用的是什么算法呢？在这里截取JavaSE-1.8的源码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// String.indexOf(String str); 最终会调用该方法</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Code shared by String and StringBuffer to do searches. The</div><div class="line"> * source is the character array being searched, and the target</div><div class="line"> * is the string being searched for.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span>   source       the characters being searched.(源字符数组)</div><div class="line"> * <span class="doctag">@param</span>   sourceOffset offset of the source string.(源字符数组偏移量)</div><div class="line"> * <span class="doctag">@param</span>   sourceCount  count of the source string.(源字符数组长度)</div><div class="line"> * <span class="doctag">@param</span>   target       the characters being searched for.(待搜索的模式字符数组)</div><div class="line"> * <span class="doctag">@param</span>   targetOffset offset of the target string.(模式字符数组偏移量)</div><div class="line"> * <span class="doctag">@param</span>   targetCount  count of the target string.(模式数组长度)</div><div class="line"> * <span class="doctag">@param</span>   fromIndex    the index to begin searching from.(从原字符数组的哪个下标开始查询)</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(<span class="keyword">char</span>[] source, <span class="keyword">int</span> sourceOffset, <span class="keyword">int</span> sourceCount,</span></span></div><div class="line">        <span class="keyword">char</span>[] target, <span class="keyword">int</span> targetOffset, <span class="keyword">int</span> targetCount,</div><div class="line">        <span class="keyword">int</span> fromIndex) &#123;</div><div class="line">    <span class="keyword">if</span> (fromIndex &gt;= sourceCount) &#123;</div><div class="line">        <span class="keyword">return</span> (targetCount == <span class="number">0</span> ? sourceCount : -<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (fromIndex &lt; <span class="number">0</span>) &#123;</div><div class="line">        fromIndex = <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (targetCount == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> fromIndex;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">char</span> first = target[targetOffset];</div><div class="line">    <span class="keyword">int</span> max = sourceOffset + (sourceCount - targetCount);</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = sourceOffset + fromIndex; i &lt;= max; i++) &#123;</div><div class="line">        <span class="comment">/* Look for first character. */</span></div><div class="line">        <span class="comment">// 找到第一个匹配的字符的位置</span></div><div class="line">        <span class="keyword">if</span> (source[i] != first) &#123;</div><div class="line">            <span class="keyword">while</span> (++i &lt;= max &amp;&amp; source[i] != first);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">/* Found first character, now look at the rest of v2 *</span></div><div class="line">        if (i &lt;= max) &#123;</div><div class="line">            // 找到了第一个匹配的字符，看余下的是否完全匹配</div><div class="line">            int j = i + 1;</div><div class="line">            int end = j + targetCount - 1;</div><div class="line">            for (int k = targetOffset + 1; j &lt; end &amp;&amp; source[j]</div><div class="line">                    == target[k]; j++, k++);</div><div class="line"></div><div class="line">            if (j == end) &#123;</div><div class="line">                /* Found whole string. */</div><div class="line">                <span class="keyword">return</span> i - sourceOffset;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// 如果不完全匹配，因为外层for循环中有i++，即i+1继续匹配</span></div><div class="line">            <span class="comment">// 故而该方法本质上就是字符串匹配的朴素算法</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通过对代码片段的注释和分析可以看出，Java源码中的String.indexOf(String str); 内部所使用的算法其实就是字符串匹配的朴素算法…</p>
+<p>源码github地址:<br><a href="https://github.com/tianma8023/DataStructure/blob/master/src/tianma/learn/ds/string/main/StringMatchSample.java" target="_blank" rel="external">StringMatchSample</a></p>
+<p>重要参考:<br><a href="http://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">从头到尾彻底理解KMP</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+    <!-- 使用 DISQUS_CLICK -->
+    <div id="disqus-comment">	
+        <div id="disqus_thread"></div>
+<!-- include js -->
+<script src="/js/ripple.js"></script>
+
+<!-- add animation -->
+<style>
+        .ripple-container {
+        }
+        .ripple-container .ripple{
+            background-color: rgba(255,255,255,0.4);
+            animation: ripple 2s forwards cubic-bezier(0, 0, 0.2, 1);
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+		.disqus_click_btn {
+            background-color: dodgerblue;
+            color: white;
+            padding: 10px 20px;
+            border:0;
+            font-size: 14px;
+            cursor: pointer
+        }
+</style>
+	
+<!-- add data-ripple attribute -->
+<div class="btn_click_load"> 
+    <button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button>
+</div>
+	
+<script>
+    // add effect to elements
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
+        // find all elements and attach effect
+        new RippleEffect(element); // element is instance of javascript element node
+    });
+</script>
+
+<script>
+    $('.btn_click_load').click(function() {  //click to load comments
+        var disqus_config = function () {
+            this.page.url = 'http://tianma.pro';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//tianma.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+  	
+
+    </div>
+    <style>
+        #disqus-comment{
+            background-color: #eee;
+            padding: 2pc;
+        }
+    </style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/post/235983682/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/1484310523/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/daily_pic.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/kousei.jpg" alt="Tianma's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        tianma8023@foxmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Diary/">Diary<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags" title="标签">
+                
+                    <i class="material-icons sidebar-material-icons">label_outline</i>
+                
+                标签
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+        <li>
+            <a href="/about" title="关于">
+                
+                    <i class="material-icons sidebar-material-icons">person_outline</i>
+                
+                关于
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="https://github.com/viosey/hexo-theme-material" title="主题">
+                
+                    <i class="material-icons sidebar-material-icons">stars</i>
+                
+                主题
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/tianma8023" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var curYear = new Date().getFullYear();
+                var since = 2016;
+                if (curYear != since) {
+                    document.write(since + ' ~ ' + curYear);
+                } else {
+                    document.write(curYear);                    
+                }
+            </script>
+            &nbsp;
+            <span class="with-love">
+                <i class="fa fa-heart"></i>
+            </span>
+            &nbsp;Tianma
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+<script src="../../js/lazyload.min.js"></script>
+<script src="../../js/js.min.js"></script>
+<script src="../../js/nprogress.js"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+    <!-- Leancloud -->
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+    <script>
+        AV.initialize('o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz', 'ypNURFLzI6NMQwz1OVl782d5');
+    </script>
+    <script>
+    function showTime(Counter) {
+        var query = new AV.Query(Counter);
+        $('.leancloud-views_num').each(function() {
+            var url = $(this).attr('id').trim();
+            query.equalTo('url', url);
+            query.find({
+                success: function(results) {
+                    if (results.length === 0) {
+                        var content = '0 ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var object = results[i];
+                        var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    }
+                },
+                error: function(object, error) {
+                    console.log('Error: ' + error.code + ' ' + error.message);
+                }
+            });
+        });
+    }
+
+    function addCount(Counter) {
+      var Counter = AV.Object.extend('Counter');
+      url = $('.leancloud-views_num').attr('id').trim();
+      title = $('.leancloud-views_num').attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+      query.equalTo('url', url);
+      query.find({
+          success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment('time');
+                counter.save(null, {
+                    success: function(counter) {
+                        var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+              var newcounter = new Counter();
+              newcounter.set('title', title);
+              newcounter.set('url', url);
+              newcounter.set('time', 1);
+              newcounter.save(null, {
+                  success: function(newcounter) {
+                      console.log('newcounter.get(\'time\')='+newcounter.get('time'));
+                      var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+                      $(document.getElementById(url)).text(content);
+                  },
+                  error: function(newcounter, error) {
+                      console.log('Failed to create');
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + ' ' + error.message);
+        }
+      });
+    }
+    $(function() {
+        var Counter = AV.Object.extend('Counter');
+        if ($('.leancloud-views_num').length === 1) {
+            addCount(Counter);
+        } else if ($('.post-title-link').length > 1) {
+            showTime(Counter);
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+    <script>
+    var searchFunc = function(path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: 'xml',
+            success: function( xmlResponse ) {
+                // get the contents from search data
+                var datas = $( 'entry', xmlResponse ).map(function() {
+                    return {
+                        title: $( 'title', this ).text(),
+                        content: $('content',this).text(),
+                        url: $( 'url' , this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function() {
+                    var str='<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = '';
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function(data) {
+                        var isMatch = true;
+                        var content_index = [];
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g,'').toLowerCase();
+                        var data_url = data.url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if(data_title !== '' && data_content !== '') {
+                            keywords.forEach(function(keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if( index_title < 0 && index_content < 0 ) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += '<li><a href="'+ data_url +'" class="search-result-title" target="_blank">'+ data_title;
+                            var content = data.content.trim().replace(/<[^>]+>/g, '');
+                            if (first_occur >= 0) {
+                                // cut out characters
+                                var start = first_occur - 6;
+                                var end = first_occur + 6;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 10;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, 'gi');
+                                    match_content = match_content.replace(regS, '<em class="search-keyword">'+keyword+'</em>');
+                                })
+                                str += '<p class="search-result">' + match_content + '...</p>' +'</a>';
+                            }
+                        }
+                    });
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    }
+</script>
+
+
+    <script>
+        var inputArea = document.querySelector('#search');
+        var getSearchFile = function() {
+            var path = 'search.xml';
+            searchFunc(path, 'search', 'local-search-result');
+        }
+
+        if(inputArea) {
+            inputArea.onfocus = function() {
+                getSearchFile();
+            }
+        }
+    </script>
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+
+                </main>
+            </div>
+        </body>
+    
+</html>
