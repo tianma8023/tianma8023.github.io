@@ -1,1 +1,1344 @@
-<!DOCTYPE html><html lang="zh"><head><title>查找-二叉搜索树（Java实现） | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon_t.png"><link rel="icon" sizes="192x192" href="/img/favicon_t.png"><link rel="apple-touch-icon" href="/img/favicon_t.png"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0097A7"><meta name="author" content="Tianma"><meta name="description" content="Everything will be okay in the end."><meta name="keywords" content="hexo, material,查找"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="apple-mobile-web-app-title" content="Title"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="480"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Tianma"><meta property="og:url" content="http://tianma.pro"><meta property="og:type" content="blog"><meta property="og:title" content="查找-二叉搜索树（Java实现） | Tianma"><meta property="og:description" content="Everything will be okay in the end."><meta property="og:article:tag" content="查找"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><link rel="stylesheet" href="../../css/material.min.css"><link rel="stylesheet" href="../../css/style.min.css"><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif}a{color:#00838f}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#0097a7!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#0097a7!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#0097a7!important}.toTop{background:#757575!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#757575}#scheme-Paradox .MD-burger-layer{background-color:#757575}#scheme-Paradox #post-toc-trigger-btn{color:#757575}.post-toc a:hover{color:#00838f;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><script src="../../js/jquery.min.js"></script><script src="../../js/queue.js"></script><script>navigator.userAgent.toLowerCase().indexOf("ucbrowser")>0&&(document.write('<link rel="stylesheet" href="../../css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>!function(e,t,a,n,c,s,o){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,s=t.createElement(a),o=t.getElementsByTagName(a)[0],s.async=1,s.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(s,o)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script></head><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button> <button id="post-toc-trigger-btn" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">format_list_numbered</i></button><ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn"><ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定义"><span class="post-toc-number">2.</span> <span class="post-toc-text">定义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#操作"><span class="post-toc-number">3.</span> <span class="post-toc-text">操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">Java实现</span></a></li></ol></ul><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/binary_tree.png)"><p class="article-headline-p">查找-二叉搜索树（Java实现）</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><strong>Tianma</strong> <span>4月 13, 2016</span></div><div class="section-spacer"></div><button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">devices other</i> <span class="visuallyhidden">devices other</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button"><li class="mdl-menu__item">在其它设备中阅读本文章</li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACWklEQVR42u3aQZLkIAwEQP//07sP2PB0FcK0YzY5+YBtkgNSCF1/fvW48PDw8PDw8PDwXsa74vHvW3fPyfy7OXczi7Xh4eHhHeF9OGpv5lzlSDZovjY8PDy8k7y7Bf28lPytO2obcj6sBw8PD+/1vCRg5HPw8PDw/gdenhC3KTIeHh7e+3ntL9uybM74Wq0FDw8PL+blRdjzz0fv9/Dw8PACXt3SVAaGeZJdrxAPDw/vYV5+EM/LB2uFhno9eHh4eA/zksLBzzPbwm6euOctrXh4eHjf4iXL3bWUecipAwMeHh7eJt7aNVVehkjaWyeNXEWVGg8PD28Tby0Vjg7oraEi/zseHh7eSV4SGNpkej4nXw8eHh7eGV57QZWXZSdlhbUUHw8PD+8ML/99fnC3xYg2UG2rUuPh4eEt8ebpb552T76fhxA8PDy8k7z2kr5Nvnc1H3zYLDw8PLyHefmHJklz21w12XQ8PDy8k7y20JCXg1tkwq4DAx4eHt4m3vXAWNuOdoMW7/fw8PDwNvHyZLc9yvfOXyzj4uHh4T3My3+TXINN2q3WEnQ8PDy8k7y1g3gyM28IGDVd4eHh4R3h5SXU9q3JvxIqHh4e3tO8drQtUPlV2VqqjYeHh3ee115r5SnvvGl1Q9MVHh4e3mO8tWAwuTbLtxIPDw/vzbxJiSHZgqRxag2Ph4eH935ecjXVHvRtu+rtBuHh4eG9ntfi8y/kwQAPDw/vW7ykuJAkzfm7eXNAnljj4eHhneG1bVX5Ud4WaidbiYeHh3eG9/sGHh4eHh4eHh7eC8ZfWSfEcKYfXqwAAAAASUVORK5CYII="></ul><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/查找/">查找</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/1367710076/" class="leancloud-views_num" data-flag-title="查找-二叉搜索树（Java实现）">&nbsp;阅读量</span></li></a><a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=查找-二叉搜索树（Java实现）&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank"><li class="mdl-menu__item">分享到微博</li></a><a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank"><li class="mdl-menu__item">分享到 Google+</li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果查找的数据集是有序的线性表，并且是顺序存储的，查找可以用折半查找、插值查找、斐波那契查找算法（详细算法见：<a href="/post/243331195">有序表查找（折半、插值、斐波那契查找）</a>）等实现。但是正是因为他们是顺序的，所以在插入和删除操作中需要耗费大量时间，也就是说这些算法适合静态查找（只有查找操作），不适合动态查找（不仅有查找操作还有插入删除等操作）。而二叉搜索树正适合动态查找。<a id="more"></a></p><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>二叉搜索树又称为二叉排序树，它或者是空树，或者是具有下列性质的二叉树：</p><ol><li>如果它的左子树不为空，那么左子树的所有节点都小于根节点的值；</li><li>如果它的右子树不为空，那么右子树的所有节点都大于根节点的；</li><li>它的左、右子树也分别是二叉搜索树.</li></ol><p>二叉树是递归定义的数据结构，其中序遍历是递增的有序序列。</p><h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p><strong>1. 插入</strong><br>插入节点的过程是：若原二叉查找树为空，则直接插入；否则，若关键字 k 小于根节点关键字，则插入到左子树中，若关键字 k 大于根节点关键字，则插入到右子树中。注意每次插入的节点必是叶节点。</p><p><strong>2. 删除</strong><br>二叉查找树的删除操作是相对复杂一点，它要按 3 种情况来处理：</p><ul><li>若被删除节点 t 是叶子节点，则直接删除，不会破坏二叉排序树的性质；</li><li>若节点 t 只有左子树或只有右子树，则让 t 的子树成为 t 父节点的子树，替代 t 的位置；</li><li>若节点 t 既有左子树，又有右子树，则用 t 的直接前驱或者直接后继代替 t，然后从二叉查找树中删除这个后继，这样就转换成了第一或第二种情况。</li></ul><p><strong>3. 查找</strong><br>查找是从根节点开始，若二叉树非空，将给定值与根节点的关键字比较，若相等，则查找成功；若不等，则当给定值小于根节点关键字时，在根节点的左子树中查找，否则在根节点的右子树中查找。<br>其查找平均时间复杂度为O(logn)，但是最差情况为插入的节点是有序的，则该二叉搜索树会变成左斜树(或者右斜树或者可以理解为“链表”)，即最差时间复杂度为O(n)，故而查找性能不是严格意义上的O(logn)，不稳定。</p><h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SortedBinaryTree</span>&lt;<span class="title">E</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> Node&lt;E&gt; root; <span class="comment">// 根节点</span></div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> size; <span class="comment">// 二叉树元素个数</span></div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 二叉树节点</div><div class="line">	 */</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">E</span>&gt; </span>&#123;</div><div class="line">		E element; <span class="comment">// 节点元素</span></div><div class="line">		Node&lt;E&gt; lChild; <span class="comment">// 左孩子</span></div><div class="line">		Node&lt;E&gt; rChild; <span class="comment">// 右孩子</span></div><div class="line"></div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(E element)</span> </span>&#123;</div><div class="line">			<span class="keyword">this</span>(element, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(E element, Node&lt;E&gt; lChild, Node&lt;E&gt; rChild)</span> </span>&#123;</div><div class="line">			<span class="keyword">this</span>.element = element;</div><div class="line">			<span class="keyword">this</span>.lChild = lChild;</div><div class="line">			<span class="keyword">this</span>.rChild = rChild;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SortedBinaryTree</span><span class="params">(List&lt;E&gt; elements)</span> </span>&#123;</div><div class="line">		<span class="keyword">for</span> (E e : elements) &#123;</div><div class="line">			add(e);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SortedBinaryTree</span><span class="params">(E[] elements)</span> </span>&#123;</div><div class="line">		<span class="keyword">for</span> (E e : elements) &#123;</div><div class="line">			add(e);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SortedBinaryTree</span><span class="params">()</span> </span>&#123;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 判断当前元素是否存在于树中</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> element</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(E element)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> search(root, element);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 递归搜索,查找当前以curRoot为根节点的树中element存在与否</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> curRoot</div><div class="line">	 * <span class="doctag">@param</span> element</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">search</span><span class="params">(Node&lt;E&gt; curRoot, E element)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (curRoot == <span class="keyword">null</span>)</div><div class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">		Comparable&lt;? <span class="keyword">super</span> E&gt; e = (Comparable&lt;? <span class="keyword">super</span> E&gt;) element;</div><div class="line">		<span class="keyword">int</span> cmp = e.compareTo(curRoot.element);</div><div class="line">		<span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</div><div class="line">			<span class="comment">// 查找的元素大于当前根节点对应的元素,向右走</span></div><div class="line">			<span class="keyword">return</span> search(curRoot.rChild, element);</div><div class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</div><div class="line">			<span class="comment">// 查找的元素小于当前根节点对应的元素,向左走</span></div><div class="line">			<span class="keyword">return</span> search(curRoot.lChild, element);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 查找的元素等于当前根节点对应的元素,返回true</span></div><div class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 非递归搜索,查找当前以curRoot为根节点的树中的element是否存在</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> curRoot</div><div class="line">	 *            二叉排序树的根节点</div><div class="line">	 * <span class="doctag">@param</span> element</div><div class="line">	 *            被搜索的元素</div><div class="line">	 * <span class="doctag">@param</span> target</div><div class="line">	 *            target[0]指向查找路径上最后一个节点: 如果当前查找的元素存在,则target[0]指向该节点</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">find</span><span class="params">(Node&lt;E&gt; curRoot, E element, Node&lt;E&gt;[] target)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (curRoot == <span class="keyword">null</span>)</div><div class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">		Node&lt;E&gt; tmp = curRoot;</div><div class="line">		Comparable&lt;? <span class="keyword">super</span> E&gt; e = (Comparable&lt;? <span class="keyword">super</span> E&gt;) element;</div><div class="line">		<span class="keyword">while</span> (tmp != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">int</span> cmp = e.compareTo(tmp.element);</div><div class="line">			target[<span class="number">0</span>] = tmp;</div><div class="line">			<span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</div><div class="line">				<span class="comment">// 查找的元素大于当前节点对应的元素,向右走</span></div><div class="line">				tmp = tmp.rChild;</div><div class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>) &#123;</div><div class="line">				<span class="comment">// 查找的元素小于当前节点对应的元素,向左走</span></div><div class="line">				tmp = tmp.lChild;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// 查找的元素等于当前根节点对应的元素,返回true</span></div><div class="line">				<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 向二叉排序树中添加元素,如果当前元素已经存在,则添加失败,返回false,如果当前元素不存在,则添加成功,返回true</div><div class="line">	 * </div><div class="line">	 */</div><div class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E element)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</div><div class="line">			root = <span class="keyword">new</span> Node&lt;E&gt;(element);</div><div class="line">			size++;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">		&#125;</div><div class="line">		Node&lt;E&gt;[] target = <span class="keyword">new</span> Node[<span class="number">1</span>];</div><div class="line">		<span class="keyword">if</span> (!find(root, element, target)) &#123;</div><div class="line">			<span class="comment">// 当前元素不存在,插入元素</span></div><div class="line">			<span class="comment">// 此时target节点即为需要插入的节点的父节点</span></div><div class="line">			Comparable&lt;? <span class="keyword">super</span> E&gt; e = (Comparable&lt;? <span class="keyword">super</span> E&gt;) element;</div><div class="line">			<span class="keyword">int</span> cmp = e.compareTo(target[<span class="number">0</span>].element);</div><div class="line">			Node&lt;E&gt; newNode = <span class="keyword">new</span> Node&lt;E&gt;(element);</div><div class="line">			<span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) &#123;</div><div class="line">				<span class="comment">// 插入的元素大于target指向的节点元素</span></div><div class="line">				target[<span class="number">0</span>].rChild = newNode;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// 插入的元素小于target指向的节点元素</span></div><div class="line">				target[<span class="number">0</span>].lChild = newNode;</div><div class="line">			&#125;</div><div class="line">			size++;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 删除二叉排序树中的元素,如果当前元素不存在,则删除失败,返回false;如果当前元素存在,则删除该元素,重构二叉树,返回true</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> element</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(E element)</span> </span>&#123;</div><div class="line">		Node&lt;E&gt;[] target = <span class="keyword">new</span> Node[<span class="number">1</span>];</div><div class="line">		<span class="keyword">if</span> (find(root, element, target)) &#123;</div><div class="line">			<span class="comment">// 被删除的元素存在,则继续执行删除操作</span></div><div class="line">			remove(target[<span class="number">0</span>]);</div><div class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 释放当前节点</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> node</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">free</span><span class="params">(Node&lt;E&gt; node)</span> </span>&#123;</div><div class="line">		node.element = <span class="keyword">null</span>;</div><div class="line">		node.lChild = <span class="keyword">null</span>;</div><div class="line">		node.rChild = <span class="keyword">null</span>;</div><div class="line">		node = <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 删除二叉排序树中指定的节点</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> node</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node&lt;E&gt; node)</span> </span>&#123;</div><div class="line">		Node&lt;E&gt; tmp;</div><div class="line">		<span class="keyword">if</span> (node.lChild == <span class="keyword">null</span> &amp;&amp; node.rChild == <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="comment">// 当前node为叶子节点,删除当前节点,则node = null;</span></div><div class="line">			node = <span class="keyword">null</span>;</div><div class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (node.lChild == <span class="keyword">null</span> &amp;&amp; node.rChild != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="comment">// 如果被删除的节点左子树为空,则只需要重新连接其右子树</span></div><div class="line">			tmp = node;</div><div class="line">			node = node.rChild;</div><div class="line">			free(tmp);</div><div class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (node.lChild != <span class="keyword">null</span> &amp;&amp; node.rChild == <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="comment">// 如果被删除的节点右子树为空,则只需要重新连接其左子树</span></div><div class="line">			tmp = node;</div><div class="line">			node = node.lChild;</div><div class="line">			free(tmp);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 当前被删除的节点左右子树均存在,不为空</span></div><div class="line">			<span class="comment">// 找到离当前node节点对应元素且最近的节点target(左子树的最右边节点 或者 右子树最左边节点)</span></div><div class="line">			<span class="comment">// 将node节点元素替换成target节点的元素,将target节点删除</span></div><div class="line">			tmp = node; <span class="comment">// tmp是target的父节点</span></div><div class="line">			Node&lt;E&gt; target = node.lChild; <span class="comment">// 找到左子树最大子树</span></div><div class="line">			<span class="keyword">while</span> (target.rChild != <span class="keyword">null</span>) &#123; <span class="comment">// 在左子树中进行右拐</span></div><div class="line">				tmp = target;</div><div class="line">				target = target.rChild;</div><div class="line">			&#125;</div><div class="line">			node.element = target.element; <span class="comment">// node.element元素替换为target.element</span></div><div class="line">			<span class="keyword">if</span> (tmp == node) &#123;</div><div class="line">				<span class="comment">// tmp == node 说明没有在左子树中进行右拐,也就是node节点的左孩子没有右孩子,</span></div><div class="line">				<span class="comment">// 需要重新连接tmp节点左孩子</span></div><div class="line">				tmp.lChild = target.lChild;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// tmp != node, 进行了右拐,那么将重新连接tmp的右子树,将target.lChild赋值给tmp.rChild</span></div><div class="line">				tmp.rChild = target.lChild;</div><div class="line">			&#125;</div><div class="line">			<span class="comment">// 释放节点</span></div><div class="line">			free(target);</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 删除成功,size--;</span></div><div class="line">		size--;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> size;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> size() == <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> List&lt;E&gt; <span class="title">preOrderTraverse</span><span class="params">()</span> </span>&#123;</div><div class="line">		List&lt;E&gt; list = <span class="keyword">new</span> ArrayList&lt;E&gt;();</div><div class="line">		preOrderTraverse(root, list);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">preOrderTraverse</span><span class="params">(Node&lt;E&gt; curRoot, List&lt;E&gt; list)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (curRoot == <span class="keyword">null</span>)</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		E e = curRoot.element;</div><div class="line">		list.add(e);</div><div class="line">		preOrderTraverse(curRoot.lChild, list);</div><div class="line">		preOrderTraverse(curRoot.rChild, list);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> List&lt;E&gt; <span class="title">inOrderTraverse</span><span class="params">()</span> </span>&#123;</div><div class="line">		List&lt;E&gt; list = <span class="keyword">new</span> ArrayList&lt;E&gt;();</div><div class="line">		inOrderTraverse(root, list);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">inOrderTraverse</span><span class="params">(Node&lt;E&gt; curRoot, List&lt;E&gt; list)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (curRoot == <span class="keyword">null</span>)</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		inOrderTraverse(curRoot.lChild, list);</div><div class="line">		list.add(curRoot.element);</div><div class="line">		inOrderTraverse(curRoot.rChild, list);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> List&lt;E&gt; <span class="title">postOrderTraverse</span><span class="params">()</span> </span>&#123;</div><div class="line">		List&lt;E&gt; list = <span class="keyword">new</span> ArrayList&lt;E&gt;();</div><div class="line">		postOrderTraverse(root, list);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">postOrderTraverse</span><span class="params">(Node&lt;E&gt; curRoot, List&lt;E&gt; list)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (curRoot == <span class="keyword">null</span>)</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		inOrderTraverse(curRoot.lChild, list);</div><div class="line">		inOrderTraverse(curRoot.rChild, list);</div><div class="line">		list.add(curRoot.element);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 返回中序遍历结果</div><div class="line">	 */</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> inOrderTraverse().toString();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		Integer[] elements = <span class="keyword">new</span> Integer[] &#123; <span class="number">62</span>, <span class="number">88</span>, <span class="number">58</span>, <span class="number">47</span>, <span class="number">73</span>, <span class="number">99</span>, <span class="number">35</span>, <span class="number">51</span>, <span class="number">93</span>, <span class="number">29</span>, <span class="number">37</span>, <span class="number">49</span>, <span class="number">56</span>, <span class="number">36</span>, <span class="number">48</span>, <span class="number">50</span> &#125;;</div><div class="line">		SortedBinaryTree&lt;Integer&gt; tree = <span class="keyword">new</span> SortedBinaryTree&lt;Integer&gt;(elements);</div><div class="line">		System.out.println(tree);</div><div class="line">		System.out.println(tree.contains(<span class="number">93</span>));</div><div class="line">		System.out.println(tree.size());</div><div class="line">		System.out.println(tree.remove(<span class="number">47</span>));</div><div class="line">		System.out.println(tree.preOrderTraverse());</div><div class="line">		System.out.println(tree.size());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure><p>Github地址<br><a href="https://github.com/tianma8023/DataStructure/blob/master/src/tianma/learn/ds/tree/SortedBinaryTree.java" target="_blank" rel="external">SortedBinaryTree</a></p></div><div id="disqus-comment"><div id="disqus_thread"></div><script src="/js/ripple.js"></script><style>.ripple-container .ripple{background-color:rgba(255,255,255,.4);animation:ripple 2s forwards cubic-bezier(0,0,.2,1)}@keyframes ripple{0%{transform:scale(0);opacity:1}80%{transform:scale(1)}100%{opacity:0}}.disqus_click_btn{background-color:#1e90ff;color:#fff;padding:10px 20px;border:0;font-size:14px;cursor:pointer}</style><div class="btn_click_load"><button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button></div><script>Array.prototype.forEach.call(document.querySelectorAll("[data-ripple]"),function(e){new RippleEffect(e)})</script><script>$(".btn_click_load").click(function(){!function(){var t=document,e=t.createElement("script");e.src="//tianma.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}(),$(".btn_click_load").css("display","none")})</script></div><style>#disqus-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/42083511/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/243331195/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div class="sidebar-header header-cover" style="background-image:url(/img/daily_pic.png)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img src="/img/kousei.jpg" alt="Tianma's avatar"></div><a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">tianma8023@foxmail.com<b class="caret"></b></a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu"><li><a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me"><i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i> Email Me</a></li></ul></li><li id="sidebar-first-li"><a href="/" target="_self"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Diary/">Diary<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">1</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li class="divider"></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-github.png)"><span class="visuallyhidden">Github</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+" ~ "+curYear):document.write(curYear)</script>&nbsp;<span class="with-love"><i class="fa fa-heart"></i></span> &nbsp;Tianma</div><div class="mdl-mini-footer--right-section"><div><div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div><div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div></div></div></footer><script src="../../js/lazyload.min.js"></script><script src="../../js/js.min.js"></script><script src="../../js/nprogress.js"></script><script>NProgress.configure({showSpinner:!0}),NProgress.start(),$("#nprogress .bar").css({background:"#FF4081"}),$("#nprogress .peg").css({"box-shadow":"0 0 10px #FF4081, 0 0 15px #FF4081"}),$("#nprogress .spinner-icon").css({"border-top-color":"#FF4081","border-left-color":"#FF4081"}),setTimeout(function(){NProgress.done(),$(".fade").removeClass("out")},800)</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script>function showTime(e){var t=new AV.Query(e);$(".leancloud-views_num").each(function(){var e=$(this).attr("id").trim();t.equalTo("url",e),t.find({success:function(t){if(0===t.length){var n="0 "+$(document.getElementById(e)).text();return void $(document.getElementById(e)).text(n)}for(var o=0;o<t.length;o++){var r=t[o],n=r.get("time")+" "+$(document.getElementById(e)).text();$(document.getElementById(e)).text(n)}},error:function(e,t){console.log("Error: "+t.code+" "+t.message)}})})}function addCount(e){var e=AV.Object.extend("Counter");url=$(".leancloud-views_num").attr("id").trim(),title=$(".leancloud-views_num").attr("data-flag-title").trim();var t=new AV.Query(e);t.equalTo("url",url),t.find({success:function(t){if(t.length>0){var n=t[0];n.fetchWhenSave(!0),n.increment("time"),n.save(null,{success:function(e){var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var o=new e;o.set("title",title),o.set("url",url),o.set("time",1),o.save(null,{success:function(e){console.log("newcounter.get('time')="+e.get("time"));var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1===$(".leancloud-views_num").length?addCount(e):$(".post-title-link").length>1&&showTime(e)})</script><script>var searchFunc=function(t,e,r){"use strict";$.ajax({url:t,dataType:"xml",success:function(t){var n=$("entry",t).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(e),s=document.getElementById(r);a.addEventListener("input",function(){var t='<ul class="search-result-list">',e=this.value.trim().toLowerCase().split(/[\s\-]+/);s.innerHTML="",this.value.trim().length<=0||(n.forEach(function(r){var n=!0,a=r.title.trim().toLowerCase(),s=r.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),i=r.url,c=-1,l=-1,u=-1;if(""!==a&&""!==s&&e.forEach(function(t,e){c=a.indexOf(t),l=s.indexOf(t),c<0&&l<0?n=!1:(l<0&&(l=0),0===e&&(u=l))}),n){t+='<li><a href="'+i+'" class="search-result-title" target="_blank">'+a;var o=r.content.trim().replace(/<[^>]+>/g,"");if(u>=0){var h=u-6,f=u+6;h<0&&(h=0),0===h&&(f=10),f>o.length&&(f=o.length);var m=o.substr(h,f);e.forEach(function(t){var e=new RegExp(t,"gi");m=m.replace(e,'<em class="search-keyword">'+t+"</em>")}),t+='<p class="search-result">'+m+"...</p></a>"}}}),s.innerHTML=t)})}})}</script><script>var inputArea=document.querySelector("#search"),getSearchFile=function(){searchFunc("search.xml","search","local-search-result")};inputArea&&(inputArea.onfocus=function(){getSearchFile()})</script><script>$(window).load(function(){$(".post-toc-wrap").parent(".mdl-menu__container").css("position","fixed")})</script></main></div></body></html>
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!-- 
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.0 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            查找-二叉搜索树（Java实现） | 
+        
+        Tianma
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon_t.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon_t.png">
+    <link rel="apple-touch-icon" href="/img/favicon_t.png">
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="Tianma">
+    <meta name="description" content="Everything will be okay in the end.">
+    <meta name="keywords" content="hexo, material,查找">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tianma">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://tianma.pro">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="查找-二叉搜索树（Java实现） | Tianma">
+    <meta property="og:description" content="Everything will be okay in the end.">
+    <meta property="og:article:tag" content="查找"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="../../css/material.min.css">
+    <link rel="stylesheet" href="../../css/style.min.css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #EEEEEE;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/queue.js"></script>
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-84178484-1', 'auto');ga('send', 'pageview');
+    </script>
+    
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+<link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定义"><span class="post-toc-number">2.</span> <span class="post-toc-text">定义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#操作"><span class="post-toc-number">3.</span> <span class="post-toc-text">操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">Java实现</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        <!-- Custom Thumbnail -->
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/binary_tree.png)">
+    
+            <p class="article-headline-p">
+                查找-二叉搜索树（Java实现）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>4月 13, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACWklEQVR42u3aQZLkIAwEQP//07sP2PB0FcK0YzY5+YBtkgNSCF1/fvW48PDw8PDw8PDwXsa74vHvW3fPyfy7OXczi7Xh4eHhHeF9OGpv5lzlSDZovjY8PDy8k7y7Bf28lPytO2obcj6sBw8PD+/1vCRg5HPw8PDw/gdenhC3KTIeHh7e+3ntL9uybM74Wq0FDw8PL+blRdjzz0fv9/Dw8PACXt3SVAaGeZJdrxAPDw/vYV5+EM/LB2uFhno9eHh4eA/zksLBzzPbwm6euOctrXh4eHjf4iXL3bWUecipAwMeHh7eJt7aNVVehkjaWyeNXEWVGg8PD28Tby0Vjg7oraEi/zseHh7eSV4SGNpkej4nXw8eHh7eGV57QZWXZSdlhbUUHw8PD+8ML/99fnC3xYg2UG2rUuPh4eEt8ebpb552T76fhxA8PDy8k7z2kr5Nvnc1H3zYLDw8PLyHefmHJklz21w12XQ8PDy8k7y20JCXg1tkwq4DAx4eHt4m3vXAWNuOdoMW7/fw8PDwNvHyZLc9yvfOXyzj4uHh4T3My3+TXINN2q3WEnQ8PDy8k7y1g3gyM28IGDVd4eHh4R3h5SXU9q3JvxIqHh4e3tO8drQtUPlV2VqqjYeHh3ee115r5SnvvGl1Q9MVHh4e3mO8tWAwuTbLtxIPDw/vzbxJiSHZgqRxag2Ph4eH935ecjXVHvRtu+rtBuHh4eG9ntfi8y/kwQAPDw/vW7ykuJAkzfm7eXNAnljj4eHhneG1bVX5Ud4WaidbiYeHh3eG9/sGHh4eHh4eHh7eC8ZfWSfEcKYfXqwAAAAASUVORK5CYII=">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/查找/">查找</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/1367710076/" class="leancloud-views_num" data-flag-title="查找-二叉搜索树（Java实现）">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=查找-二叉搜索树（Java实现）&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果查找的数据集是有序的线性表，并且是顺序存储的，查找可以用折半查找、插值查找、斐波那契查找算法（详细算法见：<a href="/post/243331195">有序表查找（折半、插值、斐波那契查找）</a>）等实现。但是正是因为他们是顺序的，所以在插入和删除操作中需要耗费大量时间，也就是说这些算法适合静态查找（只有查找操作），不适合动态查找（不仅有查找操作还有插入删除等操作）。而二叉搜索树正适合动态查找。 <a id="more"></a></p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>二叉搜索树又称为二叉排序树，它或者是空树，或者是具有下列性质的二叉树：</p>
+<ol>
+<li>如果它的左子树不为空，那么左子树的所有节点都小于根节点的值；</li>
+<li>如果它的右子树不为空，那么右子树的所有节点都大于根节点的；</li>
+<li>它的左、右子树也分别是二叉搜索树.</li>
+</ol>
+<p>二叉树是递归定义的数据结构，其中序遍历是递增的有序序列。</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p><strong>1. 插入</strong><br>插入节点的过程是：若原二叉查找树为空，则直接插入；否则，若关键字 k 小于根节点关键字，则插入到左子树中，若关键字 k 大于根节点关键字，则插入到右子树中。注意每次插入的节点必是叶节点。</p>
+<p><strong>2. 删除</strong><br>二叉查找树的删除操作是相对复杂一点，它要按 3 种情况来处理：</p>
+<ul>
+<li>若被删除节点 t 是叶子节点，则直接删除，不会破坏二叉排序树的性质；</li>
+<li>若节点 t 只有左子树或只有右子树，则让 t 的子树成为 t 父节点的子树，替代 t 的位置；</li>
+<li>若节点 t 既有左子树，又有右子树，则用 t 的直接前驱或者直接后继代替 t，然后从二叉查找树中删除这个后继，这样就转换成了第一或第二种情况。</li>
+</ul>
+<p><strong>3. 查找</strong><br>查找是从根节点开始，若二叉树非空，将给定值与根节点的关键字比较，若相等，则查找成功；若不等，则当给定值小于根节点关键字时，在根节点的左子树中查找，否则在根节点的右子树中查找。<br>其查找平均时间复杂度为O(logn)，但是最差情况为插入的节点是有序的，则该二叉搜索树会变成左斜树(或者右斜树或者可以理解为“链表”)，即最差时间复杂度为O(n)，故而查找性能不是严格意义上的O(logn)，不稳定。</p>
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SortedBinaryTree</span><span class="token operator">&lt;</span>E<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> Node<span class="token operator">&lt;</span>E<span class="token operator">></span> root<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 根节点</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 二叉树元素个数</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 二叉树节点
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token operator">&lt;</span>E<span class="token operator">></span> <span class="token punctuation">{</span>
+        E element<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 节点元素</span>
+        Node<span class="token operator">&lt;</span>E<span class="token operator">></span> lChild<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 左孩子</span>
+        Node<span class="token operator">&lt;</span>E<span class="token operator">></span> rChild<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 右孩子</span>
+
+        <span class="token keyword">public</span> <span class="token function">Node</span><span class="token punctuation">(</span>E element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">(</span>element<span class="token punctuation">,</span> null<span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token function">Node</span><span class="token punctuation">(</span>E element<span class="token punctuation">,</span> Node<span class="token operator">&lt;</span>E<span class="token operator">></span> lChild<span class="token punctuation">,</span> Node<span class="token operator">&lt;</span>E<span class="token operator">></span> rChild<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>element <span class="token operator">=</span> element<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>lChild <span class="token operator">=</span> lChild<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>rChild <span class="token operator">=</span> rChild<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">SortedBinaryTree</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>E<span class="token operator">></span> elements<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>E e <span class="token operator">:</span> elements<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">add</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">SortedBinaryTree</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span><span class="token punctuation">]</span> elements<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>E e <span class="token operator">:</span> elements<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">add</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">SortedBinaryTree</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 判断当前元素是否存在于树中
+     * 
+     * @param element
+     * @return
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">contains</span><span class="token punctuation">(</span>E element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">search</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 递归搜索,查找当前以curRoot为根节点的树中element存在与否
+     * 
+     * @param curRoot
+     * @param element
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">search</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> curRoot<span class="token punctuation">,</span> E element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>curRoot <span class="token operator">==</span> null<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        Comparable<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> E<span class="token operator">></span> e <span class="token operator">=</span> <span class="token punctuation">(</span>Comparable<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> E<span class="token operator">></span><span class="token punctuation">)</span> element<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> cmp <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>cmp <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 查找的元素大于当前根节点对应的元素,向右走</span>
+            <span class="token keyword">return</span> <span class="token function">search</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>rChild<span class="token punctuation">,</span> element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>cmp <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 查找的元素小于当前根节点对应的元素,向左走</span>
+            <span class="token keyword">return</span> <span class="token function">search</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>lChild<span class="token punctuation">,</span> element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 查找的元素等于当前根节点对应的元素,返回true</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 非递归搜索,查找当前以curRoot为根节点的树中的element是否存在
+     * 
+     * @param curRoot
+     *            二叉排序树的根节点
+     * @param element
+     *            被搜索的元素
+     * @param target
+     *            target[0]指向查找路径上最后一个节点: 如果当前查找的元素存在,则target[0]指向该节点
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">find</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> curRoot<span class="token punctuation">,</span> E element<span class="token punctuation">,</span> Node<span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>curRoot <span class="token operator">==</span> null<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        Node<span class="token operator">&lt;</span>E<span class="token operator">></span> tmp <span class="token operator">=</span> curRoot<span class="token punctuation">;</span>
+        Comparable<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> E<span class="token operator">></span> e <span class="token operator">=</span> <span class="token punctuation">(</span>Comparable<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> E<span class="token operator">></span><span class="token punctuation">)</span> element<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>tmp <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> cmp <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span>tmp<span class="token punctuation">.</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            target<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>cmp <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 查找的元素大于当前节点对应的元素,向右走</span>
+                tmp <span class="token operator">=</span> tmp<span class="token punctuation">.</span>rChild<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>cmp <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 查找的元素小于当前节点对应的元素,向左走</span>
+                tmp <span class="token operator">=</span> tmp<span class="token punctuation">.</span>lChild<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 查找的元素等于当前根节点对应的元素,返回true</span>
+                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 向二叉排序树中添加元素,如果当前元素已经存在,则添加失败,返回false,如果当前元素不存在,则添加成功,返回true
+     * 
+     */</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">add</span><span class="token punctuation">(</span>E element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>root <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            root <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">(</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            size<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        Node<span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> target <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">find</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> element<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 当前元素不存在,插入元素</span>
+            <span class="token comment" spellcheck="true">// 此时target节点即为需要插入的节点的父节点</span>
+            Comparable<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> E<span class="token operator">></span> e <span class="token operator">=</span> <span class="token punctuation">(</span>Comparable<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> E<span class="token operator">></span><span class="token punctuation">)</span> element<span class="token punctuation">;</span>
+            <span class="token keyword">int</span> cmp <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span>target<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Node<span class="token operator">&lt;</span>E<span class="token operator">></span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">(</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>cmp <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 插入的元素大于target指向的节点元素</span>
+                target<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>rChild <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 插入的元素小于target指向的节点元素</span>
+                target<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lChild <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            size<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 删除二叉排序树中的元素,如果当前元素不存在,则删除失败,返回false;如果当前元素存在,则删除该元素,重构二叉树,返回true
+     * 
+     * @param element
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">remove</span><span class="token punctuation">(</span>E element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Node<span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> target <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">find</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> element<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 被删除的元素存在,则继续执行删除操作</span>
+            <span class="token function">remove</span><span class="token punctuation">(</span>target<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 释放当前节点
+     * 
+     * @param node
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">free</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        node<span class="token punctuation">.</span>element <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        node<span class="token punctuation">.</span>lChild <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        node<span class="token punctuation">.</span>rChild <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        node <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 删除二叉排序树中指定的节点
+     * 
+     * @param node
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Node<span class="token operator">&lt;</span>E<span class="token operator">></span> tmp<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>lChild <span class="token operator">==</span> null <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>rChild <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 当前node为叶子节点,删除当前节点,则node = null;</span>
+            node <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>lChild <span class="token operator">==</span> null <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>rChild <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 如果被删除的节点左子树为空,则只需要重新连接其右子树</span>
+            tmp <span class="token operator">=</span> node<span class="token punctuation">;</span>
+            node <span class="token operator">=</span> node<span class="token punctuation">.</span>rChild<span class="token punctuation">;</span>
+            <span class="token function">free</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>lChild <span class="token operator">!=</span> null <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>rChild <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 如果被删除的节点右子树为空,则只需要重新连接其左子树</span>
+            tmp <span class="token operator">=</span> node<span class="token punctuation">;</span>
+            node <span class="token operator">=</span> node<span class="token punctuation">.</span>lChild<span class="token punctuation">;</span>
+            <span class="token function">free</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 当前被删除的节点左右子树均存在,不为空</span>
+            <span class="token comment" spellcheck="true">// 找到离当前node节点对应元素且最近的节点target(左子树的最右边节点 或者 右子树最左边节点)</span>
+            <span class="token comment" spellcheck="true">// 将node节点元素替换成target节点的元素,将target节点删除</span>
+            tmp <span class="token operator">=</span> node<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// tmp是target的父节点</span>
+            Node<span class="token operator">&lt;</span>E<span class="token operator">></span> target <span class="token operator">=</span> node<span class="token punctuation">.</span>lChild<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 找到左子树最大子树</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>target<span class="token punctuation">.</span>rChild <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 在左子树中进行右拐</span>
+                tmp <span class="token operator">=</span> target<span class="token punctuation">;</span>
+                target <span class="token operator">=</span> target<span class="token punctuation">.</span>rChild<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            node<span class="token punctuation">.</span>element <span class="token operator">=</span> target<span class="token punctuation">.</span>element<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// node.element元素替换为target.element</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp <span class="token operator">==</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// tmp == node 说明没有在左子树中进行右拐,也就是node节点的左孩子没有右孩子,</span>
+                <span class="token comment" spellcheck="true">// 需要重新连接tmp节点左孩子</span>
+                tmp<span class="token punctuation">.</span>lChild <span class="token operator">=</span> target<span class="token punctuation">.</span>lChild<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// tmp != node, 进行了右拐,那么将重新连接tmp的右子树,将target.lChild赋值给tmp.rChild</span>
+                tmp<span class="token punctuation">.</span>rChild <span class="token operator">=</span> target<span class="token punctuation">.</span>lChild<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment" spellcheck="true">// 释放节点</span>
+            <span class="token function">free</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 删除成功,size--;</span>
+        size<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> size<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>E<span class="token operator">></span> <span class="token function">preOrderTraverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        List<span class="token operator">&lt;</span>E<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">preOrderTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> list<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">preOrderTraverse</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> curRoot<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>E<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>curRoot <span class="token operator">==</span> null<span class="token punctuation">)</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        E e <span class="token operator">=</span> curRoot<span class="token punctuation">.</span>element<span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">preOrderTraverse</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>lChild<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">preOrderTraverse</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>rChild<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>E<span class="token operator">></span> <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        List<span class="token operator">&lt;</span>E<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> list<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> curRoot<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>E<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>curRoot <span class="token operator">==</span> null<span class="token punctuation">)</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>lChild<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>rChild<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>E<span class="token operator">></span> <span class="token function">postOrderTraverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        List<span class="token operator">&lt;</span>E<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>E<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">postOrderTraverse</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> list<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">postOrderTraverse</span><span class="token punctuation">(</span>Node<span class="token operator">&lt;</span>E<span class="token operator">></span> curRoot<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>E<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>curRoot <span class="token operator">==</span> null<span class="token punctuation">)</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>lChild<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>rChild<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>curRoot<span class="token punctuation">.</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 返回中序遍历结果
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">inOrderTraverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Integer<span class="token punctuation">[</span><span class="token punctuation">]</span> elements <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> <span class="token number">62</span><span class="token punctuation">,</span> <span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">58</span><span class="token punctuation">,</span> <span class="token number">47</span><span class="token punctuation">,</span> <span class="token number">73</span><span class="token punctuation">,</span> <span class="token number">99</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">,</span> <span class="token number">51</span><span class="token punctuation">,</span> <span class="token number">93</span><span class="token punctuation">,</span> <span class="token number">29</span><span class="token punctuation">,</span> <span class="token number">37</span><span class="token punctuation">,</span> <span class="token number">49</span><span class="token punctuation">,</span> <span class="token number">56</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">48</span><span class="token punctuation">,</span> <span class="token number">50</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        SortedBinaryTree<span class="token operator">&lt;</span>Integer<span class="token operator">></span> tree <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SortedBinaryTree</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span>elements<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tree<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tree<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token number">93</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tree<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tree<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">47</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tree<span class="token punctuation">.</span><span class="token function">preOrderTraverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tree<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Github地址<br><a href="https://github.com/tianma8023/DataStructure/blob/master/src/tianma/learn/ds/tree/SortedBinaryTree.java" target="_blank" rel="external">SortedBinaryTree</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+    <!-- 使用 DISQUS_CLICK -->
+    <div id="disqus-comment">	
+        <div id="disqus_thread"></div>
+<!-- include js -->
+<script src="/js/ripple.js"></script>
+
+<!-- add animation -->
+<style>
+        .ripple-container {
+        }
+        .ripple-container .ripple{
+            background-color: rgba(255,255,255,0.4);
+            animation: ripple 2s forwards cubic-bezier(0, 0, 0.2, 1);
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+		.disqus_click_btn {
+            background-color: dodgerblue;
+            color: white;
+            padding: 10px 20px;
+            border:0;
+            font-size: 14px;
+            cursor: pointer
+        }
+</style>
+	
+<!-- add data-ripple attribute -->
+<div class="btn_click_load"> 
+    <button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button>
+</div>
+	
+<script>
+    // add effect to elements
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
+        // find all elements and attach effect
+        new RippleEffect(element); // element is instance of javascript element node
+    });
+</script>
+
+<script>
+    $('.btn_click_load').click(function() {  //click to load comments
+        var disqus_config = function () {
+            this.page.url = 'http://tianma.pro';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//tianma.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+  	
+
+    </div>
+    <style>
+        #disqus-comment{
+            background-color: #eee;
+            padding: 2pc;
+        }
+    </style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/post/42083511/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/243331195/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/daily_pic.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/kousei.jpg" alt="Tianma's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        tianma8023@foxmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Diary/">Diary<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags" title="标签">
+                
+                    <i class="material-icons sidebar-material-icons">label_outline</i>
+                
+                标签
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+        <li>
+            <a href="/about" title="关于">
+                
+                    <i class="material-icons sidebar-material-icons">person_outline</i>
+                
+                关于
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="https://github.com/viosey/hexo-theme-material" title="主题">
+                
+                    <i class="material-icons sidebar-material-icons">stars</i>
+                
+                主题
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/tianma8023" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var curYear = new Date().getFullYear();
+                var since = 2016;
+                if (curYear != since) {
+                    document.write(since + ' ~ ' + curYear);
+                } else {
+                    document.write(curYear);                    
+                }
+            </script>
+            &nbsp;
+            <span class="with-love">
+                <i class="fa fa-heart"></i>
+            </span>
+            &nbsp;Tianma
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+<script src="../../js/lazyload.min.js"></script>
+<script src="../../js/js.min.js"></script>
+<script src="../../js/nprogress.js"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+    <!-- Leancloud -->
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+    <script>
+        AV.initialize('o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz', 'ypNURFLzI6NMQwz1OVl782d5');
+    </script>
+    <script>
+    function showTime(Counter) {
+        var query = new AV.Query(Counter);
+        $('.leancloud-views_num').each(function() {
+            var url = $(this).attr('id').trim();
+            query.equalTo('url', url);
+            query.find({
+                success: function(results) {
+                    if (results.length === 0) {
+                        var content = '0 ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var object = results[i];
+                        var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    }
+                },
+                error: function(object, error) {
+                    console.log('Error: ' + error.code + ' ' + error.message);
+                }
+            });
+        });
+    }
+
+    function addCount(Counter) {
+      var Counter = AV.Object.extend('Counter');
+      url = $('.leancloud-views_num').attr('id').trim();
+      title = $('.leancloud-views_num').attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+      query.equalTo('url', url);
+      query.find({
+          success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment('time');
+                counter.save(null, {
+                    success: function(counter) {
+                        var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+              var newcounter = new Counter();
+              newcounter.set('title', title);
+              newcounter.set('url', url);
+              newcounter.set('time', 1);
+              newcounter.save(null, {
+                  success: function(newcounter) {
+                      console.log('newcounter.get(\'time\')='+newcounter.get('time'));
+                      var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+                      $(document.getElementById(url)).text(content);
+                  },
+                  error: function(newcounter, error) {
+                      console.log('Failed to create');
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + ' ' + error.message);
+        }
+      });
+    }
+    $(function() {
+        var Counter = AV.Object.extend('Counter');
+        if ($('.leancloud-views_num').length === 1) {
+            addCount(Counter);
+        } else if ($('.post-title-link').length > 1) {
+            showTime(Counter);
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+    <script>
+    var searchFunc = function(path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: 'xml',
+            success: function( xmlResponse ) {
+                // get the contents from search data
+                var datas = $( 'entry', xmlResponse ).map(function() {
+                    return {
+                        title: $( 'title', this ).text(),
+                        content: $('content',this).text(),
+                        url: $( 'url' , this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function() {
+                    var str='<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = '';
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function(data) {
+                        var isMatch = true;
+                        var content_index = [];
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g,'').toLowerCase();
+                        var data_url = data.url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if(data_title !== '' && data_content !== '') {
+                            keywords.forEach(function(keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if( index_title < 0 && index_content < 0 ) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += '<li><a href="'+ data_url +'" class="search-result-title" target="_blank">'+ data_title;
+                            var content = data.content.trim().replace(/<[^>]+>/g, '');
+                            if (first_occur >= 0) {
+                                // cut out characters
+                                var start = first_occur - 6;
+                                var end = first_occur + 6;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 10;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, 'gi');
+                                    match_content = match_content.replace(regS, '<em class="search-keyword">'+keyword+'</em>');
+                                })
+                                str += '<p class="search-result">' + match_content + '...</p>' +'</a>';
+                            }
+                        }
+                    });
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    }
+</script>
+
+
+    <script>
+        var inputArea = document.querySelector('#search');
+        var getSearchFile = function() {
+            var path = 'search.xml';
+            searchFunc(path, 'search', 'local-search-result');
+        }
+
+        if(inputArea) {
+            inputArea.onfocus = function() {
+                getSearchFile();
+            }
+        }
+    </script>
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+
+                </main>
+            </div>
+        </body>
+    
+</html>
