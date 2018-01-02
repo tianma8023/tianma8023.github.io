@@ -10,7 +10,7 @@
     
     <title>
         
-            tags | 
+            百度云资源加速下载 | 
         
         Tianma
     </title>
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="Tianma">
     <meta name="description" content="Everything will be okay in the end.">
-    <meta name="keywords" content="hexo, material">
+    <meta name="keywords" content="hexo, material,百度云,BaiduExporter,Tampermonkey">
 
     <!--iOS -->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -48,9 +48,9 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://tianma.pro">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="tags | Tianma">
+    <meta property="og:title" content="百度云资源加速下载 | Tianma">
     <meta property="og:description" content="Everything will be okay in the end.">
-    
+    <meta property="og:article:tag" content="百度云"> <meta property="og:article:tag" content="BaiduExporter"> <meta property="og:article:tag" content="Tampermonkey"> 
 
     <!--[if lte IE 9]>
         <link rel="stylesheet" href="/css/ie-blocker.css">
@@ -61,8 +61,8 @@
     <![endif]-->
 
     <!-- Import CSS -->
-    <link rel="stylesheet" href="../css/material.min.css">
-    <link rel="stylesheet" href="../css/style.min.css">
+    <link rel="stylesheet" href="../../css/material.min.css">
+    <link rel="stylesheet" href="../../css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -166,21 +166,21 @@
 
 
 
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/queue.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/queue.js"></script>
 	
 	<!-- fancybox support -->
 	
-		<link rel="stylesheet" href="../lib/fancybox/dist/jquery.fancybox.min.css">
-		<script src="../lib/fancybox/dist/jquery.fancybox.min.js"></script>
-		<script src="../js/wrapImage.js"></script>
+		<link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css">
+		<script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script>
+		<script src="../../js/wrapImage.js"></script>
 	
 
     <!-- UC Browser Compatible -->
     <script>
         var agent = navigator.userAgent.toLowerCase();
         if(agent.indexOf('ucbrowser')>0) {
-            document.write("<link rel=\"stylesheet\" href=\"../css/uc.css\">");
+            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
             alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
         }
     </script>
@@ -227,60 +227,316 @@
 
                     <!-- Post TOC -->
 
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Aria2-BaiduExporter"><span class="post-toc-number">1.</span> <span class="post-toc-text">Aria2 + BaiduExporter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Tampermonkey"><span class="post-toc-number">2.</span> <span class="post-toc-text">Tampermonkey</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
 
 <!-- Layouts -->
 
-    <!-- Tags Cloud -->
-    <style>
-    #bottom{
-        position: relative;
-    }
+    <!-- Post Module -->
+    <div class="material-post_container">
 
-    @media screen and (max-width: 480px) {
-        .material-tagscloud{
-            margin: 6em 2em 0;
-        }
-    }
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
 
-    .material-tagscloud a{
-        text-decoration:none;
-        padding: 1px 9px;
-        margin: 9px 1px;
-        line-height: 40px;
-        white-space: nowrap;
-        transition: .6s;
-        opacity: .85;
-    }
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        <!-- Custom Thumbnail -->
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/baidu_netdisk_banner.png)">
+    
+            <p class="article-headline-p">
+                百度云资源加速下载
+            </p>
+        </div>
 
-    .material-tagscloud a:hover{
-        transition: .6s;
-        opacity: 1;
-        background: #FAFAFA;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
-    }
-</style>
 
-<div class=" material-tagscloud">
-    <div class="material-post mdl-grid">
-        <a href="Android-5-x/" style="font-size: 16px; color: #757575">Android 5.x</a> <a href="Android-6-x/" style="font-size: 16px; color: #757575">Android 6.x</a> <a href="Android-7-x/" style="font-size: 16px; color: #757575">Android 7.x</a> <a href="Annual-Review/" style="font-size: 16px; color: #757575">Annual Review</a> <a href="BaiduExporter/" style="font-size: 28.67px; color: #3d3d3d">BaiduExporter</a> <a href="Bitmap/" style="font-size: 22.33px; color: #595959">Bitmap</a> <a href="Decompile/" style="font-size: 16px; color: #757575">Decompile</a> <a href="Fancybox/" style="font-size: 16px; color: #757575">Fancybox</a> <a href="FloatingActionButton/" style="font-size: 16px; color: #757575">FloatingActionButton</a> <a href="Hello-World/" style="font-size: 16px; color: #757575">Hello-World</a> <a href="Java反射/" style="font-size: 16px; color: #757575">Java反射</a> <a href="KMP/" style="font-size: 16px; color: #757575">KMP</a> <a href="Lambda-Expression/" style="font-size: 16px; color: #757575">Lambda Expression</a> <a href="Material-Design/" style="font-size: 16px; color: #757575">Material Design</a> <a href="OOM/" style="font-size: 16px; color: #757575">OOM</a> <a href="PopupWindow/" style="font-size: 16px; color: #757575">PopupWindow</a> <a href="Python/" style="font-size: 16px; color: #757575">Python</a> <a href="Real-Path/" style="font-size: 16px; color: #757575">Real Path</a> <a href="RecyclerView/" style="font-size: 22.33px; color: #595959">RecyclerView</a> <a href="ShadowSocks/" style="font-size: 16px; color: #757575">ShadowSocks</a> <a href="Tampermonkey/" style="font-size: 16px; color: #757575">Tampermonkey</a> <a href="Tips/" style="font-size: 16px; color: #757575">Tips</a> <a href="Weibo/" style="font-size: 16px; color: #757575">Weibo</a> <a href="aria2/" style="font-size: 22.33px; color: #595959">aria2</a> <a href="hexo/" style="font-size: 16px; color: #757575">hexo</a> <a href="hexo-theme-material/" style="font-size: 16px; color: #757575">hexo-theme-material</a> <a href="network-monitor/" style="font-size: 16px; color: #757575">network monitor</a> <a href="zip压缩/" style="font-size: 16px; color: #757575">zip压缩</a> <a href="下载工具/" style="font-size: 22.33px; color: #595959">下载工具</a> <a href="伯努利试验/" style="font-size: 16px; color: #757575">伯努利试验</a> <a href="字符串模式匹配/" style="font-size: 16px; color: #757575">字符串模式匹配</a> <a href="排列组合/" style="font-size: 22.33px; color: #595959">排列组合</a> <a href="排序/" style="font-size: 35px; color: #212121">排序</a> <a href="查找/" style="font-size: 28.67px; color: #3d3d3d">查找</a> <a href="栈/" style="font-size: 16px; color: #757575">栈</a> <a href="概率学/" style="font-size: 22.33px; color: #595959">概率学</a> <a href="玩机/" style="font-size: 16px; color: #757575">玩机</a> <a href="百度云/" style="font-size: 16px; color: #757575">百度云</a> <a href="百度网盘/" style="font-size: 16px; color: #757575">百度网盘</a> <a href="网络监测/" style="font-size: 16px; color: #757575">网络监测</a> <a href="迅雷极速版/" style="font-size: 16px; color: #757575">迅雷极速版</a>
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
     </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>7月 28, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACcUlEQVR42u3aQXLDMAgF0Nz/0um2GzsfkFQ387TqTBxHTwtBgdf7q9cLDw8PDw8PDw/vYbxXvC5f9+vTq+fzZ66ezPeGh4eHd4b34aq93W6+lXtw8rvR3vDw8PAO8q42lG/l/lu9MJPvDQ8PD+/JvPwIkuPI34OHh4f3TbxeIv5vAgMeHh7e+CcTZPJpL6hsrLXg4eHhxby8CHv+76P9PTw8PLyAVx5pii/rvG32Xrrw8PDwdvPyizhpd+XJd15oKA+B4eHh4R3kTVpZyXVfTdzzY8XDw8M7yeuVAHJkEgx6zbDCfwx4eHh4S3lJ6pwfR7KVaopcbrzh4eHhHeTlKXJesFgVKgoHgYeHh7eZN2lr5ey1B/ShYIGHh4e3mZcXT1eVKnql4cJ38fDw8Dbz8lGAXlqchIR3vMqjA3h4eHgbeNXAkBdqq6lzdYygPBmBh4eHt4jXa4ZVr/V8sDUPV4VaCx4eHt5SXlImmISBpExcfcMopcbDw8PbMK7aGxfoXeK9dhceHh7eE3i9RDahJkNU87fh4eHhneTNW1m9i76arBd+BQ8PD+8gr5pM90ZX77deTdMLgQEPDw9vA6/XAKs2+5OrP0nEmyk1Hh4e3lJedROTNn+SyuejWnh4eHgnedU1H8bKw08zgOHh4eFt5lWbWx8u5cHAazV4FFJqPDw8vA28PBjk5YP8CPJRg6hthoeHh3eQt7ZwkIAn+GUNMDw8PLwjvF7SPG+nRYMOeHh4eI/kTRpmyaFURxDw8PDw/oo33241qOQpeFKwwMPDwzvJm5QA8rZWkmRXy8F4eHh453nft/Dw8PDw8PDw8B6wfgCp18RwbWyNYAAAAABJRU5ErkJggg==">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/BaiduExporter/">BaiduExporter</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/Tampermonkey/">Tampermonkey</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/百度云/">百度云</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/3444791601/" class="leancloud-views_num" data-flag-title="百度云资源加速下载">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=百度云资源加速下载&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>基于某些特殊的原因，非会员的情况下，百度云网盘客户端在下载资源时会进行限速。<a id="more"></a>据可能不准确猜测，此行为的目的是推广其vip业务。因而产生了不少的应对策略来突破其下载限制。比较简单粗暴的就是破解版的PC客户端，然而破解版一是涉及到版权问题，而是可能破解版客户端会夹带私货不够安全，就不多bb了。</p>
+<p>在这里介绍一些其他的解决方案。</p>
+<h2 id="Aria2-BaiduExporter"><a href="#Aria2-BaiduExporter" class="headerlink" title="Aria2 + BaiduExporter"></a>Aria2 + BaiduExporter</h2><p>使用 <code>Aira2</code> 结合 <code>BaiduExporter</code> 越过度娘网盘下载速度限制，具体参考之前的：</p>
+<ul>
+<li><a href="/post/141514420">下载工具aria2 - 配置和使用</a></li>
+<li><a href="/post/3364832428">BaiduExporter 介绍与使用</a></li>
+</ul>
+<h2 id="Tampermonkey"><a href="#Tampermonkey" class="headerlink" title="Tampermonkey"></a>Tampermonkey</h2><p><code>Tampermonkey</code>(油猴，简称TM) 是 <code>Chrome</code> 浏览器上的一款插件，是一款脚本管理器，用于管理 <code>JavaScript</code> 脚本。通过 <code>JS</code> 脚本可以实现特定网页/网域内容的定制化操作。</p>
+<p>正确姿势：</p>
+<ol>
+<li>Chrome 浏览器安装 <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo" target="_blank" rel="external">Tampermonkey</a> 扩展插件</li>
+<li>去 <a href="https://greasyfork.org/zh-CN" target="_blank" rel="external">GreaskyFork</a> 安装第三方的用户脚本，当然 TM 支持的用户脚本源不止这一个了，但 <code>GreaskyFork</code> 是目前受众最广最受欢迎的脚本源网站了</li>
+<li>然后安装 <a href="https://greasyfork.org/zh-CN/scripts/35421-%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E7%9B%B4%E6%8E%A5%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B%E6%94%B9" target="_blank" rel="external">百度网盘直接下载助手改</a> 扩展脚本</li>
+</ol>
+<p>访问自己百度云盘网页，会发现多了一个 <code>下载助手</code> 按钮：</p>
+<img alt="自行选择下载方式" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/DownloadHelper_on_BaiduNetdisk.png?imageView2">
+<p>至于外链下载的话，我用的是 <code>迅雷极速版</code>，有需要的可以参考前面的文章 <a href="/post/2806688193">迅雷极速版 - 时代的眼泪</a></p>
+
+    
+
+    
 </div>
 
 
-<script>
-    var adjustFooter = function() {
-        if( ($('#bottom').offset().top + $('#bottom').outerHeight() ) < $(window).height() ) {
-            var footerBottom = $(window).height() - $('#bottom').outerHeight() - $('#bottom').offset().top;
-            $('#bottom').css('bottom', '-' + footerBottom + 'px');
-        }
-    };
+                
 
-    $(document).ready(function() {
-        adjustFooter();
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+    <!-- 使用 DISQUS_CLICK -->
+    <div id="disqus-comment">	
+        <div id="disqus_thread"></div>
+<!-- include js -->
+<script src="/js/ripple.js"></script>
+
+<!-- add animation -->
+<style>
+        .ripple-container {
+        }
+        .ripple-container .ripple{
+            background-color: rgba(255,255,255,0.4);
+            animation: ripple 2s forwards cubic-bezier(0, 0, 0.2, 1);
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+		.disqus_click_btn {
+            background-color: dodgerblue;
+            color: white;
+            padding: 10px 20px;
+            border:0;
+            font-size: 14px;
+            cursor: pointer
+        }
+</style>
+	
+<!-- add data-ripple attribute -->
+<div class="btn_click_load"> 
+    <button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button>
+</div>
+	
+<script>
+    // add effect to elements
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
+        // find all elements and attach effect
+        new RippleEffect(element); // element is instance of javascript element node
     });
 </script>
 
+<script>
+    $('.btn_click_load').click(function() {  //click to load comments
+        var disqus_config = function () {
+            this.page.url = 'http://tianma.pro';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//tianma.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+  	
 
+    </div>
+    <style>
+        #disqus-comment{
+            background-color: #eee;
+            padding: 2pc;
+        }
+    </style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/post/2666287230/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/2806688193/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
 
 
 
@@ -361,7 +617,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="../archives/2018/01/">一月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+                <a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
             </ul>
         </li>
         
@@ -379,7 +635,7 @@
             </a>
             <ul class="dropdown-menu">
                 <li>
-                <a class="sidebar_archives-link" href="../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../categories/Android/">Android<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="../categories/Hexo/">Hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
+                <a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
             </ul>
         </li>
         
@@ -465,6 +721,14 @@ It will not impact the appearance and can give developers a lot of support :)
 </aside>
 
                     
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
 
                     
 
@@ -554,9 +818,9 @@ It will not impact the appearance and can give developers a lot of support :)
 
 
                     <!-- Import File -->
-<script src="../js/lazyload.min.js"></script>
-<script src="../js/js.min.js"></script>
-<script src="../js/nprogress.js"></script>
+<script src="../../js/lazyload.min.js"></script>
+<script src="../../js/js.min.js"></script>
+<script src="../../js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({
