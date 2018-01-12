@@ -10,7 +10,7 @@
     
     <title>
         
-            标签: 栈 | 
+            JitPack - 发布Android库 | 
         
         Tianma
     </title>
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="Tianma">
     <meta name="description" content="Everything will be okay in the end.">
-    <meta name="keywords" content="hexo, material">
+    <meta name="keywords" content="hexo, material,JitPack,Package Repository">
 
     <!--iOS -->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -48,9 +48,9 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://tianma.pro">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="标签: 栈 | Tianma">
+    <meta property="og:title" content="JitPack - 发布Android库 | Tianma">
     <meta property="og:description" content="Everything will be okay in the end.">
-    
+    <meta property="og:article:tag" content="JitPack"> <meta property="og:article:tag" content="Package Repository"> 
 
     <!--[if lte IE 9]>
         <link rel="stylesheet" href="/css/ie-blocker.css">
@@ -225,91 +225,373 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
     
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
 
-    <!-- Normal Post -->
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#发布-Android-Library"><span class="post-toc-number">1.</span> <span class="post-toc-text">发布 Android Library</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-Gradle"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">1. Gradle</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-GitHub"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">2. GitHub</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-JitPack"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">3. JitPack</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用-Android-Library"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用 Android Library</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Dependency-格式构成"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">Dependency 格式构成</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#JitPack-中的-Snapshot"><span class="post-toc-number">2.0.2.</span> <span class="post-toc-text">JitPack 中的 Snapshot</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Gradle-中导入-Library"><span class="post-toc-number">2.0.3.</span> <span class="post-toc-text">Gradle 中导入 Library</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#踩坑"><span class="post-toc-number">3.</span> <span class="post-toc-text">踩坑</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/stack.jpg);">
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/jitpack_banner.jpg)">
+    
+            <p class="article-headline-p">
+                JitPack - 发布Android库
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>1月 11, 2018</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZUlEQVR42u3aS46DQAwFwNz/0jPbkSbAs/sDiYpVhEjo6oXtuP36+errhYeHh4eHh4eH9zDeK76OvvX3zv/Pb15/8Mvndwprw8PDw9vCuwi1B7yjZeVbkGxEeW14eHh4G3nnIbv3zPmC8gSTvBcPDw/v+by5CQYPDw/vu3n5L+TpIU8heHh4eM/hJQE9b9dW00Oy9OW9Fjw8PLyYlx8y7f+89XwPDw8PL+D1wnp+cJUX3L008+bteHh4eIt5eSDuFdl5sqkOXeHh4eHdy8vD9Pn9ZACrOqh6npbK/xjw8PDwlvF6ixtPLQnjYrV4eHh4G3l5gVstr6tl8VC5j4eHh7eFl/xcHqBH2hMTthsPDw9vMS9vPYwnjPNnyqUzHh4e3k28WUVwHtBHGrVR6wQPDw9vOy8/Epvbbkg2bslkBB4eHl6RN7eArh6D9QYLLopyPDw8vMW8amLIy+tqoM/L64t0hYeHh7eRl7++2WBttXGTQzU8PDy8/by8fZB/t9r8nfYkHh4e3mJe9SircBA1MChQPRjDw8PD28nLi+aRtDGrdRvdwcPDw9vCyw/DxpsO+Tb1msV4eHh4d/ESZMLrDWb10gkeHh7efl5yGNajVocSRjYCDw8PbzWveuVbUC3QeyU+Hh4e3n7eeFDOU0J1uUuGrvDw8PAWjKsmQXlkyKA3pIWHh4f3TF41QOeldm9oIN8UPDw8vOfzqukkP2zLwXh4eHifxestKy/T89GE5SU1Hh4e3nAzolocj5TdyVvw8PDw7uLlLYAqtbCsYnv3cCV4eHh4i3nfd+Hh4eHh4eHh4T3g+gX14j7aVuKySQAAAABJRU5ErkJggg==">
+        </ul>
     
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/1484310523/">栈的应用之中缀表达式和后缀表达式</a></p>
-    </div>
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/JitPack/">JitPack</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/Package-Repository/">Package Repository</a>
+    </ul>
+    
 
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <p><strong>中缀表达式</strong>： 是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于的中间（例：3 + 4），中缀表达式是人们常用的算术表示方法，但是不易被计算机所解析。</p>
-<p><strong>后缀表达式</strong>：是一个通用的算术或逻辑公式表示方法， 操作符是后缀形式处于操作数的后面（例：3 4 +），后缀表达式虽然不是人们所习惯的运算表示方法，但是易被计算机解析。<br>
-        
-        <span>
-            <a href="../../post/1484310523/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 10, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure</a>
-            </span>
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/667499984/" class="leancloud-views_num" data-flag-title="JitPack - 发布Android库">
+     &nbsp;阅读量
+</span>
 
-            
+            </li>
+        </a>
+    
 
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JitPack - 发布Android库&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
 </div>
 
-        
-        
-        
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><a href="https://jitpack.io/" target="_blank" rel="external">JitPack.io</a> 是一个JVM/Android工程的包管理仓库。<a id="more"></a>开发者可以在上面发布自己的库，一旦成功发布，就可以方便的在 <code>Gradle</code> 中引用。 当然了，<code>Andriod</code> 相关的包管理仓库除了 <code>JitPack</code> 之外，还有 <code>jCenter</code> 等，但 <code>JitPack</code> 应该发布起来是最简单的了。</p>
+<h2 id="发布-Android-Library"><a href="#发布-Android-Library" class="headerlink" title="发布 Android Library"></a>发布 Android Library</h2><h4 id="1-Gradle"><a href="#1-Gradle" class="headerlink" title="1. Gradle"></a>1. Gradle</h4><p>为了让 <code>JitPack</code> 能正确的构建 Android 工程，需要添加 <a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a> 插件：</p>
+<ul>
+<li>如果使用的 <code>Gradle</code> 版本 &gt;= <em>4.1</em> （即使用的 <code>com.android.build.gradle</code> 版本 &gt;= <em>3.0.0</em>）:<ol>
+<li>在<strong>项目根目录</strong>的 <code>build.gradle</code> 中如下配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> buildscript {
+     dependencies {
+         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0' // 添加这行配置
+     }
+ }
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>在<strong>库工程</strong>的 <code>build.gradle</code> 中如下配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> apply plugin: 'com.github.dcendents.android-maven'
+ group = 'com.github.YourUsername'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li>如果使用的其他版本的 Gradle，<code>android-maven-gradle-plugin</code> 和 <code>Gradle</code> 版本有个对应关系，具体配置和上面的相似，需要对应版本，详情可以戳这里 <a href="https://github.com/dcendents/android-maven-gradle-plugin#note-on-releases" target="_blank" rel="external">android maven gradle plugin - Note on Releases</a></li>
+</ul>
+<h4 id="2-GitHub"><a href="#2-GitHub" class="headerlink" title="2. GitHub"></a>2. GitHub</h4><p>在Github对应项目上发布release包或者添加一个tag，网上教程很多，这个就略过了。</p>
+<h4 id="3-JitPack"><a href="#3-JitPack" class="headerlink" title="3. JitPack"></a>3. JitPack</h4><p>参照下图，将项目提交到 <a href="http://jitpack.io/" target="_blank" rel="external">JitPack</a> ，让其构建对应的工程：</p>
+<img alt="提交到JitPack" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/JitPack_Publish_Steps.png?imageView2"><span class="image-caption">提交到JitPack</span>
+<p>点击 <code>Get it</code> 按钮，<code>JitPack</code> 会给出指定库的引用配置信息：</p>
+<img alt="JitPack库的配置信息" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/JitPack_Import_Guide.png?imageView2"><span class="image-caption">JitPack库的配置信息</span>
+<h2 id="使用-Android-Library"><a href="#使用-Android-Library" class="headerlink" title="使用 Android Library"></a>使用 Android Library</h2><h4 id="Dependency-格式构成"><a href="#Dependency-格式构成" class="headerlink" title="Dependency 格式构成"></a>Dependency 格式构成</h4><p>发布到 <code>JitPack</code> 的库的 dependency 的格式如下：</p>
+<ul>
+<li><code>Group</code>(组) ： com.github.Username </li>
+<li><code>Artifact</code>(产品) ： Repository Name (Github Repo 名)</li>
+<li><code>Version</code>(版本) ：<code>Release 的 tag</code> 或者 <code>commit hash 值</code> 或者 <code>-SNAPSHOT</code></li>
+</ul>
+<h4 id="JitPack-中的-Snapshot"><a href="#JitPack-中的-Snapshot" class="headerlink" title="JitPack 中的 Snapshot"></a>JitPack 中的 Snapshot</h4><p><code>snapshot(快照)</code> 版本在开发中很有用。<code>snapshot</code> 可以表示那些没有正式发布的版本。 <em>指定的版本</em> 和 <em>snapshot版本</em> 区别在于后者可能可以不断的更新版本，即可能指向最新的版本。所以<em>snapshot版本</em>在项目开发过程中很实用。 <code>snapshot</code> 版本格式如下：</p>
+<ul>
+<li><code>branch-SNAPSHOT</code> （分支名-SNAPSHOT）</li>
+</ul>
+<p>例如：</p>
+<pre><code> compile &#39;com.github.Username:RepoName:master-SNAPSHOT&#39;   
+ // eg &#39;com.github.tianma8023:SimpleLineChart:master-SNAPSHOT&#39;
+</code></pre><p>通过添加 <code>-SNAPSHOT</code> 字段可以每次构建 master 分支上最新的 commit。</p>
+<p><font color="#FF4081">注意</font>： 考虑到 <code>Gradle</code> 会缓存 <code>SNAPSHOT</code> 的版本，所以当使用 <code>snapshot</code> 的形式，并且有新的版本更新时，需要在 <code>Android Studio</code> 中通过 <code>File -&gt; Synchronize</code> 进行更新和同步。</p>
+<h4 id="Gradle-中导入-Library"><a href="#Gradle-中导入-Library" class="headerlink" title="Gradle 中导入 Library"></a>Gradle 中导入 Library</h4><ol>
+<li>使用你的库，需要把 <code>jitpack.io</code> 添加入仓库列表中去，在 <strong>项目根目录</strong> 的 <code>build.gradle</code> 中添加：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> allprojects {
+     repositories {
+         jcenter()
+         maven { url 'https://jitpack.io' } // 添加这行
+     }
+ }
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ <font color="#FF4081">注意</font>：不要把 <code>jitpack.io</code> 添加到 <code>buildscript</code> 闭包中去。</li>
+<li>在<strong>模块</strong>的 <code>build.gradle</code> 中添加库的依赖：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> dependencies {
+     // 方式1. SNAPSHOT
+     compile 'com.github.Username:RepoName:branch-SNAPSHOT'
+     // eg. complie 'com.github.tianma8023:SimpleLineChart:master-SNAPSHOT'
+     &nbsp;
+     // 方式2. Release Tag
+     // compile 'com.github.Username:RepoName:ReleaseTag'
+     // eg. compile 'com.github.tianma8023:SimpleLineChart:0.0.2'
+     &nbsp;
+     // 方式3. Commit Hash
+     // compile 'com.github.Username:RepoName:CommitHash' 
+     // eg. compile 'com.github.tianma8023:SimpleLineChart:015b8d6aff'
+ }
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><ol>
+<li>在导入 <code>JitPack</code> 的库工程的时候，会出现资源不能被获取的报错信息，但是 <code>JitPack</code> 上面的 Build 是成功的。这个时候，其实是是本地网络问题，因为 <code>jitpack.io</code> 走的是 https。 所以，可以添加网络代理，因为本身我用的 <code>SS</code> 科学上网的，所以在项目的 <code>gradle.properties</code> 文件中添加代理：<pre class="line-numbers language-properties"><code class="language-properties"><span class="token comment" spellcheck="true"> # http</span>
+<span class="token attr-name"> systemProp.http.proxyHost</span><span class="token punctuation">=</span><span class="token attr-value">127.0.0.1</span>
+<span class="token attr-name"> systemProp.http.proxyPort</span><span class="token punctuation">=</span><span class="token attr-value">1080</span>
+<span class="token comment" spellcheck="true"> # https</span>
+<span class="token attr-name"> systemProp.https.proxyHost</span><span class="token punctuation">=</span><span class="token attr-value">127.0.0.1</span>
+<span class="token attr-name"> systemProp.https.proxyPort</span><span class="token punctuation">=</span><span class="token attr-value">1080</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/jitpack/jitpack.io" target="_blank" rel="external">GitHub - JitPack.io</a></li>
+<li><a href="https://github.com/jitpack/jitpack.io/blob/master/ANDROID.md" target="_blank" rel="external">JitPack - Publish an Android library</a></li>
+<li><a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a></li>
+</ul>
+
     
 
     
+</div>
 
-    
-        <script>
-    var randomNum;
 
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 6; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
+                
 
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').css('background-image', 'url(' + '/img/random/material-' + randomNum + '.png' + ')')
+                <!-- Post Comments -->
+                
+                    
 
-        locatePost = locatePost.next();
-    }
+
+
+
+    <!-- 使用 DISQUS_CLICK -->
+    <div id="disqus-comment">	
+        <div id="disqus_thread"></div>
+<!-- include js -->
+<script src="/js/ripple.js"></script>
+
+<!-- add animation -->
+<style>
+        .ripple-container {
+        }
+        .ripple-container .ripple{
+            background-color: rgba(255,255,255,0.4);
+            animation: ripple 2s forwards cubic-bezier(0, 0, 0.2, 1);
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+		.disqus_click_btn {
+            background-color: dodgerblue;
+            color: white;
+            padding: 10px 20px;
+            border:0;
+            font-size: 14px;
+            cursor: pointer
+        }
+</style>
+	
+<!-- add data-ripple attribute -->
+<div class="btn_click_load"> 
+    <button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button>
+</div>
+	
+<script>
+    // add effect to elements
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
+        // find all elements and attach effect
+        new RippleEffect(element); // element is instance of javascript element node
+    });
 </script>
 
+<script>
+    $('.btn_click_load').click(function() {  //click to load comments
+        var disqus_config = function () {
+            this.page.url = 'http://tianma.pro';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//tianma.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+  	
+
+    </div>
+    <style>
+        #disqus-comment{
+            background-color: #eee;
+            padding: 2pc;
+        }
+    </style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
     
-</div>
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/2888002116/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     
@@ -493,6 +775,14 @@ It will not impact the appearance and can give developers a lot of support :)
 </aside>
 
                     
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
 
                     
 
