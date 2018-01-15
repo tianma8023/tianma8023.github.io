@@ -1,4 +1,405 @@
-<!DOCTYPE html><html lang="zh"><head><title>排序-冒泡排序及其优化 | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon.png"><link rel="icon" sizes="192x192" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/favicon.png"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0097A7"><meta name="author" content="Tianma"><meta name="description" content="Everything will be okay in the end."><meta name="keywords" content="hexo, material,排序"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="apple-mobile-web-app-title" content="Title"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="480"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Tianma"><meta property="og:url" content="http://tianma.pro"><meta property="og:type" content="blog"><meta property="og:title" content="排序-冒泡排序及其优化 | Tianma"><meta property="og:description" content="Everything will be okay in the end."><meta property="og:article:tag" content="排序"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><link rel="stylesheet" href="../../css/material.min.css"><link rel="stylesheet" href="../../css/style.min.css"><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif}a{color:#00838f}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#0097a7!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#0097a7!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#0097a7!important}.toTop{background:#757575!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#757575}#scheme-Paradox .MD-burger-layer{background-color:#757575}#scheme-Paradox #post-toc-trigger-btn{color:#757575}.post-toc a:hover{color:#00838f;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><script src="../../js/jquery.min.js"></script><script src="../../js/queue.js"></script><link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css"><script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script><script src="../../js/wrapImage.js"></script><script>navigator.userAgent.toLowerCase().indexOf("ucbrowser")>0&&(document.write('<link rel="stylesheet" href="../../css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>!function(e,t,a,n,c,s,o){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,s=t.createElement(a),o=t.getElementsByTagName(a)[0],s.async=1,s.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(s,o)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script><link rel="stylesheet" href="/css/prism.css"><link rel="stylesheet" href="/css/prism-line-numbers.css"></head><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button> <button id="post-toc-trigger-btn" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">format_list_numbered</i></button><ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn"><ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#演示"><span class="post-toc-number">2.</span> <span class="post-toc-text">演示</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">Java实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#优化"><span class="post-toc-number">4.</span> <span class="post-toc-text">优化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#复杂度"><span class="post-toc-number">5.</span> <span class="post-toc-text">复杂度</span></a></li></ol></ul><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/bubble_sort.png)"><p class="article-headline-p">排序-冒泡排序及其优化</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><strong>Tianma</strong> <span>4月 20, 2016</span></div><div class="section-spacer"></div><button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">devices other</i> <span class="visuallyhidden">devices other</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button"><li class="mdl-menu__item">在其它设备中阅读本文章</li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAAB60lEQVR42u3aQY6DMAwFUO5/6ZntSCPabwdowS+rSkVpHotfJ87284ixYWBgYGBgYGB8DWOLx+50f779/3wyW28NGBgY0xhvom3nmeriqvO/fgYDA2MmY++H9z7nyCSm8zVgYGBgJIzXJWBeMmJgYGCcHbhJ+L4uGTEwMDDO2MTmB2rVQ7pL9+IYGBg3ZOSH8ud9vrS/gYGBcStG+YpDEI5JNH/4zggGBsatGOtFXtK2rG5co+ISAwNjDOPY2K0et+VLP7g0xMDAuC0jnyIpE/NDul7hiIGBMZmRX1etBmVy4bXwEjEwMIYx8mZA70BtfWYMDAyMavxVQ7YX3IVrYRgYGI9mbK2RtwHyeC1vkjEwMMYw8gIxmXq9SXDwXhwDA+MRjF55Vy0Z8/Bd+t/AwMB4NCOP1/ziV695mZeVGBgY0xgrR295+PYwzf8NDAyMAYzkylcS09WFFl4iBgbGSEZvWckrOLbxgIGBMY1RHXmp1ztKS3gYGBjTGNUQTIq8XrDmTU0MDIyZjGrIrmw+88B984sYGBgjGb1APDuUMTAwMFYY1XZCtfFwUeBiYGA8lFFtBuTF38EtTAwMjMcx8g1nXg7msZu8RAwMjMmMlQsQvQ1qUiae2N/AwMC4FeO+AwMDAwMDAwPjo+MXqCehXnZybVwAAAAASUVORK5CYII="></ul><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/排序/">排序</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/42083511/" class="leancloud-views_num" data-flag-title="排序-冒泡排序及其优化">&nbsp;阅读量</span></li></a><a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=排序-冒泡排序及其优化&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank"><li class="mdl-menu__item">分享到微博</li></a><a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank"><li class="mdl-menu__item">分享到 Google+</li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>冒泡排序是一种交换排序，它的基本思想是：两两比较相邻记录的关键字，如果反序则交换，直至没有反序的记录为止。<br>因为按照该算法，每次比较会将当前未排序的记录序列中最小的关键字移至未排序的记录序列最前（或者将当前未排序的记录序列中最大的关键字移至未排序的记录序列最后），就像冒泡一样，故以此为名。<a id="more"></a></p><h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}<br>第1趟排序：<br>第1次比较，2和6比较，2小于6，反序，进行交换： 9 1 5 8 3 7 4 <strong>2 6</strong><br>第2次比较，2和4比较，2小于4，反序，进行交换： 9 1 5 8 3 7 <strong>2 4</strong> 6<br>第3次比较，2和7比较，2小于7，反序，进行交换： 9 1 5 8 3 <strong>2 7</strong> 4 6<br>第4次比较，2和3比较，2小于3，反序，进行交换： 9 1 5 8 <strong>2 3</strong> 7 4 6<br>第5次比较，2和8比较，2小于8，反序，进行交换： 9 1 5 <strong>2 8</strong> 3 7 4 6<br>第6次比较，2和5比较，2小于5，反序，进行交换： 9 1 <strong>2 5</strong> 8 3 7 4 6<br>第7次比较，2和1比较，2大于1，正序，不用交换： 9 1 2 5 8 3 7 4 6<br>第8次比较，1和9比较，1小于1，反序，进行交换： <strong>1 9</strong> 2 5 8 3 7 4 6<br>可以看出，第一趟排序将当前序列最小值移动至未排序的序列最前面的位置。</p><p>第2趟排序： 因为第一趟已经排好1的位置，所以只需要对剩下的{9, 2, 5, 8, 3, 7, 4, 6}再进行冒泡排序<br>… 重复以上操作，直至排序完毕</p><h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义接口</span>
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!-- 
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.0 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            排序-冒泡排序及其优化 | 
+        
+        Tianma
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="Tianma">
+    <meta name="description" content="Everything will be okay in the end.">
+    <meta name="keywords" content="hexo, material,排序">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tianma">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://tianma.pro">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="排序-冒泡排序及其优化 | Tianma">
+    <meta property="og:description" content="Everything will be okay in the end.">
+    <meta property="og:article:tag" content="排序"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="../../css/material.min.css">
+    <link rel="stylesheet" href="../../css/style.min.css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #EEEEEE;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/queue.js"></script>
+	
+	<!-- fancybox support -->
+	
+		<link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css">
+		<script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script>
+		<script src="../../js/wrapImage.js"></script>
+	
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-84178484-1', 'auto');ga('send', 'pageview');
+    </script>
+    
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+<link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#演示"><span class="post-toc-number">2.</span> <span class="post-toc-text">演示</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">Java实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#优化"><span class="post-toc-number">4.</span> <span class="post-toc-text">优化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#复杂度"><span class="post-toc-number">5.</span> <span class="post-toc-text">复杂度</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        <!-- Custom Thumbnail -->
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/bubble_sort.png)">
+    
+            <p class="article-headline-p">
+                排序-冒泡排序及其优化
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>4月 20, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAAB60lEQVR42u3aQY6DMAwFUO5/6ZntSCPabwdowS+rSkVpHotfJ87284ixYWBgYGBgYGB8DWOLx+50f779/3wyW28NGBgY0xhvom3nmeriqvO/fgYDA2MmY++H9z7nyCSm8zVgYGBgJIzXJWBeMmJgYGCcHbhJ+L4uGTEwMDDO2MTmB2rVQ7pL9+IYGBg3ZOSH8ud9vrS/gYGBcStG+YpDEI5JNH/4zggGBsatGOtFXtK2rG5co+ISAwNjDOPY2K0et+VLP7g0xMDAuC0jnyIpE/NDul7hiIGBMZmRX1etBmVy4bXwEjEwMIYx8mZA70BtfWYMDAyMavxVQ7YX3IVrYRgYGI9mbK2RtwHyeC1vkjEwMMYw8gIxmXq9SXDwXhwDA+MRjF55Vy0Z8/Bd+t/AwMB4NCOP1/ziV695mZeVGBgY0xgrR295+PYwzf8NDAyMAYzkylcS09WFFl4iBgbGSEZvWckrOLbxgIGBMY1RHXmp1ztKS3gYGBjTGNUQTIq8XrDmTU0MDIyZjGrIrmw+88B984sYGBgjGb1APDuUMTAwMFYY1XZCtfFwUeBiYGA8lFFtBuTF38EtTAwMjMcx8g1nXg7msZu8RAwMjMmMlQsQvQ1qUiae2N/AwMC4FeO+AwMDAwMDAwPjo+MXqCehXnZybVwAAAAASUVORK5CYII=">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/排序/">排序</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/42083511/" class="leancloud-views_num" data-flag-title="排序-冒泡排序及其优化">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=排序-冒泡排序及其优化&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>冒泡排序是一种交换排序，它的基本思想是：两两比较相邻记录的关键字，如果反序则交换，直至没有反序的记录为止。<br>因为按照该算法，每次比较会将当前未排序的记录序列中最小的关键字移至未排序的记录序列最前（或者将当前未排序的记录序列中最大的关键字移至未排序的记录序列最后），就像冒泡一样，故以此为名。 <a id="more"></a></p>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}<br>第1趟排序：<br>第1次比较，2和6比较，2小于6，反序，进行交换： 9 1 5 8 3 7 4 <strong>2 6</strong><br>第2次比较，2和4比较，2小于4，反序，进行交换： 9 1 5 8 3 7 <strong>2 4</strong> 6<br>第3次比较，2和7比较，2小于7，反序，进行交换： 9 1 5 8 3 <strong>2 7</strong> 4 6<br>第4次比较，2和3比较，2小于3，反序，进行交换： 9 1 5 8 <strong>2 3</strong> 7 4 6<br>第5次比较，2和8比较，2小于8，反序，进行交换： 9 1 5 <strong>2 8</strong> 3 7 4 6<br>第6次比较，2和5比较，2小于5，反序，进行交换： 9 1 <strong>2 5</strong> 8 3 7 4 6<br>第7次比较，2和1比较，2大于1，正序，不用交换： 9 1 2 5 8 3 7 4 6<br>第8次比较，1和9比较，1小于1，反序，进行交换： <strong>1 9</strong> 2 5 8 3 7 4 6<br>可以看出，第一趟排序将当前序列最小值移动至未排序的序列最前面的位置。</p>
+<p>第2趟排序： 因为第一趟已经排好1的位置，所以只需要对剩下的{9, 2, 5, 8, 3, 7, 4, 6}再进行冒泡排序<br>… 重复以上操作，直至排序完毕</p>
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义接口</span>
 <span class="token keyword">interface</span> <span class="token class-name">Sorter</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">/**
      * 将数组按升序排序
@@ -36,7 +437,9 @@
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>当待排序数组为{1, 3, 4, 5, 6, 7, 8, 9, 2}时：<br>第1趟排序的结果为： 1 2 3 4 5 6 7 8 9<br>此时其实序列已经完成，但是根据上述代码仍得继续遍历，直至第9趟排序。这显然是不合理的，如果我们能在代码中加入一个flag标记上一趟排序中是否进行过交换，如果进行过未进行交换，说明当前数组以及有序。<br>优化代码：</p><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 优化的冒泡排序</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>当待排序数组为{1, 3, 4, 5, 6, 7, 8, 9, 2}时：<br>第1趟排序的结果为： 1 2 3 4 5 6 7 8 9<br>此时其实序列已经完成，但是根据上述代码仍得继续遍历，直至第9趟排序。这显然是不合理的，如果我们能在代码中加入一个flag标记上一趟排序中是否进行过交换，如果进行过未进行交换，说明当前数组以及有序。<br>优化代码：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 优化的冒泡排序</span>
 <span class="token keyword">class</span> <span class="token class-name">OptimizedBubbleSorter</span> <span class="token keyword">extends</span> <span class="token class-name">BubbleSorter</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -57,4 +460,658 @@
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间复杂度：<br>最好情况： 排序表本身是顺序的，根据优化后的代码，则只需要进行n-1次比较，故时间复杂度为O(n)；<br>最差情况： 排序表本身是逆序的，则比较次数为 1+2+…+(n-1) = n*(n-1)/2 , 并作等数量级的移动操作；<br>平均情况： 时间复杂度为 O(n^2)</p><p>空间复杂度：<br>最好情况=最坏情况=平均情况=O(1)</p></div><div id="disqus-comment"><div id="disqus_thread"></div><script src="/js/ripple.js"></script><style>.ripple-container .ripple{background-color:rgba(255,255,255,.4);animation:ripple 2s forwards cubic-bezier(0,0,.2,1)}@keyframes ripple{0%{transform:scale(0);opacity:1}80%{transform:scale(1)}100%{opacity:0}}.disqus_click_btn{background-color:#1e90ff;color:#fff;padding:10px 20px;border:0;font-size:14px;cursor:pointer}</style><div class="btn_click_load"><button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button></div><script>Array.prototype.forEach.call(document.querySelectorAll("[data-ripple]"),function(e){new RippleEffect(e)})</script><script>$(".btn_click_load").click(function(){!function(){var t=document,e=t.createElement("script");e.src="//tianma.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}(),$(".btn_click_load").css("display","none")})</script></div><style>#disqus-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/2610207546/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/1367710076/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div class="sidebar-header header-cover" style="background-image:url(/img/sidebar_header.jpg)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img src="/img/kousei.jpg" alt="Tianma's avatar"></div><a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">tianma8023@foxmail.com<b class="caret"></b></a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu"><li><a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me"><i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i> Email Me</a></li></ul></li><li id="sidebar-first-li"><a href="/" target="_self"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li class="divider"></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-github.png)"><span class="visuallyhidden">Github</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+" ~ "+curYear):document.write(curYear)</script>&nbsp;<span class="with-love"><i class="fa fa-heart"></i></span> &nbsp;Tianma</div><div class="mdl-mini-footer--right-section"><div><div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div><div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div></div></div></footer><script src="../../js/lazyload.min.js"></script><script src="../../js/js.min.js"></script><script src="../../js/nprogress.js"></script><script>NProgress.configure({showSpinner:!0}),NProgress.start(),$("#nprogress .bar").css({background:"#FF4081"}),$("#nprogress .peg").css({"box-shadow":"0 0 10px #FF4081, 0 0 15px #FF4081"}),$("#nprogress .spinner-icon").css({"border-top-color":"#FF4081","border-left-color":"#FF4081"}),setTimeout(function(){NProgress.done(),$(".fade").removeClass("out")},800)</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script>function showTime(e){var t=new AV.Query(e);$(".leancloud-views_num").each(function(){var e=$(this).attr("id").trim();t.equalTo("url",e),t.find({success:function(t){if(0===t.length){var n="0 "+$(document.getElementById(e)).text();return void $(document.getElementById(e)).text(n)}for(var o=0;o<t.length;o++){var r=t[o],n=r.get("time")+" "+$(document.getElementById(e)).text();$(document.getElementById(e)).text(n)}},error:function(e,t){console.log("Error: "+t.code+" "+t.message)}})})}function addCount(e){var e=AV.Object.extend("Counter");url=$(".leancloud-views_num").attr("id").trim(),title=$(".leancloud-views_num").attr("data-flag-title").trim();var t=new AV.Query(e);t.equalTo("url",url),t.find({success:function(t){if(t.length>0){var n=t[0];n.fetchWhenSave(!0),n.increment("time"),n.save(null,{success:function(e){var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var o=new e;o.set("title",title),o.set("url",url),o.set("time",1),o.save(null,{success:function(e){console.log("newcounter.get('time')="+e.get("time"));var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1===$(".leancloud-views_num").length?addCount(e):$(".post-title-link").length>1&&showTime(e)})</script><script id="dsq-count-scr" src="//tianma.disqus.com/count.js" async></script><script>var searchFunc=function(t,e,r){"use strict";$.ajax({url:t,dataType:"xml",success:function(t){var n=$("entry",t).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(e),s=document.getElementById(r);a.addEventListener("input",function(){var t='<ul class="search-result-list">',e=this.value.trim().toLowerCase().split(/[\s\-]+/);s.innerHTML="",this.value.trim().length<=0||(n.forEach(function(r){var n=!0,a=r.title.trim().toLowerCase(),s=r.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),i=r.url,c=-1,l=-1,u=-1;if(""!==a&&""!==s&&e.forEach(function(t,e){c=a.indexOf(t),l=s.indexOf(t),c<0&&l<0?n=!1:(l<0&&(l=0),0===e&&(u=l))}),n){t+='<li><a href="'+i+'" class="search-result-title" target="_blank">'+a;var o=r.content.trim().replace(/<[^>]+>/g,"");if(u>=0){var h=u-6,f=u+6;h<0&&(h=0),0===h&&(f=10),f>o.length&&(f=o.length);var m=o.substr(h,f);e.forEach(function(t){var e=new RegExp(t,"gi");m=m.replace(e,'<em class="search-keyword">'+t+"</em>")}),t+='<p class="search-result">'+m+"...</p></a>"}}}),s.innerHTML=t)})}})}</script><script>var inputArea=document.querySelector("#search"),getSearchFile=function(){searchFunc("search.xml","search","local-search-result")};inputArea&&(inputArea.onfocus=function(){getSearchFile()})</script><script>$(window).load(function(){$(".post-toc-wrap").parent(".mdl-menu__container").css("position","fixed")})</script></main></div></body></html>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间复杂度：<br>最好情况： 排序表本身是顺序的，根据优化后的代码，则只需要进行n-1次比较，故时间复杂度为O(n)；<br>最差情况： 排序表本身是逆序的，则比较次数为 1+2+…+(n-1) = n*(n-1)/2 , 并作等数量级的移动操作；<br>平均情况： 时间复杂度为 O(n^2)</p>
+<p>空间复杂度：<br>最好情况=最坏情况=平均情况=O(1)</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+    <!-- 使用 DISQUS_CLICK -->
+    <div id="disqus-comment">	
+        <div id="disqus_thread"></div>
+<!-- include js -->
+<script src="/js/ripple.js"></script>
+
+<!-- add animation -->
+<style>
+        .ripple-container {
+        }
+        .ripple-container .ripple{
+            background-color: rgba(255,255,255,0.4);
+            animation: ripple 2s forwards cubic-bezier(0, 0, 0.2, 1);
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+		.disqus_click_btn {
+            background-color: dodgerblue;
+            color: white;
+            padding: 10px 20px;
+            border:0;
+            font-size: 14px;
+            cursor: pointer
+        }
+</style>
+	
+<!-- add data-ripple attribute -->
+<div class="btn_click_load"> 
+    <button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button>
+</div>
+	
+<script>
+    // add effect to elements
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
+        // find all elements and attach effect
+        new RippleEffect(element); // element is instance of javascript element node
+    });
+</script>
+
+<script>
+    $('.btn_click_load').click(function() {  //click to load comments
+        var disqus_config = function () {
+            this.page.url = 'http://tianma.pro/post/42083511/';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = 'http://tianma.pro/post/42083511/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//tianma.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+  	
+
+    </div>
+    <style>
+        #disqus-comment{
+            background-color: #eee;
+            padding: 2pc;
+        }
+    </style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/post/2610207546/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/1367710076/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.jpg);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/kousei.jpg" alt="Tianma's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        tianma8023@foxmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags" title="标签">
+                
+                    <i class="material-icons sidebar-material-icons">label_outline</i>
+                
+                标签
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+        <li>
+            <a href="/about" title="关于">
+                
+                    <i class="material-icons sidebar-material-icons">person_outline</i>
+                
+                关于
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="https://github.com/viosey/hexo-theme-material" title="主题">
+                
+                    <i class="material-icons sidebar-material-icons">stars</i>
+                
+                主题
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/tianma8023" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var curYear = new Date().getFullYear();
+                var since = 2016;
+                if (curYear != since) {
+                    document.write(since + ' ~ ' + curYear);
+                } else {
+                    document.write(curYear);                    
+                }
+            </script>
+            &nbsp;
+            <span class="with-love">
+                <i class="fa fa-heart"></i>
+            </span>
+            &nbsp;Tianma
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+<script src="../../js/lazyload.min.js"></script>
+<script src="../../js/js.min.js"></script>
+<script src="../../js/nprogress.js"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+    <!-- Leancloud -->
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+    <script>
+        AV.initialize('o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz', 'ypNURFLzI6NMQwz1OVl782d5');
+    </script>
+    <script>
+    function showTime(Counter) {
+        var query = new AV.Query(Counter);
+        $('.leancloud-views_num').each(function() {
+            var url = $(this).attr('id').trim();
+            query.equalTo('url', url);
+            query.find({
+                success: function(results) {
+                    if (results.length === 0) {
+                        var content = '0 ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var object = results[i];
+                        var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    }
+                },
+                error: function(object, error) {
+                    console.log('Error: ' + error.code + ' ' + error.message);
+                }
+            });
+        });
+    }
+
+    function addCount(Counter) {
+      var Counter = AV.Object.extend('Counter');
+      url = $('.leancloud-views_num').attr('id').trim();
+      title = $('.leancloud-views_num').attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+      query.equalTo('url', url);
+      query.find({
+          success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment('time');
+                counter.save(null, {
+                    success: function(counter) {
+                        var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+              var newcounter = new Counter();
+              newcounter.set('title', title);
+              newcounter.set('url', url);
+              newcounter.set('time', 1);
+              newcounter.save(null, {
+                  success: function(newcounter) {
+                      console.log('newcounter.get(\'time\')='+newcounter.get('time'));
+                      var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+                      $(document.getElementById(url)).text(content);
+                  },
+                  error: function(newcounter, error) {
+                      console.log('Failed to create');
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + ' ' + error.message);
+        }
+      });
+    }
+    $(function() {
+        var Counter = AV.Object.extend('Counter');
+        if ($('.leancloud-views_num').length === 1) {
+            addCount(Counter);
+        } else if ($('.post-title-link').length > 1) {
+            showTime(Counter);
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+    <!-- 使用 DISQUS js 代码 -->
+    <script id="dsq-count-scr" src="//tianma.disqus.com/count.js" async></script>
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+    <script>
+    var searchFunc = function(path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: 'xml',
+            success: function( xmlResponse ) {
+                // get the contents from search data
+                var datas = $( 'entry', xmlResponse ).map(function() {
+                    return {
+                        title: $( 'title', this ).text(),
+                        content: $('content',this).text(),
+                        url: $( 'url' , this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function() {
+                    var str='<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = '';
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function(data) {
+                        var isMatch = true;
+                        var content_index = [];
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g,'').toLowerCase();
+                        var data_url = data.url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if(data_title !== '' && data_content !== '') {
+                            keywords.forEach(function(keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if( index_title < 0 && index_content < 0 ) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += '<li><a href="'+ data_url +'" class="search-result-title" target="_blank">'+ data_title;
+                            var content = data.content.trim().replace(/<[^>]+>/g, '');
+                            if (first_occur >= 0) {
+                                // cut out characters
+                                var start = first_occur - 6;
+                                var end = first_occur + 6;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 10;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, 'gi');
+                                    match_content = match_content.replace(regS, '<em class="search-keyword">'+keyword+'</em>');
+                                })
+                                str += '<p class="search-result">' + match_content + '...</p>' +'</a>';
+                            }
+                        }
+                    });
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    }
+</script>
+
+
+    <script>
+        var inputArea = document.querySelector('#search');
+        var getSearchFile = function() {
+            var path = 'search.xml';
+            searchFunc(path, 'search', 'local-search-result');
+        }
+
+        if(inputArea) {
+            inputArea.onfocus = function() {
+                getSearchFile();
+            }
+        }
+    </script>
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+
+                </main>
+            </div>
+        </body>
+    
+</html>
