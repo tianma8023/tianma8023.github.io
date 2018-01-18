@@ -464,27 +464,30 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Comments -->
                 
                     
-	<!-- 使用 Gitment -->
-	<div id="gitment-comment">
-		<!-- Gitment 评论框 -->
-<div id="gitment-container"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+	<!-- 使用 gitalk -->
+	<div id="gitalk-comment">
+		<!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
 <script>
-    var gitment = new Gitment({
-        id: '402cab53', // 可选。默认为 location.href
-        owner: 'tianma8023',
-        repo: 'tianma8023.github.io',
-        oauth: {
-            client_id: '55a5d9da39a7a1f372ab',
-            client_secret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
-        },
-    })
-    gitment.render('gitment-container')
+    var gitalk = new Gitalk({
+            clientID: '55a5d9da39a7a1f372ab',
+            clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+            repo: 'tianma8023.github.io',
+            owner: 'tianma8023',
+            admin: ['tianma8023'],
+            // facebook-like distraction free mode
+            distractionFreeMode: false,
+        })
+   gitalk.render('gitalk-container')
 </script>
 	</div>
 	<style>
-		#gitment-comment{
+		#gitalk-comment {
 			background-color: #eee;
 			padding: 2pc;
 		}
@@ -925,7 +928,7 @@ It will not impact the appearance and can give developers a lot of support :)
 
 
     <!-- 使用 DISQUS js 代码 -->
-    <script id="dsq-count-scr" src="//tianma.disqus.com/count.js" async></script>
+    <script id="dsq-count-scr" src="//undefined.disqus.com/count.js" async></script>
 
 
 
