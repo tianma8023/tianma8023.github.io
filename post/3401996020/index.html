@@ -502,84 +502,31 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Comments -->
                 
                     
-
-
-
-
-    <!-- 使用 DISQUS_CLICK -->
-    <div id="disqus-comment">	
-        <div id="disqus_thread"></div>
-<!-- include js -->
-<script src="/js/ripple.js"></script>
-
-<!-- add animation -->
-<style>
-        .ripple-container {
-        }
-        .ripple-container .ripple{
-            background-color: rgba(255,255,255,0.4);
-            animation: ripple 2s forwards cubic-bezier(0, 0, 0.2, 1);
-        }
-        @keyframes ripple {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            80% {
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-            }
-        }
-		.disqus_click_btn {
-            background-color: dodgerblue;
-            color: white;
-            padding: 10px 20px;
-            border:0;
-            font-size: 14px;
-            cursor: pointer
-        }
-</style>
-	
-<!-- add data-ripple attribute -->
-<div class="btn_click_load"> 
-    <button class="disqus_click_btn" data-ripple>阅读评论 「请确保 disq.us &amp; disquscdn.com &amp; disqus.com 可以正常加载」</button>
-</div>
-	
+	<!-- 使用 Gitment -->
+	<div id="gitment-comment">
+		<!-- Gitment 评论框 -->
+<div id="gitment-container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
-    // add effect to elements
-    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
-        // find all elements and attach effect
-        new RippleEffect(element); // element is instance of javascript element node
-    });
+    var gitment = new Gitment({
+        id: '3401996020', // 可选。默认为 location.href
+        owner: 'tianma8023',
+        repo: 'tianma8023.github.io',
+        oauth: {
+            client_id: '55a5d9da39a7a1f372ab',
+            client_secret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+        },
+    })
+    gitment.render('gitment-container')
 </script>
-
-<script>
-    $('.btn_click_load').click(function() {  //click to load comments
-        var disqus_config = function () {
-            this.page.url = 'http://tianma.pro/post/3401996020/';  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = '3401996020'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        };
-        (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document;
-            var s = d.createElement('script');
-            s.src = 'https://tianma.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', + new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-        $('.btn_click_load').css('display','none');
-    });
-</script>
-  	
-
-    </div>
-    <style>
-        #disqus-comment{
-            background-color: #eee;
-            padding: 2pc;
-        }
-    </style>
+	</div>
+	<style>
+		#gitment-comment{
+			background-color: #eee;
+			padding: 2pc;
+		}
+	</style>
 
                 
             </div>
@@ -588,7 +535,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/post/1484310523/" id="post_nav-newer" class="prev-content">
+        <a href="/post/3401996021/" id="post_nav-newer" class="prev-content">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
                 <i class="material-icons">arrow_back</i>
             </button>
@@ -602,7 +549,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 
     <!-- Next Nav -->
     
-        <a href="/post/3401996021/" id="post_nav-older" class="next-content">
+        <a href="/post/4080066433/" id="post_nav-older" class="next-content">
             旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
