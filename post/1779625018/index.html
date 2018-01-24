@@ -426,7 +426,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。 <a id="more"></a></p>
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。 <a id="more"></a></p>
 <p>那么有没有更节省空间的存储方式呢？答案是有。</p>
 <ul>
 <li><p>方案1： 直接把字符串中的’.’去掉，不就变成一个数字了嘛，比如 “255.255.255.255” 变成 255255255255，然而我们知道int所能表示的最大值 = Integer.MAX_VALUE = 2^31-1 = 2147483647， 255255255255 &gt; 2^31-1，所以需要用长整形long来表示，长整形占用8个字节，也就是说我们将7~15个字节转换为8字节，在绝大多数情况下是节省空间了的。</p>

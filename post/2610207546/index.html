@@ -426,7 +426,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>简单选择排序是选择类的排序，算法原理：第i次排序（1≤ i ≤n-1），从待排序的n-i+1个记录中， 进行n-i次关键字比较，从n-i+1个记录中选出最小的，并和第i-1个记录进行交换。 <a id="more"></a></p>
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>简单选择排序是选择类的排序，算法原理：第i次排序（1≤ i ≤n-1），从待排序的n-i+1个记录中， 进行n-i次关键字比较，从n-i+1个记录中选出最小的，并和第i-1个记录进行交换。 <a id="more"></a></p>
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}<br>第1趟排序，1最小，与第0个位置9进行交换： <strong>1 9</strong> 5 8 3 7 4 6 2<br>第2趟排序，2最小，与第1个位置9进行交换： 1 <strong>2</strong> 5 8 3 7 4 6 <strong>9</strong><br>第3趟排序，3最小，与第2个位置5进行交换： 1 2 <strong>3</strong> 8 <strong>5</strong> 7 4 6 9<br>第4趟排序，4最小，与第3个位置8进行交换： 1 2 3 <strong>4</strong> 5 7 <strong>8</strong> 6 9<br>第5趟排序，5最小，第4个位置是5无须交换： 1 2 3 4 5 7 8 6 9<br>第6趟排序，6最小，与第5个位置7进行交换： 1 2 3 4 5 <strong>6</strong> 8 <strong>7</strong> 9<br>第7趟排序，7最小，与第6个位置8进行交换： 1 2 3 4 5 6 <strong>7 8</strong> 9<br>第8趟排序，8最小，第7个位置是8无须交换： 1 2 3 4 5 6 7 8 9</p>
 <p>其实就是每一趟排序将当前未排序序列中的最小的记录与未排序序列的最前端的位置进行交换。</p>
 <h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义接口</span>

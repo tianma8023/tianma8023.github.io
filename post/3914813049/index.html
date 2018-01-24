@@ -426,7 +426,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <p>最近需要去实现应用内跳转至微博的个人信息页面（用户个人主页），其本质就是打开并跳转至第三方App指定的页面。显然，我们可以通过调用 <code>startActivity(intent)</code> 来实现该功能，其关键就是 <code>intent</code> 中需要携带哪些信息。 <a id="more"></a></p>
+        <script src="\assets\js\APlayer.min.js"> </script><p>最近需要去实现应用内跳转至微博的个人信息页面（用户个人主页），其本质就是打开并跳转至第三方App指定的页面。显然，我们可以通过调用 <code>startActivity(intent)</code> 来实现该功能，其关键就是 <code>intent</code> 中需要携带哪些信息。 <a id="more"></a></p>
 <h2 id="反编译-AndroidManifest-xml"><a href="#反编译-AndroidManifest-xml" class="headerlink" title="反编译 AndroidManifest.xml"></a>反编译 AndroidManifest.xml</h2><p>将新浪微博的apk文件中的 <code>AndroidManifest.xml</code> 文件解压提取出来，然后使用 <a href="https://code.google.com/archive/p/android4me/downloads" target="_blank" rel="external">AXMLPrinter2.jar</a> 对清单文件进行反编译：</p>
 <pre class="line-numbers language-shell"><code class="language-shell">java -jar AXMLPrinter2.jar AndroidManifest.xml > weibo.xml
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>

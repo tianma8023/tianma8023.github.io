@@ -426,7 +426,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <p>组合数的计算虽然在一般的编程领域中不太能用到，但是在数学相关领域及ACM中还是有其用武之地的。那么，如何在程序中计算组合数呢？ <a id="more"></a></p>
+        <script src="\assets\js\APlayer.min.js"> </script><p>组合数的计算虽然在一般的编程领域中不太能用到，但是在数学相关领域及ACM中还是有其用武之地的。那么，如何在程序中计算组合数呢？ <a id="more"></a></p>
 <h2 id="累乘计算"><a href="#累乘计算" class="headerlink" title="累乘计算"></a>累乘计算</h2><p>我们知道：<br>$$C_{n}^{m}=\frac {A_{n}^{m}}{m!}=\frac {n!}{m!\left(n-m\right)!} , (0\leq m\leq n) \tag{1}$$<br>$$C_{n}^{m}=\frac {n\cdot(n-1)\ldots(n-m+1)}{m!}, (0\leq m\leq n) \tag{2}$$</p>
 <p>通过公式(1)和公式(2)，可以简单的依据公式来进行组合数的计算。但因为公式中涉及到阶乘运算（准确说是连乘运算），故而会存在数据溢出的问题，因而不推荐。</p>
 <h2 id="累加计算"><a href="#累加计算" class="headerlink" title="累加计算"></a>累加计算</h2><p>为了避免直接计算阶乘，可以对公式（1）两边取对数：<br>$$\ln(C_{n}^{m}) = \ln(n!) - \ln(m!) - \ln((n-m)!) = \sum_{i=1}^{n}\ln(i) - \sum_{i=1}^{m}\ln(i) - \sum_{i=1}^{n-m}\ln(i) \tag{3}$$<br>又因为：<br>$$\sum_{i=1}^{n}\ln(i) = \sum_{i=1}^{m}\ln(i) + \sum_{i=m+1}^{n}\ln(i) \tag{4}$$<br>将（4）代入等式右边可得：<br>$$\ln(C_{n}^{m}) = \sum_{i=m+1}^{n}\ln(i) - \sum_{i=1}^{n-m}\ln(i) \tag{5}$$</p>

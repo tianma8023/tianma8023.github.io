@@ -426,7 +426,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>冒泡排序是一种交换排序，它的基本思想是：两两比较相邻记录的关键字，如果反序则交换，直至没有反序的记录为止。<br>因为按照该算法，每次比较会将当前未排序的记录序列中最小的关键字移至未排序的记录序列最前（或者将当前未排序的记录序列中最大的关键字移至未排序的记录序列最后），就像冒泡一样，故以此为名。 <a id="more"></a></p>
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>冒泡排序是一种交换排序，它的基本思想是：两两比较相邻记录的关键字，如果反序则交换，直至没有反序的记录为止。<br>因为按照该算法，每次比较会将当前未排序的记录序列中最小的关键字移至未排序的记录序列最前（或者将当前未排序的记录序列中最大的关键字移至未排序的记录序列最后），就像冒泡一样，故以此为名。 <a id="more"></a></p>
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}<br>第1趟排序：<br>第1次比较，2和6比较，2小于6，反序，进行交换： 9 1 5 8 3 7 4 <strong>2 6</strong><br>第2次比较，2和4比较，2小于4，反序，进行交换： 9 1 5 8 3 7 <strong>2 4</strong> 6<br>第3次比较，2和7比较，2小于7，反序，进行交换： 9 1 5 8 3 <strong>2 7</strong> 4 6<br>第4次比较，2和3比较，2小于3，反序，进行交换： 9 1 5 8 <strong>2 3</strong> 7 4 6<br>第5次比较，2和8比较，2小于8，反序，进行交换： 9 1 5 <strong>2 8</strong> 3 7 4 6<br>第6次比较，2和5比较，2小于5，反序，进行交换： 9 1 <strong>2 5</strong> 8 3 7 4 6<br>第7次比较，2和1比较，2大于1，正序，不用交换： 9 1 2 5 8 3 7 4 6<br>第8次比较，1和9比较，1小于1，反序，进行交换： <strong>1 9</strong> 2 5 8 3 7 4 6<br>可以看出，第一趟排序将当前序列最小值移动至未排序的序列最前面的位置。</p>
 <p>第2趟排序： 因为第一趟已经排好1的位置，所以只需要对剩下的{9, 2, 5, 8, 3, 7, 4, 6}再进行冒泡排序<br>… 重复以上操作，直至排序完毕</p>
 <h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义接口</span>

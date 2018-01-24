@@ -426,12 +426,12 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong><em>堆</em></strong>： 堆是具有下列性质的完全二叉树：每个节点的值都大于或等于其左右孩子（如果存在的话）的值，称为最大堆；或者每个节点的值都小于或等于其左右孩子（如果存在的话）的值，称为最小堆。 <a id="more"></a></p>
-<p>完全二叉树：</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/448665-8ddf32a05294702d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="complete binary tree"><span class="image-caption">complete binary tree</span><br>最大堆：<br><img src="http://upload-images.jianshu.io/upload_images/448665-e3406a3790659c91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="max heap"><span class="image-caption">max heap</span></p>
-<p>最小堆：<br><img src="http://upload-images.jianshu.io/upload_images/448665-fb2f3ff615e737a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="min heap"><span class="image-caption">min heap</span><br>图片来源: <a href="http://bubkoo.com/2014/01/14/sort-algorithm/heap-sort/" target="_blank" rel="external">常见排序算法 - 堆排序 (Heap Sort)</a></p>
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong><em>堆</em></strong>： 堆是具有下列性质的完全二叉树：每个节点的值都大于或等于其左右孩子（如果存在的话）的值，称为最大堆；或者每个节点的值都小于或等于其左右孩子（如果存在的话）的值，称为最小堆。 <a id="more"></a></p>
+<p>完全二叉树：<br><img alt="complete binary tree" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/complete_binary_tree.png?imageView2"><span class="image-caption">complete binary tree</span></p>
+<p>最大堆：<br><img alt="max heap" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/max_heap.png?imageView2"><span class="image-caption">max heap</span></p>
+<p>最小堆：<br><img alt="min heap" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/min_heap.png?imageView2"><span class="image-caption">min heap</span><br>图片来源: <a href="http://bubkoo.com/2014/01/14/sort-algorithm/heap-sort/" target="_blank" rel="external">常见排序算法 - 堆排序 (Heap Sort)</a></p>
 <p><strong><em>堆排序</em></strong>：利用堆（这里使用最大堆）进行排序的方法。其基本思想是：将待排序的序列构造成一个最大堆，此时待排序序列的最大值就是堆顶的根节点，将其移走（其实就是将其与待排序序列的最后一个元素进行交换，此时待排序序列最后一个元素就是最大值），然后将剩余的序列重新构造成一个堆，如此反复，直到待排序序列只有一个元素为止，则排序完成。</p>
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>已知arr[0…n-1]是长度为n的最大堆数组，下标从0开始，那么对于下标为i的节点I，有：<br>(1).  如果I的左孩子存在的话，那么I的左孩子节点的下标为 left(i) = 2*i+1；<br>(2).  如果I的右孩子存在的话，那么I的右孩子节点的下标为 right(i) = 2*i+2;<br>(3).  如果I双亲节点存在的话，那么I的双亲节点的下标为  parent(i) = (i-1)/2; (向下取整)</p>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>已知arr[0…n-1]是长度为n的最大堆数组，下标从0开始，那么对于下标为 i 的节点 I ，有：<br>(1).  如果 I 的左孩子存在的话，那么I的左孩子节点的下标为 left(i) = 2*i+1；<br>(2).  如果 I 的右孩子存在的话，那么I的右孩子节点的下标为 right(i) = 2*i+2;<br>(3).  如果 I 双亲节点存在的话，那么I的双亲节点的下标为  parent(i) = (i-1)/2; (向下取整)</p>
 <h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><ol>
 <li>构建最大堆 buildMaxHeap(int[] arr)：将待排序序列arr构建成最大堆；</li>
 <li>调整最大堆 adjustHeap(int arr[], int begin, int end):  已知arr[begin]的左子树和右子树都满足最大堆，那么调节节点arr[begin]，将以arr[begin]为根节点的二叉树调整为最大堆。</li>
