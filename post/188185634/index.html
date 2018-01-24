@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><p>最近想动手实现 <code>RecyclerView</code> 的“自动加载更多”功能，即当 <code>RecyclerView</code> 滑动到底部时，执行加载更多操作。这里的关键在于，需要监听RecyclerView是否滑动到底部。 <a id="more"></a></p>
+        <p>最近想动手实现 <code>RecyclerView</code> 的“自动加载更多”功能，即当 <code>RecyclerView</code> 滑动到底部时，执行加载更多操作。这里的关键在于，需要监听RecyclerView是否滑动到底部。 <a id="more"></a></p>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p><code>RecyclerView</code> 有 <code>addOnScrollListener(OnScrollListener)</code> 方法，可以为 <code>RecyclerView</code> 添加滚动监听，其中 <code>OnScrollListener</code> 有两个回调函数：</p>
 <ul>
 <li>onScrollStateChanges(RecyclerView recyclerView, int newState): 在 <code>RecyclerView</code> 的滚动状态发生改变时回调</li>

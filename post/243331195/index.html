@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>如果待查找的数组是有序的，那么此时的查找就是有序表查找，这对于查找的帮助是很大的。属于有序表查找的有：折半查找（二分查找）、插值查找以及斐波那契查找。<a id="more"></a></p>
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>如果待查找的数组是有序的，那么此时的查找就是有序表查找，这对于查找的帮助是很大的。属于有序表查找的有：折半查找（二分查找）、插值查找以及斐波那契查找。<a id="more"></a></p>
 <h2 id="1-折半查找"><a href="#1-折半查找" class="headerlink" title="1. 折半查找"></a>1. 折半查找</h2><p>折半查找又称为二分查找，是一种效率较高的查找算法。折半查找的先决条件是查找表中的数据元素排列必须是有序的。折半查找先以有序数列的中点位置为比较对象，如果要找的元素值小于中点位置元素，则将待查序列缩小为左半部分，否则为右半部分。通过一次比较，可以将查找的区间缩小一半，每次比较，都可以将当前查找范围缩小至一般，可以明显的减少比较的次数，提高查找效率。<br>时间复杂度：O(logn)<br>算法实现：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义接口</span>
 <span class="token keyword">interface</span> <span class="token class-name">Searcher</span> <span class="token punctuation">{</span>

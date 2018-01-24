@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><p><a href="https://jitpack.io/" target="_blank" rel="external">JitPack.io</a> 是一个 JVM/Android 工程的包管理仓库。<a id="more"></a>开发者可以在上面发布自己的库，一旦成功发布，就可以方便的在 <code>Gradle</code> 中引用。 当然了，<code>Andriod</code> 相关的包管理仓库除了 <code>JitPack</code> 之外，还有 <code>jCenter</code> 等，但 <code>JitPack</code> 应该发布起来是最简单的了。</p>
+        <p><a href="https://jitpack.io/" target="_blank" rel="external">JitPack.io</a> 是一个 JVM/Android 工程的包管理仓库。<a id="more"></a>开发者可以在上面发布自己的库，一旦成功发布，就可以方便的在 <code>Gradle</code> 中引用。 当然了，<code>Andriod</code> 相关的包管理仓库除了 <code>JitPack</code> 之外，还有 <code>jCenter</code> 等，但 <code>JitPack</code> 应该发布起来是最简单的了。</p>
 <h2 id="发布-Android-Library"><a href="#发布-Android-Library" class="headerlink" title="发布 Android Library"></a>发布 Android Library</h2><h4 id="1-Gradle"><a href="#1-Gradle" class="headerlink" title="1. Gradle"></a>1. Gradle</h4><p>为了让 <code>JitPack</code> 能正确的构建 Android 工程，需要添加 <a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a> 插件：</p>
 <ul>
 <li>如果使用的 <code>Gradle</code> 版本 &gt;= <em>4.1</em> （即使用的 <code>com.android.build.gradle</code> 版本 &gt;= <em>3.0.0</em>）:<ol>

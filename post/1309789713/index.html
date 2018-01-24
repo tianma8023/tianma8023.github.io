@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>插入排序是插入类的排序算法，基本原理：将一个记录插入到已经排好序的有序表中，从而得到一个新的记录数增加1的有序表。<br><a id="more"></a></p>
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>插入排序是插入类的排序算法，基本原理：将一个记录插入到已经排好序的有序表中，从而得到一个新的记录数增加1的有序表。<br><a id="more"></a></p>
 <p>具体算法：<br>整个序列分为两部分，左边部分为已排序的子序列，右边部分为未排序的子序列，取出第1个未排序元素存放在临时变量tmp中，在已经排序的元素序列中从后往前遍历，逐一比较，如果遍历到的元素大于tmp，则将该元素替换下一个位置的元素，直至遍历到的元素小于或等于tmp为止。相当于将未排序的第一个元素插入到已排序的数组中，故以插入排序为名。</p>
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {0, 5, 3, 4, 6, 2}<br>第1趟排序，5大于0，无需插入： <strong>0 5</strong> 3 4 6 2<br>第2趟排序，3小于5，需要插入： <strong>0 3 5</strong> 4 6 2<br>第3趟排序，4小于5，需要插入： <strong>0 3 4 5</strong> 6 2<br>第4趟排序，6大于5，无需插入： <strong>0 3 4 5 6</strong> 2<br>第5趟排序，2小于6，需要插入： <strong>0 2 3 4 5 6</strong></p>
 <h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义接口</span>

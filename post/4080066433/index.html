@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><p>在ImageView中设置不同的scaleType(包括center, centerInside, centerCrop, fitXY, fitCenter, fitStart, fitEnd, matrix)属性时，ImageView中实际的图片(也就是Bitmap)会根据不同的scaleType属性来确定自己相对于ImageView的位置。 <a id="more"></a><br>例如：</p>
+        <p>在ImageView中设置不同的scaleType(包括center, centerInside, centerCrop, fitXY, fitCenter, fitStart, fitEnd, matrix)属性时，ImageView中实际的图片(也就是Bitmap)会根据不同的scaleType属性来确定自己相对于ImageView的位置。 <a id="more"></a><br>例如：</p>
 <ul>
 <li>fitCenter:<br><img src="http://upload-images.jianshu.io/upload_images/448665-6ddd30b3b4b32425.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></li>
 <li><p>fitStart:<br><img src="http://upload-images.jianshu.io/upload_images/448665-29940c94836deb90.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>图片中的天蓝色是我给ImageView设置的backgroud属性，可以看出Bitmap相对于ImageView的位置与scaleType属性是相关的。<br>那么，如何获取Bitmap在其ImageView中的偏移量（也就是在x和y方向上的像素偏移量）呢？代码片段如下：</p>

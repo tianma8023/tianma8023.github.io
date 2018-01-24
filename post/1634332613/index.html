@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>PopupWindow 中的 showAsDropDown(View anchor) 用于在指定锚点View下方显示 PopupWindow，在Android 7.0 (api&lt;=23) 以前是没什么问题的，但是在Android 7.x系统上，会在某些情况下出现兼容问题：</p>
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>PopupWindow 中的 showAsDropDown(View anchor) 用于在指定锚点View下方显示 PopupWindow，在Android 7.0 (api&lt;=23) 以前是没什么问题的，但是在Android 7.x系统上，会在某些情况下出现兼容问题：</p>
 <ol>
 <li>如果指定 PopupWindow 的高度为 MATCH_PARENT，调用 showAsDropDown(View anchor) 时，在 7.0 之前，会在锚点 anchor 下边缘到屏幕底部之间显示 PopupWindow；而在 7.0、7.1 系统上的 PopupWindow 会占据整个屏幕（除状态栏之外）。</li>
 <li>如果指定 PopupWindow 的高度为 WRAP_CONTENT, 调用 showAsDropDown(View anchor) 时，便不会出现兼容性的问题。</li>

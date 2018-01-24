@@ -203,6 +203,9 @@
 
     <!-- Custom Head -->
     
+
+    <!-- Import APlayer.js -->
+    
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -426,7 +429,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <script src="\assets\js\APlayer.min.js"> </script><p>之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&nbsp;<a id="more"></a></p>
+        <p>之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&nbsp;<a id="more"></a></p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>使用Java反射，通过 <code>Field#setAccessible(true)</code> 将 private 修饰的字段变为 accessible；再将 final 修饰符去掉；最后再设置新值即可。当然，如果涉及到 Java 内联优化，则会失效。具体见示例代码：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>tianma<span class="token punctuation">.</span>sample<span class="token punctuation">;</span>
 
