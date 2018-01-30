@@ -1,19 +1,559 @@
-<!DOCTYPE html><html lang="zh"><head><title>JitPack - 发布Android库 | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon.png"><link rel="icon" sizes="192x192" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/favicon.png"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0097A7"><meta name="author" content="Tianma"><meta name="description" content="Everything will be okay in the end."><meta name="keywords" content="hexo, material,JitPack,Package Repository"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="apple-mobile-web-app-title" content="Title"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="480"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Tianma"><meta property="og:url" content="http://tianma.pro"><meta property="og:type" content="blog"><meta property="og:title" content="JitPack - 发布Android库 | Tianma"><meta property="og:description" content="Everything will be okay in the end."><meta property="og:article:tag" content="JitPack"><meta property="og:article:tag" content="Package Repository"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><link rel="stylesheet" href="../../css/material.min.css"><link rel="stylesheet" href="../../css/style.min.css"><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif}a{color:#00838f}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#0097a7!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#0097a7!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#0097a7!important}.toTop{background:#757575!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#757575}#scheme-Paradox .MD-burger-layer{background-color:#757575}#scheme-Paradox #post-toc-trigger-btn{color:#757575}.post-toc a:hover{color:#00838f;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><script src="../../js/jquery.min.js"></script><script src="../../js/queue.js"></script><link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css"><script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script><script src="../../js/wrapImage.js"></script><script>navigator.userAgent.toLowerCase().indexOf("ucbrowser")>0&&(document.write('<link rel="stylesheet" href="../../css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>!function(e,t,a,n,c,s,o){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,s=t.createElement(a),o=t.getElementsByTagName(a)[0],s.async=1,s.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(s,o)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script><link rel="stylesheet" href="/css/prism.css"><link rel="stylesheet" href="/css/prism-line-numbers.css"></head><div id="hexo-helper-live2d"><canvas id="live2dcanvas" width="150" height="250"></canvas></div><style>#live2dcanvas{position:fixed;width:150px;height:250px;opacity:.9;right:10px;z-index:999;pointer-events:none;bottom:65px}</style><script src="/live2d/device.min.js"></script><script>const loadScript=function(e,t){var d=document.createElement("script");d.type="text/javascript",void 0!==t&&(d.readyState?d.onreadystatechange=function(){"loaded"!=d.readyState&&"complete"!=d.readyState||(d.onreadystatechange=null,t())}:d.onload=function(){t()}),d.src=e,document.body.appendChild(d)};!function(){if("undefined"!=typeof device&&device.mobile()){var e=document.getElementById("hexo-helper-live2d");return void e.parentNode.removeChild(e)}"undefined"==typeof device&&console.error("Cannot find current-device script."),loadScript("/live2d/script.js",function(){loadlive2d("live2dcanvas","/live2d/assets/Rem.model.json",.5)})}()</script><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button> <button id="post-toc-trigger-btn" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">format_list_numbered</i></button><ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn"><ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#发布-Android-Library"><span class="post-toc-number">1.</span> <span class="post-toc-text">发布 Android Library</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-Gradle"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">1. Gradle</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-GitHub"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">2. GitHub</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-JitPack"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">3. JitPack</span></a></li></ol></li></ol><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用-Android-Library"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用 Android Library</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Dependency-格式构成"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">Dependency 格式构成</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#JitPack-中的-Snapshot"><span class="post-toc-number">2.0.2.</span> <span class="post-toc-text">JitPack 中的 Snapshot</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Gradle-中导入-Library"><span class="post-toc-number">2.0.3.</span> <span class="post-toc-text">Gradle 中导入 Library</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#踩坑"><span class="post-toc-number">3.</span> <span class="post-toc-text">踩坑</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考</span></a></li></ul><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/jitpack_banner.jpg)"><p class="article-headline-p">JitPack - 发布Android库</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><strong>Tianma</strong> <span>1月 11, 2018</span></div><div class="section-spacer"></div><button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">devices other</i> <span class="visuallyhidden">devices other</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button"><li class="mdl-menu__item">在其它设备中阅读本文章</li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZUlEQVR42u3aS46DQAwFwNz/0jPbkSbAs/sDiYpVhEjo6oXtuP36+errhYeHh4eHh4eH9zDeK76OvvX3zv/Pb15/8Mvndwprw8PDw9vCuwi1B7yjZeVbkGxEeW14eHh4G3nnIbv3zPmC8gSTvBcPDw/v+by5CQYPDw/vu3n5L+TpIU8heHh4eM/hJQE9b9dW00Oy9OW9Fjw8PLyYlx8y7f+89XwPDw8PL+D1wnp+cJUX3L008+bteHh4eIt5eSDuFdl5sqkOXeHh4eHdy8vD9Pn9ZACrOqh6npbK/xjw8PDwlvF6ixtPLQnjYrV4eHh4G3l5gVstr6tl8VC5j4eHh7eFl/xcHqBH2hMTthsPDw9vMS9vPYwnjPNnyqUzHh4e3k28WUVwHtBHGrVR6wQPDw9vOy8/Epvbbkg2bslkBB4eHl6RN7eArh6D9QYLLopyPDw8vMW8amLIy+tqoM/L64t0hYeHh7eRl7++2WBttXGTQzU8PDy8/by8fZB/t9r8nfYkHh4e3mJe9SircBA1MChQPRjDw8PD28nLi+aRtDGrdRvdwcPDw9vCyw/DxpsO+Tb1msV4eHh4d/ESZMLrDWb10gkeHh7efl5yGNajVocSRjYCDw8PbzWveuVbUC3QeyU+Hh4e3n7eeFDOU0J1uUuGrvDw8PAWjKsmQXlkyKA3pIWHh4f3TF41QOeldm9oIN8UPDw8vOfzqukkP2zLwXh4eHifxestKy/T89GE5SU1Hh4e3nAzolocj5TdyVvw8PDw7uLlLYAqtbCsYnv3cCV4eHh4i3nfd+Hh4eHh4eHh4T3g+gX14j7aVuKySQAAAABJRU5ErkJggg=="></ul><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/JitPack/">JitPack</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/Package-Repository/">Package Repository</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/667499984/" class="leancloud-views_num" data-flag-title="JitPack - 发布Android库">&nbsp;阅读量</span></li></a><a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JitPack - 发布Android库&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank"><li class="mdl-menu__item">分享到微博</li></a><a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank"><li class="mdl-menu__item">分享到 Google+</li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><p><a href="https://jitpack.io/" target="_blank" rel="external">JitPack.io</a> 是一个 JVM/Android 工程的包管理仓库。<a id="more"></a>开发者可以在上面发布自己的库，一旦成功发布，就可以方便的在 <code>Gradle</code> 中引用。 当然了，<code>Andriod</code> 相关的包管理仓库除了 <code>JitPack</code> 之外，还有 <code>jCenter</code> 等，但 <code>JitPack</code> 应该发布起来是最简单的了。</p><h2 id="发布-Android-Library"><a href="#发布-Android-Library" class="headerlink" title="发布 Android Library"></a>发布 Android Library</h2><h4 id="1-Gradle"><a href="#1-Gradle" class="headerlink" title="1. Gradle"></a>1. Gradle</h4><p>为了让 <code>JitPack</code> 能正确的构建 Android 工程，需要添加 <a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a> 插件：</p><ul><li>如果使用的 <code>Gradle</code> 版本 &gt;= <em>4.1</em> （即使用的 <code>com.android.build.gradle</code> 版本 &gt;= <em>3.0.0</em>）:<ol><li>在<strong>项目根目录</strong>的 <code>build.gradle</code> 中如下配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> buildscript {
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!-- 
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.0 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            JitPack - 发布Android库 | 
+        
+        Tianma
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="Tianma">
+    <meta name="description" content="Everything will be okay in the end.">
+    <meta name="keywords" content="hexo, material,JitPack,Package Repository">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tianma">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://tianma.pro">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="JitPack - 发布Android库 | Tianma">
+    <meta property="og:description" content="Everything will be okay in the end.">
+    <meta property="og:article:tag" content="JitPack"> <meta property="og:article:tag" content="Package Repository"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="../../css/material.min.css">
+    <link rel="stylesheet" href="../../css/style.min.css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #EEEEEE;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/queue.js"></script>
+	
+	<!-- fancybox support -->
+	
+		<link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css">
+		<script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script>
+		<script src="../../js/wrapImage.js"></script>
+	
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-84178484-1', 'auto');ga('send', 'pageview');
+    </script>
+    
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- Import APlayer.js -->
+    
+
+    <!-- Live2d -->
+    
+            <div class="waifu">
+    <div class="waifu-tips"></div>
+	
+  <div id="hexo-helper-live2d">
+      <canvas id="live2dcanvas" width="150" height="250" class="live2d"></canvas>
+  </div>
+    <style>
+      #live2dcanvas{
+      	-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+        position: fixed;
+        width: 150px;
+        height: 250px;
+        opacity:0.9;
+        transition:opacity 0.95s ease-out;
+		-moz-transition:opacity 0.95s ease-out; /* Firefox 4 */
+		-webkit-transition:opacity 0.95s ease-out; /* Safari and Chrome */
+		-o-transition:opacity 0.95s ease-out; /* Opera */
+        right: 10px;
+        z-index: 999;
+        bottom: 70px;
+      }
+	  #live2dcanvas:hover{
+		opacity:1;
+      }
+    </style>
+    <script src="/live2d/device.min.js"></script>
+    <script type="text/javascript">
+    (function(){
+	  if(typeof(device) != "undefined"){
+        if(device.mobile()){
+          
+        }else{
+          document.write('<script type="text/javascript" src="/live2d/script.js"><\/script>');
+          document.write('<script>loadlive2d("live2dcanvas", "/live2d/assets/Rem.model.json", 0.5)<\/script>');
+        }
+	  }else{
+        document.write('<script type="text/javascript" src="/live2d/script.js"><\/script>');
+        document.write('<script>loadlive2d("live2dcanvas", "/live2d/assets/Rem.model.json", 0.5)<\/script>');    
+	  }
+    })();
+    </script>
+
+</div>
+
+<script src="../../js/waifu-tips.js"></script>
+
+<style>
+    @media (max-width: 768px) {
+        .waifu {
+            display: none;
+        }
+    }
+
+    .waifu {
+        width: 150px;
+        height: 250px;
+        position: fixed;
+        bottom: 70px;
+        right: 10px;
+        z-index: 999;
+        font-size: 0;
+    }
+
+    .waifu-tips {
+        opacity: 0;
+        width: 170px;
+        height: 90px;
+        margin: -95px -25px;
+        padding: 5px 10px;
+        border: 1px solid rgba(224, 186, 140, 0.62);
+        border-radius: 12px;
+        background-color: rgba(236, 217, 188, 0.5);
+        box-shadow: 0 3px 15px 2px rgba(191, 158, 118, 0.2);
+        font-size: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        position: absolute;
+        animation-delay: 5s;
+        animation-duration: 50s;
+        animation-iteration-count: infinite;
+        animation-name: shake;
+        animation-timing-function: ease-in-out;
+    }
+
+    .waifu #live2dcanvas {
+        position: relative;
+        float: right;
+        bottom: 0px;
+    }
+
+    #hexo-helper-live2d {
+        bottom: 0px;
+        left: 50%;
+        right: 0px;
+    }
+
+</style>
+    
+<link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#发布-Android-Library"><span class="post-toc-number">1.</span> <span class="post-toc-text">发布 Android Library</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1-Gradle"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">1. Gradle</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-GitHub"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">2. GitHub</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-JitPack"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">3. JitPack</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用-Android-Library"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用 Android Library</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Dependency-格式构成"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">Dependency 格式构成</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#JitPack-中的-Snapshot"><span class="post-toc-number">2.0.2.</span> <span class="post-toc-text">JitPack 中的 Snapshot</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Gradle-中导入-Library"><span class="post-toc-number">2.0.3.</span> <span class="post-toc-text">Gradle 中导入 Library</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#踩坑"><span class="post-toc-number">3.</span> <span class="post-toc-text">踩坑</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        <!-- Custom Thumbnail -->
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/jitpack_banner.jpg)">
+    
+            <p class="article-headline-p">
+                JitPack - 发布Android库
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>1月 11, 2018</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZUlEQVR42u3aS46DQAwFwNz/0jPbkSbAs/sDiYpVhEjo6oXtuP36+errhYeHh4eHh4eH9zDeK76OvvX3zv/Pb15/8Mvndwprw8PDw9vCuwi1B7yjZeVbkGxEeW14eHh4G3nnIbv3zPmC8gSTvBcPDw/v+by5CQYPDw/vu3n5L+TpIU8heHh4eM/hJQE9b9dW00Oy9OW9Fjw8PLyYlx8y7f+89XwPDw8PL+D1wnp+cJUX3L008+bteHh4eIt5eSDuFdl5sqkOXeHh4eHdy8vD9Pn9ZACrOqh6npbK/xjw8PDwlvF6ixtPLQnjYrV4eHh4G3l5gVstr6tl8VC5j4eHh7eFl/xcHqBH2hMTthsPDw9vMS9vPYwnjPNnyqUzHh4e3k28WUVwHtBHGrVR6wQPDw9vOy8/Epvbbkg2bslkBB4eHl6RN7eArh6D9QYLLopyPDw8vMW8amLIy+tqoM/L64t0hYeHh7eRl7++2WBttXGTQzU8PDy8/by8fZB/t9r8nfYkHh4e3mJe9SircBA1MChQPRjDw8PD28nLi+aRtDGrdRvdwcPDw9vCyw/DxpsO+Tb1msV4eHh4d/ESZMLrDWb10gkeHh7efl5yGNajVocSRjYCDw8PbzWveuVbUC3QeyU+Hh4e3n7eeFDOU0J1uUuGrvDw8PAWjKsmQXlkyKA3pIWHh4f3TF41QOeldm9oIN8UPDw8vOfzqukkP2zLwXh4eHifxestKy/T89GE5SU1Hh4e3nAzolocj5TdyVvw8PDw7uLlLYAqtbCsYnv3cCV4eHh4i3nfd+Hh4eHh4eHh4T3g+gX14j7aVuKySQAAAABJRU5ErkJggg==">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/JitPack/">JitPack</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/Package-Repository/">Package Repository</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/667499984/" class="leancloud-views_num" data-flag-title="JitPack - 发布Android库">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JitPack - 发布Android库&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><a href="https://jitpack.io/" target="_blank" rel="external">JitPack.io</a> 是一个 JVM/Android 工程的包管理仓库。<a id="more"></a>开发者可以在上面发布自己的库，一旦成功发布，就可以方便的在 <code>Gradle</code> 中引用。 当然了，<code>Andriod</code> 相关的包管理仓库除了 <code>JitPack</code> 之外，还有 <code>jCenter</code> 等，但 <code>JitPack</code> 应该发布起来是最简单的了。</p>
+<h2 id="发布-Android-Library"><a href="#发布-Android-Library" class="headerlink" title="发布 Android Library"></a>发布 Android Library</h2><h4 id="1-Gradle"><a href="#1-Gradle" class="headerlink" title="1. Gradle"></a>1. Gradle</h4><p>为了让 <code>JitPack</code> 能正确的构建 Android 工程，需要添加 <a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a> 插件：</p>
+<ul>
+<li>如果使用的 <code>Gradle</code> 版本 &gt;= <em>4.1</em> （即使用的 <code>com.android.build.gradle</code> 版本 &gt;= <em>3.0.0</em>）:<ol>
+<li>在<strong>项目根目录</strong>的 <code>build.gradle</code> 中如下配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> buildscript {
      dependencies {
          classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0' // 添加这行配置
      }
  }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li>在<strong>库工程</strong>的 <code>build.gradle</code> 中如下配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> apply plugin: 'com.github.dcendents.android-maven'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>在<strong>库工程</strong>的 <code>build.gradle</code> 中如下配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> apply plugin: 'com.github.dcendents.android-maven'
  group = 'com.github.YourUsername'
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li></ol></li><li>如果使用的其他版本的 Gradle 配置会有所变化，因为 <code>android-maven-gradle-plugin</code> 和 <code>Gradle</code> 版本有个对应关系。具体配置和上面的相似，只不过对应版本，详情可以戳这里 <a href="https://github.com/dcendents/android-maven-gradle-plugin#note-on-releases" target="_blank" rel="external">android maven gradle plugin - Note on Releases</a></li></ul><h4 id="2-GitHub"><a href="#2-GitHub" class="headerlink" title="2. GitHub"></a>2. GitHub</h4><p>在Github对应项目上发布release包或者添加一个tag，网上教程很多，略过。</p><h4 id="3-JitPack"><a href="#3-JitPack" class="headerlink" title="3. JitPack"></a>3. JitPack</h4><p>参照下图，将项目提交到 <a href="http://jitpack.io/" target="_blank" rel="external">JitPack</a> ，让其构建对应的工程：</p><img alt="提交到JitPack" class="post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/JitPack_Publish_Steps.png?imageView2"><span class="image-caption">提交到JitPack</span><p>点击 <code>Get it</code> 按钮，<code>JitPack</code> 会给出指定库的引用配置信息：</p><img alt="JitPack库的配置信息" class="post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/JitPack_Import_Guide.png?imageView2"><span class="image-caption">JitPack库的配置信息</span><h2 id="使用-Android-Library"><a href="#使用-Android-Library" class="headerlink" title="使用 Android Library"></a>使用 Android Library</h2><h4 id="Dependency-格式构成"><a href="#Dependency-格式构成" class="headerlink" title="Dependency 格式构成"></a>Dependency 格式构成</h4><p>发布到 <code>JitPack</code> 的库的 dependency 的格式如下：</p><ul><li><code>Group</code>(组) ： com.github.Username</li><li><code>Artifact</code>(产品) ： Repository Name (Github Repo 名)</li><li><code>Version</code>(版本) ：<code>Release 的 tag</code> 或者 <code>commit hash 值</code> 或者 <code>-SNAPSHOT</code></li></ul><h4 id="JitPack-中的-Snapshot"><a href="#JitPack-中的-Snapshot" class="headerlink" title="JitPack 中的 Snapshot"></a>JitPack 中的 Snapshot</h4><p><code>snapshot(快照)</code> 版本在开发中很有用。<code>snapshot</code> 可以表示那些没有正式发布的版本。 <em>指定的版本</em> 和 <em>snapshot版本</em> 区别在于后者可能可以不断的更新版本，即可能指向最新的版本。所以<em>snapshot版本</em>在项目开发过程中很实用。 <code>snapshot</code> 版本格式如下：</p><ul><li><code>branch-SNAPSHOT</code> （分支名-SNAPSHOT）</li></ul><p>例如：</p><pre><code> compile &#39;com.github.Username:RepoName:master-SNAPSHOT&#39;   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li>如果使用的其他版本的 Gradle 配置会有所变化，因为 <code>android-maven-gradle-plugin</code> 和 <code>Gradle</code> 版本有个对应关系。具体配置和上面的相似，只不过对应版本，详情可以戳这里 <a href="https://github.com/dcendents/android-maven-gradle-plugin#note-on-releases" target="_blank" rel="external">android maven gradle plugin - Note on Releases</a></li>
+</ul>
+<h4 id="2-GitHub"><a href="#2-GitHub" class="headerlink" title="2. GitHub"></a>2. GitHub</h4><p>在Github对应项目上发布release包或者添加一个tag，网上教程很多，略过。</p>
+<h4 id="3-JitPack"><a href="#3-JitPack" class="headerlink" title="3. JitPack"></a>3. JitPack</h4><p>参照下图，将项目提交到 <a href="http://jitpack.io/" target="_blank" rel="external">JitPack</a> ，让其构建对应的工程：</p>
+<img alt="提交到JitPack" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/JitPack_Publish_Steps.png?imageView2"><span class="image-caption">提交到JitPack</span>
+<p>点击 <code>Get it</code> 按钮，<code>JitPack</code> 会给出指定库的引用配置信息：</p>
+<img alt="JitPack库的配置信息" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/JitPack_Import_Guide.png?imageView2"><span class="image-caption">JitPack库的配置信息</span>
+<h2 id="使用-Android-Library"><a href="#使用-Android-Library" class="headerlink" title="使用 Android Library"></a>使用 Android Library</h2><h4 id="Dependency-格式构成"><a href="#Dependency-格式构成" class="headerlink" title="Dependency 格式构成"></a>Dependency 格式构成</h4><p>发布到 <code>JitPack</code> 的库的 dependency 的格式如下：</p>
+<ul>
+<li><code>Group</code>(组) ： com.github.Username </li>
+<li><code>Artifact</code>(产品) ： Repository Name (Github Repo 名)</li>
+<li><code>Version</code>(版本) ：<code>Release 的 tag</code> 或者 <code>commit hash 值</code> 或者 <code>-SNAPSHOT</code></li>
+</ul>
+<h4 id="JitPack-中的-Snapshot"><a href="#JitPack-中的-Snapshot" class="headerlink" title="JitPack 中的 Snapshot"></a>JitPack 中的 Snapshot</h4><p><code>snapshot(快照)</code> 版本在开发中很有用。<code>snapshot</code> 可以表示那些没有正式发布的版本。 <em>指定的版本</em> 和 <em>snapshot版本</em> 区别在于后者可能可以不断的更新版本，即可能指向最新的版本。所以<em>snapshot版本</em>在项目开发过程中很实用。 <code>snapshot</code> 版本格式如下：</p>
+<ul>
+<li><code>branch-SNAPSHOT</code> （分支名-SNAPSHOT）</li>
+</ul>
+<p>例如：</p>
+<pre><code> compile &#39;com.github.Username:RepoName:master-SNAPSHOT&#39;   
  // eg &#39;com.github.tianma8023:SimpleLineChart:master-SNAPSHOT&#39;
-</code></pre><p>通过添加 <code>-SNAPSHOT</code> 字段可以每次构建 master 分支上最新的 commit。</p><p><font color="#FF4081">注意</font>： 考虑到 <code>Gradle</code> 会缓存 <code>SNAPSHOT</code> 的版本，所以当使用 <code>snapshot</code> 的形式，并且有新的版本更新时，需要在 <code>Android Studio</code> 中通过 <code>File -&gt; Synchronize</code> 进行更新和同步。</p><h4 id="Gradle-中导入-Library"><a href="#Gradle-中导入-Library" class="headerlink" title="Gradle 中导入 Library"></a>Gradle 中导入 Library</h4><ol><li>使用你的库，需要把 <code>jitpack.io</code> 添加入仓库列表中去，在 <strong>项目根目录</strong> 的 <code>build.gradle</code> 中添加：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> allprojects {
+</code></pre><p>通过添加 <code>-SNAPSHOT</code> 字段可以每次构建 master 分支上最新的 commit。</p>
+<p><font color="#FF4081">注意</font>： 考虑到 <code>Gradle</code> 会缓存 <code>SNAPSHOT</code> 的版本，所以当使用 <code>snapshot</code> 的形式，并且有新的版本更新时，需要在 <code>Android Studio</code> 中通过 <code>File -&gt; Synchronize</code> 进行更新和同步。</p>
+<h4 id="Gradle-中导入-Library"><a href="#Gradle-中导入-Library" class="headerlink" title="Gradle 中导入 Library"></a>Gradle 中导入 Library</h4><ol>
+<li>使用你的库，需要把 <code>jitpack.io</code> 添加入仓库列表中去，在 <strong>项目根目录</strong> 的 <code>build.gradle</code> 中添加：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> allprojects {
      repositories {
          jcenter()
          maven { url 'https://jitpack.io' } // 添加这行
      }
  }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><font color="#FF4081">注意</font>：不要把 <code>jitpack.io</code> 添加到 <code>buildscript</code> 闭包中去。</li><li>在<strong>模块</strong>的 <code>build.gradle</code> 中添加库的依赖：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> dependencies {
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ <font color="#FF4081">注意</font>：不要把 <code>jitpack.io</code> 添加到 <code>buildscript</code> 闭包中去。</li>
+<li>在<strong>模块</strong>的 <code>build.gradle</code> 中添加库的依赖：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> dependencies {
      // 方式1. SNAPSHOT
      compile 'com.github.Username:RepoName:branch-SNAPSHOT'
      // eg. complie 'com.github.tianma8023:SimpleLineChart:master-SNAPSHOT'
@@ -26,13 +566,19 @@
      // compile 'com.github.Username:RepoName:CommitHash' 
      // eg. compile 'com.github.tianma8023:SimpleLineChart:015b8d6aff'
  }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol><h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><ol><li>在导入 <code>JitPack</code> 的库工程的时候，会出现资源不能被获取的报错信息，但是 <code>JitPack</code> 上面的 Build 是成功的。这个时候，其实是是本地网络问题，因为 <code>jitpack.io</code> 走的是 https。 所以，可以添加网络代理，因为本身我用的 <code>SS</code> 科学上网的，所以在项目的 <code>gradle.properties</code> 文件中添加代理：<pre class="line-numbers language-properties"><code class="language-properties"><span class="token comment" spellcheck="true"> # http</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><ol>
+<li>在导入 <code>JitPack</code> 的库工程的时候，会出现资源不能被获取的报错信息，但是 <code>JitPack</code> 上面的 Build 是成功的。这个时候，其实是是本地网络问题，因为 <code>jitpack.io</code> 走的是 https。 所以，可以添加网络代理，因为本身我用的 <code>SS</code> 科学上网的，所以在项目的 <code>gradle.properties</code> 文件中添加代理：<pre class="line-numbers language-properties"><code class="language-properties"><span class="token comment" spellcheck="true"> # http</span>
 <span class="token attr-name"> systemProp.http.proxyHost</span><span class="token punctuation">=</span><span class="token attr-value">127.0.0.1</span>
 <span class="token attr-name"> systemProp.http.proxyPort</span><span class="token punctuation">=</span><span class="token attr-value">1080</span>
 <span class="token comment" spellcheck="true"> # https</span>
 <span class="token attr-name"> systemProp.https.proxyHost</span><span class="token punctuation">=</span><span class="token attr-value">127.0.0.1</span>
 <span class="token attr-name"> systemProp.https.proxyPort</span><span class="token punctuation">=</span><span class="token attr-value">1080</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li>按照之前的 Punlish 流程，引用 <code>JitPack</code> 库之后，并<font color="#FF4081">不能很好的阅读源码和查看注释</font>，这是发布前的配置问题。参考 <code>Maven</code> 的配置，在 build 过程中执行文档化操作即可。在 <strong>library</strong> 模块下新建 <code>javadoc-sources-build.gradle</code> 文件：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> // Specify encoding - 指定编码方式
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>按照之前的 Punlish 流程，引用 <code>JitPack</code> 库之后，并<font color="#FF4081">不能很好的阅读源码和查看注释</font>，这是发布前的配置问题。参考 <code>Maven</code> 的配置，在 build 过程中执行文档化操作即可。在 <strong>library</strong> 模块下新建 <code>javadoc-sources-build.gradle</code> 文件：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> // Specify encoding - 指定编码方式
  tasks.withType(JavaCompile) {
      options.encoding = 'UTF-8'
  }
@@ -60,5 +606,625 @@
      archives sourcesJar
      archives javadocJar
  }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>然后在 <strong>library</strong> 模块下的 <code>build.gradle</code> 引入之前的配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> apply from: 'javadoc-sources-build.gradle'
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>之后按照正常发布流程即可。</li></ol><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://github.com/jitpack/jitpack.io" target="_blank" rel="external">GitHub - JitPack.io</a></li><li><a href="https://github.com/jitpack/jitpack.io/blob/master/ANDROID.md" target="_blank" rel="external">JitPack - Publish an Android library</a></li><li><a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a></li><li><a href="https://github.com/GcsSloop/AndroidNote/blob/master/Course/jitpack-javadoc.md" target="_blank" rel="external">用JitPack发布时附加文档和源码</a></li></ul></div><div id="gitalk-comment"><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:["tianma8023"],distractionFreeMode:!1}).render("gitalk-container")</script></div><style>#gitalk-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/3998746934/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/2666287230/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div class="sidebar-header header-cover" style="background-image:url(/img/sidebar_header.jpg)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img src="/img/kousei.jpg" alt="Tianma's avatar"></div><a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">tianma8023@foxmail.com<b class="caret"></b></a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu"><li><a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me"><i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i> Email Me</a></li></ul></li><li id="sidebar-first-li"><a href="/" target="_self"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li class="divider"></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-github.png)"><span class="visuallyhidden">Github</span></button></a><a href="https://www.jianshu.com/u/9b3c643402b6" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-jianshu.png)"><span class="visuallyhidden">Jianshu</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+" ~ "+curYear):document.write(curYear)</script>&nbsp;<span class="with-love"><i class="fa fa-heart"></i></span> &nbsp;Tianma</div><div class="mdl-mini-footer--right-section"><div><div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div><div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div></div></div></footer><script src="../../js/lazyload.min.js"></script><script src="../../js/js.min.js"></script><script src="../../js/nprogress.js"></script><script>NProgress.configure({showSpinner:!0}),NProgress.start(),$("#nprogress .bar").css({background:"#FF4081"}),$("#nprogress .peg").css({"box-shadow":"0 0 10px #FF4081, 0 0 15px #FF4081"}),$("#nprogress .spinner-icon").css({"border-top-color":"#FF4081","border-left-color":"#FF4081"}),setTimeout(function(){NProgress.done(),$(".fade").removeClass("out")},800)</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script>function showTime(e){var t=new AV.Query(e);$(".leancloud-views_num").each(function(){var e=$(this).attr("id").trim();t.equalTo("url",e),t.find({success:function(t){if(0===t.length){var n="0 "+$(document.getElementById(e)).text();return void $(document.getElementById(e)).text(n)}for(var o=0;o<t.length;o++){var r=t[o],n=r.get("time")+" "+$(document.getElementById(e)).text();$(document.getElementById(e)).text(n)}},error:function(e,t){console.log("Error: "+t.code+" "+t.message)}})})}function addCount(e){var e=AV.Object.extend("Counter");url=$(".leancloud-views_num").attr("id").trim(),title=$(".leancloud-views_num").attr("data-flag-title").trim();var t=new AV.Query(e);t.equalTo("url",url),t.find({success:function(t){if(t.length>0){var n=t[0];n.fetchWhenSave(!0),n.increment("time"),n.save(null,{success:function(e){var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var o=new e;o.set("title",title),o.set("url",url),o.set("time",1),o.save(null,{success:function(e){console.log("newcounter.get('time')="+e.get("time"));var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1===$(".leancloud-views_num").length?addCount(e):$(".post-title-link").length>1&&showTime(e)})</script><script id="dsq-count-scr" src="//undefined.disqus.com/count.js" async></script><script>var searchFunc=function(t,e,r){"use strict";$.ajax({url:t,dataType:"xml",success:function(t){var n=$("entry",t).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(e),s=document.getElementById(r);a.addEventListener("input",function(){var t='<ul class="search-result-list">',e=this.value.trim().toLowerCase().split(/[\s\-]+/);s.innerHTML="",this.value.trim().length<=0||(n.forEach(function(r){var n=!0,a=r.title.trim().toLowerCase(),s=r.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),i=r.url,c=-1,l=-1,u=-1;if(""!==a&&""!==s&&e.forEach(function(t,e){c=a.indexOf(t),l=s.indexOf(t),c<0&&l<0?n=!1:(l<0&&(l=0),0===e&&(u=l))}),n){t+='<li><a href="'+i+'" class="search-result-title" target="_blank">'+a;var o=r.content.trim().replace(/<[^>]+>/g,"");if(u>=0){var h=u-6,f=u+6;h<0&&(h=0),0===h&&(f=10),f>o.length&&(f=o.length);var m=o.substr(h,f);e.forEach(function(t){var e=new RegExp(t,"gi");m=m.replace(e,'<em class="search-keyword">'+t+"</em>")}),t+='<p class="search-result">'+m+"...</p></a>"}}}),s.innerHTML=t)})}})}</script><script>var inputArea=document.querySelector("#search"),getSearchFile=function(){searchFunc("search.xml","search","local-search-result")};inputArea&&(inputArea.onfocus=function(){getSearchFile()})</script><script>$(window).load(function(){$(".post-toc-wrap").parent(".mdl-menu__container").css("position","fixed")})</script></main></div></body></html>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ 然后在 <strong>library</strong> 模块下的 <code>build.gradle</code> 引入之前的配置：<pre class="line-numbers language-Groovy"><code class="language-Groovy"> apply from: 'javadoc-sources-build.gradle'
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+ 之后按照正常发布流程即可。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/jitpack/jitpack.io" target="_blank" rel="external">GitHub - JitPack.io</a></li>
+<li><a href="https://github.com/jitpack/jitpack.io/blob/master/ANDROID.md" target="_blank" rel="external">JitPack - Publish an Android library</a></li>
+<li><a href="https://github.com/dcendents/android-maven-gradle-plugin" target="_blank" rel="external">android-maven-gradle-plugin</a></li>
+<li><a href="https://github.com/GcsSloop/AndroidNote/blob/master/Course/jitpack-javadoc.md" target="_blank" rel="external">用JitPack发布时附加文档和源码</a></li>
+</ul>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+	<!-- 使用 gitalk -->
+	<div id="gitalk-comment">
+		<!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script>
+    var gitalk = new Gitalk({
+            clientID: '55a5d9da39a7a1f372ab',
+            clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+            repo: 'tianma8023.github.io',
+            owner: 'tianma8023',
+            admin: ['tianma8023'],
+            // facebook-like distraction free mode
+            distractionFreeMode: false,
+        })
+   gitalk.render('gitalk-container')
+</script>
+	</div>
+	<style>
+		#gitalk-comment {
+			background-color: #eee;
+			padding: 2pc;
+		}
+	</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/post/3998746934/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/2666287230/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.jpg);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/kousei.jpg" alt="Tianma's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        tianma8023@foxmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li" class="sidebar-nav-homepage">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown sidebar-nav-archives">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown sidebar-nav-categories">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags" title="标签">
+                
+                    <i class="material-icons sidebar-material-icons">label_outline</i>
+                
+                标签
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+        <li>
+            <a href="/about" title="关于">
+                
+                    <i class="material-icons sidebar-material-icons">person_outline</i>
+                
+                关于
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="https://github.com/viosey/hexo-theme-material" title="主题">
+                
+                    <i class="material-icons sidebar-material-icons">stars</i>
+                
+                主题
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/tianma8023" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+	
+	<!-- Jianshu -->
+	
+		<a href="https://www.jianshu.com/u/9b3c643402b6" target="_blank">
+			<button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-jianshu.png);">
+				<span class="visuallyhidden">Jianshu</span>
+			</button>
+		</a>
+	
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var curYear = new Date().getFullYear();
+                var since = 2016;
+                if (curYear != since) {
+                    document.write(since + ' ~ ' + curYear);
+                } else {
+                    document.write(curYear);                    
+                }
+            </script>
+            &nbsp;
+            <span class="with-love">
+                <i class="fa fa-heart"></i>
+            </span>
+            &nbsp;Tianma
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+<script src="../../js/lazyload.min.js"></script>
+<script src="../../js/js.min.js"></script>
+<script src="../../js/nprogress.js"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+    <!-- Leancloud -->
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+    <script>
+        AV.initialize('o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz', 'ypNURFLzI6NMQwz1OVl782d5');
+    </script>
+    <script>
+    function showTime(Counter) {
+        var query = new AV.Query(Counter);
+        $('.leancloud-views_num').each(function() {
+            var url = $(this).attr('id').trim();
+            query.equalTo('url', url);
+            query.find({
+                success: function(results) {
+                    if (results.length === 0) {
+                        var content = '0 ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var object = results[i];
+                        var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    }
+                },
+                error: function(object, error) {
+                    console.log('Error: ' + error.code + ' ' + error.message);
+                }
+            });
+        });
+    }
+
+    function addCount(Counter) {
+      var Counter = AV.Object.extend('Counter');
+      url = $('.leancloud-views_num').attr('id').trim();
+      title = $('.leancloud-views_num').attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+      query.equalTo('url', url);
+      query.find({
+          success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment('time');
+                counter.save(null, {
+                    success: function(counter) {
+                        var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+              var newcounter = new Counter();
+              newcounter.set('title', title);
+              newcounter.set('url', url);
+              newcounter.set('time', 1);
+              newcounter.save(null, {
+                  success: function(newcounter) {
+                      console.log('newcounter.get(\'time\')='+newcounter.get('time'));
+                      var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+                      $(document.getElementById(url)).text(content);
+                  },
+                  error: function(newcounter, error) {
+                      console.log('Failed to create');
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + ' ' + error.message);
+        }
+      });
+    }
+    $(function() {
+        var Counter = AV.Object.extend('Counter');
+        if ($('.leancloud-views_num').length === 1) {
+            addCount(Counter);
+        } else if ($('.post-title-link').length > 1) {
+            showTime(Counter);
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+    <!-- 使用 DISQUS js 代码 -->
+    <script id="dsq-count-scr" src="//undefined.disqus.com/count.js" async></script>
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+    <script>
+    var searchFunc = function(path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: 'xml',
+            success: function( xmlResponse ) {
+                // get the contents from search data
+                var datas = $( 'entry', xmlResponse ).map(function() {
+                    return {
+                        title: $( 'title', this ).text(),
+                        content: $('content',this).text(),
+                        url: $( 'url' , this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function() {
+                    var str='<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = '';
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function(data) {
+                        var isMatch = true;
+                        var content_index = [];
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g,'').toLowerCase();
+                        var data_url = data.url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if(data_title !== '' && data_content !== '') {
+                            keywords.forEach(function(keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if( index_title < 0 && index_content < 0 ) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += '<li><a href="'+ data_url +'" class="search-result-title" target="_blank">'+ data_title;
+                            var content = data.content.trim().replace(/<[^>]+>/g, '');
+                            if (first_occur >= 0) {
+                                // cut out characters
+                                var start = first_occur - 6;
+                                var end = first_occur + 6;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 10;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, 'gi');
+                                    match_content = match_content.replace(regS, '<em class="search-keyword">'+keyword+'</em>');
+                                })
+                                str += '<p class="search-result">' + match_content + '...</p>' +'</a>';
+                            }
+                        }
+                    });
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    }
+</script>
+
+
+    <script>
+        var inputArea = document.querySelector('#search');
+        var getSearchFile = function() {
+            var path = 'search.xml';
+            searchFunc(path, 'search', 'local-search-result');
+        }
+
+        if(inputArea) {
+            inputArea.onfocus = function() {
+                getSearchFile();
+            }
+        }
+    </script>
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+
+                </main>
+            </div>
+        </body>
+    
+</html>
