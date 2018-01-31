@@ -87,10 +87,8 @@ $.ajax({
     showMessage(text, 6000);
 })();
 
-window.setInterval(showHitokoto, 60000);
-
 function showHitokoto() {
-    $.getJSON('http://api.hitokoto.cn/?c=a&encode=json', function(result) {
+    $.getJSON('http://api.hitokoto.cn?c=a&encode=json', function(result) {
         var msg = result.hitokoto.substring(0, 28) + '<br/><span style="float: right; padding-right: 10px;"><font color="#43A047">' + result.from + "</font></span>";
         showMessage(msg, 5000);
     });
@@ -110,3 +108,64 @@ function hideMessage(timeout) {
     if (timeout === null) timeout = 5000;
     $('.waifu-tips').delay(timeout).fadeTo(200, 0);
 }
+
+// 获取浏览器支持的'hidden' 字段
+function getHiddenProp() {
+    var prefixes = ['webkit', 'moz', 'ms', 'o'];
+
+    var prop = 'hidden';
+    // if 'hidden' is natively supported just return it
+    if (prop in document) return prop;
+
+    // otherwise loop over all the known prefixes until we find one
+    for (var i = 0; i < prefixes.length; i++) {
+        if ((prop = prefixes[i] + 'Hidden') in document)
+            return prop;
+    }
+
+    // otherwise it's not supported
+    return null;
+}
+
+// 获取窗口可视性状态
+function getVisibilityState() {
+    var prefixes = ['webkit', 'moz', 'ms', 'o'];
+
+    var visibilityState = 'visibilityState';
+    // if 'visibilityState' is natively supported just return it
+    if (visibilityState in document) return visibilityState;
+
+    // otherwise loop over all the known prefixes until we find one
+    for (var i = 0; i < prefixes.length; i++) {
+        if ((visibilityState = prefixes[i] + 'VisibilityState') in document)
+            return visibilityState;
+    }
+
+    // otherwise it's not suppoerted
+    return null;
+}
+
+// Check whether window is hidden or not
+function isHidden() {
+    var prop = getHiddenProp();
+    if (!prop) return false;
+
+    return document[prop];
+}
+
+(function() {
+    // 先默认执行轮询
+    var intervalId = window.setInterval(showHitokoto, 60000);
+
+    var hiddenProp = getHiddenProp();
+    if (hiddenProp) {
+        var eventname = hiddenProp.replace(/[H|h]idden/, '') + 'visibilitychange';
+        document.addEventListener(eventname, function() {
+            if (isHidden()) {
+                window.clearInterval(intervalId);
+            } else {
+                intervalId = window.setInterval(showHitokoto, 60000);
+            }
+        });
+    }
+})();
