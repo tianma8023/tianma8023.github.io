@@ -58,8 +58,8 @@ $.ajax({
 });
 
 (function() {
-    var text;
     if (window.location.pathname === '/') { //如果是主页
+        var text;
         var now = (new Date()).getHours();
         if (now > 23 || now <= 5) {
             text = '你是夜猫子呀？这么晚还不睡觉，明天起的来嘛';
@@ -80,10 +80,9 @@ $.ajax({
         } else {
             text = '嗨~ 快来逗我玩吧！';
         }
-    } else {
-        text = '欢迎阅读<span style="color:#0099cc;">『' + document.title.split(' | ')[0] + '』</span>';
+        showMessage(text, 6000);
     }
-    showMessage(text, 6000);
+
 })();
 
 function showHitokoto() {
