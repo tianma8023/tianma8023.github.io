@@ -1090,7 +1090,7 @@ a {
 #scheme-Paradox #copyright {
     margin-left: auto;
     margin-right: auto;
-    text-align: center
+    text-align: center;
 }
 
 @media screen and (min-width:481px) and (max-width:840px) {
@@ -1122,7 +1122,7 @@ a {
 }
 
 #scheme-Paradox .mdl-mini-footer--right-section {
-    margin-right: 60px
+    margin-right: 0px
 }
 
 @media screen and (max-width:480px) {

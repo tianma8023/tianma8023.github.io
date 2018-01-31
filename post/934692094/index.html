@@ -641,7 +641,7 @@
     </div>
 
     <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+    <a data-toggle="dropdown" class="sidebar-brand sidebar-dropdown-email" href="#settings-dropdown">
         tianma8023@foxmail.com
         <b class="caret"></b>
     </a>
@@ -652,7 +652,7 @@
         <ul class="nav sidebar-nav">
     <!-- User dropdown  -->
     <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
+        <ul id="settings-dropdown" class="dropdown-menu sidebar-nav-email">
             
                 <li>
                     <a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me">
@@ -831,7 +831,7 @@ It will not impact the appearance and can give developers a lot of support :)
 
     <!-- Github -->
     
-        <a href="https://github.com/tianma8023" target="_blank">
+        <a href="https://github.com/tianma8023" class="footer-github"target="_blank">
             <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
                 <span class="visuallyhidden">Github</span>
             </button><!--
@@ -852,7 +852,7 @@ It will not impact the appearance and can give developers a lot of support :)
 	
 	<!-- Jianshu -->
 	
-		<a href="https://www.jianshu.com/u/9b3c643402b6" target="_blank">
+		<a href="https://www.jianshu.com/u/9b3c643402b6" class="footer-jianshu" target="_blank">
 			<button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-jianshu.png);">
 				<span class="visuallyhidden">Jianshu</span>
 			</button>
@@ -868,7 +868,7 @@ It will not impact the appearance and can give developers a lot of support :)
                 var curYear = new Date().getFullYear();
                 var since = 2016;
                 if (curYear != since) {
-                    document.write(since + ' ~ ' + curYear);
+                    document.write(since + '~' + curYear);
                 } else {
                     document.write(curYear);                    
                 }
@@ -878,6 +878,7 @@ It will not impact the appearance and can give developers a lot of support :)
                 <i class="fa fa-heart"></i>
             </span>
             &nbsp;Tianma
+			<br/>
         </div>
 
         <!-- Paradox Footer Right Section -->
@@ -892,8 +893,8 @@ It will not impact the appearance and can give developers a lot of support :)
 
         <div class="mdl-mini-footer--right-section">
             <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a blog-framework">Hexo</a></div>
+			<div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a blog-theme">Material</a></div>
             </div>
         </div>
     
