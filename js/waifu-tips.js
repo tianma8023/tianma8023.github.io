@@ -24,7 +24,6 @@ String.prototype.render = function(context) {
 };
 
 var re = /x/;
-console.log(re);
 re.toString = function() {
     showMessage('哈哈，你打开了控制台，是想要看看我的秘密吗？', 5000);
     return '';
@@ -153,8 +152,15 @@ function isHidden() {
 }
 
 (function() {
+    // 使用 device.min.js 判断设备类型
+    // 如果是移动端则跳过一言
+    if (typeof(device) != 'undefined' && device.mobile()) {
+        return;
+    }
+
     // 先默认执行轮询
-    var intervalId = window.setInterval(showHitokoto, 60000);
+    var internal = 60000;
+    var intervalId = window.setInterval(showHitokoto, internal);
 
     var hiddenProp = getHiddenProp();
     if (hiddenProp) {
@@ -163,7 +169,7 @@ function isHidden() {
             if (isHidden()) {
                 window.clearInterval(intervalId);
             } else {
-                intervalId = window.setInterval(showHitokoto, 60000);
+                intervalId = window.setInterval(showHitokoto, internal);
             }
         });
     }
