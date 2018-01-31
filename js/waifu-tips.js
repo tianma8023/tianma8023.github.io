@@ -87,7 +87,7 @@ $.ajax({
 
 function showHitokoto() {
     $.getJSON('http://api.hitokoto.cn?c=a&encode=json', function(result) {
-        var msg = result.hitokoto.substring(0, 28) + '<br/><span style="float: right; padding-right: 10px;"><font color="#43A047">' + result.from + "</font></span>";
+        var msg = result.hitokoto.substring(0, 36) + '<br/><span style="float: right; padding-right: 10px;"><font color="#43A047">' + result.from + "</font></span>";
         showMessage(msg, 5000);
     });
 }
