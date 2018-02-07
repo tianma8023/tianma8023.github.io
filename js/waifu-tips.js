@@ -40,16 +40,26 @@ $.ajax({
     success: function(result) {
         $.each(result.mouseover, function(index, tips) {
             $(document).on("mouseover", tips.selector, function() {
-                var text = tips.text;
                 if (Array.isArray(tips.text)) text = tips.text[Math.floor(Math.random() * tips.text.length + 1) - 1];
                 text = text.render({ text: $(this).text() });
                 showMessage(text, 3000);
             });
         });
         $.each(result.click, function(index, tips) {
+            var indexArr = new Array();
             $(document).on("click", tips.selector, function() {
                 var text = tips.text;
-                if (Array.isArray(tips.text)) text = tips.text[Math.floor(Math.random() * tips.text.length + 1) - 1];
+                // 保证每次随机的不一样，一个周期内不重复
+                if (Array.isArray(tips.text)) {
+                    if (indexArr.length == 0) {
+                        for (var i = 0; i < tips.text.length; i++) {
+                            indexArr.unshift(i);
+                        }
+                    }
+                    var curIdx = Math.floor(Math.random() * indexArr.length + 1) - 1;
+                    text = tips.text[indexArr[curIdx]];
+                    indexArr.splice(curIdx, 1);
+                }
                 text = text.render({ text: $(this).text() });
                 showMessage(text, 3000);
             });
