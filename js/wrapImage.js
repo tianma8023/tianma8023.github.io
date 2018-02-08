@@ -14,7 +14,12 @@ function wrapImageWithFancyBox() {
         var $imageWrapLink = $image.parent('a');
 
         if ($imageWrapLink.size() < 1) {
-            $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+            var src = this.getAttribute('src');
+            var idx = src.lastIndexOf('?');
+            if (idx != -1) {
+                src = src.substring(0, idx);
+            }
+            $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
         }
 
         $imageWrapLink.attr('data-fancybox', 'images');
