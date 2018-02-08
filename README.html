@@ -59,8 +59,8 @@
     <![endif]-->
 
     <!-- Import CSS -->
-    <link rel="stylesheet" href="../../css/material.min.css">
-    <link rel="stylesheet" href="../../css/style.min.css">
+    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -164,21 +164,21 @@
 
 
 
-    <script src="../../js/jquery.min.js"></script>
-    <script src="../../js/queue.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/queue.js"></script>
 	
 	<!-- fancybox support -->
 	
-		<link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css">
-		<script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script>
-		<script src="../../js/wrapImage.js"></script>
+		<link rel="stylesheet" href="lib/fancybox/dist/jquery.fancybox.min.css">
+		<script src="lib/fancybox/dist/jquery.fancybox.min.js"></script>
+		<script src="js/wrapImage.js"></script>
 	
 
     <!-- UC Browser Compatible -->
     <script>
         var agent = navigator.userAgent.toLowerCase();
         if(agent.indexOf('ucbrowser')>0) {
-            document.write("<link rel=\"stylesheet\" href=\"../../css/uc.css\">");
+            document.write("<link rel=\"stylesheet\" href=\"css/uc.css\">");
             alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
         }
     </script>
@@ -256,7 +256,7 @@
 
 </div>
 
-<script src="../../js/waifu-tips.js"></script>
+<script src="js/waifu-tips.js"></script>
 
 <style>
     @media screen and (max-width: 768px) {
@@ -332,365 +332,292 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
-    
 
-    <!-- Normal Post -->
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/ip_address.jpg);">
-    
+<!-- Layouts -->
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/1779625018/">Java-IPv4地址和int类型数字的互相转换</a></p>
-    </div>
+    <!-- Post Module -->
+    <div class="material-post_container">
 
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。
-        
-        <span>
-            <a href="../../post/1779625018/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 21, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Java/">Java</a>
-            </span>
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
 
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/bubble_sort.png);">
-    
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/42083511/">排序-冒泡排序及其优化</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>冒泡排序是一种交换排序，它的基本思想是：两两比较相邻记录的关键字，如果反序则交换，直至没有反序的记录为止。<br>因为按照该算法，每次比较会将当前未排序的记录序列中最小的关键字移至未排序的记录序列最前（或者将当前未排序的记录序列中最大的关键字移至未排序的记录序列最后），就像冒泡一样，故以此为名。
-        
-        <span>
-            <a href="../../post/42083511/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 20, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure</a>
-            </span>
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/binary_tree.png);">
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/1367710076/">查找-二叉搜索树（Java实现）</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果查找的数据集是有序的线性表，并且是顺序存储的，查找可以用折半查找、插值查找、斐波那契查找算法（详细算法见：<a href="/post/243331195">有序表查找（折半、插值、斐波那契查找）</a>）等实现。但是正是因为他们是顺序的，所以在插入和删除操作中需要耗费大量时间，也就是说这些算法适合静态查找（只有查找操作），不适合动态查找（不仅有查找操作还有插入删除等操作）。而二叉搜索树正适合动态查找。
-        
-        <span>
-            <a href="../../post/1367710076/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 13, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure</a>
-            </span>
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/binary_search.jpg?);">
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/243331195/">查找-有序表查找(折半查找，插值查找，斐波拉契查找)</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>如果待查找的数组是有序的，那么此时的查找就是有序表查找，这对于查找的帮助是很大的。属于有序表查找的有：折半查找（二分查找）、插值查找以及斐波那契查找。
-        
-        <span>
-            <a href="../../post/243331195/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 11, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure</a>
-            </span>
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/linear_search.jpg);">
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/235983682/">查找-顺序查找</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>顺序查找又称为线性查找，其算法思路是从数组中的第一个（或最后一个）记录开始，将数组中元素逐个与需要查找的关键字进行比对，若发现有相等的，则查找成功；若始终未能相等，则查找失败。<br>
-        
-        <span>
-            <a href="../../post/235983682/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 11, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure</a>
-            </span>
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/kmp.jpg);">
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/3825161135/">KMP字符串模式匹配算法Java实现</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            <p>本文灵感来自于July的博客<a href="http://blog.csdn.net/v_july_v/article/details/7041827">从头到尾彻底理解KMP</a>，并着重于Java实现 :)。  现有字符串匹配算法有不少，如简单暴力的朴素算法(暴力匹配算法)、KMP算法、BM算法以及Sunday算法等，在这里仅介绍前两种算法。<br>
-        
-        <span>
-            <a href="../../post/3825161135/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>4月 10, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure</a>
-            </span>
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-        
-        
-        
-    
-
-    
-    <!-- Index nav -->
-        <nav class="material-nav mdl-cell mdl-cell--12-col">
-            <a class="extend prev" rel="prev" href="../5/"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">arrow_back</i></button></a><a class="page-number" href="../../index.html">1</a><span class="space">&hellip;</span><a class="page-number" href="../5/">5</a><span class="page-number current">6</span><a class="page-number" href="../7/">7</a><a class="extend next" rel="next" href="../7/"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">arrow_forward</i></button></a>
-        </nav>
-    
-
-    
-        <script>
-    var randomNum;
-
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 6; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
-
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').css('background-image', 'url(' + '/img/random/material-' + randomNum + '.png' + ')')
-
-        locatePost = locatePost.next();
-    }
+    $('.post_thumbnail-random').css('background-image', 'url(' + '/img/random/material-' + randomNum + '.png' + ')');
 </script>
 
+        
+    
+            <p class="article-headline-p">
+                
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>2月 09, 2018</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAAB5klEQVR42u3aQW6DQAwFUO5/6XZbqYJ+29AA82YVEZjwsrDssbevV6wNAwMDAwMDA+M2jC1eP+/f3Xrnqd/fTt4BAwNjTcYfoa11T3JltD8GBsaSjCTIVsPi3g6Td8DAwMCopoNJmpgHXAwMDIyzGMfhNQnNGBgYGD1GUkAeB80krcz3vLAWx8DAeCCj1xg49/PH+hsYGBi3Z5w8ABEkiw+YGcHAwLgZo5r25QVq8lTe8izX4hgYGK9jVA/xq4MU+RFbYQcMDIxlGHlDMT/K741WjBoDGBgYCzCqbcvenXm62azFMTAwXsrIC9RqO+E4oPeewsDAWJmRhN1qM7J6lFYN3BgYGCsz5uG4Wujmb4KBgYExOXrLS9D5DhgYGBg9wDxNvCTgYmBgvILRC3yTBDFvfBaKWAwMjFczqtvl13tBOfk7MDAwVmPkB169pDBJBHsLAwNjHUYy+pAPb1UP3aq/joGBsSajHOZ6gxHBlSTpxMDAWJOxxSs5PssTzXwfDAwMjMl4RHJntUgeZbgYGBgLMAppWRyCkyTy5LEwDAwMjEFR2msb/FPAxcDAeBFjPk4xaRhgYGBg5EVsfpRfOD6LRz0wMDDWZFQbA71UrxqmL+9vYGBgPITx3IWBgYGBgYGB8dH1DRmZc6jhiWejAAAAAElFTkSuQmCC">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/README.html" class="leancloud-views_num" data-flag-title="">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=&url=http://tianma.pro/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://tianma.pro/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>这是部署在 GitHub 上的静态博客 Repo，该博客以 <a href="https://github.com/hexojs/hexo" target="_blank" rel="external">Hexo 3.2.2</a> 作为静态博客框架，以 <a href="https://github.com/viosey/hexo-theme-material" target="_blank" rel="external">material 1.3.0</a> 为主题搭建而成。</p>
+<p>博客地址： <a href="http://tianma.pro">Tianma</a></p>
+<h3 id="个性化配置-amp-优化"><a href="#个性化配置-amp-优化" class="headerlink" title="个性化配置&amp;优化"></a>个性化配置&amp;优化</h3><p><a href="https://hexo.io/plugins/index.html" target="_blank" rel="external">这里</a> 是官方有收录 Hexo 的插件。</p>
+<p>这里列一下博客用到的插件，大部分都可以看其对应官方文档就能正确配置。</p>
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p>固定链接插件：<a href="https://github.com/rozbo/hexo-abbrlink" target="_blank" rel="external">hexo-abbrlink</a><br>之前的 <code>permalink</code> 格式是：</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">permalink</span><span class="token punctuation">:</span> post/<span class="token punctuation">:</span>year/<span class="token punctuation">:</span>month/<span class="token punctuation">:</span>day/<span class="token punctuation">:</span>title/
+<span class="token comment" spellcheck="true"># 比如  http://tianma.pro/2018/02/08/Hello-World</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用 <code>hexo-abbrlink</code> 插件格式是:</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">permalink</span><span class="token punctuation">:</span> post/<span class="token punctuation">:</span>abbrlink/
+
+<span class="token comment" spellcheck="true"># abbrlink config</span>
+<span class="token key atrule">abbrlink</span><span class="token punctuation">:</span>
+  <span class="token key atrule">alg</span><span class="token punctuation">:</span> crc32  <span class="token comment" spellcheck="true">#算法 support crc16(default) and crc32</span>
+  <span class="token key atrule">rep</span><span class="token punctuation">:</span> dec    <span class="token comment" spellcheck="true">#进制 support dec(default) and hex</span>
+
+<span class="token comment" spellcheck="true"># 例如： http://tianma.pro/post/3678283086/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><p>当访问博客网站 <a href="http://tianma.pro">Tianma</a></p>
+<ul>
+<li>国内IP走的 <code>coding</code>:  <a href="http://tianma8023.coding.me" target="_blank" rel="external">tianma8023.coding.me</a></li>
+<li>国外IP走的 <code>GitHub</code>:  <a href="http://tianma8023.github.io" target="_blank" rel="external">tianma8023.github.io</a></li>
+</ul>
+<p>这样一定程度上能加快网站加载速度。</p>
+<p>大致来说，需要一下步骤：</p>
+<ol>
+<li>将博客部署到 <code>GitHub</code> 和 <code>Coding</code>, 具体参阅   <a href="http://tengj.top/2016/03/06/hexo4/" target="_blank" rel="external">hexo干货系列：（四）将hexo博客同时托管到github和coding</a> 和 <a href="http://chitanda.me/2015/06/11/tips-for-setup-hexo/#git%E5%A4%9A%E7%BD%91%E7%AB%99ssh%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88" target="_blank" rel="external">git多网站ssh部署方案</a></li>
+<li>注册域名,国内有 <a href="https://wanwang.aliyun.com/" target="_blank" rel="external">万网</a>，国外有 <a href="https://www.godaddy.com/" target="_blank" rel="external">GoDaddy</a> , 然后进行域名绑定，即国内走 <code>Coding</code> 国外走 <code>GitHub</code> ，相关教程很多就不赘述了。</li>
+</ol>
+<h4 id="静态资源压缩优化"><a href="#静态资源压缩优化" class="headerlink" title="静态资源压缩优化"></a>静态资源压缩优化</h4><p>使用 <a href="https://github.com/gulpjs/gulp" target="_blank" rel="external">gulp</a> 压缩 Hexo 静态资源</p>
+<blockquote>
+<p>gulp 的官方定义非常简洁：基于文件流的构建系统。<br><br><br>  说人话系列：gulp 是前端开发过程中对代码进行构建的工具，是自动化项目的构建利器；她不仅能对网站资源进行优化，而且在开发过程中很多重复的任务能够使用正确的工具自动完成。</p>
+</blockquote>
+<p>更多详细配置请参考 <a href="https://clearsky.me/hexo-gulp-compress.html" target="_blank" rel="external">使用 gulp 压缩 hexo 静态资源</a></p>
+<h4 id="云存储服务"><a href="#云存储服务" class="headerlink" title="云存储服务"></a>云存储服务</h4><p>云存储服务商使用的是 <a href="https://www.qiniu.com/" target="_blank" rel="external">七牛云</a>，配合 <a href="https://github.com/gyk001/hexo-qiniu-sync" target="_blank" rel="external">hexo-qiniu-sync</a> 食用。<br>主要就是把 图片、视频、音乐等其他较大的静态资源 上传到七牛云，加速博客网站静态资源加载。</p>
+<p>详细请参考 <a href="https://yuchen-lea.github.io/2016-01-21-use-qiniu-store-file-for-hexo/" target="_blank" rel="external">使用七牛为Hexo存储图片等资源</a>。</p>
+<h4 id="看板娘"><a href="#看板娘" class="headerlink" title="看板娘"></a>看板娘</h4><p>看板娘采用的以 <a href="http://www.live2d.com/en/" target="_blank" rel="external">live2d</a> 技术为核心，以 <a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="external">hexo-helper-live2d</a> 为插件，配合 <code>live2d</code> 模型制作而成。</p>
+<p>详情参考： </p>
+<ul>
+<li><a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="external">hexo-helper-live2d</a></li>
+<li>本博客给看板娘加入了 <code>鼠标滑动悬停</code> 和 <code>点击</code> 事件监听，以做出更多响应。 具体参考 <a href="https://imjad.cn/archives/lab/add-dynamic-poster-girl-with-live2d-to-your-blog-02" target="_blank" rel="external">给博客添加能动的看板娘(Live2D)-将其添加到网页上吧</a></li>
+</ul>
+<h4 id="音乐播放"><a href="#音乐播放" class="headerlink" title="音乐播放"></a>音乐播放</h4><p>音乐播放器采用的是 <a href="https://github.com/DIYgod" target="_blank" rel="external">DIYGod</a> 的 <a href="https://github.com/MoePlayer/APlayer" target="_blank" rel="external">APlayer</a>, 以 <a href="https://github.com/metowolf/MetingJS" target="_blank" rel="external">MetingJS</a> 为辅助配合食用。</p>
+<p>详情参考: <a href="http://tianma.pro/post/3998746934/">Hexo 折腾：音乐播放</a></p>
+<h4 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h4><ol>
+<li><p>图片描述(description)：因为 <code>material</code> 主题本身没有对图片做过多处理，当使用:</p>
+<pre class="line-numbers language-markdown"><code class="language-markdown"> <span class="token url">![description](xxx.jpg)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p> 插入图片时，最后的 <code>description</code> 是没有显示的。这里采用 <a href="https://github.com/wayou/hexo-image-caption" target="_blank" rel="external">hexo-image-caption</a> 插件将上述 markdown 生成如下元素：</p>
+<pre class="line-numbers language-html"><code class="language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>xxx.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>description<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>image-caption<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>description<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p> 更多配置参考其文档。</p>
+</li>
+<li><p>图片放大查看： 由于 <code>material</code> 主题没有该功能，本博客用 <code>FancyBox</code> 库实现该功能，详情参考 <a href="http://tianma.pro/post/2208308547/">Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能</a></p>
+</li>
+</ol>
+<h3 id="工具网站推荐"><a href="#工具网站推荐" class="headerlink" title="工具网站推荐"></a>工具网站推荐</h3><ol>
+<li>图片压缩: <a href="https://tinypng.com/" target="_blank" rel="external">tinypng</a> - 在压缩图片的同时尽可能保证图片质量</li>
+<li>矢量图, 图标等: <a href="http://iconfont.cn/" target="_blank" rel="external">iconfont</a>,  <a href="https://www.iconfinder.com/" target="_blank" rel="external">IconFinder</a>, <a href="https://material.io/icons/" target="_blank" rel="external">material icons</a></li>
+</ol>
+
+    
+
+    
+
+    
+        <div>
+    <br/>
+    <ul id="post-license" class="post-license">
+        <li class="post-license-author">
+            <strong>本文作者：</strong>
+            <a href="http://tianma.pro">Tianma</a>
+        </li>
+
+        <li class="post-license-link">
+            <strong>本文链接：</strong>
+            <a href="http://tianma.pro/README.html"></a>
+        </li>
+
+        <li class="post-license-statement">
+            <strong>版权声明： </strong>
+            本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="license" target="_blank">保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a> </br>转载请保留以上声明信息！
+        </li>
+    </ul>
+</div>
     
 </div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+	<!-- 使用 gitalk -->
+	<div id="gitalk-comment">
+		<!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script>
+    var gitalk = new Gitalk({
+            clientID: '55a5d9da39a7a1f372ab',
+            clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+            repo: 'tianma8023.github.io',
+            owner: 'tianma8023',
+            admin: ['tianma8023'],
+            // facebook-like distraction free mode
+            distractionFreeMode: false,
+        })
+   gitalk.render('gitalk-container')
+</script>
+	</div>
+	<style>
+		#gitalk-comment {
+			background-color: #eee;
+			padding: 2pc;
+		}
+	</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     
@@ -770,7 +697,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+                <a class="sidebar_archives-link" href="archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
             </ul>
         </li>
         
@@ -788,7 +715,7 @@
             </a>
             <ul class="dropdown-menu">
                 <li>
-                <a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
+                <a class="sidebar_archives-link" href="categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="categories/Android/">Android<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="categories/Hexo/">Hexo<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="categories/杂记漫谈/">杂记漫谈<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
             </ul>
         </li>
         
@@ -874,14 +801,6 @@ It will not impact the appearance and can give developers a lot of support :)
 </aside>
 
                     
-
-                    
-                        <!-- Footer Top Button -->
-                        <div class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
 
                     
 
@@ -987,9 +906,9 @@ It will not impact the appearance and can give developers a lot of support :)
 
 
                     <!-- Import File -->
-<script src="../../js/lazyload.min.js"></script>
-<script src="../../js/js.min.js"></script>
-<script src="../../js/nprogress.js"></script>
+<script src="js/lazyload.min.js"></script>
+<script src="js/js.min.js"></script>
+<script src="js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({
