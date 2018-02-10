@@ -2396,10 +2396,14 @@ a {
     background-color: transparent
 }
 
+.sidebar-colored .sidebar-brand.sidebar-dropdown-email {
+    color: rgba(0, 0, 0, 0.8);
+}
+
 .sidebar-colored .sidebar-brand:focus,
 .sidebar-colored .sidebar-brand:hover {
-    color: #f5f5f5;
-    background-color: rgba(0, 0, 0, .1)
+    color: rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, .15)
 }
 
 .sidebar-colored .sidebar-badge,
