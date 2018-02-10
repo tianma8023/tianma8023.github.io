@@ -83,5 +83,5 @@ abbrlink:
 
 
 ## 工具网站推荐
-1. 图片压缩: [tinypng](https://tinypng.com/) - 在压缩图片的同时尽可能保证图片质量
-2. 矢量图, 图标等: [iconfont](http://iconfont.cn/),  [IconFinder](https://www.iconfinder.com/), [material icons](https://material.io/icons/)
+- 图片压缩: [tinypng](https://tinypng.com/) - 在压缩图片的同时尽可能保证图片质量
+- 矢量图, 图标等: [iconfont](http://iconfont.cn/),  [IconFinder](https://www.iconfinder.com/), [material icons](https://material.io/icons/)
