@@ -10,7 +10,7 @@
     
     <title>
         
-            标签: ShadowSocks | 
+            Android 笔记：Activity 二三事 | 
         
         Tianma
     </title>
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="Tianma">
     <meta name="description" content="Everything will be okay in the end.">
-    <meta name="keywords" content="Tianma">
+    <meta name="keywords" content="Tianma,android notes">
 
     <!--iOS -->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -48,9 +48,9 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://tianma.pro">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="标签: ShadowSocks | Tianma">
+    <meta property="og:title" content="Android 笔记：Activity 二三事 | Tianma">
     <meta property="og:description" content="Everything will be okay in the end.">
-    
+    <meta property="og:article:tag" content="android notes"> 
 
     <!--[if lte IE 9]>
         <link rel="stylesheet" href="/css/ie-blocker.css">
@@ -334,101 +334,306 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
     
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
 
-    <!-- Normal Post -->
-    
-        
-        
-            <!-- Paradox Thumbnail -->
-            <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Activity-生命周期"><span class="post-toc-number">1.</span> <span class="post-toc-text">Activity 生命周期</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异常情况下的生命周期"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">异常情况下的生命周期</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         <!-- Custom Thumbnail -->
-        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/shadowsocks.jpg);">
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/)">
     
+            <p class="article-headline-p">
+                Android 笔记：Activity 二三事
+            </p>
+        </div>
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="../../post/402cab53/">免费ShadowSocks账号</a></p>
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>Tianma</strong>
+        <span>2月 12, 2018</span>
     </div>
 
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">devices other</i>
+            <span class="visuallyhidden">devices other</span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+            <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACbElEQVR42u3ay3LbMBAEQP3/TzvXVDmkZrAkITvNE0svsHEAVoN9ff3q64WHh4eHh4eHh/dhvFd8HX3r71e+3/9j+INfPn+leDY8PDy8R3hvltqDzxwNcPStc0w+7ptR8PDw8B7knS/ZyUO3n8/HSp4NDw8P75N550Xt2kTg4eHh/T+8/DP55oGHh4f3U3jJH/4kTm0jhrXfwcPDw9vLyw+Znr9/9HwPDw8PL+DVLU1BG0G7qeTbQN10hYeHh3cDry2X82W9LcHbpis8PDy8XbzkCL/dNnLk+ehtmyweHh7eM7y2FG6DjLZFIGG8KeLx8PDwbuatLd9rIW9eFo/KfTw8PLxHeHkUmx/5T7aTNqrAw8PD28Vrm7GuKsrbb+Hh4eHt5U0W8bVtYxLUJkU5Hh4e3t28tW1g7dHXxr2sdQAPDw/vIt7kb/88cl1rLHhTlOPh4eHdzDsvZNtAYbLQ5+X1ZT1leHh4eANee9g/j2jzGLedRDw8PLwneXlU2k7BHWPVGwMeHh7eRbw2JmiD2rVGgfZgDA8PD28vL28bXWsamES30St4eHh4j/AmkWsy5KRNoX0XDw8Pby/vqhBhbdtotxM8PDy8Xbzib3952N8W62sTgYeHh3c3b21LmEQGky0hCnzx8PDwbuZNFuVJ2Z0Hx+f3xQEYHh4e3qW8qzaDpKU1/4XFrQUPDw/vQd58gc6PxybBxGLWgoeHh7eVlxfKkzaFfDrw8PDwfgqvPfpKJmItJsbDw8PbxUvCiDaAyKPefNLx8PDwPoGXRwBtUFs8VhnvFjEuHh4e3qW833fh4eHh4eHh4eF9wPUH18N8uNczElEAAAAASUVORK5CYII=">
+        </ul>
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="../../tags/android-notes/">android notes</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/579806496/" class="leancloud-views_num" data-flag-title="Android 笔记：Activity 二三事">
+     &nbsp;阅读量
+</span>
+
+            </li>
+        </a>
+    
+
+    
         
-            <h2 id="免费提供SS账号的网站"><a href="#免费提供SS账号的网站" class="headerlink" title="免费提供SS账号的网站"></a>免费提供SS账号的网站</h2><p>在这里我列出几个免费提供SS账户的网站：</p>
-<ul>
-<li><a href="http://freessr.top/">免费ShadowSocks账号</a></li>
-<li><a href="http://freevpnss.cc/">世界那么大，我想去看看</a></li>
-<li><a href="http://www.getshadowsocks.com/">SS</a></li>
-<li><a href="http://www.ishadowsocks.org/">ISS</a></li>
+    
+
+        
+    
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Android 笔记：Activity 二三事&url=http://tianma.pro/post/579806496/&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Tianma&title=Android 笔记：Activity 二三事&summary=Everything will be okay in the end.&pics=http://tianma.pro/img/favicon.png&url=http://tianma.pro/post/579806496/" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=http://tianma.pro/post/579806496/&text=Android 笔记：Activity 二三事" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
 </ul>
-<p>这里需要注意的是：</p>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2 id="Activity-生命周期"><a href="#Activity-生命周期" class="headerlink" title="Activity 生命周期"></a>Activity 生命周期</h2><p>先上 Google 官方的图：<br><img alt="Activity 生命周期" class=" post-image-center" src="http://omx3hkcsx.bkt.clouddn.com/static/images/activity_lifecycle.png?imageView2"><span class="image-caption">Activity 生命周期</span></p>
+<ul>
+<li>onCreate()：当前 Activity 实例第一次被创建时调用</li>
+<li>onStart()：Activity 不可见到可见 时调用</li>
+<li>onResume()： Activity 获取焦点，可以进行交互时调用</li>
+<li>onPause()：Activity 失去焦点，无法交互时调用</li>
+<li>onStop()：Activity 完全不可见时调用</li>
+<li>onDestroy()：Activity 即将销毁前调用</li>
+<li>onRestart()：Activity 正在被重新启动时调用</li>
+</ul>
+<p>这里又引申出 Activity 相关的三个生存期：</p>
+<ul>
+<li>完整生存期： onCreate() -&gt; onDestroy()</li>
+<li>可见生存期： onStart() -&gt; onStop()</li>
+<li>前台（可交互）生存期： onResume() -&gt; onPause()<br>&nbsp;</li>
+<li>Q：Activity A 启动 Activity B 时，A 的 onPause() 先执行还是 B 的 onResume() 先执行呢？<br>A：A 的 onPause() 先执行。<br>结论：考虑到只有在当前 Activity 的 onPause() 执行完毕之后，新的 Activity 的 onResume() 才执行，所以，<span style="color: #ff4081;">在 onPause() 中尽量别做重量级操作</span>。</li>
+</ul>
+<h3 id="异常情况下的生命周期"><a href="#异常情况下的生命周期" class="headerlink" title="异常情况下的生命周期"></a>异常情况下的生命周期</h3><p><img src="/images/Activity_recreate_diagram.jpg" alt="Activity 异常情况重建过程"><span class="image-caption">Activity 异常情况重建过程</span></p>
+<p>这里的 <code>异常情况</code> 主要指以下两种情况：</p>
 <ol>
-<li>以上这些网站提供的ss账号都会不断更新的，所以如果你使用这些免费的服务的话，可能需要及时更新。当然了，如果你是Programmer，你当然可以写脚本去爬取了对吧 :)</li>
-<li>如果这些网站访问不了，可能是换网址了 or 被墙了 or 其他不可抗力的原因…</li>
+<li>系统相关的资源配置发生改变产生的异常：<br> 如果Activity不作特殊处理，当系统配置发生改变（比如屏幕方向发生改变），Activity就会被销毁并重建，<code>onSaveInstanceState()</code> 和 <code>onRestoreInstanceState()</code> 这两个方法就会在这一过程中被调用。</li>
+<li><p>内存资源不足导致 Activity 被回收的异常：<br>Activity会有优先级分级情况，优先级依次降低：</p>
+<ul>
+<li>前台 Acitivty：正在交互的 Activity</li>
+<li>可见但非前台 Activity</li>
+<li>不可见后台 Activity</li>
+</ul>
+<p>内存资源不足导致 Activity 被回收，在后续也会通过 <code>onSaveInstanceState()</code> 和 <code>onRestoreInstanceState()</code> 存储和恢复数据。<br>没有四大组件在运行的进程很容易被系统杀死，所以，一些后台工作不适合脱离四大组件独自后台运行，最佳实践是依赖 Service 以保证进程有较高的优先级。</p>
+</li>
 </ol>
-        
-        <span>
-            <a href="../../post/402cab53/" target="_self">继续阅读</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/kousei.jpg" width="44px" height="44px" alt="Tianma's avatar">
-            </div>
-            <div>
-                <strong>Tianma</strong>
-                <span>10月 29, 2016</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-            <!-- Category -->
-            <span class="post_entry-category">
-                <a class="post_category-link" href="../../categories/科学上网/">科学上网</a>
-            </span>
 
-            
+    
 
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
+    
+
+    
+        <div>
+    <br/>
+    <ul id="post-license" class="post-license">
+        <li class="post-license-author">
+            <strong>本文作者：</strong>
+            <a href="http://tianma.pro">Tianma</a>
+        </li>
+
+        <li class="post-license-link">
+            <strong>本文链接：</strong>
+            <a href="http://tianma.pro/post/579806496/">Android 笔记：Activity 二三事</a>
+        </li>
+
+        <li class="post-license-statement">
+            <strong>版权声明： </strong>
+            本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="license" target="_blank">署名-非商业性使用-相同方式共享（CC BY-NC-SA）4.0 国际许可协议</a> </br>转载请保留以上声明信息！
+        </li>
+    </ul>
+</div>
+    
 </div>
 
-        
-        
-        
-    
 
-    
+                
 
-    
-        <script>
-    var randomNum;
+                <!-- Post Comments -->
+                
+                    
+	<!-- 使用 gitalk -->
+	<div id="gitalk-comment">
+		<!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
 
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 6; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').css('background-image', 'url(' + '/img/random/material-' + randomNum + '.png' + ')')
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
-        locatePost = locatePost.next();
-    }
+<script>
+    var gitalk = new Gitalk({
+            clientID: '55a5d9da39a7a1f372ab',
+            clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+            repo: 'tianma8023.github.io',
+            owner: 'tianma8023',
+            admin: ['tianma8023'],
+            // facebook-like distraction free mode
+            distractionFreeMode: false,
+        })
+   gitalk.render('gitalk-container')
 </script>
+	</div>
+	<style>
+		#gitalk-comment {
+			background-color: #eee;
+			padding: 2pc;
+		}
+	</style>
 
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
     
-</div>
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/1810369046/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     
@@ -612,6 +817,14 @@ It will not impact the appearance and can give developers a lot of support :)
 </aside>
 
                     
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
 
                     
 
