@@ -1,6 +1,6 @@
 这是部署在 GitHub 上的静态博客 Repo，该博客以 [Hexo 3.2.2](https://github.com/hexojs/hexo) 作为静态博客框架，以 [material 1.3.0](https://github.com/viosey/hexo-theme-material) 为主题搭建而成。
 
-博客地址： [Tianma](http://tianma.pro)
+博客地址： [Tianma](http://tianma.space)
 
 ## 个性化配置&优化
 [这里](https://hexo.io/plugins/index.html) 是官方收录的 Hexo 插件。
@@ -12,7 +12,7 @@
 之前的 `permalink` 格式是：
 ```yaml
 permalink: post/:year/:month/:day/:title/
-# 例如  http://tianma.pro/2018/02/08/Hello-World 
+# 例如  http://tianma.space/2018/02/08/Hello-World 
 ```
 
 使用 `hexo-abbrlink` 插件格式是:
@@ -24,11 +24,11 @@ abbrlink:
   alg: crc32  #算法 support crc16(default) and crc32
   rep: dec    #进制 support dec(default) and hex
 
-# 例如： http://tianma.pro/post/3678283086/
+# 例如： http://tianma.space/post/3678283086/
 ```
 
 ### 部署
-当访问博客网站 [Tianma](http://tianma.pro)
+当访问博客网站 [Tianma](http://tianma.space)
 - 国内IP走的 `coding`:  [tianma8023.coding.me](http://tianma8023.coding.me)
 - 国外IP走的 `GitHub`:  [tianma8023.github.io](http://tianma8023.github.io)
 
@@ -56,7 +56,7 @@ abbrlink:
 ### 音乐播放
 音乐播放器采用的是 [DIYGod](https://github.com/DIYgod) 的 [APlayer](https://github.com/MoePlayer/APlayer), 以 [MetingJS](https://github.com/metowolf/MetingJS) 为辅助配合食用。
 
-详情参考: [Hexo 折腾：音乐播放](http://tianma.pro/post/3998746934/)
+详情参考: [Hexo 折腾：音乐播放](http://tianma.space/post/3998746934/)
 
 ### 图片
 1. 图片描述(description)：因为 `material` 主题本身没有对图片做过多处理，当使用:
@@ -72,7 +72,7 @@ abbrlink:
 
     更多配置参考其文档。
 
-2. 图片放大查看： 由于 `material` 主题没有该功能，本博客用 `FancyBox` 库实现该功能，详情参考 [Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能](http://tianma.pro/post/2208308547/)
+2. 图片放大查看： 由于 `material` 主题没有该功能，本博客用 `FancyBox` 库实现该功能，详情参考 [Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能](http://tianma.space/post/2208308547/)
 
 ### 看板娘
 看板娘采用的以 [live2d](http://www.live2d.com/en/) 技术为核心，以 [hexo-helper-live2d](https://github.com/EYHN/hexo-helper-live2d) 为插件，配合 `live2d` 模型制作而成。

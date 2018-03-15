@@ -521,7 +521,7 @@
 <p>这里列一下博客用到的插件，大部分都可以看其对应官方文档就能正确配置。</p>
 <h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>固定链接插件：<a href="https://github.com/rozbo/hexo-abbrlink" target="_blank" rel="external">hexo-abbrlink</a><br>之前的 <code>permalink</code> 格式是：</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">permalink</span><span class="token punctuation">:</span> post/<span class="token punctuation">:</span>year/<span class="token punctuation">:</span>month/<span class="token punctuation">:</span>day/<span class="token punctuation">:</span>title/
-<span class="token comment" spellcheck="true"># 例如  http://tianma.pro/2018/02/08/Hello-World</span>
+<span class="token comment" spellcheck="true"># 例如  http://tianma.space/2018/02/08/Hello-World</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>使用 <code>hexo-abbrlink</code> 插件格式是:</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">permalink</span><span class="token punctuation">:</span> post/<span class="token punctuation">:</span>abbrlink/
@@ -531,9 +531,9 @@
   <span class="token key atrule">alg</span><span class="token punctuation">:</span> crc32  <span class="token comment" spellcheck="true">#算法 support crc16(default) and crc32</span>
   <span class="token key atrule">rep</span><span class="token punctuation">:</span> dec    <span class="token comment" spellcheck="true">#进制 support dec(default) and hex</span>
 
-<span class="token comment" spellcheck="true"># 例如： http://tianma.pro/post/3678283086/</span>
+<span class="token comment" spellcheck="true"># 例如： http://tianma.space/post/3678283086/</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>当访问博客网站 <a href="http://tianma.pro" target="_blank" rel="external">Tianma</a></p>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>当访问博客网站 <a href="http://tianma.space">Tianma</a></p>
 <ul>
 <li>国内IP走的 <code>coding</code>:  <a href="http://tianma8023.coding.me" target="_blank" rel="external">tianma8023.coding.me</a></li>
 <li>国外IP走的 <code>GitHub</code>:  <a href="http://tianma8023.github.io" target="_blank" rel="external">tianma8023.github.io</a></li>
@@ -552,7 +552,7 @@
 <h3 id="云存储服务"><a href="#云存储服务" class="headerlink" title="云存储服务"></a>云存储服务</h3><p>云存储服务商使用的是 <a href="https://www.qiniu.com/" target="_blank" rel="external">七牛云</a>，配合 <a href="https://github.com/gyk001/hexo-qiniu-sync" target="_blank" rel="external">hexo-qiniu-sync</a> 食用。<br>主要就是把 图片、视频、音乐等其他较大的静态资源 上传到七牛云，加速博客网站静态资源加载。</p>
 <p>详细请参考 <a href="https://yuchen-lea.github.io/2016-01-21-use-qiniu-store-file-for-hexo/" target="_blank" rel="external">使用七牛为Hexo存储图片等资源</a>。</p>
 <h3 id="音乐播放"><a href="#音乐播放" class="headerlink" title="音乐播放"></a>音乐播放</h3><p>音乐播放器采用的是 <a href="https://github.com/DIYgod" target="_blank" rel="external">DIYGod</a> 的 <a href="https://github.com/MoePlayer/APlayer" target="_blank" rel="external">APlayer</a>, 以 <a href="https://github.com/metowolf/MetingJS" target="_blank" rel="external">MetingJS</a> 为辅助配合食用。</p>
-<p>详情参考: <a href="http://tianma.pro/post/3998746934/" target="_blank" rel="external">Hexo 折腾：音乐播放</a></p>
+<p>详情参考: <a href="http://tianma.space/post/3998746934/">Hexo 折腾：音乐播放</a></p>
 <h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><ol>
 <li><p>图片描述(description)：因为 <code>material</code> 主题本身没有对图片做过多处理，当使用:</p>
 <pre class="line-numbers language-markdown"><code class="language-markdown"> <span class="token url">![description](xxx.jpg)</span>
@@ -564,7 +564,7 @@
 <p> 从而展示 <code>description</code>，当然了，出于美观，需要对 <code>.image-caption</code> 元素指定相应的 css 样式。</p>
 <p> 更多配置参考其文档。</p>
 </li>
-<li><p>图片放大查看： 由于 <code>material</code> 主题没有该功能，这里便采用 <code>FancyBox</code> 库实现该功能，详情参考 <a href="http://tianma.pro/post/2208308547/" target="_blank" rel="external">Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能</a></p>
+<li><p>图片放大查看： 由于 <code>material</code> 主题没有该功能，这里便采用 <code>FancyBox</code> 库实现该功能，详情参考 <a href="http://tianma.space/post/2208308547/">Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能</a></p>
 </li>
 </ol>
 <h3 id="看板娘"><a href="#看板娘" class="headerlink" title="看板娘"></a>看板娘</h3><p>看板娘采用的以 <a href="http://www.live2d.com/en/" target="_blank" rel="external">live2d</a> 技术为核心，以 <a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="external">hexo-helper-live2d</a> 为插件，配合 <code>live2d</code> 模型制作而成。</p>
