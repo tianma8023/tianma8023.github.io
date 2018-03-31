@@ -207,9 +207,10 @@
     <!-- Import APlayer.js -->
     
         <!-- Import APlayer -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.6.0/APlayer.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.js"></script>
 <!-- Import meting.js -->
-<script src="https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@1.1.1/dist/Meting.min.js"></script> 
     
 
     <!-- Live2d -->
@@ -318,7 +319,10 @@
 </style>
     
 <link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<script src="\assets\js\Meting.min.js" class="meting-script-marker"></script>
+</head>
 
 
     
@@ -365,7 +369,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-使用音乐平台官方插件"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. 使用音乐平台官方插件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-使用-hexo-tag-aplayer-插件"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. 使用 hexo-tag-aplayer 插件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-使用-APlayer-MetingJS"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 使用 APlayer + MetingJS</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最后"><span class="post-toc-number">4.</span> <span class="post-toc-text">最后</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用音乐平台官方插件"><span class="post-toc-number">1.</span> <span class="post-toc-text">使用音乐平台官方插件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用-APlayer-MetingJS"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用 APlayer + MetingJS</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用-hexo-tag-aplayer-插件"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用 hexo-tag-aplayer 插件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最后"><span class="post-toc-number">4.</span> <span class="post-toc-text">最后</span></a></li></ol>
 
         <!--
         <li class="mdl-menu__item">
@@ -521,13 +525,13 @@
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
         <p>最近想要在博客中插入音乐（网易云音乐），目前找到了三种解决方案：</p>
-<ul>
+<ol>
 <li>使用音乐平台自己的插件</li>
-<li>使用 <a href="https://github.com/MoePlayer/hexo-tag-aplayer" target="_blank" rel="external">hexo-tag-aplayer</a></li>
 <li>结合 <a href="https://github.com/metowolf/MetingJS" target="_blank" rel="external">MetingJS</a> 使用 <a href="https://github.com/MoePlayer/APlayer" target="_blank" rel="external">APlayer</a></li>
-</ul>
-<a id="more"></a>
-<h3 id="1-使用音乐平台官方插件"><a href="#1-使用音乐平台官方插件" class="headerlink" title="1. 使用音乐平台官方插件"></a>1. 使用音乐平台官方插件</h3><p>以网易云音乐为例，在Web网页上找到 歌单/单曲/专辑 页面，点击 <code>生成外链播放器</code> 即可跳转到官方提供的音乐播放插件使用引导页面，比如这个 <a href="http://music.163.com/#/outchain/0/827122421/" target="_blank" rel="external">外链插件</a>。<br>可以在自己博客页面中嵌入插件:</p>
+<li>使用 <a href="https://github.com/MoePlayer/hexo-tag-aplayer" target="_blank" rel="external">hexo-tag-aplayer</a><a id="more"></a>
+</li>
+</ol>
+<h3 id="使用音乐平台官方插件"><a href="#使用音乐平台官方插件" class="headerlink" title="使用音乐平台官方插件"></a>使用音乐平台官方插件</h3><p>以网易云音乐为例，在Web网页上找到 歌单/单曲/专辑 页面，点击 <code>生成外链播放器</code> 即可跳转到官方提供的音乐播放插件使用引导页面，比如这个 <a href="http://music.163.com/#/outchain/0/827122421/" target="_blank" rel="external">外链插件</a>。<br>可以在自己博客页面中嵌入插件:</p>
 <pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> 
     <span class="token attr-name">frameborder</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>no<span class="token punctuation">"</span></span> <span class="token attr-name">border</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span>
     <span class="token attr-name">marginwidth</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> <span class="token attr-name">marginheight</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> 
@@ -543,26 +547,15 @@
 <li>网易音乐有些音乐因为版权保护，没办法生成外链</li>
 <li>音乐平台众多，不同的平台可能插件规范不一样，插入不同平台来源的歌曲可能比较麻烦。</li>
 </ul>
-<h3 id="2-使用-hexo-tag-aplayer-插件"><a href="#2-使用-hexo-tag-aplayer-插件" class="headerlink" title="2. 使用 hexo-tag-aplayer 插件"></a>2. 使用 hexo-tag-aplayer 插件</h3><p><a href="https://github.com/MoePlayer/hexo-tag-aplayer" target="_blank" rel="external">hexo-tag-player</a> 就是将 <a href="https://github.com/DIYgod/APlayer" target="_blank" rel="external">APlayer</a> 内嵌入博客页面的 Hexo 插件。</p>
-<ol>
-<li>安装<pre class="line-numbers language-Shell"><code class="language-Shell"> npm install --save hexo-tag-aplayer
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li>使用<pre><code> {% aplayer title author url [picture_url, narrow, autoplay, width:xxx, lrc:xxx] %}
-</code></pre> 还支持其他参数，同时支持歌词、歌曲列表等功能，详情参考该项目主页。</li>
-</ol>
-<p>缺点：</p>
-<ul>
-<li>目前不支持在线播放（其他音乐网站歌曲），具体参考这个 <a href="https://github.com/MoePlayer/hexo-tag-aplayer/issues/29" target="_blank" rel="external">issue</a></li>
-</ul>
-<h3 id="3-使用-APlayer-MetingJS"><a href="#3-使用-APlayer-MetingJS" class="headerlink" title="3. 使用 APlayer + MetingJS"></a>3. 使用 APlayer + MetingJS</h3><p><a href="https://github.com/MoePlayer/APlayer" target="_blank" rel="external">Aplayer</a> 是目前广泛使用的 HTML5 音乐播放器，<a href="https://github.com/metowolf/MetingJS" target="_blank" rel="external">MetingJS</a> 用于解析歌曲链接。</p>
+<h3 id="使用-APlayer-MetingJS"><a href="#使用-APlayer-MetingJS" class="headerlink" title="使用 APlayer + MetingJS"></a>使用 APlayer + MetingJS</h3><p><a href="https://github.com/MoePlayer/APlayer" target="_blank" rel="external">APlayer</a> 是目前广泛使用的 HTML5 音乐播放器，<a href="https://github.com/metowolf/MetingJS" target="_blank" rel="external">MetingJS</a> 用于解析歌曲链接。</p>
 <p>以我目前的 <a href="https://github.com/viosey/hexo-theme-material" target="_blank" rel="external">hexo-theme-material</a> 主题为例：</p>
 <ol>
 <li>引入JS（最新的CDN请参考官网），创建 <code>/layout/_widget/aplayer.ejs</code> ：<pre class="line-numbers language-html"><code class="language-html"> <span class="token comment" spellcheck="true">&lt;!-- Import APlayer --></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.6.0/APlayer.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.css<span class="token punctuation">"</span></span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
  <span class="token comment" spellcheck="true">&lt;!-- Import meting.js --></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/meting@1.1.1/dist/Meting.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li>考虑到不是所有的博客页面都需要嵌入 <code>aplayer</code>, 所以在 <code>/_partial/head.ejs</code> 中加入：<pre class="line-numbers language-js"><code class="language-js"> <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> Import APlayer<span class="token punctuation">.</span>js <span class="token operator">--</span><span class="token operator">></span>
  <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>page<span class="token punctuation">.</span>aplayer <span class="token operator">===</span> <span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">%</span><span class="token operator">></span>
@@ -610,10 +603,10 @@
 <td style="text-align:center">音乐类型：<code>song</code>,<code>playlist</code>,<code>album</code>,<code>search</code>,<code>artist</code></td>
 </tr>
 <tr>
-<td style="text-align:center">data-mode</td>
-<td style="text-align:center">否</td>
+<td style="text-align:center"><s>data-mode</s></td>
+<td style="text-align:center"><strong>已弃用</strong></td>
 <td style="text-align:center"><code>circulation</code></td>
-<td style="text-align:center">播放模式：<code>circulation</code>,<code>random</code>,<code>single</code>,<code>order</code></td>
+<td style="text-align:center"><s>播放模式：<code>circulation</code>,<code>random</code>,<code>single</code>,<code>order</code></s><br> 使用 <code>data-loop</code> <code>data-order</code> 字段代替</td>
 </tr>
 <tr>
 <td style="text-align:center">data-autoplay</td>
@@ -642,39 +635,101 @@
 <tr>
 <td style="text-align:center">data-theme</td>
 <td style="text-align:center">否</td>
-<td style="text-align:center"><code>#ad7a86</code></td>
+<td style="text-align:center"><code>#2980b9</code></td>
 <td style="text-align:center">主题色</td>
+</tr>
+<tr>
+<td style="text-align:center">data-mini</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center"><code>false</code></td>
+<td style="text-align:center">是否开启迷你模式</td>
+</tr>
+<tr>
+<td style="text-align:center">data-loop</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center"><code>all</code></td>
+<td style="text-align:center">循环方式：<code>all</code>, <code>one</code>, <code>none</code></td>
+</tr>
+<tr>
+<td style="text-align:center">data-order</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center"><code>list</code></td>
+<td style="text-align:center">播放顺序：<code>list</code>, <code>random</code></td>
+</tr>
+<tr>
+<td style="text-align:center">data-lrc</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center"><code>false</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">data-list-folded</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center"><code>false</code></td>
+<td style="text-align:center">歌单列表初始时是否折叠</td>
+</tr>
+<tr>
+<td style="text-align:center">data-volume</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center"><code>0.7</code></td>
+<td style="text-align:center">用户未自定义前的默认初始化音量</td>
 </tr>
 </tbody>
 </table>
 <p>更多参数参考:<br><a href="https://github.com/metowolf/MetingJS#option" target="_blank" rel="external">MetingJS Options</a> &nbsp;&nbsp;<a href="https://aplayer.js.org/docs/#/?id=options" target="_blank" rel="external">APlayer Options</a></p>
 <p>效果展示：</p>
 <ol>
-<li>单曲:<pre class="line-numbers language-html"><code class="language-html"> &lt;div 
-     class="aplayer 
-     data-id="33911781" 
-     data-server="netease" 
-     data-type="song"
-     data-mutex="false">
+<li>单曲:<pre class="line-numbers language-html"><code class="language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> 
+     <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>aplayer<span class="token punctuation">"</span></span> 
+     <span class="token attr-name">data-id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>33911781<span class="token punctuation">"</span></span> 
+     <span class="token attr-name">data-server</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>netease<span class="token punctuation">"</span></span> 
+     <span class="token attr-name">data-type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>song<span class="token punctuation">"</span></span>
+     <span class="token attr-name">data-mutex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span>
+     <span class="token attr-name">data-loop</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>none<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
- <div class="aplayer" data-id="33911781" data-server="netease" data-type="song" data-mutex="false"></div></li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ <div class="aplayer" data-id="33911781" data-server="netease" data-type="song" data-mutex="false" data-loop="none"><br> </div></li>
 <li>歌单：<pre class="line-numbers language-html"><code class="language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> 
      <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>aplayer<span class="token punctuation">"</span></span> 
      <span class="token attr-name">data-id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>775701065<span class="token punctuation">"</span></span> 
      <span class="token attr-name">data-server</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>netease<span class="token punctuation">"</span></span> 
-     <span class="token attr-name">data-type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>playlist<span class="token punctuation">"</span></span> 
-     <span class="token attr-name">data-mode</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>random<span class="token punctuation">"</span></span>
+     <span class="token attr-name">data-type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>playlist<span class="token punctuation">"</span></span>
+     <span class="token attr-name">data-order</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>random<span class="token punctuation">"</span></span> 
      <span class="token attr-name">data-listmaxheight</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>240px<span class="token punctuation">"</span></span>
      <span class="token attr-name">data-theme</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#FF4081<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
- <div class="aplayer" data-id="775701065" data-server="netease" data-type="playlist" data-mode="random" data-listmaxheight="240px" data-theme="#FF4081"><br> </div>
-
+ <div class="aplayer" data-id="775701065" data-server="netease" data-type="playlist" data-order="random" data-listmaxheight="240px" data-theme="#FF4081"><br> </div>
 
 </li>
 </ol>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>考虑到我最初的需求是 能播放在线歌单 ，再考虑到便利性，所以最终选择了第三种方案。</p>
+<h3 id="使用-hexo-tag-aplayer-插件"><a href="#使用-hexo-tag-aplayer-插件" class="headerlink" title="使用 hexo-tag-aplayer 插件"></a>使用 hexo-tag-aplayer 插件</h3><p><a href="https://github.com/MoePlayer/hexo-tag-aplayer" target="_blank" rel="external">hexo-tag-aplayer</a> 就是将 <a href="https://github.com/DIYgod/APlayer" target="_blank" rel="external">APlayer</a> 内嵌入博客页面的 Hexo 插件。</p>
+<ol>
+<li>安装<pre class="line-numbers language-Shell"><code class="language-Shell"> npm install --save hexo-tag-aplayer
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>使用<pre><code> {% aplayer title author url [picture_url, narrow, autoplay, width:xxx, lrc:xxx] %}
+</code></pre> 还支持其他参数，同时支持歌词、歌曲列表等功能，详情参考该项目主页。</li>
+</ol>
+<p><s>缺点：</s></p>
+<ul>
+<li><s>目前不支持在线播放（其他音乐网站歌曲），具体参考这个 <a href="https://github.com/MoePlayer/hexo-tag-aplayer/issues/29" target="_blank" rel="external">issue</a></s></li>
+</ul>
+<p><span style="color:#ff4081">2018.03.31更新：</span><br>目前 <code>3.0</code> 版本的 <code>hexo-tag-aplayer</code> 已经支持了 <code>MetingJS</code>，因此可以解析网络平台的歌曲/歌单了。</p>
+<ol>
+<li>在<strong>站点配置文件</strong>中开启 <code>meting</code> 模式：<pre class="line-numbers language-yaml"><code class="language-yaml"> <span class="token key atrule">aplayer</span><span class="token punctuation">:</span>
+   <span class="token key atrule">meting</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>使用 <code>meting</code> 标签插入在线音乐，例如：</p>
+<pre><code> {% meting "27684881" "netease" "song" "theme:#FF4081" "mode:circulation" "mutex:true" "listmaxheight:340px" "preload:auto" %}
+</code></pre><p> 效果如下：</p>
+ 
+    <div id="aplayer-ApgKaRAj" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="27684881" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+<p> <span style="color:#ff4081">需要注意：</span> 到目前为止，<code>meting</code> 标签参数中必须包含 <code>id</code>, <code>server</code>, <code>type</code> 且有序，剩余的参数除了 <code>autoplay</code> 之外其他的都需要按照 <code>参数名:xxx</code> 的格式。<br> 更多细节具体请参考这个 <a href="https://github.com/MoePlayer/hexo-tag-aplayer/issues/37" target="_blank" rel="external">issue</a> 已经该插件的官方文档。</p>
+</li>
+</ol>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>考虑到我最初的需求是 能播放在线歌单 ，再考虑到便利性，所以最终选择了 <code>hexo-tag-aplayer</code> 方案。</p>
 
     
 
