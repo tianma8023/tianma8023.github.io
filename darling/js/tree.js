@@ -109,12 +109,23 @@
             $await(Jscex.Async.sleep(1000));
         }
     }));
+
     var showPeopleAnimate = eval(Jscex.compile("async", function() {
         $("#we").fadeIn(5000);
     }));
+
+    var isBirthday = isBirthdayOrNot();
+    if (isBirthday) {
+        document.title = "Happy Birthday!"
+    }
     var showTypewriterAnimate = eval(Jscex.compile("async", function() {
         var word = 'To Jasmin:<br><br>';
-        word += getRandomWord() + '<br><br>';
+        if (isBirthday) {
+            word += '<span style="color:#FF4081">Happy 18th birthday<br>'
+            word += getRandomBirthdayWishes() + '</span><br><br>';
+        } else {
+            word += getRandomWord() + '<br><br>';
+        }
         for (var i = 0; i < 10; i++) {
             word += ' ';
         }
@@ -122,6 +133,7 @@
         $('#words').html(word);
         $('#words').show().typewriter();
     }));
+
     var runAsync = eval(Jscex.compile("async", function() {
         $await(seedAnimate());
         $await(growAnimate());

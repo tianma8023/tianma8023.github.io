@@ -32,8 +32,35 @@ words.push("I would rather share one lifetime with you than face all the ages of
 words.push("I will be giving you the rest of my life.");
 words.push("If you would have me, I will be falling in love with you forever. If not, I'll still be giving my unrequited love forever.");
 
+var birthdayWords = new Array();
+
+birthdayWords.push("Enjoy your moment of your life.");
+birthdayWords.push("Wishing you an awesome day with good luck on your way.");
+birthdayWords.push("You deserve to sit back with a pillow under your feet.");
+birthdayWords.push("May you have all the joy your heart can hold.");
+birthdayWords.push("May your day be as beautiful as you.");
+birthdayWords.push("A day brim full of all things good is a friend's fond wish for you.");
+birthdayWords.push("I'm wishing you a brithday bright");
+birthdayWords.push("I looked for something sweet to send to you.");
+birthdayWords.push("May the sun's rays shine brightest on you today.");
+birthdayWords.push("May all your dreams and wishes come true.");
+birthdayWords.push("Hope your day is filled with lots of love and laughter.");
+
 function getRandomWord() {
     var idx = Math.random();
     idx = parseInt(100 * idx % words.length);
     return words[idx];
+}
+
+function getRandomBirthdayWishes() {
+    var idx = Math.random();
+    idx = parseInt(100 * idx % birthdayWords.length);
+    return birthdayWords[idx];
+}
+
+function isBirthdayOrNot() {
+    var today = new Date();
+    var month = today.getMonth() + 1;
+    var day = today.getDate();
+    return month == 4 && day == 2;
 }
