@@ -515,12 +515,12 @@
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <p><code>IPC</code> (Interprocess Communication) 即进程间通信，需要用到 <code>IPC</code> 主要有一下原因：</p>
+        <p><code>IPC</code> (Interprocess Communication) 即进程间通信，需要用到 <code>IPC</code> 主要有以下原因：</p>
 <ul>
 <li>应用内自身原因需要采用多进程，比如，大应用模块多，需要的内存大，而 Android 对单进程内存有大小限制，所以需要多进程获取更多的内存空间；</li>
-<li>当前应用需要获取其他应用数据。<a id="more"></a>
-</li>
+<li>当前应用需要获取其他应用数据。</li>
 </ul>
+<a id="more"></a>
 <h2 id="Android-多进程模式"><a href="#Android-多进程模式" class="headerlink" title="Android 多进程模式"></a>Android 多进程模式</h2><h3 id="开启多进程模式"><a href="#开启多进程模式" class="headerlink" title="开启多进程模式"></a>开启多进程模式</h3><p>Android 中开启多进程有两种方式：</p>
 <ol>
 <li>给四大组件在 <code>AndroidManifest</code> 中指定 <code>android:process</code> 属性</li>
