@@ -409,7 +409,14 @@
         <strong>Tianma</strong>
         <span>4月 04, 2018</span>
     </div>
-
+	
+	
+	<div class="div-post-count">
+        <span class="post-count">字数统计：1,843 字</span>
+		<span class="post-count">阅读时长：9 分</span>
+    </div>
+	
+	
     <div class="section-spacer"></div>
 
     <!-- Favorite -->
@@ -515,7 +522,7 @@
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <p>在上一篇博客 <a href="/post/3352500871#AIDL">Android 笔记：IPC - AIDL</a> 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶，建议先看上一篇博客，再看这篇。 &nbsp; <a id="more"></a></p>
+        <p>在上一篇博客 <a href="/post/3352500871#AIDL">Android 笔记：IPC - AIDL</a> 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &nbsp; <a id="more"></a></p>
 <h3 id="AIDL-中的注册与反注册"><a href="#AIDL-中的注册与反注册" class="headerlink" title="AIDL 中的注册与反注册"></a>AIDL 中的注册与反注册</h3><p>之前的 <code>IBookManager</code> 中只提供了获取 书籍列表(getBookList) 和 添加书籍(addBook) 的方法，现在我们将其扩展一下，希望能加入“当新的书本被添加之后，能够通知出去”。这是一种 <code>观察者模式</code>：</p>
 <p>由于 <code>AIDL</code> 中无法使用普通接口，所以添加新的 <code>IOnNewBookArrived.aidl</code> 接口，用于回调新书的到来：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>github<span class="token punctuation">.</span>tianma8023<span class="token punctuation">.</span>ipclearn<span class="token punctuation">.</span>aidl<span class="token punctuation">;</span>
