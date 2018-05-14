@@ -5748,3 +5748,13 @@ a {
     background-color: #f9f9f9;
     list-style: none;
 }
+
+#scheme-Paradox .div-post-count {
+    margin-left: 2em;
+}
+
+@media screen and (max-width: 840px) {
+    #scheme-Paradox .div-post-count {
+        display: none !important;
+    }
+}
