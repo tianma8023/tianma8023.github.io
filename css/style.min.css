@@ -5758,3 +5758,9 @@ a {
         display: none !important;
     }
 }
+
+@media screen and (max-width: 840px) {
+    #article-functions-qrcode-button {
+        display: none !important;
+    }
+}
