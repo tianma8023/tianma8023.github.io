@@ -115,14 +115,19 @@
     }));
 
     var isBirthday = isBirthdayOrNot();
+    var isDay520 = isDay520OrNot();
     if (isBirthday) {
-        document.title = "Happy Birthday!"
+        document.title = "Happy Birthday!";
+    } else if (isDay520) {
+        document.title = "I ❤ U";
     }
     var showTypewriterAnimate = eval(Jscex.compile("async", function() {
         var word = 'To Jasmin:<br><br>';
         if (isBirthday) {
             word += '<span style="color:#FF4081">Happy 18th birthday<br>'
             word += getRandomBirthdayWishes() + '</span><br><br>';
+        } else if (isDay520) {
+            word += getRandomDay520Wishes() + '<br/><br/>'
         } else {
             word += getRandomWord() + '<br><br>';
         }
@@ -135,10 +140,10 @@
     }));
 
     var runAsync = eval(Jscex.compile("async", function() {
-        $await(seedAnimate());
-        $await(growAnimate());
-        $await(flowAnimate());
-        $await(moveAnimate());
+        // $await(seedAnimate());
+        // $await(growAnimate());
+        // $await(flowAnimate());
+        // $await(moveAnimate());
         clockAnimate().start();
         $await(showPeopleAnimate());
         $await(Jscex.Async.sleep(1000));

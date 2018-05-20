@@ -46,6 +46,20 @@ birthdayWords.push("May the sun's rays shine brightest on you today.");
 birthdayWords.push("May all your dreams and wishes come true.");
 birthdayWords.push("Hope your day is filled with lots of love and laughter.");
 
+var day520Words = new Array();
+
+var day520Word =
+    '<span style="color:#ff0000">5</span> ' +
+    '<span style="color:#ff7d00">2</span> ' +
+    '<span style="color:#eeee00">0</span> ' +
+    '<span style="color:#00ff00">1</span> ' +
+    '<span style="color:#0000ff">3</span> ' +
+    '<span style="color:#00ffff">1</span> ' +
+    '<span style="color:#ff00ff">4</span><br/>' +
+    'I <span style="color:#ff0000">❤</span> You Forever<br/>' +
+    '(づ￣3￣)づ╭<span style="color:#ff0000">❤</span>～';
+day520Words.push(day520Word);
+
 function getRandomWord() {
     var idx = Math.random();
     idx = parseInt(100 * idx % words.length);
@@ -63,4 +77,17 @@ function isBirthdayOrNot() {
     var month = today.getMonth() + 1;
     var day = today.getDate();
     return month == 4 && day == 2;
+}
+
+function getRandomDay520Wishes() {
+    var idx = Math.random();
+    idx = parseInt(100 * idx % day520Words.length);
+    return day520Words[idx];
+}
+
+function isDay520OrNot() {
+    var today = new Date();
+    var month = today.getMonth() + 1;
+    var day = today.getDate();
+    return month == 5 && day == 20;
 }
