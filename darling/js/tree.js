@@ -140,10 +140,10 @@
     }));
 
     var runAsync = eval(Jscex.compile("async", function() {
-        // $await(seedAnimate());
-        // $await(growAnimate());
-        // $await(flowAnimate());
-        // $await(moveAnimate());
+        $await(seedAnimate());
+        $await(growAnimate());
+        $await(flowAnimate());
+        $await(moveAnimate());
         clockAnimate().start();
         $await(showPeopleAnimate());
         $await(Jscex.Async.sleep(1000));
