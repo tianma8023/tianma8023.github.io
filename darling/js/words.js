@@ -1,5 +1,5 @@
 var words = new Array();
-words.push('I am<br/> not happy<br/> beacase');
+words.push('I am<br/> not happy<br/> becase');
 words.push('You are<br/>the <span style="color:#ff4081;">CSS</span><br/> to my <span style="color:#ff4081;">HTML</span>');
 words.push("You are my today and all of my tomorrows.");
 words.push("There is no magic formula when it comes to finding the love of your life. But when you meet your Mr. Right, you have to grab every chance you get. ");
