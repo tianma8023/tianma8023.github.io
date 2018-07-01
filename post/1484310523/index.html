@@ -1,205 +1,347 @@
-<!DOCTYPE html><html lang="zh"><head><title>栈的应用之中缀表达式和后缀表达式 | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon.png"><link rel="icon" sizes="192x192" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/favicon.png"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0097A7"><meta name="author" content="Tianma"><meta name="description" content="Everything will be okay in the end."><meta name="keywords" content="Tianma,栈"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="apple-mobile-web-app-title" content="Title"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="480"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Tianma"><meta property="og:url" content="http://tianma.space"><meta property="og:type" content="blog"><meta property="og:title" content="栈的应用之中缀表达式和后缀表达式 | Tianma"><meta property="og:description" content="Everything will be okay in the end."><meta property="og:article:tag" content="栈"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><link rel="stylesheet" href="../../css/material.min.css"><link rel="stylesheet" href="../../css/style.min.css"><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif}a{color:#00838f}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#0097a7!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#0097a7!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#0097a7!important}.toTop{background:#757575!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#757575}#scheme-Paradox .MD-burger-layer{background-color:#757575}#scheme-Paradox #post-toc-trigger-btn{color:#757575}.post-toc a:hover{color:#00838f;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><script src="../../js/jquery.min.js"></script><script src="../../js/queue.js"></script><link rel="stylesheet" href="../../lib/fancybox/dist/jquery.fancybox.min.css"><script src="../../lib/fancybox/dist/jquery.fancybox.min.js"></script><script src="../../js/wrapImage.js"></script><script>navigator.userAgent.toLowerCase().indexOf("ucbrowser")>0&&(document.write('<link rel="stylesheet" href="../../css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>!function(e,t,a,n,c,s,o){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,s=t.createElement(a),o=t.getElementsByTagName(a)[0],s.async=1,s.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(s,o)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script><link rel="stylesheet" href="/css/prism.css"><link rel="stylesheet" href="/css/prism-line-numbers.css"></head><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button> <button id="post-toc-trigger-btn" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">format_list_numbered</i></button><ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn"></ul><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/stack.jpg)"><p class="article-headline-p">栈的应用之中缀表达式和后缀表达式</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><span>发表：2016.04.10</span> <span>更新：2017.06.06</span></div><div class="div-post-count"><span class="post-count">字数统计：1,907 字</span> <span class="post-count">阅读时长：8 分</span></div><div class="section-spacer"></div><button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">devices other</i> <span class="visuallyhidden">devices other</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button"><li class="mdl-menu__item">在其它设备中阅读本文章</li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACYUlEQVR42u3aQW7DMAwEwPz/0+0L4ixJUzGC8akoFFnjg0Ss+Pr76eeFh4eHh4eHh4f3MN4rfqq/Ssa/GzNaGx4eHt4R3oet9s2Y/MXJDPl7r8fg4eHhneQli0s2/flh0FsbHh4e3pN57xZ6Pc/1eDw8PLzf5kVxavBRPhTHeHh4eI/n5QutkpKl9z4lHh4e3rd4vUD2zN9H7/fw8PDwAl65pSnerCdXa7c1XeHh4eEt8PKNuEq6q6SurgcPDw9vm5df5OdhQRJYXIe8o7ZXPDw8vGVetRWgypiHvOUoGQ8PD+8gr3rBnzSqXh8M1UaEqJ0LDw8Pb5mXXzXlG3evZJ83quLh4eGd4fWuoPJNPxlZ/WTlMAIPDw9vgde7rOodCfOQt3ww4OHh4d3KmxwG+QGQf9BknmbrAB4eHt4CrxpJ5BdpydGShMJRLIKHh4e3zMu35tFmHfPy8rrZdIWHh4d3K29yHdUjXc9/Q0mNh4eHt8BLNujJ9VUeOlRnw8PDw3syb2MpefBRbW/Fw8PD2+ZNQtteuDAprKO34+Hh4R3h5eFpNdjN21UnEQYeHh7et3iT42HjYEiCj8LBgIeHh7fA6yF7EUP1V4XCHQ8PD2+ZV33yTT9n5IdNEuzi4eHhbfPu3ZTz9oIk8sjLaDw8PLzzvEk4m2zl8/ijEBDj4eHhHeQlraV5i1U1xp3EGXh4eHjP5yVXWXlRPmlXHd3v4eHh4R3kVcOCycg8hsDDw8M7z0vCiPw/89aEXmGNh4eHd4Y3KXDzEjwvxyfNCnh4eHjbvN978PDw8PDw8PDwHvD8A61dAl2F8uWbAAAAAElFTkSuQmCC"></ul><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="../../tags/栈/">栈</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/1484310523/" class="leancloud-views_num" data-flag-title="栈的应用之中缀表达式和后缀表达式">&nbsp;阅读量</span></li></a><a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=栈的应用之中缀表达式和后缀表达式&url=http://tianma.space/post/1484310523/&pic=&searchPic=false&style=simple" target="_blank"><li class="mdl-menu__item">分享到微博</li></a><a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Tianma&title=栈的应用之中缀表达式和后缀表达式&summary=Everything will be okay in the end.&pics=http://tianma.space/img/favicon.png&url=http://tianma.space/post/1484310523/" target="_blank"><li class="mdl-menu__item">分享到 QQ</li></a><a class="post_share-link" href="https://telegram.me/share/url?url=http://tianma.space/post/1484310523/&text=栈的应用之中缀表达式和后缀表达式" target="_blank"><li class="mdl-menu__item">分享到 Telegram</li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><p><strong>中缀表达式</strong>： 是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于的中间（例：3 + 4），中缀表达式是人们常用的算术表示方法，但是不易被计算机所解析。</p><p><strong>后缀表达式</strong>：是一个通用的算术或逻辑公式表示方法， 操作符是后缀形式处于操作数的后面（例：3 4 +），后缀表达式虽然不是人们所习惯的运算表示方法，但是易被计算机解析。<br><a id="more"></a><br>例如：对于中缀表达式 9+(3-1)*2+10/2 , 其后缀表达式是 9 3 1 - 3 * + 10 2 / + , 那么为了方便计算机解析计算，我们需要将中缀表达式转换成后缀表达式，然后再对后缀表达式进行解析。</p><p><strong>1. 中缀表达式转后缀表达式：</strong></p><ol><li>当读到一个操作数时，立即将它放到输出中。读到的是操作符则需要接着判断是否该入栈。读到的是左圆括号则入栈。</li><li>在读到操作符时，如果栈为空或者栈顶操作符为（，则入栈。如果栈顶操作符不为（，且此操作符优先级小于或等于此时栈顶操作符，则将栈中元素弹出直至 ①遇到左括号 或者 ②栈顶元素为更低优先级 或者 ③栈为空为止，并将当前操作符入栈；否则当前操作符继续入栈。操作符中，+-优先级低，*/优先级高。</li><li>如果遇到一个右括号，那么就将栈中元素弹出并输出直至遇到左括号为止。但是这个左括号只被弹出，并不输出。</li><li>如果读到输入的末尾，若栈不为空则将栈元素弹出直到该栈变成空栈，并将弹出的符号写到输出中。</li></ol><p><strong>“9+(3-1)*2+10/2” 转换过程：</strong></p><table><thead><tr><th>操作过程</th><th>栈中元素</th><th>输出</th></tr></thead><tbody><tr><td>读入 9，输出</td><td></td><td>9</td></tr><tr><td>读入 +，栈为空，规则2，入栈</td><td>+</td><td>9</td></tr><tr><td>读入 ( ，左括号，规则1，入栈</td><td>+ (</td><td>9</td></tr><tr><td>读入 3，输出</td><td>+ (</td><td>9 3</td></tr><tr><td>读入 -，栈顶为（，规则2，入栈</td><td>+ ( -</td><td>9 3</td></tr><tr><td>读入 1，输出</td><td>+ ( -</td><td>9 3 1</td></tr><tr><td>读入 ) ，右括号，规则3，出栈并输出</td><td>+</td><td>9 3 1 -</td></tr><tr><td>读入 *，*优先级高于栈顶+，规则,2，入栈</td><td>+ *</td><td>9 3 1 -</td></tr><tr><td>读入 3，输出</td><td>+ *</td><td>9 3 1 - 3</td></tr><tr><td>读入 +，+优先级低于栈顶*，规则2，栈中元素出栈，当前操作符入栈</td><td>+</td><td>9 3 1 - 3 * +</td></tr><tr><td>读入 10， 输出</td><td>+</td><td>9 3 1 - 3 * + 10</td></tr><tr><td>读入 / ， /优先级高于+，入栈</td><td>+ /</td><td>9 3 1 - 3 * + 10</td></tr><tr><td>读入 2， 输出</td><td>+ /</td><td>9 3 1 - 3 * + 10</td></tr><tr><td>读至末尾，规则4，栈不为空，栈中元素出栈并输出</td><td></td><td>9 3 1 - 3 * + 10 / +</td></tr></tbody></table><p><strong>2. 后缀表达式计算最终结果：</strong></p><ol><li>从左到右遍历表达式的每个数字和符号,遇到是数字则进栈,遇到是运算符则将栈顶两个元素出栈,进行运算并将运算结果进栈；</li><li>遍历完后缀表达式,此时栈中剩余的数字就是运算结果。</li></ol><p><strong>“9 3 1 - 3 * + 10 2 / +” 计算过程：</strong></p><table><thead><tr><th>操作过程</th><th>栈中元素</th></tr></thead><tbody><tr><td>读入 9，入栈</td><td>9</td></tr><tr><td>读入 3，入栈</td><td>9 3</td></tr><tr><td>读入 1，入栈</td><td>9 3 1</td></tr><tr><td>读入 -，运算并将结果入栈</td><td>9 2</td></tr><tr><td>读入 3，入栈</td><td>9 2 3</td></tr><tr><td>读入 *，运算并将结果入栈</td><td>9 6</td></tr><tr><td>读入 +，运算并将结果入栈</td><td>15</td></tr><tr><td>读入 10，入栈</td><td>15 10</td></tr><tr><td>读入 2，入栈</td><td>15 10 2</td></tr><tr><td>读入 /，运算并将结果入栈</td><td>15 5</td></tr><tr><td>读入 +，运算并将结果入栈</td><td>20</td></tr><tr><td>读入完毕，栈中元素即为结果</td><td>20</td></tr></tbody></table><p>简单中缀表达式计算的java实现：</p><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SimpleCalcutor</span> <span class="token punctuation">{</span>
+<!DOCTYPE html><html style="display:none" lang="zh"><head><meta charset="utf-8"><script>window.materialVersion="1.5.2",window.oldVersion=["codestartv1","1.3.4","1.4.0","1.4.0b1","1.5.0"]</script><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn1.lncld.net"><link rel="dns-prefetch" href="https://busuanzi.ibruce.info"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><meta name="renderer" content="webkit"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>栈的应用之中缀表达式和后缀表达式 | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon.png"><link rel="icon" href="/img/favicon.png"><meta name="format-detection" content="telephone=no"><meta name="description" itemprop="description" content="中缀表达式： 是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于的中间（例：3 + 4），中缀表达式是人们常用的算术表示方法，但是不易被计算机所解析。
+后缀表达式：是一个通用的算术或逻辑公式表示方法， 操作符是后缀形式处于操作数的后面（例：3 4 +），后缀表达式虽然不是人们所习惯的运算表示方法，但是易被计算机解析。"><meta name="keywords" content="Tianma,栈"><meta name="theme-color" content="#0097A7"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><script>window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}},lsloader.removeLS=function(e){try{localStorage.removeItem(e)}catch(e){}},lsloader.setLS=function(e,t){try{localStorage.setItem(e,t)}catch(e){}},lsloader.getLS=function(e){var t="";try{t=localStorage.getItem(e)}catch(e){t=""}return t},versionString="/*"+(window.materialVersion||"unknownVersion")+"*/",lsloader.clean=function(){try{for(var e=[],t=0;t<localStorage.length;t++)e.push(localStorage.key(t));e.forEach(function(e){var n=lsloader.getLS(e);window.oldVersion&&window.oldVersion.reduce(function(e,t){return e||-1!==n.indexOf("/*"+t+"*/")},!1)&&lsloader.removeLS(e)})}catch(e){}},lsloader.clean(),lsloader.load=function(e,t,n,s){var a;if("boolean"==typeof n&&(s=n,n=void 0),s=s||!1,n=n||function(){},(a=this.getLS(e))&&-1===a.indexOf(versionString))return this.removeLS(e),void this.requestResource(e,t,n,s);if(a){if(a.split(versionString)[0]!=t)return console.log("reload:"+t),this.removeLS(e),void this.requestResource(e,t,n,s);a=a.split(versionString)[1],s?(this.jsRunSequence.push({name:e,code:a}),this.runjs(t,e,a)):(document.getElementById(e).appendChild(document.createTextNode(a)),n())}else this.requestResource(e,t,n,s)},lsloader.requestResource=function(t,n,e,s){var a=this;s?this.iojs(n,t,function(e,t,n){a.setLS(t,e+versionString+n),a.runjs(e,t,n)}):this.iocss(n,t,function(e){document.getElementById(t).appendChild(document.createTextNode(e)),a.setLS(t,n+versionString+e)},e)},lsloader.iojs=function(t,n,e){var s=this;s.jsRunSequence.push({name:n,code:""});try{var a=new XMLHttpRequest;a.open("get",t,!0),a.onreadystatechange=function(){if(4==a.readyState){if((200<=a.status&&a.status<300||304==a.status)&&""!=a.response)return void e(t,n,a.response);s.jsfallback(t,n)}},a.send(null)}catch(e){s.jsfallback(t,n)}},lsloader.iocss=function(t,n,e,s){var a=this;try{var o=new XMLHttpRequest;o.open("get",t,!0),o.onreadystatechange=function(){if(4==o.readyState){if((200<=o.status&&o.status<300||304==o.status)&&""!=o.response)return e(o.response),void s();a.cssfallback(t,n,s)}},o.send(null)}catch(e){a.cssfallback(t,n,s)}},lsloader.iofonts=function(t,n,e,s){var a=this;try{var o=new XMLHttpRequest;o.open("get",t,!0),o.onreadystatechange=function(){if(4==o.readyState){if((200<=o.status&&o.status<300||304==o.status)&&""!=o.response)return e(o.response),void s();a.cssfallback(t,n,s)}},o.send(null)}catch(e){a.cssfallback(t,n,s)}},lsloader.runjs=function(e,t,n){if(t&&n)for(var s in this.jsRunSequence)this.jsRunSequence[s].name==t&&(this.jsRunSequence[s].code=n);if(this.jsRunSequence[0]&&this.jsRunSequence[0].code&&"failed"!=this.jsRunSequence[0].status)(a=document.createElement("script")).appendChild(document.createTextNode(this.jsRunSequence[0].code)),a.type="text/javascript",document.getElementsByTagName("head")[0].appendChild(a),this.jsRunSequence.shift(),0<this.jsRunSequence.length&&this.runjs();else if(this.jsRunSequence[0]&&"failed"==this.jsRunSequence[0].status){var a,o=this;(a=document.createElement("script")).src=this.jsRunSequence[0].path,a.type="text/javascript",this.jsRunSequence[0].status="loading",a.onload=function(){o.jsRunSequence.shift(),0<o.jsRunSequence.length&&o.runjs()},document.body.appendChild(a)}},lsloader.tagLoad=function(e,t){this.jsRunSequence.push({name:t,code:"",path:e,status:"failed"}),this.runjs()},lsloader.jsfallback=function(e,t){if(!this.jsnamemap[t]){for(var n in this.jsnamemap[t]=t,this.jsRunSequence)this.jsRunSequence[n].name==t&&(this.jsRunSequence[n].code="",this.jsRunSequence[n].status="failed",this.jsRunSequence[n].path=e);this.runjs()}},lsloader.cssfallback=function(e,t,n){if(!this.cssnamemap[t]){this.cssnamemap[t]=1;var s=document.createElement("link");s.type="text/css",s.href=e,s.rel="stylesheet",s.onload=s.onerror=n;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(s,a)}},lsloader.runInlineScript=function(e,t){var n=document.getElementById(t).innerText;this.jsRunSequence.push({name:e,code:n}),this.runjs()}</script><script>function Queue(){this.dataStore=[],this.offer=function(e){this.debug&&console.log("Offered a Queued Function.");"function"==typeof e?this.dataStore.push(e):console.log("You must offer a function.")},this.poll=function(){this.debug&&console.log("Polled a Queued Function.");return this.dataStore.shift()},this.execNext=function(){var e=this.poll();void 0!==e&&(this.debug&&console.log("Run a Queued Function."),e())},this.debug=!1,this.startDebug=function(){this.debug=!0}}var queue=new Queue</script><style id="material_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style id="style_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;overflow-x:hidden!important}code{font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace}a{color:#00838f}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#0097a7!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#0097a7!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#0097a7!important}.toTop{background:#757575!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#757575}#scheme-Paradox .MD-burger-layer{background-color:#757575}#scheme-Paradox #post-toc-trigger-btn{color:#757575}.post-toc a:hover{color:#00838f;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"><style id="material_icons"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style>.hanabi-linenumber{color:#ff4081}#scheme-Paradox .material-nav .page-number{display:block;padding:0 .8em;font-size:1.3em;margin:0 .2em}#scheme-Paradox .material-nav .page-number.current{color:#ff4081;text-align:center;font-weight:700;margin:0 0}#scheme-Paradox .material-nav .space{color:#757575;text-align:center;font-weight:700}#scheme-Paradox .material-layout .material-post>.material-nav{display:flex;margin:10px 15px;color:#fff;font-weight:500;flex-direction:row;justify-content:space-between;align-items:center;text-align:center}#scheme-Paradox .material-layout .material-index>.material-nav{display:flex;margin:10px 15px;color:#fff;font-weight:500;flex-direction:row;justify-content:space-between;align-items:center;text-align:center;margin-left:25%;margin-right:25%}.image-caption{display:block;text-align:center;margin:10px 0;color:#666}.post-image-center{display:block;margin:auto}#post-license{margin:2em 0;padding:.5em 1em;border-left:3px solid #ff4081;background-color:#f5f5f5;list-style:none}#scheme-Paradox .div-post-count{margin-left:2em}@media screen and (max-width:840px){#scheme-Paradox .div-post-count{display:none!important}}#scheme-Paradox .material-layout .mdl-card__media{min-height:275px}#scheme-Paradox .material-layout .post_entry-module .mdl-card__media~.mdl-card__supporting-text{padding-top:16px}#scheme-Paradox .material-layout .post_entry-content h2{margin:0 0 15px;font-size:2em;font-weight:500}#scheme-Paradox .material-layout .post_entry-content p{margin:0 0}#scheme-Paradox .material-layout .post_entry-content blockquote{border-left:4px solid #ddd;padding:15px 15px;background-color:#f8f8f8;font-style:normal;color:#777;margin:0 15px 15px}#post-content blockquote{padding:15px 15px;background-color:#f8f8f8}.sidebar .sidebar-brand{color:rgba(0,0,0,.8);hover:rgba(0,0,0,.8);font-weight:500}.sidebar .sidebar-header.header-cover{background-size:cover}.footer-sns-facebook{background:url(/img/footer/footer_ico-facebook.svg)}.footer-sns-gplus{background:url(/img/footer/footer_ico-gplus.svg)}.footer-sns-twitter{background:url(/img/footer/footer_ico-twitter.svg)}.footer-sns-weibo{background:url(/img/footer/footer_ico-weibo.svg)}.footer-sns-instagram{background:url(/img/footer/footer_ico-instagram.svg)}.footer-sns-tumblr{background:url(/img/footer/footer_ico-tumblr.svg)}.footer-sns-github{background:url(/img/footer/footer_ico-github.svg)}.footer-sns-linkedin{background:url(/img/footer/footer_ico-linkedin.svg)}.footer-sns-zhihu{background:url(/img/footer/footer_ico-zhihu.svg)}.footer-sns-bilibili{background:url(/img/footer/footer_ico-bilibili.svg)}.footer-sns-telegram{background:url(/img/footer/footer_ico-telegram.svg)}.footer-sns-v2ex{background:url(/img/footer/footer_ico-v2ex.svg)}.footer-sns-jianshu{background:url(/img/footer/footer_ico-jianshu.svg)}.fa-heart:before{content:'\f004'}.fa-heart-o:before{content:'\f08a'}</style><script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==",!0)</script><meta name="mobile-web-app-capable" content="yes"><meta name="application-name" content="Tianma"><meta name="msapplication-starturl" content="http://tianma.space/post/1484310523/"><meta name="msapplication-navbutton-color" content="#0097A7"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tianma"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="apple-touch-icon" href="/img/favicon.png"><meta property="og:url" content="http://tianma.space/post/1484310523/"><meta property="og:type" content="blog"><meta property="og:title" content="栈的应用之中缀表达式和后缀表达式 | Tianma"><meta property="og:image" content="/img/favicon.png"><meta property="og:description" content="中缀表达式： 是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于的中间（例：3 + 4），中缀表达式是人们常用的算术表示方法，但是不易被计算机所解析。
+后缀表达式：是一个通用的算术或逻辑公式表示方法， 操作符是后缀形式处于操作数的后面（例：3 4 +），后缀表达式虽然不是人们所习惯的运算表示方法，但是易被计算机解析。"><meta property="og:article:tag" content="栈"><meta property="article:published_time" content="Sun Apr 10 2016 18:26:41 GMT+0800"><meta property="article:modified_time" content="Tue Jun 06 2017 18:13:34 GMT+0800"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="http://tianma.space/post/1484310523/index.html"><script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://tianma.space/post/1484310523/index.html",
+    "headline": "栈的应用之中缀表达式和后缀表达式",
+    "datePublished": "Sun Apr 10 2016 18:26:41 GMT+0800",
+    "dateModified": "Tue Jun 06 2017 18:13:34 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "Tianma",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/kousei.jpg"
+        },
+        "description": "你驻足于春色中 那独一无二的春色中"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Tianma",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",栈Tianma",
+    "description": "中缀表达式： 是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于的中间（例：3 + 4），中缀表达式是人们常用的算术表示方法，但是不易被计算机所解析。
+后缀表达式：是一个通用的算术或逻辑公式表示方法， 操作符是后缀形式处于操作数的后面（例：3 4 +），后缀表达式虽然不是人们所习惯的运算表示方法，但是易被计算机解析。",
+}</script><script>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject=g,e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script",0,"ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script><script>lsloader.load("fancybox_js","/js/fancybox/jquery.fancybox.min.js?t2LXoiIDGJmos9j6jmohzw==",!0)</script><script>lsloader.load("wrap_image_js","/js/wrapImage.js?J/m2CKAvDInDeJ1NJ35D1A==",!0)</script><style id="fancybox_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("fancybox_css","/js/fancybox/jquery.fancybox.min.css?Fnnc049dQ/HvZMD/Mxr4EA==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script></head><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://omx3hkcsx.bkt.clouddn.com/static/images/stack.jpg)"><p class="article-headline-p">栈的应用之中缀表达式和后缀表达式</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><span>发表：2016.04.10</span> <span>更新：2017.06.06</span></div><div class="div-post-count"><span class="post-count">字数统计：1,907 字</span> <span class="post-count">阅读时长：8 分</span></div><div class="section-spacer"></div><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/栈/">栈</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/1484310523/" class="leancloud-views_num" data-flag-title="栈的应用之中缀表达式和后缀表达式">&nbsp;浏览量</span></li></a><a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=栈的应用之中缀表达式和后缀表达式&url=http://tianma.space/post/1484310523/index.html&pic=http://tianma.space/img/favicon.png&searchPic=false&style=simple" target="_blank"><li class="mdl-menu__item">分享到微博</li></a><a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Tianma&title=栈的应用之中缀表达式和后缀表达式&summary=Everything will be okay in the end.&pics=http://tianma.space/img/favicon.png&url=http://tianma.space/post/1484310523/index.html" target="_blank"><li class="mdl-menu__item">分享到 QQ</li></a><a class="post_share-link" href="https://telegram.me/share/url?url=http://tianma.space/post/1484310523/index.html&text=栈的应用之中缀表达式和后缀表达式" target="_blank"><li class="mdl-menu__item">分享到 Telegram</li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><p><strong>中缀表达式</strong>： 是一个通用的算术或逻辑公式表示方法， 操作符是以中缀形式处于的中间（例：3 + 4），中缀表达式是人们常用的算术表示方法，但是不易被计算机所解析。</p><p><strong>后缀表达式</strong>：是一个通用的算术或逻辑公式表示方法， 操作符是后缀形式处于操作数的后面（例：3 4 +），后缀表达式虽然不是人们所习惯的运算表示方法，但是易被计算机解析。<br><a id="more"></a><br>例如：对于中缀表达式 9+(3-1)*2+10/2 , 其后缀表达式是 9 3 1 - 3 * + 10 2 / + , 那么为了方便计算机解析计算，我们需要将中缀表达式转换成后缀表达式，然后再对后缀表达式进行解析。</p><p><strong>1. 中缀表达式转后缀表达式：</strong></p><ol><li>当读到一个操作数时，立即将它放到输出中。读到的是操作符则需要接着判断是否该入栈。读到的是左圆括号则入栈。</li><li>在读到操作符时，如果栈为空或者栈顶操作符为（，则入栈。如果栈顶操作符不为（，且此操作符优先级小于或等于此时栈顶操作符，则将栈中元素弹出直至 ①遇到左括号 或者 ②栈顶元素为更低优先级 或者 ③栈为空为止，并将当前操作符入栈；否则当前操作符继续入栈。操作符中，+-优先级低，*/优先级高。</li><li>如果遇到一个右括号，那么就将栈中元素弹出并输出直至遇到左括号为止。但是这个左括号只被弹出，并不输出。</li><li>如果读到输入的末尾，若栈不为空则将栈元素弹出直到该栈变成空栈，并将弹出的符号写到输出中。</li></ol><p><strong>“9+(3-1)*2+10/2” 转换过程：</strong></p><table><thead><tr><th>操作过程</th><th>栈中元素</th><th>输出</th></tr></thead><tbody><tr><td>读入 9，输出</td><td></td><td>9</td></tr><tr><td>读入 +，栈为空，规则2，入栈</td><td>+</td><td>9</td></tr><tr><td>读入 ( ，左括号，规则1，入栈</td><td>+ (</td><td>9</td></tr><tr><td>读入 3，输出</td><td>+ (</td><td>9 3</td></tr><tr><td>读入 -，栈顶为（，规则2，入栈</td><td>+ ( -</td><td>9 3</td></tr><tr><td>读入 1，输出</td><td>+ ( -</td><td>9 3 1</td></tr><tr><td>读入 ) ，右括号，规则3，出栈并输出</td><td>+</td><td>9 3 1 -</td></tr><tr><td>读入 *，*优先级高于栈顶+，规则,2，入栈</td><td>+ *</td><td>9 3 1 -</td></tr><tr><td>读入 3，输出</td><td>+ *</td><td>9 3 1 - 3</td></tr><tr><td>读入 +，+优先级低于栈顶*，规则2，栈中元素出栈，当前操作符入栈</td><td>+</td><td>9 3 1 - 3 * +</td></tr><tr><td>读入 10， 输出</td><td>+</td><td>9 3 1 - 3 * + 10</td></tr><tr><td>读入 / ， /优先级高于+，入栈</td><td>+ /</td><td>9 3 1 - 3 * + 10</td></tr><tr><td>读入 2， 输出</td><td>+ /</td><td>9 3 1 - 3 * + 10</td></tr><tr><td>读至末尾，规则4，栈不为空，栈中元素出栈并输出</td><td></td><td>9 3 1 - 3 * + 10 / +</td></tr></tbody></table><p><strong>2. 后缀表达式计算最终结果：</strong></p><ol><li>从左到右遍历表达式的每个数字和符号,遇到是数字则进栈,遇到是运算符则将栈顶两个元素出栈,进行运算并将运算结果进栈；</li><li>遍历完后缀表达式,此时栈中剩余的数字就是运算结果。</li></ol><p><strong>“9 3 1 - 3 * + 10 2 / +” 计算过程：</strong></p><table><thead><tr><th>操作过程</th><th>栈中元素</th></tr></thead><tbody><tr><td>读入 9，入栈</td><td>9</td></tr><tr><td>读入 3，入栈</td><td>9 3</td></tr><tr><td>读入 1，入栈</td><td>9 3 1</td></tr><tr><td>读入 -，运算并将结果入栈</td><td>9 2</td></tr><tr><td>读入 3，入栈</td><td>9 2 3</td></tr><tr><td>读入 *，运算并将结果入栈</td><td>9 6</td></tr><tr><td>读入 +，运算并将结果入栈</td><td>15</td></tr><tr><td>读入 10，入栈</td><td>15 10</td></tr><tr><td>读入 2，入栈</td><td>15 10 2</td></tr><tr><td>读入 /，运算并将结果入栈</td><td>15 5</td></tr><tr><td>读入 +，运算并将结果入栈</td><td>20</td></tr><tr><td>读入完毕，栈中元素即为结果</td><td>20</td></tr></tbody></table><p>简单中缀表达式计算的java实现：</p><pre><code class="java">public class SimpleCalcutor {
 
-    <span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">Item</span> <span class="token punctuation">{</span>
+    private class Item {
 
-        <span class="token keyword">private</span> String value<span class="token punctuation">;</span>
-        <span class="token keyword">private</span> Integer number<span class="token punctuation">;</span>
+        private String value;
+        private Integer number;
 
-        <span class="token keyword">public</span> <span class="token function">Item</span><span class="token punctuation">(</span>String value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                number <span class="token operator">=</span> Integer<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> ignore<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
+        public Item(String value) {
+            this.value = value;
+            try {
+                number = Integer.parseInt(value);
+            } catch (Exception ignore) {
+            }
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> number <span class="token operator">!=</span> null<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isNumber() {
+            return number != null;
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token keyword">return</span> number<span class="token punctuation">;</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NumberFormatException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public int getNumber() {
+            if (isNumber())
+                return number;
+            throw new NumberFormatException();
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">"+"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isAdd() {
+            return &quot;+&quot;.equals(value);
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">"-"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isSub() {
+            return &quot;-&quot;.equals(value);
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isMul</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">"*"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isMul() {
+            return &quot;*&quot;.equals(value);
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isDiv</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">"/"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isDiv() {
+            return &quot;/&quot;.equals(value);
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isLeftBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">"("</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isLeftBracket() {
+            return &quot;(&quot;.equals(value);
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isRightBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token string">")"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public boolean isRightBracket() {
+            return &quot;)&quot;.equals(value);
+        }
 
-        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token function">isSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isMul</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token function">isDiv</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"This is not +, -, *, /"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        public int getPriority() {
+            if (isAdd() || isSub())
+                return 0;
+            if (isMul() || isDiv())
+                return 1;
+            throw new RuntimeException(&quot;This is not +, -, *, /&quot;);
+        }
 
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> value <span class="token operator">!=</span> null <span class="token operator">?</span> value<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> null<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
+        @Override
+        public String toString() {
+            return value != null ? value.toString() : null;
+        }
+    }
 
-    <span class="token comment" spellcheck="true">/**
+    /**
      * 计算结果
      * 
      * @param calStr
      * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">calculate</span><span class="token punctuation">(</span>String calStr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>Item<span class="token operator">></span> infixes <span class="token operator">=</span> <span class="token function">parse</span><span class="token punctuation">(</span>calStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        List<span class="token operator">&lt;</span>Item<span class="token operator">></span> postfixes <span class="token operator">=</span> <span class="token function">infix2postfix</span><span class="token punctuation">(</span>infixes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token function">calculateByPostfix</span><span class="token punctuation">(</span>postfixes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+     */
+    public int calculate(String calStr) {
+        List&lt;Item&gt; infixes = parse(calStr);
+        List&lt;Item&gt; postfixes = infix2postfix(infixes);
+        return calculateByPostfix(postfixes);
+    }
 
-    <span class="token comment" spellcheck="true">/**
-     * 利用正则表达式将待计算的字符串转化为List&lt;Item>形式 ,如 10/2 -> [10, /, 2]
+    /**
+     * 利用正则表达式将待计算的字符串转化为List&lt;Item&gt;形式 ,如 10/2 -&gt; [10, /, 2]
      * 
      * @param calStr
      * @return
-     */</span>
-    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Item<span class="token operator">></span> <span class="token function">parse</span><span class="token punctuation">(</span>String calStr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Pattern pattern <span class="token operator">=</span> Pattern<span class="token punctuation">.</span><span class="token function">compile</span><span class="token punctuation">(</span><span class="token string">"\\D|\\d+"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Matcher m <span class="token operator">=</span> pattern<span class="token punctuation">.</span><span class="token function">matcher</span><span class="token punctuation">(</span>calStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        List<span class="token operator">&lt;</span>Item<span class="token operator">></span> items <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Item<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span> <span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            items<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Item</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">group</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> items<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+     */
+    private List&lt;Item&gt; parse(String calStr) {
+        Pattern pattern = Pattern.compile(&quot;\\D|\\d+&quot;);
+        Matcher m = pattern.matcher(calStr);
+        List&lt;Item&gt; items = new ArrayList&lt;Item&gt;();
+        while (m.find()) {
+            items.add(new Item(m.group(0)));
+        }
+        return items;
+    }
 
-    <span class="token comment" spellcheck="true">/**
+    /**
      * 中缀表达式转换为后缀表达式
-     * &lt;p>
-     * 1.当读到一个操作数时，立即将它放到输出中。读到的是操作符则需要接着判断是否该入栈。读到的是左圆括号则入栈。&lt;br>
-     * 2.如果遇到一个右括号，那么就将栈中元素弹出并输出直至遇到左括号为止。但是这个左括号只被弹出，并不输出。&lt;br>
+     * &lt;p&gt;
+     * 1.当读到一个操作数时，立即将它放到输出中。读到的是操作符则需要接着判断是否该入栈。读到的是左圆括号则入栈。&lt;br&gt;
+     * 2.如果遇到一个右括号，那么就将栈中元素弹出并输出直至遇到左括号为止。但是这个左括号只被弹出，并不输出。&lt;br&gt;
      * 3.在读到操作符时，如果此操作符优先级小于或等于此时栈顶操作符，则将栈中元素弹出直至(1)遇到左括号或者(2)栈顶元素为更低优先级或者(3)
-     * 栈为空为止。操作符中，'+''-'优先级最低，'('')'优先级最高。 &lt;br>
+     * 栈为空为止。操作符中，&#39;+&#39;&#39;-&#39;优先级最低，&#39;(&#39;&#39;)&#39;优先级最高。 &lt;br&gt;
      * 4.如果读到输入的末尾，将栈元素弹出直到该栈变成空栈，将符号写到输出中。
      * 
      * @return
-     */</span>
-    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Item<span class="token operator">></span> <span class="token function">infix2postfix</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Item<span class="token operator">></span> infixes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>Item<span class="token operator">></span> postfixes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Item<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Stack<span class="token operator">&lt;</span>Item<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token operator">&lt;</span>Item<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>Item item <span class="token operator">:</span> infixes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                postfixes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isRightBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token comment" spellcheck="true">// ) 右括号,将栈中元素弹出直至左括号,且左括号和右括号不加入到后缀表达式中</span>
-                <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    Item tmp <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp<span class="token punctuation">.</span><span class="token function">isLeftBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                        <span class="token keyword">break</span><span class="token punctuation">;</span>
-                    postfixes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isLeftBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token comment" spellcheck="true">// ( 左括号,将左括号入栈</span>
-                stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                <span class="token comment" spellcheck="true">// 当前操作符为 +, -, *, /,</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token comment" spellcheck="true">// 操作符栈为空,则将当前操作符压入栈</span>
-                    stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">continue</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-                Item top <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>top<span class="token punctuation">.</span><span class="token function">isLeftBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token comment" spellcheck="true">// 操作符栈顶为左括号(,则将当前操作符压入栈</span>
-                    stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">continue</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">getPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> top<span class="token punctuation">.</span><span class="token function">getPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token comment" spellcheck="true">// 如果此操作符(+,-,*,/)优先级小于或等于此时栈顶操作符</span>
-                    <span class="token comment" spellcheck="true">// 则将栈中元素弹出直至(1)遇到左括号或者(2)栈顶元素为更低优先级或者(3)栈为空为止</span>
-                    <span class="token comment" spellcheck="true">// 并将弹出的元素加入后缀表达式中,将当前操作符压入栈中</span>
-                    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                        Item tmp <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp<span class="token punctuation">.</span><span class="token function">isLeftBracket</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> tmp<span class="token punctuation">.</span><span class="token function">getPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> item<span class="token punctuation">.</span><span class="token function">getPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                            <span class="token keyword">break</span><span class="token punctuation">;</span>
-                        <span class="token punctuation">}</span>
-                        postfixes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                        <span class="token keyword">if</span> <span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                            <span class="token keyword">break</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">}</span>
-                    stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                    <span class="token comment" spellcheck="true">// 如果当前操作符(+,-,*,/)优先级大于此时栈顶操作符,则将当前操作符压入栈</span>
-                    stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        <span class="token comment" spellcheck="true">// 如果栈中元素不为空,则将栈中元素全部弹出,加入后缀表达式中</span>
-        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            postfixes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> postfixes<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+     */
+    private List&lt;Item&gt; infix2postfix(List&lt;Item&gt; infixes) {
+        List&lt;Item&gt; postfixes = new ArrayList&lt;Item&gt;();
+        Stack&lt;Item&gt; stack = new Stack&lt;Item&gt;();
+        for (Item item : infixes) {
+            if (item.isNumber()) {
+                postfixes.add(item);
+            } else if (item.isRightBracket()) {
+                // ) 右括号,将栈中元素弹出直至左括号,且左括号和右括号不加入到后缀表达式中
+                while (true) {
+                    Item tmp = stack.pop();
+                    if (tmp.isLeftBracket())
+                        break;
+                    postfixes.add(tmp);
+                }
+            } else if (item.isLeftBracket()) {
+                // ( 左括号,将左括号入栈
+                stack.push(item);
+            } else {
+                // 当前操作符为 +, -, *, /,
+                if (stack.isEmpty()) {
+                    // 操作符栈为空,则将当前操作符压入栈
+                    stack.push(item);
+                    continue;
+                }
+                Item top = stack.peek();
+                if (top.isLeftBracket()) {
+                    // 操作符栈顶为左括号(,则将当前操作符压入栈
+                    stack.push(item);
+                    continue;
+                }
+                if (item.getPriority() &lt;= top.getPriority()) {
+                    // 如果此操作符(+,-,*,/)优先级小于或等于此时栈顶操作符
+                    // 则将栈中元素弹出直至(1)遇到左括号或者(2)栈顶元素为更低优先级或者(3)栈为空为止
+                    // 并将弹出的元素加入后缀表达式中,将当前操作符压入栈中
+                    while (true) {
+                        Item tmp = stack.peek();
+                        if (tmp.isLeftBracket() || tmp.getPriority() &lt; item.getPriority()) {
+                            break;
+                        }
+                        postfixes.add(tmp);
+                        stack.pop();
+                        if (stack.isEmpty())
+                            break;
+                    }
+                    stack.push(item);
+                } else {
+                    // 如果当前操作符(+,-,*,/)优先级大于此时栈顶操作符,则将当前操作符压入栈
+                    stack.push(item);
+                }
+            }
+        }
+        // 如果栈中元素不为空,则将栈中元素全部弹出,加入后缀表达式中
+        while (!stack.isEmpty()) {
+            postfixes.add(stack.pop());
+        }
+        return postfixes;
+    }
 
-    <span class="token comment" spellcheck="true">/**
+    /**
      * 通过后缀表达式计算数值
-     * &lt;p>
-     * 1. 从左到右遍历表达式的每个数字和符号,遇到是数字则进栈,遇到是运算符则将栈顶两个元素出栈,进行运算并将运算结果进栈&lt;br>
+     * &lt;p&gt;
+     * 1. 从左到右遍历表达式的每个数字和符号,遇到是数字则进栈,遇到是运算符则将栈顶两个元素出栈,进行运算并将运算结果进栈&lt;br&gt;
      * 2. 遍历完后缀表达式,此时栈中剩余的数字就是运算结果
      * 
      * @param postfixes
      * @return
-     */</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">calculateByPostfix</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Item<span class="token operator">></span> postfixes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Stack<span class="token operator">&lt;</span>Integer<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>Item item <span class="token operator">:</span> postfixes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                <span class="token comment" spellcheck="true">// 运算符</span>
-                <span class="token keyword">int</span> num1 <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">int</span> num2 <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">int</span> result<span class="token punctuation">;</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    result <span class="token operator">=</span> num2 <span class="token operator">+</span> num1<span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    result <span class="token operator">=</span> num2 <span class="token operator">-</span> num1<span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isMul</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    result <span class="token operator">=</span> num2 <span class="token operator">*</span> num1<span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">isDiv</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    result <span class="token operator">=</span> num2 <span class="token operator">/</span> num1<span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Operator invalid : "</span> <span class="token operator">+</span> item<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-                stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+     */
+    private int calculateByPostfix(List&lt;Item&gt; postfixes) {
+        Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+        for (Item item : postfixes) {
+            if (item.isNumber()) {
+                stack.push(item.getNumber());
+            } else {
+                // 运算符
+                int num1 = stack.pop();
+                int num2 = stack.pop();
+                int result;
+                if (item.isAdd()) {
+                    result = num2 + num1;
+                } else if (item.isSub()) {
+                    result = num2 - num1;
+                } else if (item.isMul()) {
+                    result = num2 * num1;
+                } else if (item.isDiv()) {
+                    result = num2 / num1;
+                } else {
+                    throw new IllegalArgumentException(&quot;Operator invalid : &quot; + item.value);
+                }
+                stack.push(result);
+            }
+        }
+        return stack.pop();
+    }
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        SimpleCalcutor calcutor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleCalcutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        String calStr <span class="token operator">=</span> <span class="token string">"9+(3-1)*3+10/2"</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> result <span class="token operator">=</span> calcutor<span class="token punctuation">.</span><span class="token function">calculate</span><span class="token punctuation">(</span>calStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    public static void main(String[] args) {
+        SimpleCalcutor calcutor = new SimpleCalcutor();
+        String calStr = &quot;9+(3-1)*3+10/2&quot;;
+        int result = calcutor.calculate(calStr);
+        System.out.println(result);
+    }
 
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>源码github地址：<br><a href="https://github.com/tianma8023/DataStructure/blob/master/src/tianma/learn/ds/lineartable/main/SimpleCalcutor.java" target="_blank" rel="external">SimpleCalculator</a></p><p>参考链接：<br><a href="http://blog.csdn.net/mvpsendoh/article/details/6440559" target="_blank" rel="external">利用栈将中缀表达式转换成后缀表达式</a></p><div><br><ul id="post-license" class="post-license"><li class="post-license-author"><strong>本文作者：</strong> <a href="http://tianma.space">Tianma</a></li><li class="post-license-link"><strong>本文链接：</strong> <a href="http://tianma.space/post/1484310523/">栈的应用之中缀表达式和后缀表达式</a></li><li class="post-license-statement"><strong>版权声明：</strong> 本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="license" target="_blank">署名-非商业性使用-相同方式共享（CC BY-NC-SA）4.0 国际许可协议</a><br>转载请保留以上声明信息！</li></ul></div></div><div id="gitalk-comment"><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:["tianma8023"],id:"/post/1484310523",title:"栈的应用之中缀表达式和后缀表达式",body:"http://tianma.space/post/1484310523/",distractionFreeMode:!1}).render("gitalk-container")</script></div><style>#gitalk-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/235983682/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/3825161135/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div id="sidebar-header" class="sidebar-header header-cover" style="background-image:url(/img/sidebar_header.jpg)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img id="sidebar-author-avatar" src="/img/kousei.jpg" alt="Tianma's avatar"></div><a data-toggle="dropdown" class="sidebar-brand sidebar-dropdown-email" href="#settings-dropdown">tianma8023@foxmail.com<b class="caret"></b></a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu sidebar-nav-email"><li><a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me"><i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i> Email Me</a></li></ul></li><li id="sidebar-first-li" class="sidebar-nav-homepage"><a href="/" target="_self"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown sidebar-nav-archives"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../archives/2018/04/">四月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2018/02/">二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown sidebar-nav-categories"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="../../categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Android/">Android<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Hexo/">Hexo<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="../../categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="../../categories/漫谈/">漫谈<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="../../categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li class="divider"></li><li><a href="/darling" title="Darling"><i class="material-icons sidebar-material-icons">favorite_border</i> Darling</a></li><li class="divider"></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" class="footer-github" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-github.png)"><span class="visuallyhidden">Github</span></button></a><a href="https://space.bilibili.com/4504127#/" class="footer-bilibili" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-bilibili.png)"><span class="visuallyhidden">Bilibili</span></button></a><a href="https://www.jianshu.com/u/9b3c643402b6" class="footer-jianshu" target="_blank"><button class="mdl-mini-footer--social-btn social-btn" style="background-image:url(/img/footer/footer_ico-jianshu.png)"><span class="visuallyhidden">Jianshu</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+"~"+curYear):document.write(curYear)</script>&nbsp;<span class="with-love"><i class="fa fa-heart"></i></span> &nbsp;Tianma<br><p>Hosted by <a href="https://pages.coding.me" style="font-weight:700">Coding Pages</a></p></div><div class="mdl-mini-footer--right-section"><div><div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a blog-framework">Hexo</a></div><div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a blog-theme">Material</a></div></div></div></footer><script src="../../js/lazyload.min.js"></script><script src="../../js/js.min.js"></script><script src="../../js/nprogress.js"></script><script>NProgress.configure({showSpinner:!0}),NProgress.start(),$("#nprogress .bar").css({background:"#FF4081"}),$("#nprogress .peg").css({"box-shadow":"0 0 10px #FF4081, 0 0 15px #FF4081"}),$("#nprogress .spinner-icon").css({"border-top-color":"#FF4081","border-left-color":"#FF4081"}),setTimeout(function(){NProgress.done(),$(".fade").removeClass("out")},800)</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script>function showTime(e){var t=new AV.Query(e);$(".leancloud-views_num").each(function(){var e=$(this).attr("id").trim();t.equalTo("url",e),t.find({success:function(t){if(0===t.length){var n="0 "+$(document.getElementById(e)).text();return void $(document.getElementById(e)).text(n)}for(var o=0;o<t.length;o++){var r=t[o],n=r.get("time")+" "+$(document.getElementById(e)).text();$(document.getElementById(e)).text(n)}},error:function(e,t){console.log("Error: "+t.code+" "+t.message)}})})}function addCount(e){var e=AV.Object.extend("Counter");url=$(".leancloud-views_num").attr("id").trim(),title=$(".leancloud-views_num").attr("data-flag-title").trim();var t=new AV.Query(e);t.equalTo("url",url),t.find({success:function(t){if(t.length>0){var n=t[0];n.fetchWhenSave(!0),n.increment("time"),n.save(null,{success:function(e){var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var o=new e;o.set("title",title),o.set("url",url),o.set("time",1),o.save(null,{success:function(e){console.log("newcounter.get('time')="+e.get("time"));var t=e.get("time")+" "+$(document.getElementById(url)).text();$(document.getElementById(url)).text(t)},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1===$(".leancloud-views_num").length?addCount(e):$(".post-title-link").length>1&&showTime(e)})</script><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><script>var searchFunc=function(t,e,r){"use strict";$.ajax({url:t,dataType:"xml",success:function(t){var n=$("entry",t).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(e),s=document.getElementById(r);a.addEventListener("input",function(){var t='<ul class="search-result-list">',e=this.value.trim().toLowerCase().split(/[\s\-]+/);s.innerHTML="",this.value.trim().length<=0||(n.forEach(function(r){var n=!0,a=r.title.trim().toLowerCase(),s=r.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),i=r.url,c=-1,l=-1,u=-1;if(""!==a&&""!==s&&e.forEach(function(t,e){c=a.indexOf(t),l=s.indexOf(t),c<0&&l<0?n=!1:(l<0&&(l=0),0===e&&(u=l))}),n){t+='<li><a href="'+i+'" class="search-result-title" target="_blank">'+a;var o=r.content.trim().replace(/<[^>]+>/g,"");if(u>=0){var h=u-6,f=u+6;h<0&&(h=0),0===h&&(f=10),f>o.length&&(f=o.length);var m=o.substr(h,f);e.forEach(function(t){var e=new RegExp(t,"gi");m=m.replace(e,'<em class="search-keyword">'+t+"</em>")}),t+='<p class="search-result">'+m+"...</p></a>"}}}),s.innerHTML=t)})}})}</script><script>var inputArea=document.querySelector("#search"),getSearchFile=function(){searchFunc("search.xml","search","local-search-result")};inputArea&&(inputArea.onfocus=function(){getSearchFile()})</script><script>$(window).load(function(){$(".post-toc-wrap").parent(".mdl-menu__container").css("position","fixed")})</script></main></div></body></html>
+}
+</code></pre><p>源码github地址：<br><a href="https://github.com/tianma8023/DataStructure/blob/master/src/tianma/learn/ds/lineartable/main/SimpleCalcutor.java" target="_blank" rel="noopener">SimpleCalculator</a></p><p>参考链接：<br><a href="http://blog.csdn.net/mvpsendoh/article/details/6440559" target="_blank" rel="noopener">利用栈将中缀表达式转换成后缀表达式</a></p><div><br><ul id="post-license" class="post-license"><li class="post-license-author"><strong>本文作者：</strong> <a href="http://tianma.space">Tianma</a></li><li class="post-license-link"><strong>本文链接：</strong> <a href="http://tianma.space/post/1484310523/">栈的应用之中缀表达式和后缀表达式</a></li><li class="post-license-statement"><strong>版权声明：</strong> 本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="license" target="_blank">署名-非商业性使用-相同方式共享（CC BY-NC-SA）4.0 国际许可协议</a><br>转载请保留以上声明信息！</li></ul></div></div><div id="gitalk-comment"><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk=new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:["tianma8023"],distractionFreeMode:!1});gitalk.render("gitalk-container")</script></div><style>#gitalk-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/3825161135/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/3401996020/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div class="sidebar-header header-cover" style="background-image:url(/img/sidebar_header.jpg)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img src="/img/kousei.jpg" alt="Tianma's avatar"></div><a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">tianma8023@foxmail.com<b class="caret"></b></a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu"><li><a href="mailto:tianma8023@foxmail.com" target="_blank" title="Email Me"><i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i> Email Me</a></li></ul></li><li id="sidebar-first-li"><a href="/"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="/archives/2018/04/">四月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/02/">二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="/categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/categories/Android/">Android<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/漫谈/">漫谈<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li class="divider"></li><li><a href="/darling" title="Darling"><i class="material-icons sidebar-material-icons">favorite_border</i> Darling</a></li><li class="divider"></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div id="back-to-top" class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-github"><span class="visuallyhidden">Github</span></button></a><a href="https://space.bilibili.com/4504127#/" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-bilibili"><span class="visuallyhidden">Bilibili</span></button></a><a href="https://www.jianshu.com/u/9b3c643402b6" class="footer-jianshu" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-jianshu"><span class="visuallyhidden">Jianshu</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+" ~ "+curYear):document.write(curYear)</script>&nbsp;❤&nbsp;Tianma<br><p>Hosted by <a href="https://pages.coding.me" style="font-weight:700">Coding Pages</a></p></div><div class="mdl-mini-footer--right-section"><div><div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div><div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div></div></div></footer><script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==",!0)</script><script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==",!0)</script><script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==",!0)</script><script type="text/ls-javascript" id="NProgress-script">NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script type="text/ls-javascript" id="leancloud-views-script">function showTime(Counter) {
+        var query = new AV.Query(Counter);
+        $('.leancloud-views_num').each(function() {
+            var url = $(this).attr('id').trim();
+            query.equalTo('url', url);
+            query.find({
+                success: function(results) {
+                    if (results.length === 0) {
+                        var content = '0 ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var object = results[i];
+                        var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    }
+                },
+                error: function(object, error) {
+                    console.log('Error: ' + error.code + ' ' + error.message);
+                }
+            });
+        });
+    }
+
+    function addCount(Counter) {
+      var Counter = AV.Object.extend('Counter');
+      url = $('.leancloud-views_num').attr('id').trim();
+      title = $('.leancloud-views_num').attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+      query.equalTo('url', url);
+      query.find({
+          success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment('time');
+                counter.save(null, {
+                    success: function(counter) {
+                        var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+                        $(document.getElementById(url)).text(content);
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+              var newcounter = new Counter();
+              newcounter.set('title', title);
+              newcounter.set('url', url);
+              newcounter.set('time', 1);
+              newcounter.save(null, {
+                  success: function(newcounter) {
+                      console.log('newcounter.get(\'time\')='+newcounter.get('time'));
+                      var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+                      $(document.getElementById(url)).text(content);
+                  },
+                  error: function(newcounter, error) {
+                      console.log('Failed to create');
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + ' ' + error.message);
+        }
+      });
+    }
+    $(function() {
+        var Counter = AV.Object.extend('Counter');
+        if ($('.leancloud-views_num').length === 1) {
+            addCount(Counter);
+        } else if ($('.post-title-link').length > 1) {
+            showTime(Counter);
+        }
+    });</script><script src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><script>var agent=navigator.userAgent.toLowerCase();0<agent.indexOf("ucbrowser")&&(document.write('<link rel="stylesheet" href="/css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>lsloader.load("hanabi","/js/hanabi-browser-bundle.js?Pki5+pzkluqu53g+ouMWpA==",!0)</script><script type="text/ls-javascript" id="window-load">$(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+        
+        
+        HanabiBrowser.start('pre code',true);</script><script type="text/ls-javascript" id="lazy-load">// Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });</script><script>!function(){for(var e=document.querySelectorAll('script[type="text/ls-javascript"]'),r=0;r<e.length;++r){var o=e[r];lsloader.runInlineScript(o.id,o.id)}}(),console.log("\n %c © Material Theme | Version: 1.5.2 | https://github.com/viosey/hexo-theme-material %c \n","color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;","color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;")</script></main></div></body></html>
