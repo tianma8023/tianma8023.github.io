@@ -9,8 +9,8 @@
       </categories>
       <tags>
         <tag>android notes</tag>
-        <tag>AIDL</tag>
         <tag>IPC</tag>
+        <tag>AIDL</tag>
       </tags>
   </entry>
   <entry>
@@ -117,8 +117,8 @@
         <category>科学上网</category>
       </categories>
       <tags>
-        <tag>百度云</tag>
         <tag>BaiduExporter</tag>
+        <tag>百度云</tag>
         <tag>Tampermonkey</tag>
       </tags>
   </entry>
