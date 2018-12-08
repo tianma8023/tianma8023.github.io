@@ -497,7 +497,7 @@ blockquote {
 
     
         <meta property="article:published_time" content="Wed Apr 20 2016 14:16:29 GMT+0800">
-        <meta property="article:modified_time" content="Wed Nov 07 2018 04:04:41 GMT+0800">
+        <meta property="article:modified_time" content="Sat Dec 08 2018 12:32:58 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -520,7 +520,7 @@ blockquote {
     "mainEntityOfPage": "https://tianma.space/post/42083511/index.html",
     "headline": "排序-冒泡排序及其优化",
     "datePublished": "Wed Apr 20 2016 14:16:29 GMT+0800",
-    "dateModified": "Wed Nov 07 2018 04:04:41 GMT+0800",
+    "dateModified": "Sat Dec 08 2018 12:32:58 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "Tianma",
@@ -663,7 +663,7 @@ blockquote {
     <!-- Author Name & Date -->
     <div>
         <span>发表：2016.04.20</span>
-        <span>更新：2018.11.07</span>
+        <span>更新：2018.12.08</span>
     </div>
 
     
@@ -793,7 +793,7 @@ class BubbleSorter implements Sorter {
     }
 }
 </code></pre>
-<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>当待排序数组为{1, 3, 4, 5, 6, 7, 8, 9, 2}时：<br>第1趟排序的结果为： 1 2 3 4 5 6 7 8 9<br>此时其实序列已经完成，但是根据上述代码仍得继续遍历，直至第9趟排序。这显然是不合理的，如果我们能在代码中加入一个flag标记上一趟排序中是否进行过交换，如果进行过未进行交换，说明当前数组以及有序。<br>优化代码：</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>当待排序数组为{1, 3, 4, 5, 6, 7, 8, 9, 2}时：<br>第1趟排序的结果为： 1 2 3 4 5 6 7 8 9<br>此时其实序列已经完成，但是根据上述代码仍得继续遍历，直至第9趟排序。这显然是不合理的，如果我们能在代码中加入一个flag标记上一趟排序中是否进行过交换，如果进行过未进行交换，说明当前数组已经有序。<br>优化代码：</p>
 <pre><code class="java">// 优化的冒泡排序
 class OptimizedBubbleSorter extends BubbleSorter {
 
@@ -891,7 +891,7 @@ class OptimizedBubbleSorter extends BubbleSorter {
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/post/1779625018/" id="post_nav-newer" class="prev-content">
+        <a href="/post/2610207546/" id="post_nav-newer" class="prev-content">
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
                 <i class="material-icons">arrow_back</i>
             </button>
