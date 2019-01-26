@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[小米8 刷入 MIUI 欧洲版并 Root]]></title>
     <url>%2Fpost%2F731913467%2F</url>
-    <content type="text"><![CDATA[先大致介绍一下各个 MIUI 版本： 国内版 MIUI 国内版就是官方 MIUI 的国内版，优点：能吃上新功能，有小爱，缺点：有广告，臃肿，后台常驻很多系统组件，同时有不少系统组件没办法禁用，Google 套件不太好安装，安装好了之后也会经常因为不稳定而 Crash。官方站点：米柚 国际版 MIUI 也称为 俄罗斯版，国际版就是官方 MIUI 的国际版，优点：自带 Google 套件，无广告，缺点：还是比较臃肿，自带的 Google 套件过多。官方站点：MIUI Global 欧洲版 MIUI 也称为 波兰版，属于 MIUI 的第三方定制 Rom，也就是通常所说的 魔改MIUI，但不是小作坊制作，稳定性比较可靠。优点：自带 Google 套件，无广告，不臃肿，缺点：无小爱。 官方站点：XIAOMI.EU 刷入教程以最新的开发版（18.12.27）的欧洲版为例，已经在该版本上成功刷入。 解锁小米手机（本质是解锁 Bootloader），地址：解锁小米手机 打开手机开发者选项，下载并刷入 LR.TEAM 制作的非官方 Twrp，使用该帖子中自带的一键刷入的bat脚本，按提示刷入twrp。地址：LR.Team 小米8 专版TWRP 下载需要刷入的包 下载Rom，18.12.27 的欧洲版 MIUI 卡刷包，帖子地址：MIUI 10 18.12.27 下载通用的 Disable DM-verify 包，帖子地址：Universal DM-Verity, ForceEncrypt, Disk Quota Disablers 下载 Magisk-v18.0.zip，地址：Magisk Github Releases 刷入卡刷包，并Root 三清：进入 Recovery 模式，进入TWRP -&gt; 清除 -&gt; 高级清除 -&gt; 选择 “system”, “cache”, “data” 并清除 刷入 MIUI Rom 卡刷包：将卡刷包放进手机SD卡中，进入 TWRP -&gt; 安装 -&gt; 选择卡刷包并确认刷入 刷入 Disable-DM-verify 的包：TWRP -&gt; 安装 -&gt; 选择并确认刷入 Root系统：刷入 Magisk-v18.0.zip 包，步骤同上。 重启，大功告成！ 参考 关于卡米的问题：TWRP bootloop after restore… 关于卡米的问题：Bootloop after root]]></content>
+    <content type="text"><![CDATA[先大致介绍一下各个 MIUI 版本： 国内版 MIUI 国内版就是官方 MIUI 的国内版，优点：能吃上新功能，有小爱，缺点：有广告，臃肿，后台常驻很多系统组件，同时有不少系统组件没办法禁用，Google 套件不太好安装，安装好了之后也会经常因为不稳定而 Crash。官方站点：米柚 国际版 MIUI 也称为 俄罗斯版，国际版就是官方 MIUI 的国际版，优点：自带 Google 套件，无广告，缺点：还是比较臃肿，自带的 Google 套件过多。官方站点：MIUI Global 欧洲版 MIUI 也称为 波兰版，属于 MIUI 的第三方定制 Rom，也就是通常所说的 魔改MIUI，但不是小作坊制作，稳定性比较可靠。优点：自带 Google 套件，无广告，不臃肿，缺点：无小爱。 官方站点：XIAOMI.EU 刷入教程以最新的开发版（18.12.27）的欧洲版为例，已经在该版本上成功刷入。 解锁小米手机（本质是解锁 Bootloader），地址：解锁小米手机 打开手机开发者选项，下载并刷入 LR.TEAM 制作的非官方 Twrp，使用该帖子中自带的一键刷入的bat脚本，按提示刷入twrp。地址：LR.Team 小米8 专版TWRP 下载需要刷入的包 下载Rom，18.12.27 的欧洲版 MIUI 卡刷包，帖子地址：MIUI 10 18.12.27 下载通用的 Disable DM-verify 包，帖子地址：Universal DM-Verity, ForceEncrypt, Disk Quota Disablers 下载 Magisk-v18.0.zip，地址：Magisk Github Releases 刷入卡刷包，并Root 三清：进入 Recovery 模式，进入TWRP -&gt; 清除 -&gt; 高级清除 -&gt; 选择 “system”, “cache”, “data” 并清除；如果底包是其他 MIUI ，则还需要格式化data，注意格式化data会擦除掉内置存储，具体步骤： TWRP -&gt; 清除 -&gt; 格式化data 刷入 MIUI Rom 卡刷包：将卡刷包放进手机SD卡中，进入 TWRP -&gt; 安装 -&gt; 选择卡刷包并确认刷入 刷入 Disable-DM-verify 的包：TWRP -&gt; 安装 -&gt; 选择并确认刷入 Root系统：刷入 Magisk-v18.0.zip 包，步骤同上。 重启，大功告成！ 参考 关于卡米的问题：TWRP bootloop after restore… 关于卡米的问题：Bootloop after root 关于卡米的问题：Another bootloop Mi Mix2]]></content>
       <categories>
         <category>Android</category>
       </categories>
@@ -148,8 +148,8 @@
       </categories>
       <tags>
         <tag>android notes</tag>
-        <tag>IPC</tag>
         <tag>AIDL</tag>
+        <tag>IPC</tag>
       </tags>
   </entry>
   <entry>

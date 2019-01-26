@@ -1,1 +1,67 @@
-function wrapImageWithFancyBox(){$("img").not(".sidebar-image img").not("#author-avatar img").not(".mdl-menu img").not(".something-else-logo img").each(function(){var t=$(this),a=t.attr("alt"),o=t.parent("a");if(o.size()<1){var n=this.getAttribute("src"),i=n.lastIndexOf("@");-1!=i&&(n=n.substring(0,i)),o=t.wrap('<a href="'+n+'"></a>').parent("a")}o.attr("data-fancybox","images"),a&&o.attr("data-caption",a)}),$().fancybox({selector:'[data-fancybox="images"]',thumbs:!1,hash:!0,loop:!1,fullScreen:!1,slideShow:!1,protect:!0})}function backBtnDectector(){window.history&&window.history.pushState&&$(window).on("popstate",function(){""!==location.hash.split("#!/")[1]&&(""===window.location.hash&&onBackButtonClicked())})}function onBackButtonClicked(){$.fancybox.isOpen&&$.fancybox.close()}$(document).ready(function(){wrapImageWithFancyBox()});
+$(document).ready(function() {
+    wrapImageWithFancyBox();
+    // backBtnDectector();
+});
+
+
+/**
+ * Wrap images with fancybox support.
+ */
+function wrapImageWithFancyBox() {
+    $('img').not('.sidebar-image img').not('#author-avatar img').not(".mdl-menu img").not(".something-else-logo img").each(function() {
+
+        var $image = $(this);
+        var imageCaption = $image.attr('alt');
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+            var src = this.getAttribute('src');
+            var idx = src.lastIndexOf('@');
+            if (idx != -1) {
+                src = src.substring(0, idx);
+            }
+            $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+        }
+
+        $imageWrapLink.attr('data-fancybox', 'images');
+        if (imageCaption) {
+            $imageWrapLink.attr('data-caption', imageCaption);
+        }
+
+    });
+
+    $().fancybox({
+        selector: '[data-fancybox="images"]',
+        thumbs: false,
+        hash: true,
+        loop: false,
+        fullScreen: false,
+        slideShow: false,
+        protect: true,
+    });
+
+}
+
+function backBtnDectector() {
+    if (window.history && window.history.pushState) {
+        $(window).on('popstate', function() {
+            var hashLocation = location.hash;
+            var hashSplit = hashLocation.split("#!/");
+            var hashName = hashSplit[1];
+
+            if (hashName !== '') {
+                var hash = window.location.hash;
+                if (hash === '') {
+                    // back button clicked
+                    onBackButtonClicked();
+                }
+            }
+        });
+    }
+}
+
+function onBackButtonClicked() {
+    if ($.fancybox.isOpen) {
+        $.fancybox.close();
+    }
+}

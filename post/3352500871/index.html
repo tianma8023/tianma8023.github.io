@@ -1,12 +1,528 @@
-<!DOCTYPE html><html style="display:none" lang="zh"><head><meta charset="utf-8"><script>window.materialVersion="1.5.2",window.oldVersion=["codestartv1","1.3.4","1.4.0","1.4.0b1","1.5.0"]</script><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn1.lncld.net"><link rel="dns-prefetch" href="https://busuanzi.ibruce.info"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><meta name="renderer" content="webkit"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Android笔记：IPC | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon.png"><link rel="icon" href="/img/favicon.png"><meta name="format-detection" content="telephone=no"><meta name="description" itemprop="description" content="IPC (Interprocess Communication) 即进程间通信，需要用到 IPC 主要有以下原因：
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.2 -->
+    <script>
+        window.materialVersion = "1.5.2"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+    <link rel="dns-prefetch" href="https://cdn1.lncld.net"/>
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Android笔记：IPC | 
+        
+        Tianma
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="IPC (Interprocess Communication) 即进程间通信，需要用到 IPC 主要有以下原因：
 
 应用内自身原因需要采用多进程，比如，大应用模块多，需要的内存大，而 Android 对单进程内存有大小限制，所以需要多进程获取更多的内存空间；
 当前应用需要获取其他应用数据。
-"><meta name="keywords" content="Tianma,android notes,IPC"><meta name="theme-color" content="#42A5F5"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><script>window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}},lsloader.removeLS=function(e){try{localStorage.removeItem(e)}catch(e){}},lsloader.setLS=function(e,t){try{localStorage.setItem(e,t)}catch(e){}},lsloader.getLS=function(e){var t="";try{t=localStorage.getItem(e)}catch(e){t=""}return t},versionString="/*"+(window.materialVersion||"unknownVersion")+"*/",lsloader.clean=function(){try{for(var e=[],t=0;t<localStorage.length;t++)e.push(localStorage.key(t));e.forEach(function(e){var n=lsloader.getLS(e);window.oldVersion&&window.oldVersion.reduce(function(e,t){return e||-1!==n.indexOf("/*"+t+"*/")},!1)&&lsloader.removeLS(e)})}catch(e){}},lsloader.clean(),lsloader.load=function(e,t,n,s){var a;if("boolean"==typeof n&&(s=n,n=void 0),s=s||!1,n=n||function(){},(a=this.getLS(e))&&-1===a.indexOf(versionString))return this.removeLS(e),void this.requestResource(e,t,n,s);if(a){if(a.split(versionString)[0]!=t)return console.log("reload:"+t),this.removeLS(e),void this.requestResource(e,t,n,s);a=a.split(versionString)[1],s?(this.jsRunSequence.push({name:e,code:a}),this.runjs(t,e,a)):(document.getElementById(e).appendChild(document.createTextNode(a)),n())}else this.requestResource(e,t,n,s)},lsloader.requestResource=function(t,n,e,s){var a=this;s?this.iojs(n,t,function(e,t,n){a.setLS(t,e+versionString+n),a.runjs(e,t,n)}):this.iocss(n,t,function(e){document.getElementById(t).appendChild(document.createTextNode(e)),a.setLS(t,n+versionString+e)},e)},lsloader.iojs=function(t,n,e){var s=this;s.jsRunSequence.push({name:n,code:""});try{var a=new XMLHttpRequest;a.open("get",t,!0),a.onreadystatechange=function(){if(4==a.readyState){if((200<=a.status&&a.status<300||304==a.status)&&""!=a.response)return void e(t,n,a.response);s.jsfallback(t,n)}},a.send(null)}catch(e){s.jsfallback(t,n)}},lsloader.iocss=function(t,n,e,s){var a=this;try{var o=new XMLHttpRequest;o.open("get",t,!0),o.onreadystatechange=function(){if(4==o.readyState){if((200<=o.status&&o.status<300||304==o.status)&&""!=o.response)return e(o.response),void s();a.cssfallback(t,n,s)}},o.send(null)}catch(e){a.cssfallback(t,n,s)}},lsloader.iofonts=function(t,n,e,s){var a=this;try{var o=new XMLHttpRequest;o.open("get",t,!0),o.onreadystatechange=function(){if(4==o.readyState){if((200<=o.status&&o.status<300||304==o.status)&&""!=o.response)return e(o.response),void s();a.cssfallback(t,n,s)}},o.send(null)}catch(e){a.cssfallback(t,n,s)}},lsloader.runjs=function(e,t,n){if(t&&n)for(var s in this.jsRunSequence)this.jsRunSequence[s].name==t&&(this.jsRunSequence[s].code=n);if(this.jsRunSequence[0]&&this.jsRunSequence[0].code&&"failed"!=this.jsRunSequence[0].status)(a=document.createElement("script")).appendChild(document.createTextNode(this.jsRunSequence[0].code)),a.type="text/javascript",document.getElementsByTagName("head")[0].appendChild(a),this.jsRunSequence.shift(),0<this.jsRunSequence.length&&this.runjs();else if(this.jsRunSequence[0]&&"failed"==this.jsRunSequence[0].status){var a,o=this;(a=document.createElement("script")).src=this.jsRunSequence[0].path,a.type="text/javascript",this.jsRunSequence[0].status="loading",a.onload=function(){o.jsRunSequence.shift(),0<o.jsRunSequence.length&&o.runjs()},document.body.appendChild(a)}},lsloader.tagLoad=function(e,t){this.jsRunSequence.push({name:t,code:"",path:e,status:"failed"}),this.runjs()},lsloader.jsfallback=function(e,t){if(!this.jsnamemap[t]){for(var n in this.jsnamemap[t]=t,this.jsRunSequence)this.jsRunSequence[n].name==t&&(this.jsRunSequence[n].code="",this.jsRunSequence[n].status="failed",this.jsRunSequence[n].path=e);this.runjs()}},lsloader.cssfallback=function(e,t,n){if(!this.cssnamemap[t]){this.cssnamemap[t]=1;var s=document.createElement("link");s.type="text/css",s.href=e,s.rel="stylesheet",s.onload=s.onerror=n;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(s,a)}},lsloader.runInlineScript=function(e,t){var n=document.getElementById(t).innerText;this.jsRunSequence.push({name:e,code:n}),this.runjs()}</script><script>function Queue(){this.dataStore=[],this.offer=function(e){this.debug&&console.log("Offered a Queued Function.");"function"==typeof e?this.dataStore.push(e):console.log("You must offer a function.")},this.poll=function(){this.debug&&console.log("Polled a Queued Function.");return this.dataStore.shift()},this.execNext=function(){var e=this.poll();void 0!==e&&(this.debug&&console.log("Run a Queued Function."),e())},this.debug=!1,this.startDebug=function(){this.debug=!0}}var queue=new Queue</script><style id="material_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style id="style_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;overflow-x:hidden!important}code{font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;color:#ff5722}a{color:#388e3c}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#42a5f5!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#42a5f5!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#42a5f5!important}.toTop{background:#ef6c00!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#ef6c00}#scheme-Paradox .MD-burger-layer{background-color:#ef6c00}#scheme-Paradox #post-toc-trigger-btn{color:#ef6c00}.post-toc a:hover{color:#388e3c;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><link href="https://fonts.proxy.ustclug.org/css?family=Roboto:300,400,500" rel="stylesheet"><style id="material_icons"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style>.hanabi-linenumber{color:#ff4081}#scheme-Paradox .material-nav .page-number{display:block;padding:0 .8em;font-size:1.3em;margin:0 .2em;color:#757575}#scheme-Paradox .material-nav .page-number.current{color:#ff4081;text-align:center;font-weight:700;margin:0 0}#scheme-Paradox .material-nav .space{color:#757575;text-align:center;font-weight:700}#scheme-Paradox .material-layout .material-post>.material-nav{display:flex;margin:10px 15px;color:#fff;font-weight:500;flex-direction:row;justify-content:space-between;align-items:center;text-align:center}#scheme-Paradox .material-layout .material-index>.material-nav{display:flex;margin:10px 15px;color:#fff;font-weight:500;flex-direction:row;justify-content:space-between;align-items:center;text-align:center;margin-left:25%;margin-right:25%}.material-layout .material-index>.material-nav a,.material-layout .material-post>.material-nav a{color:#7f7f7f}.image-caption{display:block;text-align:center;margin:10px 0;color:#666}.post-image-center{display:block;margin:auto}#post-license{margin:2em 0;padding:.5em 1em;border-left:3px solid #ff4081;background-color:#f5f5f5;list-style:none}#scheme-Paradox .div-post-count{margin-left:2em}@media screen and (max-width:840px){#scheme-Paradox .div-post-count{display:none!important}}#scheme-Paradox .material-layout .mdl-card__media{min-height:275px}#scheme-Paradox .material-layout .something-else .something-else-logo{min-height:275px}@media screen and (max-width:480px){#scheme-Paradox .material-layout .mdl-card__media{min-height:150px}#scheme-Paradox .material-layout .mdl-card{min-height:200px}#scheme-Paradox .material-layout .something-else .something-else-logo{min-height:150px}#scheme-Paradox .material-layout .mdl-card.something-else{min-height:200px}}#scheme-Paradox .material-layout .post_entry-module .mdl-card__media~.mdl-card__supporting-text{padding-top:16px}#scheme-Paradox .material-layout .post_entry-content h2{margin:0 0 15px;font-size:2em;font-weight:500}#scheme-Paradox .material-layout .post_entry-content p{margin:0 0}#scheme-Paradox .material-layout .post_entry-content blockquote{border-left:4px solid #ddd;padding:15px 15px;background-color:#f8f8f8;font-style:normal;color:#777;margin:0 15px 15px}#post-content blockquote{padding:15px 15px;background-color:#f8f8f8}blockquote{font-size:100%}.sidebar .sidebar-brand{color:rgba(0,0,0,.8);hover:rgba(0,0,0,.8);font-weight:500!important;font-size:14px!important}.sidebar .sidebar-header.header-cover{background-size:cover}.sidebar .sidebar-nav li a{font-weight:400!important;font-size:14px}.footer-sns-facebook{background:url(/img/footer/footer_ico-facebook.svg)}.footer-sns-gplus{background:url(/img/footer/footer_ico-gplus.svg)}.footer-sns-twitter{background:url(/img/footer/footer_ico-twitter.svg)}.footer-sns-weibo{background:url(/img/footer/footer_ico-weibo.svg)}.footer-sns-instagram{background:url(/img/footer/footer_ico-instagram.svg)}.footer-sns-tumblr{background:url(/img/footer/footer_ico-tumblr.svg)}.footer-sns-github{background:url(/img/footer/footer_ico-github.svg)}.footer-sns-linkedin{background:url(/img/footer/footer_ico-linkedin.svg)}.footer-sns-zhihu{background:url(/img/footer/footer_ico-zhihu.svg)}.footer-sns-bilibili{background:url(/img/footer/footer_ico-bilibili.svg)}.footer-sns-telegram{background:url(/img/footer/footer_ico-telegram.svg)}.footer-sns-v2ex{background:url(/img/footer/footer_ico-v2ex.svg)}.footer-sns-jianshu{background:url(/img/footer/footer_ico-jianshu.svg)}.fa-heart:before{content:'\f004'}.fa-heart-o:before{content:'\f08a'}#scheme-Paradox .mdl-mini-footer a{color:#388e3c;font-weight:500}#scheme-Paradox .mdl-mini-footer a:hover{color:#388e3c}</style><script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==",!0)</script><meta name="mobile-web-app-capable" content="yes"><meta name="application-name" content="Tianma"><meta name="msapplication-starturl" content="https://tianma.space/post/3352500871/"><meta name="msapplication-navbutton-color" content="#42A5F5"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tianma"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="apple-touch-icon" href="/img/favicon.png"><meta property="og:url" content="https://tianma.space/post/3352500871/"><meta property="og:type" content="blog"><meta property="og:title" content="Android笔记：IPC | Tianma"><meta property="og:image" content="/img/favicon.png"><meta property="og:description" content="IPC (Interprocess Communication) 即进程间通信，需要用到 IPC 主要有以下原因：
+">
+    <meta name="keywords" content="Tianma,android notes,IPC">
+    <meta name="theme-color" content="#42A5F5">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    color: #ff5722;
+  }
+
+  a {
+    color: #388E3C;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #42A5F5 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #42A5F5 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #42A5F5 !important;
+  }
+
+  .toTop {
+    background: #EF6C00 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #EF6C00;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #EF6C00;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #EF6C00;
+  }
+
+  .post-toc a:hover {
+    color: #388E3C;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #EEEEEE;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+<!-- Modified by Tianma at 2018年6月28日 23:22:35 -->
+<!-- Custom css style -->
+<style>
+
+/* Hanabi highlight */
+.hanabi-linenumber {
+  color: #ff4081;
+}
+/* Hanabi highlight */
+
+/* Paginator */
+#scheme-Paradox .material-nav .page-number {
+    display: block;
+    padding: 0em 0.8em;
+    font-size: 1.3em;
+    margin: 0em 0.2em;
+    color: #757575;
+}
+#scheme-Paradox .material-nav .page-number.current {
+    color: #ff4081;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 0;
+}
+
+#scheme-Paradox .material-nav .space {
+    color: #757575;
+    text-align: center;
+    font-weight: bold;
+}
+
+#scheme-Paradox .material-layout .material-post>.material-nav {
+    display: flex;
+    margin: 10px 15px;
+    color: #fff;
+    font-weight: 500;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+#scheme-Paradox .material-layout .material-index>.material-nav {
+    display: flex;
+    margin: 10px 15px;
+    color: #fff;
+    font-weight: 500;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+.material-layout .material-post>.material-nav a,  
+.material-layout .material-index>.material-nav a {
+  color: #7f7f7f
+}
+/* Paginator */
+
+/* Image Caption */
+.image-caption {
+    display: block;
+    text-align: center;
+    margin: 10px 0px;
+    color: #666;
+}
+.post-image-center {
+  display: block;
+  margin: auto;
+}
+/* Image Caption */
+
+/* Post License */
+#post-license {
+  margin: 2em 0;
+  padding: 0.5em 1em;
+  border-left: 3px solid #ff4081;
+  background-color: #f5f5f5;
+  list-style: none;
+}
+/* Post License */
+
+/* Word Count */
+#scheme-Paradox .div-post-count {
+    margin-left: 2em;
+}
+@media screen and (max-width: 840px) {
+    #scheme-Paradox .div-post-count {
+        display: none !important;
+    }
+}
+/* Word Count */
+
+/* Post Entry Thumbnail */
+#scheme-Paradox .material-layout .mdl-card__media {
+  min-height: 275px;
+}
+
+#scheme-Paradox .material-layout .something-else .something-else-logo {
+  min-height: 275px;
+}
+
+@media screen and (max-width:480px) {
+    #scheme-Paradox .material-layout .mdl-card__media {
+        min-height: 150px;
+    }
+
+    #scheme-Paradox .material-layout .mdl-card {
+      min-height: 200px;
+    }
+
+    #scheme-Paradox .material-layout .something-else .something-else-logo {
+      min-height: 150px;
+    }
+
+    #scheme-Paradox .material-layout .mdl-card.something-else {
+      min-height: 200px;
+    }
+}
+/* Post Entry Thumbnail */
+
+/** Post Entry Content */
+#scheme-Paradox .material-layout .post_entry-module .mdl-card__media~.mdl-card__supporting-text {
+  padding-top: 16px;
+}
+
+#scheme-Paradox .material-layout .post_entry-content h2 {
+  margin: 0 0 15px;
+  font-size: 2em;
+  font-weight: 500;
+}
+
+#scheme-Paradox .material-layout .post_entry-content p {
+  margin: 0 0;
+}
+
+#scheme-Paradox .material-layout .post_entry-content blockquote {
+  border-left: 4px solid #ddd;
+  padding: 15px 15px;
+  background-color: #f8f8f8;
+  font-style: normal;
+  color: #777;
+  margin: 0 15px 15px;
+}
+/** Post Entry Content */
+
+/* Post Content blockquote */
+#post-content blockquote {
+  padding: 15px 15px;
+  background-color: #f8f8f8;
+}
+/* Post Content blockquote */
+
+/* blockquote */
+blockquote {
+  font-size: 100%;
+}
+
+/* sidebar */
+.sidebar .sidebar-brand {
+  color: rgba(0, 0, 0, 0.8);
+  hover: rgba(0, 0, 0, 0.8);
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.sidebar .sidebar-header.header-cover {
+  background-size: cover;
+}
+
+.sidebar .sidebar-nav li a {
+  font-weight: 400 !important;
+  font-size: 14px;
+}
+/* sidebar */
+
+/* footer sns icons */
+.footer-sns-facebook {
+  background: url(/img/footer/footer_ico-facebook.svg);
+}
+
+.footer-sns-gplus {
+  background: url(/img/footer/footer_ico-gplus.svg);
+}
+
+.footer-sns-twitter {
+  background: url(/img/footer/footer_ico-twitter.svg);
+}
+
+.footer-sns-weibo {
+  background: url(/img/footer/footer_ico-weibo.svg);
+}
+
+.footer-sns-instagram {
+  background: url(/img/footer/footer_ico-instagram.svg);
+}
+
+.footer-sns-tumblr {
+  background: url(/img/footer/footer_ico-tumblr.svg);
+}
+
+.footer-sns-github {
+  background: url(/img/footer/footer_ico-github.svg);
+}
+
+.footer-sns-linkedin {
+  background: url(/img/footer/footer_ico-linkedin.svg);
+}
+
+.footer-sns-zhihu {
+  background: url(/img/footer/footer_ico-zhihu.svg);
+}
+
+.footer-sns-bilibili {
+  background: url(/img/footer/footer_ico-bilibili.svg);
+}
+
+.footer-sns-telegram {
+  background: url(/img/footer/footer_ico-telegram.svg);
+}
+
+.footer-sns-v2ex {
+  background: url(/img/footer/footer_ico-v2ex.svg);
+}
+
+.footer-sns-jianshu {
+  background: url(/img/footer/footer_ico-jianshu.svg);
+}
+/* footer sns icons */
+
+/* footer */
+.fa-heart:before {
+    content: '\f004'
+}
+
+.fa-heart-o:before {
+    content: '\f08a'
+}
+/* footer */
+
+/* footer right */
+#scheme-Paradox .mdl-mini-footer a {
+  color: #388E3C;
+  font-weight: 500;
+}
+
+#scheme-Paradox .mdl-mini-footer a:hover {
+  color: #388E3C;
+}
+/* footer right */
+
+</style>
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Tianma">
+    <meta name="msapplication-starturl" content="https://tianma.space/post/3352500871/">
+    <meta name="msapplication-navbutton-color" content="#42A5F5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Tianma">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://tianma.space/post/3352500871/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Android笔记：IPC | Tianma">
+    <meta property="og:image" content="/img/favicon.png">
+    <meta property="og:description" content="IPC (Interprocess Communication) 即进程间通信，需要用到 IPC 主要有以下原因：
 
 应用内自身原因需要采用多进程，比如，大应用模块多，需要的内存大，而 Android 对单进程内存有大小限制，所以需要多进程获取更多的内存空间；
 当前应用需要获取其他应用数据。
-"><meta property="og:article:tag" content="android notes"><meta property="og:article:tag" content="IPC"><meta property="article:published_time" content="Sat Mar 31 2018 18:07:51 GMT+0800"><meta property="article:modified_time" content="Thu Dec 27 2018 18:59:49 GMT+0800"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://tianma.space/post/3352500871/index.html"><script type="application/ld+json">{
+">
+    <meta property="og:article:tag" content="android notes"> <meta property="og:article:tag" content="IPC"> 
+
+    
+        <meta property="article:published_time" content="Sat Mar 31 2018 18:07:51 GMT+0800">
+        <meta property="article:modified_time" content="Thu Dec 27 2018 18:59:49 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://tianma.space/post/3352500871/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "mainEntityOfPage": "https://tianma.space/post/3352500871/index.html",
@@ -36,7 +552,229 @@
 应用内自身原因需要采用多进程，比如，大应用模块多，需要的内存大，而 Android 对单进程内存有大小限制，所以需要多进程获取更多的内存空间；
 当前应用需要获取其他应用数据。
 ",
-}</script><script>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject=g,e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script",0,"ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script><script>lsloader.load("fancybox_js","/js/fancybox/jquery.fancybox.min.js?t2LXoiIDGJmos9j6jmohzw==",!0)</script><script>lsloader.load("wrap_image_js","/js/wrapImage.js?2z+b2rMZFAJ9HG9/nm3U9g==",!0)</script><style id="fancybox_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("fancybox_css","/js/fancybox/jquery.fancybox.min.css?Fnnc049dQ/HvZMD/Mxr4EA==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script></head><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button> <button id="post-toc-trigger-btn" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">format_list_numbered</i></button><ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh;overflow-y:scroll"><ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android-多进程模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android 多进程模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开启多进程模式"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">开启多进程模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多进程模式弊端"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">多进程模式弊端</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android-中的-IPC-方式"><span class="post-toc-number">2.</span> <span class="post-toc-text">Android 中的 IPC 方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bundle"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Bundle</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#共享文件"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">共享文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AIDL"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">AIDL</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Messenger"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Messenger</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ContentProvider"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">ContentProvider</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Socket"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">Socket</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#各个-IPC-方式对比"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">各个 IPC 方式对比</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码参考"><span class="post-toc-number">3.</span> <span class="post-toc-text">代码参考</span></a></li></ol></ul><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Shoujo_Shuumatsu_Ryokou_02.jpg@!w640)"><p class="article-headline-p">Android笔记：IPC</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><span>发表：3月 31, 2018</span> <span>更新：12月 27, 2018</span></div><div class="div-post-count"><span class="post-count">字数统计：3.5k 字</span> <span class="post-count">阅读时长：14 分</span></div><div class="section-spacer"></div><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/IPC/">IPC</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/android-notes/">android notes</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/3352500871/" class="leancloud-views_num" data-flag-title="Android笔记：IPC">&nbsp;浏览量</span></li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><p><code>IPC</code> (Interprocess Communication) 即进程间通信，需要用到 <code>IPC</code> 主要有以下原因：</p><ul><li>应用内自身原因需要采用多进程，比如，大应用模块多，需要的内存大，而 Android 对单进程内存有大小限制，所以需要多进程获取更多的内存空间；</li><li>当前应用需要获取其他应用数据。</li></ul><a id="more"></a><h2 id="Android-多进程模式"><a href="#Android-多进程模式" class="headerlink" title="Android 多进程模式"></a>Android 多进程模式</h2><h3 id="开启多进程模式"><a href="#开启多进程模式" class="headerlink" title="开启多进程模式"></a>开启多进程模式</h3><p>Android 中开启多进程有两种方式：</p><ol><li>给四大组件在 <code>AndroidManifest</code> 中指定 <code>android:process</code> 属性</li><li>通过 JNI 在 <code>native</code> 层 <code>fork</code> 子进程（属于Linux处理方式）</li></ol><pre><code class="xml">&lt;activity 
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-84178484-1', 'auto');ga('send', 'pageview');
+</script>
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+	
+        <script>lsloader.load("fancybox_js","/js/fancybox/jquery.fancybox.min.js?t2LXoiIDGJmos9j6jmohzw==", true)</script>
+        <script>lsloader.load("wrap_image_js","/js/wrapImage.js?2z+b2rMZFAJ9HG9/nm3U9g==", true)</script>
+        <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","/js/fancybox/jquery.fancybox.min.css?Fnnc049dQ/HvZMD/Mxr4EA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+	
+	
+	<!-- Import APlayer.js -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android-多进程模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android 多进程模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开启多进程模式"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">开启多进程模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多进程模式弊端"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">多进程模式弊端</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android-中的-IPC-方式"><span class="post-toc-number">2.</span> <span class="post-toc-text">Android 中的 IPC 方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bundle"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Bundle</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#共享文件"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">共享文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AIDL"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">AIDL</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Messenger"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Messenger</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ContentProvider"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">ContentProvider</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Socket"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">Socket</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#各个-IPC-方式对比"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">各个 IPC 方式对比</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码参考"><span class="post-toc-number">3.</span> <span class="post-toc-text">代码参考</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        <!-- Custom Thumbnail -->
+        <div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Shoujo_Shuumatsu_Ryokou_02.jpg@!w640)">
+    
+            <p class="article-headline-p">
+                Android笔记：IPC
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <span>发表：3月 31, 2018</span>
+        <span>更新：12月 27, 2018</span>
+    </div>
+
+    
+    <div class="div-post-count">
+        <span class="post-count">字数统计：3.5k 字</span>
+        <span class="post-count">阅读时长：14 分</span>
+    </div>
+	
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/IPC/">IPC</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/android-notes/">android notes</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    <!-- Leancloud Views -->
+        <a class="post_share-link" href="#">
+            <li class="mdl-menu__item">
+                <span id="/post/3352500871/" class="leancloud-views_num" data-flag-title="Android笔记：IPC">
+     &nbsp;浏览量
+</span>
+
+            </li>
+        </a>
+    
+
+    
+        
+    
+
+    <!-- Share Weibo -->
+    
+
+    <!-- Share Twitter -->
+    
+
+    <!-- Share Facebook -->
+    
+
+    <!-- Share Google+ -->
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><code>IPC</code> (Interprocess Communication) 即进程间通信，需要用到 <code>IPC</code> 主要有以下原因：</p>
+<ul>
+<li>应用内自身原因需要采用多进程，比如，大应用模块多，需要的内存大，而 Android 对单进程内存有大小限制，所以需要多进程获取更多的内存空间；</li>
+<li>当前应用需要获取其他应用数据。</li>
+</ul>
+<a id="more"></a>
+<h2 id="Android-多进程模式"><a href="#Android-多进程模式" class="headerlink" title="Android 多进程模式"></a>Android 多进程模式</h2><h3 id="开启多进程模式"><a href="#开启多进程模式" class="headerlink" title="开启多进程模式"></a>开启多进程模式</h3><p>Android 中开启多进程有两种方式：</p>
+<ol>
+<li>给四大组件在 <code>AndroidManifest</code> 中指定 <code>android:process</code> 属性</li>
+<li>通过 JNI 在 <code>native</code> 层 <code>fork</code> 子进程（属于Linux处理方式）</li>
+</ol>
+<pre><code class="xml">&lt;activity 
     android:name=&quot;.FirstActivity&quot;
     android:label=&quot;FirstActivity&quot; /&gt;
 &lt;activity 
@@ -47,7 +785,21 @@
     android:name=&quot;.ThirdActivity&quot;
     android:label=&quot;ThirdActivity&quot;
     android:process=&quot;com.github.tianma8023.ipclearn.remote&quot; /&gt;
-</code></pre><p>这里，应用程序的包名是 <code>com.github.tianma8023.ipclearn</code>，其中 <code>FirstActivity</code> 运行在以包名为进程名的默认进程中；而<code>SecondActivity</code> 在启动时，会运行在名为 <code>com.github.tianma8023.ipclearn:remote</code> 的进程中；<code>ThirdActivity</code> 在启动时，会运行在名为 <code>com.github.tianma8023.ipclearn.remote</code> 的进程中。<br>以 <code>:</code> 开头的进程是当前应用的私有进程，其他应用程序的四大组件不会和它跑在同一个进程中；不以 <code>:</code> 开头的进程是全局进程，其他应用可以通过 <code>ShareUID</code> 的方式和其跑在同一个进程中。</p><h3 id="多进程模式弊端"><a href="#多进程模式弊端" class="headerlink" title="多进程模式弊端"></a>多进程模式弊端</h3><p>多进程模式会造成如下问题：</p><ol><li>静态成员变量以及单例模式失效：<br>Android系统为每个进程都分配有独立的虚拟机，不同的虚拟机有着不同的内存空间分配，在不同虚拟机下访问同一个类对象会分配到不同的地址空间，也就是属于不同的对象。</li><li>线程同步机制失效：<br>在不同的内存地址空间中，同步锁（无论是对象锁还是全局锁）也不一样，故没办法在不同进程间进行线程同步。</li><li><code>SharedPreferences</code> 可靠性降低<br><code>SharedPreferences</code> 底层通过读写 XML 文件来实现，在不同进程中并发读写是会产生同步问题的。</li><li><code>Application</code> 会多次创建：<br>每个进程有独立的虚拟机，自然也有独立的 <code>Application</code> 对象</li></ol><p>从以上信息可以得出：位于不同进程的四大组件之间，但凡通过内从共享数据、变量的，都会共享失败。</p><h2 id="Android-中的-IPC-方式"><a href="#Android-中的-IPC-方式" class="headerlink" title="Android 中的 IPC 方式"></a>Android 中的 IPC 方式</h2><h3 id="Bundle"><a href="#Bundle" class="headerlink" title="Bundle"></a>Bundle</h3><p><code>Activity</code>, <code>Service</code>, <code>BroadcastReceiver</code> 都支持在 <code>Intent</code> 中传递 <code>Bundle</code> 数据，而因为 <code>Bundle</code> 实现了 <code>Parcelable</code> 接口，所以可以在不同的进程间传输，也就是进行了进程间单向通信。</p><h3 id="共享文件"><a href="#共享文件" class="headerlink" title="共享文件"></a>共享文件</h3><p>既然共享内存会失效，那就通过共享文件的方式，但是也会存在并发读写的问题，所以文件共享方式适合对数据同步要求不高的进程间通信。<br>虽然 <code>SharedPreferences</code> 本质是文件读写，但由于 Android 系统对其有缓存策略，即在内存中也会持有 <code>SharedPreferences</code> 的缓存，因此进程间通信不宜用 <code>SharedPreferences</code>。</p><h3 id="AIDL"><a href="#AIDL" class="headerlink" title="AIDL"></a>AIDL</h3><p>AIDL(Android Interface Definition Language) 的进程间通信方式主要依靠 <code>Binder</code> 实现。</p><p>定义一个实体类 <code>Book</code>：</p><pre><code class="java">// Book.java
+</code></pre>
+<p>这里，应用程序的包名是 <code>com.github.tianma8023.ipclearn</code>，其中 <code>FirstActivity</code> 运行在以包名为进程名的默认进程中；而<code>SecondActivity</code> 在启动时，会运行在名为 <code>com.github.tianma8023.ipclearn:remote</code> 的进程中；<code>ThirdActivity</code> 在启动时，会运行在名为 <code>com.github.tianma8023.ipclearn.remote</code> 的进程中。<br>以 <code>:</code> 开头的进程是当前应用的私有进程，其他应用程序的四大组件不会和它跑在同一个进程中；不以 <code>:</code> 开头的进程是全局进程，其他应用可以通过 <code>ShareUID</code> 的方式和其跑在同一个进程中。</p>
+<h3 id="多进程模式弊端"><a href="#多进程模式弊端" class="headerlink" title="多进程模式弊端"></a>多进程模式弊端</h3><p>多进程模式会造成如下问题：</p>
+<ol>
+<li>静态成员变量以及单例模式失效：<br> Android系统为每个进程都分配有独立的虚拟机，不同的虚拟机有着不同的内存空间分配，在不同虚拟机下访问同一个类对象会分配到不同的地址空间，也就是属于不同的对象。</li>
+<li>线程同步机制失效：<br> 在不同的内存地址空间中，同步锁（无论是对象锁还是全局锁）也不一样，故没办法在不同进程间进行线程同步。</li>
+<li><code>SharedPreferences</code> 可靠性降低<br> <code>SharedPreferences</code> 底层通过读写 XML 文件来实现，在不同进程中并发读写是会产生同步问题的。</li>
+<li><code>Application</code> 会多次创建：<br> 每个进程有独立的虚拟机，自然也有独立的 <code>Application</code> 对象</li>
+</ol>
+<p>从以上信息可以得出：位于不同进程的四大组件之间，但凡通过内从共享数据、变量的，都会共享失败。</p>
+<h2 id="Android-中的-IPC-方式"><a href="#Android-中的-IPC-方式" class="headerlink" title="Android 中的 IPC 方式"></a>Android 中的 IPC 方式</h2><h3 id="Bundle"><a href="#Bundle" class="headerlink" title="Bundle"></a>Bundle</h3><p><code>Activity</code>, <code>Service</code>, <code>BroadcastReceiver</code> 都支持在 <code>Intent</code> 中传递 <code>Bundle</code> 数据，而因为 <code>Bundle</code> 实现了 <code>Parcelable</code> 接口，所以可以在不同的进程间传输，也就是进行了进程间单向通信。</p>
+<h3 id="共享文件"><a href="#共享文件" class="headerlink" title="共享文件"></a>共享文件</h3><p>既然共享内存会失效，那就通过共享文件的方式，但是也会存在并发读写的问题，所以文件共享方式适合对数据同步要求不高的进程间通信。<br>虽然 <code>SharedPreferences</code> 本质是文件读写，但由于 Android 系统对其有缓存策略，即在内存中也会持有 <code>SharedPreferences</code> 的缓存，因此进程间通信不宜用 <code>SharedPreferences</code>。</p>
+<h3 id="AIDL"><a href="#AIDL" class="headerlink" title="AIDL"></a>AIDL</h3><p>AIDL(Android Interface Definition Language) 的进程间通信方式主要依靠 <code>Binder</code> 实现。</p>
+<p>定义一个实体类 <code>Book</code>：</p>
+<pre><code class="java">// Book.java
 package com.github.tianma8023.ipclearn.aidl;
 
 public class Book implements Parcelable {
@@ -58,12 +810,16 @@ public class Book implements Parcelable {
     // constructor ...
     // implements Parcelable ...
 }
-</code></pre><p>创建 <code>Book.aidl</code>：</p><pre><code class="java">// Book.aidl
+</code></pre>
+<p>创建 <code>Book.aidl</code>：</p>
+<pre><code class="java">// Book.aidl
 package com.github.tianma8023.ipclearn.aidl;
 
 // 声明自定义的Parcelable对象
 parcelable Book;
-</code></pre><p>创建 <code>IBookManager.aidl</code> 欲实现对 <code>Book</code> 的管理操作：</p><pre><code class="java">// IBookManager.aidl
+</code></pre>
+<p>创建 <code>IBookManager.aidl</code> 欲实现对 <code>Book</code> 的管理操作：</p>
+<pre><code class="java">// IBookManager.aidl
 package com.github.tianma8023.ipclearn.aidl;
 
 // 显式导入自定义的数据类型
@@ -73,7 +829,24 @@ interface IBookManager {
     List&lt;Book&gt; getBookList();
     void addBook(in Book book);
 }
-</code></pre><p>AIDL 中仅支持一下几种数据类型：</p><ol><li>基本数据类型(int, long, char, boolean, double 等)；</li><li>String 和 CharSequence；</li><li>List：只支持 ArrayList，且 List 中的每个元素必须是 AIDL 支持的数据类型;</li><li>Map：只支持 HashMap，且 Map 中的每个元素都必须是 AIDL 支持的数据类型；</li><li>Parcelable：实现了Parcelable的对象；</li><li>AIDL：所有的 AIDL 接口本身也可以在其他 AIDL 文件中使用。</li></ol><p>需要注意：</p><ul><li>自定义的 <code>Parcelable</code> 对象 和 <code>AIDL</code> 对象必须显式的 import 进来，无论它们是否在同一个包内。</li><li>如果 <code>AIDL</code> 文件中引用了自定义的 <code>Parcelable</code> 对象，则该 <code>Parcelable</code> 对象必须创建一个与它同名的 <code>AIDL</code> 文件，并在其中声明它为 <code>parcelable</code> 类型</li><li><code>AIDL</code> 文件中除了基本数据类型之外，其他类型参数都需标上：<code>in</code>(输入型参数), <code>out</code>(输出型参数) 或者 <code>inout</code>(输入输出型参数)。因为不同标识的参数底层开销不一样，所以最好别滥用 <code>inout</code></li></ul><p>之后 <code>build</code> 操作，Android Studio 会在模块 <code>/build</code> 目录下面生成对应的 <code>IBookManager.java</code> 文件，大致内容如下：</p><pre><code class="java">// IBookManager.java
+</code></pre>
+<p>AIDL 中仅支持一下几种数据类型：</p>
+<ol>
+<li>基本数据类型(int, long, char, boolean, double 等)；</li>
+<li>String 和 CharSequence；</li>
+<li>List：只支持 ArrayList，且 List 中的每个元素必须是 AIDL 支持的数据类型;</li>
+<li>Map：只支持 HashMap，且 Map 中的每个元素都必须是 AIDL 支持的数据类型；</li>
+<li>Parcelable：实现了Parcelable的对象；</li>
+<li>AIDL：所有的 AIDL 接口本身也可以在其他 AIDL 文件中使用。</li>
+</ol>
+<p>需要注意：</p>
+<ul>
+<li>自定义的 <code>Parcelable</code> 对象 和 <code>AIDL</code> 对象必须显式的 import 进来，无论它们是否在同一个包内。</li>
+<li>如果 <code>AIDL</code> 文件中引用了自定义的 <code>Parcelable</code> 对象，则该 <code>Parcelable</code> 对象必须创建一个与它同名的 <code>AIDL</code> 文件，并在其中声明它为 <code>parcelable</code> 类型</li>
+<li><code>AIDL</code> 文件中除了基本数据类型之外，其他类型参数都需标上：<code>in</code>(输入型参数), <code>out</code>(输出型参数) 或者 <code>inout</code>(输入输出型参数)。因为不同标识的参数底层开销不一样，所以最好别滥用 <code>inout</code></li>
+</ul>
+<p>之后 <code>build</code> 操作，Android Studio 会在模块 <code>/build</code> 目录下面生成对应的 <code>IBookManager.java</code> 文件，大致内容如下：</p>
+<pre><code class="java">// IBookManager.java
 /*
  * This file is auto-generated.  DO NOT MODIFY.
  * Original file: F:\\AndroidStudio\\IPCLearn\\app\\src\\main\\aidl\\com\\github\\tianma8023\\ipclearn\\aidl\\IBookManager.aidl
@@ -141,7 +914,20 @@ interface IBookManager {
 
     public void addBook(com.github.tianma8023.ipclearn.aidl.Book book) throws android.os.RemoteException;
 }
-</code></pre><p><span style="color:#ff4081">AS 自动生成的 aidl 对应的 java 类，可以很好的了解 Binder 的工作机制，所以有必要读一读这里的源码。</span> 这里大致介绍下各个字段及方法的含义：</p><ul><li><code>Stub#DESCRIPTOR</code>: <code>Binder</code> 的唯一标识</li><li><code>Stub#asInterface(android.os.IBinader obj)</code>:<br>将 <strong>服务端</strong> 的 Binder 对象转化成 <strong>客户端</strong> 所需要的 AIDL 接口类型的对象。当服务端和客户端位于同一进程中时，此方法返回的就是服务端对象本身。当它们不在同一个进程中时，返回的是由系统封装后的 <code>Stub.Proxy</code> 对象（也就是需要转换）</li><li><code>Stub#asBinder()</code>: 返回当前 Binder 对象</li><li><code>Stub#onTransact(int code, Parcel data, Parcel reply, int flags)</code>：<br>该方法会运行在<strong>服务端</strong>的 Binder 线程池中。客户端发起的跨进程请求会通过系统底层封装后交由此方法处理。服务端通过 code 参数确认接下来调用执行的目标方法。<br>如果该方法返回 false，则客户端的请求会失败，所以可以利用此特性进行权限认证。</li><li><code>Proxy#getBookList()</code>:<br>此方法运行在<strong>客户端</strong>。客户端使用此方法进行跨进程调用时，会转化为让服务端（远端）的 Binder 执行 <code>transact</code> 方法，与此同时客户端线程挂起，并最终调用服务端的 <code>onTransact</code>，即调用上一条的 <code>Stub#onTransact()</code> 方法，当服务端相应方法执行完毕后返回结果后，客户端当前线程结束挂起，继续执行，并取出服务端返回的结果。</li><li><code>Proxy#addBook()</code>：与上述的 <code>Proxy#getBookList()</code> 类似</li></ul><p><code>Binder</code> 的工作机制图：<br><img alt="Binder 工作机制" class="post-image-center" src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Binder-works-principle.jpg@!w540"><span class="image-caption">Binder 工作机制</span></p><p>当客户端发起远程请求时，客户端当前线程会被挂起，等待服务端进程返回结果，所以，如果服务端进程很耗时，则不能在 UI 线程中发起远程请求。</p><p>远程服务端实现 <code>Service</code>：</p><pre><code class="java">public class BookManagerService extends Service {
+</code></pre>
+<p><span style="color:#ff4081"> AS 自动生成的 aidl 对应的 java 类，可以很好的了解 Binder 的工作机制，所以有必要读一读这里的源码。</span> 这里大致介绍下各个字段及方法的含义：</p>
+<ul>
+<li><code>Stub#DESCRIPTOR</code>: <code>Binder</code> 的唯一标识</li>
+<li><code>Stub#asInterface(android.os.IBinader obj)</code>:<br>将 <strong>服务端</strong> 的 Binder 对象转化成 <strong>客户端</strong> 所需要的 AIDL 接口类型的对象。当服务端和客户端位于同一进程中时，此方法返回的就是服务端对象本身。当它们不在同一个进程中时，返回的是由系统封装后的 <code>Stub.Proxy</code> 对象（也就是需要转换）</li>
+<li><code>Stub#asBinder()</code>: 返回当前 Binder 对象</li>
+<li><code>Stub#onTransact(int code, Parcel data, Parcel reply, int flags)</code>：<br>该方法会运行在<strong>服务端</strong>的 Binder 线程池中。客户端发起的跨进程请求会通过系统底层封装后交由此方法处理。服务端通过 code 参数确认接下来调用执行的目标方法。<br>如果该方法返回 false，则客户端的请求会失败，所以可以利用此特性进行权限认证。</li>
+<li><code>Proxy#getBookList()</code>:<br>此方法运行在<strong>客户端</strong>。客户端使用此方法进行跨进程调用时，会转化为让服务端（远端）的 Binder 执行 <code>transact</code> 方法，与此同时客户端线程挂起，并最终调用服务端的 <code>onTransact</code>，即调用上一条的 <code>Stub#onTransact()</code> 方法，当服务端相应方法执行完毕后返回结果后，客户端当前线程结束挂起，继续执行，并取出服务端返回的结果。</li>
+<li><code>Proxy#addBook()</code>：与上述的 <code>Proxy#getBookList()</code> 类似</li>
+</ul>
+<p><code>Binder</code> 的工作机制图：<br><img alt="Binder 工作机制" class=" post-image-center" src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Binder-works-principle.jpg@!w540"><span class="image-caption">Binder 工作机制</span></p>
+<p>当客户端发起远程请求时，客户端当前线程会被挂起，等待服务端进程返回结果，所以，如果服务端进程很耗时，则不能在 UI 线程中发起远程请求。</p>
+<p>远程服务端实现 <code>Service</code>：</p>
+<pre><code class="java">public class BookManagerService extends Service {
     private static final String TAG = &quot;BookManagerService&quot;;
 
     private CopyOnWriteArrayList&lt;Book&gt; mBookList = new CopyOnWriteArrayList&lt;Book&gt;();
@@ -174,10 +960,18 @@ interface IBookManager {
         mBookList.add(new Book(2, &quot;Android Programing&quot;));
     }
 }
-</code></pre><p>在 <code>AndroidManifest</code> 中将 <code>BookManagerService</code> 置于独立进程中，实现对进程间通信的模拟：</p><pre><code class="xml">&lt;service 
+</code></pre>
+<p>在 <code>AndroidManifest</code> 中将 <code>BookManagerService</code> 置于独立进程中，实现对进程间通信的模拟：</p>
+<pre><code class="xml">&lt;service 
     android:name=&quot;.aidl.BookManagerService&quot;
     android:process=&quot;:remote&quot; /&gt;
-</code></pre><ul><li>因为 <code>IBookManager.Stub</code> 类是 <code>Binder</code> 的一个抽象子类，所以在 <code>Serivce</code> 中实现 <code>IBookManager.Stub</code> 即可在 <code>onBind()</code> 中返回相应的 <code>Binder</code> 对象。</li><li>考虑到 AIDL 中的方法是在服务端的 <code>Binder</code> 线程池中执行的，所以考虑同步就使用了 <code>CopyOnWriteArrayList</code>。注意到 <code>CopyOnWriteArrayList</code> 并不是 <code>ArrayList</code> 的子类，但其实现的最基本的底层原理和 <code>ArrayList</code> 一致（基于数组，可以通过下标 index 进行访问等）。虽然服务端返回的是 <code>CopyOnWriteArrayList</code>，但 <code>Binder</code> 可以通过相同的机理去访问 <code>CopyOnWriteArrayList</code> 中的数据并最终形成新的 <code>ArrayList</code> 返回给客户端。这就与之前提到的 <code>AIDL支持的 List 只有 ArrayList</code> 并不冲突了。</li></ul><p>客户端跟绑定普通服务的客户端一致，比较简单：</p><pre><code class="java">public class BookManagerActivity extends Activity {
+</code></pre>
+<ul>
+<li>因为 <code>IBookManager.Stub</code> 类是 <code>Binder</code> 的一个抽象子类，所以在 <code>Serivce</code> 中实现 <code>IBookManager.Stub</code> 即可在 <code>onBind()</code> 中返回相应的 <code>Binder</code> 对象。</li>
+<li>考虑到 AIDL 中的方法是在服务端的 <code>Binder</code> 线程池中执行的，所以考虑同步就使用了 <code>CopyOnWriteArrayList</code>。注意到 <code>CopyOnWriteArrayList</code> 并不是 <code>ArrayList</code> 的子类，但其实现的最基本的底层原理和 <code>ArrayList</code> 一致（基于数组，可以通过下标 index 进行访问等）。虽然服务端返回的是 <code>CopyOnWriteArrayList</code>，但 <code>Binder</code> 可以通过相同的机理去访问 <code>CopyOnWriteArrayList</code> 中的数据并最终形成新的 <code>ArrayList</code> 返回给客户端。这就与之前提到的 <code>AIDL支持的 List 只有 ArrayList</code> 并不冲突了。</li>
+</ul>
+<p>客户端跟绑定普通服务的客户端一致，比较简单：</p>
+<pre><code class="java">public class BookManagerActivity extends Activity {
 
     private static final String TAG = &quot;BookManagerActivity&quot;;
 
@@ -215,14 +1009,22 @@ interface IBookManager {
         super.onDestroy();
     }
 }
-</code></pre><p>以上是 <code>AIDL</code> 的基本用法，进阶用法请参考 <a href="/post/3246519744">Android 笔记：AIDL进阶</a></p><h3 id="Messenger"><a href="#Messenger" class="headerlink" title="Messenger"></a>Messenger</h3><p>使用 <code>Messenger</code> 可以在不同的进程之间传递 <code>Message</code> 对象，实现进程间数据交互通信。</p><p><code>Messenger</code> 的构造函数：</p><pre><code class="java">public Messenger(Handler target) {
+</code></pre>
+<p>以上是 <code>AIDL</code> 的基本用法，进阶用法请参考 <a href="/post/3246519744">Android 笔记：AIDL进阶</a></p>
+<h3 id="Messenger"><a href="#Messenger" class="headerlink" title="Messenger"></a>Messenger</h3><p>使用 <code>Messenger</code> 可以在不同的进程之间传递 <code>Message</code> 对象，实现进程间数据交互通信。</p>
+<p><code>Messenger</code> 的构造函数：</p>
+<pre><code class="java">public Messenger(Handler target) {
     mTarget = target.getIMessenger();
 }
 
 public Messenger(IBinder target) {
     mTarget = IMessenger.Stub.asInterface(target);
 }
-</code></pre><p>通过第二个构造函数可以看出来，<code>Messegner</code> 的底层就是 <code>AIDL</code>。</p><p><code>Messenger</code> 对 <code>AIDL</code> 做了封装，由于 <code>Messenger</code> 机制一次只能处理一个请求，因此在服务端不需要考虑线程同步。</p><p><code>Messenger</code> 远程服务端 <code>Service</code>:</p><pre><code class="java">public class MessengerServerService extends Service {
+</code></pre>
+<p>通过第二个构造函数可以看出来，<code>Messegner</code> 的底层就是 <code>AIDL</code>。</p>
+<p><code>Messenger</code> 对 <code>AIDL</code> 做了封装，由于 <code>Messenger</code> 机制一次只能处理一个请求，因此在服务端不需要考虑线程同步。</p>
+<p><code>Messenger</code> 远程服务端 <code>Service</code>:</p>
+<pre><code class="java">public class MessengerServerService extends Service {
     private static final String TAG = &quot;MessengerServerService&quot;;
 
     private final Messenger mMessenger = new Messenger(new MessengerHandler());
@@ -257,10 +1059,14 @@ public Messenger(IBinder target) {
         return mMessenger.getBinder();
     }
 }
-</code></pre><p>注册 <code>Service</code> 运行在单独进程中：</p><pre><code class="xml">&lt;service 
+</code></pre>
+<p>注册 <code>Service</code> 运行在单独进程中：</p>
+<pre><code class="xml">&lt;service 
     android:name=&quot;.messenger.MessengerServerService&quot;
     android:process=&quot;:remote&quot; /&gt;
-</code></pre><p><code>Messenger</code> 客户端 <code>Activity</code> ：</p><pre><code class="java">public class MessengerClientActivity extends Activity {
+</code></pre>
+<p><code>Messenger</code> 客户端 <code>Activity</code> ：</p>
+<pre><code class="java">public class MessengerClientActivity extends Activity {
     private static final String TAG = &quot;MessengerClientActivity&quot;;
 
     // 客户端向服务端发送消息的Messenger
@@ -320,7 +1126,502 @@ public Messenger(IBinder target) {
         super.onDestroy();
     }
 }
-</code></pre><p><span style="color:#ff4081">注意：</span> <code>Message</code> 的 <code>obj</code> 字段，在 Android 2.0 以前不支持跨进程传输，在 Android 2.0 以后也仅仅在系统提供的实现了 <code>Parcelable</code> 接口的对象上才能支持跨进程传输。</p><img alt="Messenger 原理" class="post-image-center" src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Messenger-principle.jpg@!w540"><span class="image-caption">Messenger 原理</span><h3 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h3><p><code>ContentProvider</code> 底层也是由 <code>AIDL</code> 实现，其主要有6个抽象方法：<code>onCreate</code>, <code>getType</code>, <code>query</code>, <code>update</code>, <code>insert</code>, <code>delete</code>, 其中除了 <code>onCreate</code> 由系统调用运行在主线程之外，其他的都由外界回调运行在 <code>Binder</code> 线程池中。</p><p>注意，<code>ContentProvider</code> 底层依赖的数据存储没有要求，可以用 SQLite 数据库，也可以用普通文件，亦可以用 SharedPreferences，不过通常情况下底层存储都是依赖的数据库。</p><p>在客户端要观察 <code>ContentProvider</code> 中的数据变化情况，可以通过 <code>ContentResolver#registerContentObserver</code> 方法来注册观察者，<code>ContentResolver#unregisterContentObserver</code> 取消注册。</p><h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p><code>Socket</code> 也可以实现进程间通信，可以凭借 <code>TCP</code> 或者 <code>UDP</code> 的套接字来实现。与一般的 <code>Socket</code> 编程没有太大区别，主要是在 Android 编程中需要考虑在主线程上更新UI，在子线程发起 <code>Socket</code> 请求即可。</p><h3 id="各个-IPC-方式对比"><a href="#各个-IPC-方式对比" class="headerlink" title="各个 IPC 方式对比"></a>各个 IPC 方式对比</h3><table><thead><tr><th style="text-align:center">名称</th><th style="text-align:center">优点</th><th style="text-align:center">缺点</th><th style="text-align:center">适用场景</th></tr></thead><tbody><tr><td style="text-align:center">Bundle</td><td style="text-align:center">简单</td><td style="text-align:center">只能传输Bundle支持的数据</td><td style="text-align:center">四大组件间的进程间通信</td></tr><tr><td style="text-align:center">文件共享</td><td style="text-align:center">简单易用</td><td style="text-align:center">不适合并发场景，无法做到进程间即时通信</td><td style="text-align:center">无并发访问的情景，交换简单的数据，实时性要求不高的场景</td></tr><tr><td style="text-align:center">AIDL</td><td style="text-align:center">功能强大，支持一对多并发通信，支持即时通信</td><td style="text-align:center">使用稍复杂，需要处理线程同步</td><td style="text-align:center">一对多通信，有RPC需求</td></tr><tr><td style="text-align:center">Messenger</td><td style="text-align:center">功能一般，支持一对多串行通信，支持即时通信</td><td style="text-align:center">不适用于高并发场景，数据只能通过Message进行传输，只能传输Bundle支持的数据类型</td><td style="text-align:center">适用于低并发的一对多的即时通信，无RPC需求，或者不需要返回结果的PRC需求</td></tr><tr><td style="text-align:center">ContentProvider</td><td style="text-align:center">在数据源访问方面功能强大，支持一对多并发数据共享，可以通过Call扩展其他方法操作</td><td style="text-align:center">受约束的AIDL，主要提供数据源的CRUD操作</td><td style="text-align:center">一对多进程间的数据共享</td></tr><tr><td style="text-align:center">Socket</td><td style="text-align:center">功能强大，可以通过网络传输字节流，支持一对多并发即时通信</td><td style="text-align:center">实现起来稍微麻烦，不支持直接的RPC</td><td style="text-align:center">网络数据交换</td></tr></tbody></table><h2 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h2><p><a href="https://github.com/tianma8023/IPCLearn" target="_blank" rel="noopener">IPCLearn</a></p><div><br><ul id="post-license" class="post-license"><li class="post-license-author"><strong>本文作者：</strong> <a href="https://tianma.space">Tianma</a></li><li class="post-license-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/3352500871/">Android笔记：IPC</a></li><li class="post-license-statement"><strong>版权声明：</strong> 本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="license" target="_blank">署名-非商业性使用-相同方式共享（CC BY-NC-SA）4.0 国际许可协议</a><br>转载请保留以上声明信息！</li></ul></div></div><div id="gitalk-comment"><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk=new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:["tianma8023"],id:"/post/3352500871",title:"Android笔记：IPC",body:"https://tianma.space/post/3352500871/",distractionFreeMode:!1});gitalk.render("gitalk-container")</script></div><style>#gitalk-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/3246519744/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/3847558889/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div class="sidebar-header header-cover" style="background-image:url(/img/sidebar_header.jpg)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img src="/img/kousei.jpg" alt="Tianma's avatar"></div><a class="sidebar-brand">lovelymer#foxmail.com</a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu"></ul></li><li id="sidebar-first-li"><a href="/"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/10/">十月 2018<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/07/">七月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/04/">四月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/02/">二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="/categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/categories/Android/">Android<span class="sidebar_archives-count">26</span></a></li><li><a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/漫谈/">漫谈<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li><a href="/timeline" title="Timeline"><i class="material-icons sidebar-material-icons">timeline</i> Timeline</a></li><li><a href="/darling" title="Darling" target="_blank"><i class="material-icons sidebar-material-icons">favorite_border</i> Darling</a></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题" target="_blank"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div id="back-to-top" class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-github"><span class="visuallyhidden">Github</span></button></a><a href="https://space.bilibili.com/4504127#/" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-bilibili"><span class="visuallyhidden">Bilibili</span></button></a><a href="https://www.jianshu.com/u/9b3c643402b6" class="footer-jianshu" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-jianshu"><span class="visuallyhidden">Jianshu</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+" ~ "+curYear):document.write(curYear)</script>&nbsp;❤&nbsp;Tianma<br>Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>, Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div></footer><script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==",!0)</script><script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==",!0)</script><script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==",!0)</script><script type="text/ls-javascript" id="NProgress-script">NProgress.configure({
+</code></pre>
+<p><span style="color:#ff4081">注意：</span> <code>Message</code> 的 <code>obj</code> 字段，在 Android 2.0 以前不支持跨进程传输，在 Android 2.0 以后也仅仅在系统提供的实现了 <code>Parcelable</code> 接口的对象上才能支持跨进程传输。</p>
+<img alt="Messenger 原理" class=" post-image-center" src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Messenger-principle.jpg@!w540"><span class="image-caption">Messenger 原理</span>
+<h3 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h3><p><code>ContentProvider</code> 底层也是由 <code>AIDL</code> 实现，其主要有6个抽象方法：<code>onCreate</code>, <code>getType</code>, <code>query</code>, <code>update</code>, <code>insert</code>, <code>delete</code>, 其中除了 <code>onCreate</code> 由系统调用运行在主线程之外，其他的都由外界回调运行在 <code>Binder</code> 线程池中。</p>
+<p>注意，<code>ContentProvider</code> 底层依赖的数据存储没有要求，可以用 SQLite 数据库，也可以用普通文件，亦可以用 SharedPreferences，不过通常情况下底层存储都是依赖的数据库。</p>
+<p>在客户端要观察 <code>ContentProvider</code> 中的数据变化情况，可以通过 <code>ContentResolver#registerContentObserver</code> 方法来注册观察者，<code>ContentResolver#unregisterContentObserver</code> 取消注册。</p>
+<h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p><code>Socket</code> 也可以实现进程间通信，可以凭借 <code>TCP</code> 或者 <code>UDP</code> 的套接字来实现。与一般的 <code>Socket</code> 编程没有太大区别，主要是在 Android 编程中需要考虑在主线程上更新UI，在子线程发起 <code>Socket</code> 请求即可。</p>
+<h3 id="各个-IPC-方式对比"><a href="#各个-IPC-方式对比" class="headerlink" title="各个 IPC 方式对比"></a>各个 IPC 方式对比</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">优点</th>
+<th style="text-align:center">缺点</th>
+<th style="text-align:center">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Bundle</td>
+<td style="text-align:center">简单</td>
+<td style="text-align:center">只能传输Bundle支持的数据</td>
+<td style="text-align:center">四大组件间的进程间通信</td>
+</tr>
+<tr>
+<td style="text-align:center">文件共享</td>
+<td style="text-align:center">简单易用</td>
+<td style="text-align:center">不适合并发场景，无法做到进程间即时通信</td>
+<td style="text-align:center">无并发访问的情景，交换简单的数据，实时性要求不高的场景</td>
+</tr>
+<tr>
+<td style="text-align:center">AIDL</td>
+<td style="text-align:center">功能强大，支持一对多并发通信，支持即时通信</td>
+<td style="text-align:center">使用稍复杂，需要处理线程同步</td>
+<td style="text-align:center">一对多通信，有RPC需求</td>
+</tr>
+<tr>
+<td style="text-align:center">Messenger</td>
+<td style="text-align:center">功能一般，支持一对多串行通信，支持即时通信</td>
+<td style="text-align:center">不适用于高并发场景，数据只能通过Message进行传输，只能传输Bundle支持的数据类型</td>
+<td style="text-align:center">适用于低并发的一对多的即时通信，无RPC需求，或者不需要返回结果的PRC需求</td>
+</tr>
+<tr>
+<td style="text-align:center">ContentProvider</td>
+<td style="text-align:center">在数据源访问方面功能强大，支持一对多并发数据共享，可以通过Call扩展其他方法操作</td>
+<td style="text-align:center">受约束的AIDL，主要提供数据源的CRUD操作</td>
+<td style="text-align:center">一对多进程间的数据共享</td>
+</tr>
+<tr>
+<td style="text-align:center">Socket</td>
+<td style="text-align:center">功能强大，可以通过网络传输字节流，支持一对多并发即时通信</td>
+<td style="text-align:center">实现起来稍微麻烦，不支持直接的RPC</td>
+<td style="text-align:center">网络数据交换</td>
+</tr>
+</tbody>
+</table>
+<h2 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h2><p><a href="https://github.com/tianma8023/IPCLearn" target="_blank" rel="noopener">IPCLearn</a></p>
+
+        
+		
+			<div>
+   <br/>
+   <ul id="post-license" class="post-license">
+       <li class="post-license-author">
+           <strong>本文作者：</strong>
+           <a href="https://tianma.space">Tianma</a>
+       </li>
+
+       <li class="post-license-link">
+           <strong>本文链接：</strong>
+           <a href="https://tianma.space/post/3352500871/">Android笔记：IPC</a>
+       </li>
+
+       <li class="post-license-statement">
+           <strong>版权声明： </strong>
+           本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="license" target="_blank">署名-非商业性使用-相同方式共享（CC BY-NC-SA）4.0 国际许可协议</a> </br>转载请保留以上声明信息！
+       </li>
+   </ul>
+</div>
+		
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 Gitalk -->
+<div id="gitalk-comment">
+    <!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script>
+    var gitalk = new Gitalk({
+            clientID: '55a5d9da39a7a1f372ab',
+            clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+            repo: 'tianma8023.github.io',
+            owner: 'tianma8023',
+            admin: ['tianma8023'],
+            // facebook-like distraction free mode
+            id: '/post/3352500871',
+            title: 'Android笔记：IPC',
+            body: 'https://tianma.space/post/3352500871/',
+            distractionFreeMode: false
+        })
+   gitalk.render('gitalk-container')
+</script>
+</div>
+<style>
+    #gitalk-comment {
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/post/3246519744/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/post/3847558889/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.jpg);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/kousei.jpg" alt="Tianma's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <!--
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        lovelymer#foxmail.com
+        <b class="caret"></b>
+    </a>
+    -->
+    <a class="sidebar-brand">
+        lovelymer#foxmail.com
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/10/">十月 2018<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/07/">七月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/04/">四月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/02/">二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/categories/Android/">Android<span class="sidebar_archives-count">26</span></a></li><li><a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/漫谈/">漫谈<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            
+            <a href="/tags" title="标签">
+            
+                
+                    <i class="material-icons sidebar-material-icons">label_outline</i>
+                
+                标签
+            </a>
+        </li>
+        
+    
+        <li>
+            
+            <a href="/timeline" title="Timeline">
+            
+                
+                    <i class="material-icons sidebar-material-icons">timeline</i>
+                
+                Timeline
+            </a>
+        </li>
+        
+    
+        <li>
+            
+            <a href="/darling" title="Darling" target="_blank">
+            
+                
+                    <i class="material-icons sidebar-material-icons">favorite_border</i>
+                
+                Darling
+            </a>
+        </li>
+        
+    
+        <li>
+            
+            <a href="/about" title="关于">
+            
+                
+                    <i class="material-icons sidebar-material-icons">person_outline</i>
+                
+                关于
+            </a>
+        </li>
+        
+    
+        <li>
+            
+            <a href="https://github.com/viosey/hexo-theme-material" title="主题" target="_blank">
+            
+                
+                    <i class="material-icons sidebar-material-icons">stars</i>
+                
+                主题
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/tianma8023" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+        <a href="https://space.bilibili.com/4504127#/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-bilibili">
+                <span class="visuallyhidden">Bilibili</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Telegram -->
+    
+    
+    <!-- V2EX -->
+    
+
+    	<!-- Jianshu -->
+	
+		<a href="https://www.jianshu.com/u/9b3c643402b6" class="footer-jianshu" target="_blank">
+			<button class="mdl-mini-footer--social-btn social-btn footer-sns-jianshu" >
+				<span class="visuallyhidden">Jianshu</span>
+			</button>
+		</a>
+	
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var curYear = new Date().getFullYear();
+                var since = 2016;
+                if (curYear != since) {
+                    document.write(since + ' ~ ' + curYear);
+                } else {
+                    document.write(curYear);                    
+                }
+            </script>
+            &nbsp;❤&nbsp;Tianma
+			
+            
+                <br>
+                
+                    Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>, Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+                
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+        <!-- 
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+        -->
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
         showSpinner: true
     });
     NProgress.start();
@@ -337,7 +1638,20 @@ public Messenger(IBinder target) {
     setTimeout(function() {
         NProgress.done();
         $('.fade').removeClass('out');
-    }, 800);</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script type="text/ls-javascript" id="leancloud-views-script">function showTime(Counter) {
+    }, 800);
+</script>
+
+
+
+
+
+    <!-- Leancloud -->
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+    <script>
+        AV.initialize('o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz', 'ypNURFLzI6NMQwz1OVl782d5');
+    </script>
+    <script type="text/ls-javascript" id="leancloud-views-script">
+    function showTime(Counter) {
         var query = new AV.Query(Counter);
         $('.leancloud-views_num').each(function() {
             var url = $(this).attr('id').trim();
@@ -412,7 +1726,44 @@ public Messenger(IBinder target) {
         } else if ($('.post-title-link').length > 1) {
             showTime(Counter);
         }
-    });</script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script>var agent=navigator.userAgent.toLowerCase();0<agent.indexOf("ucbrowser")&&(document.write('<link rel="stylesheet" href="/css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>lsloader.load("hanabi","/js/hanabi-browser-bundle.js?Pki5+pzkluqu53g+ouMWpA==",!0)</script><script type="text/ls-javascript" id="window-load">$(window).on('load', function() {
+    });
+</script>
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+   <!-- GitTalk -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+    
+        <script>lsloader.load("hanabi","/js/hanabi-browser-bundle.js?Pki5+pzkluqu53g+ouMWpA==", true)</script>
+    
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
         // Post_Toc parent position fixed
         $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
     });
@@ -421,7 +1772,21 @@ public Messenger(IBinder target) {
     
         
         
-        HanabiBrowser.start('pre code',true);</script><script type="text/ls-javascript" id="lazy-load">// Offer LazyLoad
+        HanabiBrowser.start('pre code',true);
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- live2d -->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
     queue.offer(function(){
         $('.lazy').lazyload({
             effect : 'show'
@@ -433,4 +1798,26 @@ public Messenger(IBinder target) {
         setInterval(function(){
             queue.execNext();
         },200);
-    });</script><script>!function(){for(var r=document.querySelectorAll('script[type="text/ls-javascript"]'),t=0;t<r.length;++t){var e=r[t];lsloader.runInlineScript(e.id,e.id)}}()</script></main></div></body></html>
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
