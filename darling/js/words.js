@@ -89,5 +89,14 @@ function isDay520OrNot() {
     var today = new Date();
     var month = today.getMonth() + 1;
     var day = today.getDate();
-    return month == 5 && day == 20;
+    var is520 = month == 5 && day == 20;
+    return is520;
+}
+
+function isValentinesDayOrNot() {
+    var today = new Date();
+    var month = today.getMonth() + 1;
+    var day = today.getDate();
+    var isValentinesDay = month == 2 && day == 14;
+    return isValentinesDay;
 }

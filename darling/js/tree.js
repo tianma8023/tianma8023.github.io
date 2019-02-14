@@ -116,9 +116,10 @@
 
     var isBirthday = isBirthdayOrNot();
     var isDay520 = isDay520OrNot();
+    var isValentinesDay = isValentinesDayOrNot();
     if (isBirthday) {
         document.title = "Happy Birthday!";
-    } else if (isDay520) {
+    } else if (isDay520 || isValentinesDay) {
         document.title = "I ❤ U";
     }
     var showTypewriterAnimate = eval(Jscex.compile("async", function() {
@@ -128,6 +129,8 @@
             word += getRandomBirthdayWishes() + '</span><br><br>';
         } else if (isDay520) {
             word += getRandomDay520Wishes() + '<br/><br/>'
+        } else if (isValentinesDay) {
+            word += "Happy Valentine's Day" + '<br/><br/>' 
         } else {
             word += getRandomWord() + '<br><br>';
         }
