@@ -1,447 +1,317 @@
-<!DOCTYPE html><html style="display:none" lang="zh"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><script>window.materialVersion="1.5.2",window.oldVersion=["codestartv1","1.3.4","1.4.0","1.4.0b1","1.5.0"]</script><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn1.lncld.net"><link rel="dns-prefetch" href="https://busuanzi.ibruce.info"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><meta name="renderer" content="webkit"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Android 笔记：AIDL进阶 | Tianma</title><link rel="icon shortcut" type="image/ico" href="/img/favicon.png"><link rel="icon" href="/img/favicon.png"><meta name="format-detection" content="telephone=no"><meta name="description" itemprop="description" content="在上一篇博客 Android 笔记：IPC - AIDL 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &amp;nbsp;"><meta name="keywords" content="Tianma,android notes,AIDL,IPC"><meta name="theme-color" content="#42A5F5"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><!--[if lte IE 9]><link rel="stylesheet" href="/css/ie-blocker.css"><script src="/js/ie-blocker.zhCN.js"></script><![endif]--><script>window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}},lsloader.removeLS=function(e){try{localStorage.removeItem(e)}catch(e){}},lsloader.setLS=function(e,t){try{localStorage.setItem(e,t)}catch(e){}},lsloader.getLS=function(e){var t="";try{t=localStorage.getItem(e)}catch(e){t=""}return t},versionString="/*"+(window.materialVersion||"unknownVersion")+"*/",lsloader.clean=function(){try{for(var e=[],t=0;t<localStorage.length;t++)e.push(localStorage.key(t));e.forEach(function(e){var n=lsloader.getLS(e);window.oldVersion&&window.oldVersion.reduce(function(e,t){return e||-1!==n.indexOf("/*"+t+"*/")},!1)&&lsloader.removeLS(e)})}catch(e){}},lsloader.clean(),lsloader.load=function(e,t,n,s){var a;if("boolean"==typeof n&&(s=n,n=void 0),s=s||!1,n=n||function(){},(a=this.getLS(e))&&-1===a.indexOf(versionString))return this.removeLS(e),void this.requestResource(e,t,n,s);if(a){if(a.split(versionString)[0]!=t)return console.log("reload:"+t),this.removeLS(e),void this.requestResource(e,t,n,s);a=a.split(versionString)[1],s?(this.jsRunSequence.push({name:e,code:a}),this.runjs(t,e,a)):(document.getElementById(e).appendChild(document.createTextNode(a)),n())}else this.requestResource(e,t,n,s)},lsloader.requestResource=function(t,n,e,s){var a=this;s?this.iojs(n,t,function(e,t,n){a.setLS(t,e+versionString+n),a.runjs(e,t,n)}):this.iocss(n,t,function(e){document.getElementById(t).appendChild(document.createTextNode(e)),a.setLS(t,n+versionString+e)},e)},lsloader.iojs=function(t,n,e){var s=this;s.jsRunSequence.push({name:n,code:""});try{var a=new XMLHttpRequest;a.open("get",t,!0),a.onreadystatechange=function(){if(4==a.readyState){if((200<=a.status&&a.status<300||304==a.status)&&""!=a.response)return void e(t,n,a.response);s.jsfallback(t,n)}},a.send(null)}catch(e){s.jsfallback(t,n)}},lsloader.iocss=function(t,n,e,s){var a=this;try{var o=new XMLHttpRequest;o.open("get",t,!0),o.onreadystatechange=function(){if(4==o.readyState){if((200<=o.status&&o.status<300||304==o.status)&&""!=o.response)return e(o.response),void s();a.cssfallback(t,n,s)}},o.send(null)}catch(e){a.cssfallback(t,n,s)}},lsloader.iofonts=function(t,n,e,s){var a=this;try{var o=new XMLHttpRequest;o.open("get",t,!0),o.onreadystatechange=function(){if(4==o.readyState){if((200<=o.status&&o.status<300||304==o.status)&&""!=o.response)return e(o.response),void s();a.cssfallback(t,n,s)}},o.send(null)}catch(e){a.cssfallback(t,n,s)}},lsloader.runjs=function(e,t,n){if(t&&n)for(var s in this.jsRunSequence)this.jsRunSequence[s].name==t&&(this.jsRunSequence[s].code=n);if(this.jsRunSequence[0]&&this.jsRunSequence[0].code&&"failed"!=this.jsRunSequence[0].status)(a=document.createElement("script")).appendChild(document.createTextNode(this.jsRunSequence[0].code)),a.type="text/javascript",document.getElementsByTagName("head")[0].appendChild(a),this.jsRunSequence.shift(),0<this.jsRunSequence.length&&this.runjs();else if(this.jsRunSequence[0]&&"failed"==this.jsRunSequence[0].status){var a,o=this;(a=document.createElement("script")).src=this.jsRunSequence[0].path,a.type="text/javascript",this.jsRunSequence[0].status="loading",a.onload=function(){o.jsRunSequence.shift(),0<o.jsRunSequence.length&&o.runjs()},document.body.appendChild(a)}},lsloader.tagLoad=function(e,t){this.jsRunSequence.push({name:t,code:"",path:e,status:"failed"}),this.runjs()},lsloader.jsfallback=function(e,t){if(!this.jsnamemap[t]){for(var n in this.jsnamemap[t]=t,this.jsRunSequence)this.jsRunSequence[n].name==t&&(this.jsRunSequence[n].code="",this.jsRunSequence[n].status="failed",this.jsRunSequence[n].path=e);this.runjs()}},lsloader.cssfallback=function(e,t,n){if(!this.cssnamemap[t]){this.cssnamemap[t]=1;var s=document.createElement("link");s.type="text/css",s.href=e,s.rel="stylesheet",s.onload=s.onerror=n;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(s,a)}},lsloader.runInlineScript=function(e,t){var n=document.getElementById(t).innerText;this.jsRunSequence.push({name:e,code:n}),this.runjs()}</script><script>function Queue(){this.dataStore=[],this.offer=function(e){this.debug&&console.log("Offered a Queued Function.");"function"==typeof e?this.dataStore.push(e):console.log("You must offer a function.")},this.poll=function(){this.debug&&console.log("Polled a Queued Function.");return this.dataStore.shift()},this.execNext=function(){var e=this.poll();void 0!==e&&(this.debug&&console.log("Run a Queued Function."),e())},this.debug=!1,this.startDebug=function(){this.debug=!0}}var queue=new Queue</script><style id="material_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style id="style_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style id="prettify_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style id="prettify_theme"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("prettify_theme","/css/prettify/tranquil-heart.min.css?ul3p9I9MsbOxK0L+BHzDDg==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style>body,html{font-family:Roboto,"Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;overflow-x:hidden!important}code{font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;color:#ff5722}a{color:#388e3c}#scheme-Paradox .hot_tags-count,#scheme-Paradox .sidebar-colored .sidebar-badge,#scheme-Paradox .sidebar-colored .sidebar-header,#scheme-Paradox .sidebar_archives-count,#search-form-label:after,#search-label,.mdl-card__media{background-color:#42a5f5!important}#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus,#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover{color:#42a5f5!important}#ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a,#post_entry-right-info,.sidebar-colored .sidebar-nav li:hover>a,.sidebar-colored .sidebar-nav li:hover>a i,.sidebar-colored .sidebar-nav li>a:focus i,.sidebar-colored .sidebar-nav li>a:hover,.sidebar-colored .sidebar-nav li>a:hover i,.sidebar-colored .sidebar-nav>.open>a,.sidebar-colored .sidebar-nav>.open>a:focus,.sidebar-colored .sidebar-nav>.open>a:hover{color:#42a5f5!important}.toTop{background:#ef6c00!important}.material-layout .material-index>.material-nav,.material-layout .material-post>.material-nav,.material-nav a{color:#ef6c00}#scheme-Paradox .MD-burger-layer{background-color:#ef6c00}#scheme-Paradox #post-toc-trigger-btn{color:#ef6c00}.post-toc a:hover{color:#388e3c;text-decoration:underline}</style><style>body{background-color:#eee}#scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{background-color:#fff}</style><style>.fade{transition:all .8s linear;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0);opacity:1}.fade.out{opacity:0}</style><link href="https://fonts.proxy.ustclug.org/css?family=Roboto:300,400,500" rel="stylesheet"><style id="material_icons"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script><style>.hanabi-linenumber{color:#ff4081}#scheme-Paradox .material-nav .page-number{display:block;padding:0 .8em;font-size:1.3em;margin:0 .2em;color:#757575}#scheme-Paradox .material-nav .page-number.current{color:#ff4081;text-align:center;font-weight:700;margin:0 0}#scheme-Paradox .material-nav .space{color:#757575;text-align:center;font-weight:700}#scheme-Paradox .material-layout .material-post>.material-nav{display:flex;margin:10px 15px;color:#fff;font-weight:500;flex-direction:row;justify-content:space-between;align-items:center;text-align:center}#scheme-Paradox .material-layout .material-index>.material-nav{display:flex;margin:10px 15px;color:#fff;font-weight:500;flex-direction:row;justify-content:space-between;align-items:center;text-align:center;margin-left:25%;margin-right:25%}.material-layout .material-index>.material-nav a,.material-layout .material-post>.material-nav a{color:#7f7f7f}.image-caption{display:block;text-align:center;margin:10px 0;color:#666}.post-image-center{display:block;margin:auto}#post-license{margin:2em 0;padding:.5em 1em;border-left:3px solid #ff4081;background-color:#f5f5f5;list-style:none}#scheme-Paradox .div-post-count{margin-left:2em}@media screen and (max-width:840px){#scheme-Paradox .div-post-count{display:none!important}}#scheme-Paradox .material-layout .mdl-card__media{min-height:275px}#scheme-Paradox .material-layout .something-else .something-else-logo{min-height:275px}@media screen and (max-width:480px){#scheme-Paradox .material-layout .mdl-card__media{min-height:150px}#scheme-Paradox .material-layout .mdl-card{min-height:200px}#scheme-Paradox .material-layout .something-else .something-else-logo{min-height:150px}#scheme-Paradox .material-layout .mdl-card.something-else{min-height:200px}}#scheme-Paradox .material-layout .post_entry-module .mdl-card__media~.mdl-card__supporting-text{padding-top:16px}#scheme-Paradox .material-layout .post_entry-content h2{margin:0 0 15px;font-size:2em;font-weight:500}#scheme-Paradox .material-layout .post_entry-content p{margin:0 0}#scheme-Paradox .material-layout .post_entry-content blockquote{border-left:4px solid #ddd;padding:15px 15px;background-color:#f8f8f8;font-style:normal;color:#777;margin:0 15px 15px}#post-content blockquote{padding:15px 15px;background-color:#f8f8f8}blockquote{font-size:100%}.sidebar .sidebar-brand{color:rgba(0,0,0,.8);hover:rgba(0,0,0,.8);font-weight:500!important;font-size:14px!important}.sidebar .sidebar-header.header-cover{background-size:cover}.sidebar .sidebar-nav li a{font-weight:400!important;font-size:14px}.footer-sns-facebook{background:url(/img/footer/footer_ico-facebook.svg)}.footer-sns-gplus{background:url(/img/footer/footer_ico-gplus.svg)}.footer-sns-twitter{background:url(/img/footer/footer_ico-twitter.svg)}.footer-sns-weibo{background:url(/img/footer/footer_ico-weibo.svg)}.footer-sns-instagram{background:url(/img/footer/footer_ico-instagram.svg)}.footer-sns-tumblr{background:url(/img/footer/footer_ico-tumblr.svg)}.footer-sns-github{background:url(/img/footer/footer_ico-github.svg)}.footer-sns-linkedin{background:url(/img/footer/footer_ico-linkedin.svg)}.footer-sns-zhihu{background:url(/img/footer/footer_ico-zhihu.svg)}.footer-sns-bilibili{background:url(/img/footer/footer_ico-bilibili.svg)}.footer-sns-telegram{background:url(/img/footer/footer_ico-telegram.svg)}.footer-sns-v2ex{background:url(/img/footer/footer_ico-v2ex.svg)}.footer-sns-jianshu{background:url(/img/footer/footer_ico-jianshu.svg)}.fa-heart:before{content:'\f004'}.fa-heart-o:before{content:'\f08a'}#scheme-Paradox .mdl-mini-footer a{color:#388e3c;font-weight:500}#scheme-Paradox .mdl-mini-footer a:hover{color:#388e3c}</style><script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==",!0)</script><meta name="mobile-web-app-capable" content="yes"><meta name="application-name" content="Tianma"><meta name="msapplication-starturl" content="https://tianma.space/post/3246519744/"><meta name="msapplication-navbutton-color" content="#42A5F5"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tianma"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="apple-touch-icon" href="/img/favicon.png"><meta property="og:url" content="https://tianma.space/post/3246519744/"><meta property="og:type" content="blog"><meta property="og:title" content="Android 笔记：AIDL进阶 | Tianma"><meta property="og:image" content="/img/favicon.png"><meta property="og:description" content="在上一篇博客 Android 笔记：IPC - AIDL 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &amp;nbsp;"><meta property="og:article:tag" content="android notes"><meta property="og:article:tag" content="AIDL"><meta property="og:article:tag" content="IPC"><meta property="article:published_time" content="Wed Apr 04 2018 21:59:50 GMT+0800"><meta property="article:modified_time" content="Wed Nov 07 2018 04:04:40 GMT+0800"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://tianma.space/post/3246519744/index.html"><script type="application/ld+json">{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://tianma.space/post/3246519744/index.html",
-    "headline": "Android 笔记：AIDL进阶",
-    "datePublished": "Wed Apr 04 2018 21:59:50 GMT+0800",
-    "dateModified": "Wed Nov 07 2018 04:04:40 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "Tianma",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/kousei.jpg"
-        },
-        "description": "You are the apple of my eye"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "Tianma",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",android notes,AIDL,IPCTianma",
-    "description": "在上一篇博客 Android 笔记：IPC - AIDL 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &amp;nbsp;",
-}</script><script>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject=g,e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script",0,"ga"),ga("create","UA-84178484-1","auto"),ga("send","pageview")</script><script>lsloader.load("fancybox_js","/js/fancybox/jquery.fancybox.min.js?t2LXoiIDGJmos9j6jmohzw==",!0)</script><script>lsloader.load("wrap_image_js","/js/wrapImage.js?2z+b2rMZFAJ9HG9/nm3U9g==",!0)</script><style id="fancybox_css"></style><script>void 0===window.lsLoadCSSMaxNums&&(window.lsLoadCSSMaxNums=0),window.lsLoadCSSMaxNums++,lsloader.load("fancybox_css","/js/fancybox/jquery.fancybox.min.css?Fnnc049dQ/HvZMD/Mxr4EA==",function(){void 0===window.lsLoadCSSNums&&(window.lsLoadCSSNums=0),window.lsLoadCSSNums++,window.lsLoadCSSNums==window.lsLoadCSSMaxNums&&(document.documentElement.style.display="")},!1)</script></head><body id="scheme-Paradox" class="lazy"><div class="material-layout mdl-js-layout has-drawer is-upgraded"><main class="material-layout__content" id="main"><div id="top"></div><button class="MD-burger-icon sidebar-toggle"><span class="MD-burger-layer"></span></button> <button id="post-toc-trigger-btn" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">format_list_numbered</i></button><ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh;overflow-y:scroll"><ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AIDL-中的注册与反注册"><span class="post-toc-number">1.</span> <span class="post-toc-text">AIDL 中的注册与反注册</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AIDL-重连-Service"><span class="post-toc-number">2.</span> <span class="post-toc-text">AIDL 重连 Service</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#权限验证"><span class="post-toc-number">3.</span> <span class="post-toc-text">权限验证</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代码参考"><span class="post-toc-number">4.</span> <span class="post-toc-text">代码参考</span></a></li></ol></ul><div class="material-post_container"><div class="material-post mdl-grid"><div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col"><div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/Shiodome_Miuna_04.jpg@!w640)"><p class="article-headline-p">Android 笔记：AIDL进阶</p></div><div class="mdl-color-text--grey-700 mdl-card__supporting-text meta"><div id="author-avatar"><img src="/img/kousei.jpg" width="44px" height="44px" alt="Author Avatar"></div><div><span>发表：4月 04, 2018</span> <span>更新：11月 07, 2018</span></div><div class="div-post-count"><span class="post-count">字数统计：1.9k 字</span> <span class="post-count">阅读时长：9 分</span></div><div class="section-spacer"></div><button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">bookmark</i> <span class="visuallyhidden">bookmark</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button"><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/AIDL/">AIDL</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/IPC/">IPC</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/android-notes/">android notes</a></li></ul><button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">share</i> <span class="visuallyhidden">share</span></button><ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button"><a class="post_share-link" href="#"><li class="mdl-menu__item"><span id="/post/3246519744/" class="leancloud-views_num" data-flag-title="Android 笔记：AIDL进阶">&nbsp;浏览量</span></li></a></ul></div><div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out"><p>在上一篇博客 <a href="/post/3352500871#AIDL">Android 笔记：IPC - AIDL</a> 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &nbsp;<a id="more"></a></p><h3 id="AIDL-中的注册与反注册"><a href="#AIDL-中的注册与反注册" class="headerlink" title="AIDL 中的注册与反注册"></a>AIDL 中的注册与反注册</h3><p>之前的 <code>IBookManager</code> 中只提供了获取 书籍列表(getBookList) 和 添加书籍(addBook) 的方法，现在我们将其扩展一下，希望能加入“当新的书本被添加之后，能够通知出去”。这是一种 <code>观察者模式</code>：</p><p>由于 <code>AIDL</code> 中无法使用普通接口，所以添加新的 <code>IOnNewBookArrived.aidl</code> 接口，用于回调新书的到来：</p><pre><code class="java">package com.github.tianma8023.ipclearn.aidl;
+<!DOCTYPE html><html class="theme-next mist use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/css/main.css?v=7.1.2"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.1.2"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2"><link rel="mask-icon" href="/images/favicon.png?v=7.1.2" color="#222"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.1.2",sidebar:{position:"left",display:"hide",offset:12,onmobile:!1,dimmer:!1},back2top:!0,back2top_sidebar:!1,fancybox:!0,fastclick:!1,lazyload:!0,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><meta name="description" content="在上一篇博客 Android 笔记：IPC - AIDL 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &amp;nbsp;"><meta name="keywords" content="android notes,AIDL,IPC"><meta property="og:type" content="article"><meta property="og:title" content="Android 笔记：AIDL进阶"><meta property="og:url" content="https://tianma.space/post/3246519744/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="在上一篇博客 Android 笔记：IPC - AIDL 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &amp;nbsp;"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2018-11-06T20:04:40.871Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Android 笔记：AIDL进阶"><meta name="twitter:description" content="在上一篇博客 Android 笔记：IPC - AIDL 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &amp;nbsp;"><link rel="canonical" href="https://tianma.space/post/3246519744/"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>Android 笔记：AIDL进阶 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">68</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">58</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i></span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><div class="reading-progress-bar"></div><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/3246519744/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Android 笔记：AIDL进阶</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-04-04 21:59:50" itemprop="dateCreated datePublished" datetime="2018-04-04T21:59:50+08:00">2018-04-04</time> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2018-11-07 04:04:40" itemprop="dateModified" datetime="2018-11-07T04:04:40+08:00">2018-11-07</time></span> <span class="post-category"><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>在上一篇博客 <a href="/post/3352500871#AIDL">Android 笔记：IPC - AIDL</a> 中讲到的 IPC 方式之一 AIDL 的基本用法，本文主要记录一下 AIDL 的进阶。 &nbsp;<a id="more"></a></p><h3 id="AIDL-中的注册与反注册"><a href="#AIDL-中的注册与反注册" class="headerlink" title="AIDL 中的注册与反注册"></a>AIDL 中的注册与反注册</h3><p>之前的 <code>IBookManager</code> 中只提供了获取 书籍列表(getBookList) 和 添加书籍(addBook) 的方法，现在我们将其扩展一下，希望能加入“当新的书本被添加之后，能够通知出去”。这是一种 <code>观察者模式</code>：</p><p>由于 <code>AIDL</code> 中无法使用普通接口，所以添加新的 <code>IOnNewBookArrived.aidl</code> 接口，用于回调新书的到来：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.tianma8023.ipclearn.aidl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.github.tianma8023.ipclearn.aidl.Book;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IOnNewBookArrivedListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onNewBookArrived</span><span class="params">(in Book newBook)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>IBookManager.aidl</code> 接口中添加新的注册监听/取消监听的方法：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.tianma8023.ipclearn.aidl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.github.tianma8023.ipclearn.aidl.Book;</span><br><span class="line"><span class="keyword">import</span> com.github.tianma8023.ipclearn.aidl.IOnNewBookArrivedListener;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IBookManager</span> </span>&#123;</span><br><span class="line">    <span class="function">List&lt;Book&gt; <span class="title">getBookList</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addBook</span><span class="params">(in Book book)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">registerListener</span><span class="params">(IOnNewBookArrivedListener listener)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unregisterListener</span><span class="params">(IOnNewBookArrivedListener listener)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>远程服务端实现 <code>BookManagerService</code>, 实现新加的两个方法，在 Service 中开启线程，定时加入一本新书通知所有注册者：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookManagerService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"BMS"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前Service是否被销毁</span></span><br><span class="line">    <span class="keyword">private</span> AtomicBoolean mIsServiceDestroyed = <span class="keyword">new</span> AtomicBoolean(<span class="keyword">false</span>);</span><br><span class="line">    <span class="comment">// 书籍列表</span></span><br><span class="line">    <span class="keyword">private</span> CopyOnWriteArrayList&lt;Book&gt; mBookList = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">// 观察者列表</span></span><br><span class="line">    <span class="keyword">private</span> CopyOnWriteArrayList&lt;IOnNewBookArrivedListener&gt; mListenerList = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Binder mBinder = <span class="keyword">new</span> IBookManager.Stub() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;Book&gt; <span class="title">getBookList</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> mBookList;      </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addBook</span><span class="params">(Book book)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            mBookList.add(book);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerListener</span><span class="params">(IOnNewBookArrivedListener listener)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!mListenerList.contains(listener)) &#123;</span><br><span class="line">                mListenerList.add(listener);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"listener already exists "</span> + listener);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unregisterListener</span><span class="params">(IOnNewBookArrivedListener)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (mListenerList.contains(listener)) &#123;</span><br><span class="line">                mListenerList.remove(listener);</span><br><span class="line">                Log.d(TAG, <span class="string">"unregister listener succeed."</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"listener not found, unregiser failed"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mBinder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line"></span><br><span class="line">        mBookList.add(<span class="keyword">new</span> Book(<span class="number">1</span>, <span class="string">"Think in Java"</span>));</span><br><span class="line">        mBookList.add(<span class="keyword">new</span> Book(<span class="number">2</span>, <span class="string">"Android Programming"</span>));</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> ServiceWorker).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mIsServiceDestroyed.set(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onNewBookArrived</span><span class="params">(Book book)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        mBookList.add(book);</span><br><span class="line">        <span class="comment">// 通知所有Listener</span></span><br><span class="line">        Log.d(TAG, <span class="string">"new book arrived, notify all listeners"</span>);</span><br><span class="line">        <span class="keyword">for</span> (IOnNewBookArrivedListener listener : mListenerList) &#123;</span><br><span class="line">            listener.onNewBookArrived(book);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceWorker</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 每5s在后台生成一本新书</span></span><br><span class="line">            <span class="keyword">while</span>(!mIsServiceDestroyed.get()) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> bookId = mBookList.size() + <span class="number">1</span>;</span><br><span class="line">                Book newBook = <span class="keyword">new</span> Book(bookId, <span class="string">"new book#"</span> + bookId);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    onNewBookArrived(newBook);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (RemoteExcption e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>BookManagerServicce</code> 置于独立进程中：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">service</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">android:name</span>=<span class="string">".aidl.BookManagerService"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:process</span>=<span class="string">":remote"</span> /&gt;</span></span><br></pre></td></tr></table></figure><p>客户端 <code>BookManagerActivity</code>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookManagerActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"BookManagerActivity"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSG_NEW_BOOK_ARRIVED = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> IBookManager mRemoteBookManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ServiceConnection mConnection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName name, IBinder service)</span> </span>&#123;</span><br><span class="line">            IBookManager bookManager = IBookManager.Stub.asInterface(service);</span><br><span class="line">            mRemoteBookManager = bookManager;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 服务端的 getBookList() 方法可能会比较耗时，所以需要酌情考虑是否在子线程中进行访问</span></span><br><span class="line">                List&lt;Book&gt; bookList = bookManager.getBookList();</span><br><span class="line">                Log.i(TAG, <span class="string">"book list type: "</span> + bookList.getClass().getCanonicalName());</span><br><span class="line">                Log.i(TAG, <span class="string">"query book list: "</span> + bookList);</span><br><span class="line"></span><br><span class="line">                bookManager.registerListener(mOnNewBookArrivedListener);</span><br><span class="line">            &#125; <span class="keyword">catch</span>(RemoteException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName name)</span> </span>&#123;</span><br><span class="line">          mRemoteBookManager = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler(<span class="keyword">new</span> Handler.Callback() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">                <span class="keyword">case</span> MSG_NEW_BOOK_ARRIVED:</span><br><span class="line">                    String message = <span class="string">"received new book: "</span> + msg.obj;</span><br><span class="line">                    Log.d(TAG, message);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> IOnNewBookArrivedListener mOnNewBookArrivedListener = <span class="keyword">new</span> IOnNewBookArrivedListener.Stub() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNewBookArrived</span><span class="params">(Book newBook)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            mHandler.obtainMessage(MSG_NEW_BOOK_ARRIVED, newBook).sendToTarget();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_book_manager);</span><br><span class="line"></span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, BookManagerService.class);</span><br><span class="line">        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        preDestroy();</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">preDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// unregister listener</span></span><br><span class="line">        <span class="keyword">if</span> (mRemoteBookManager != <span class="keyword">null</span> &amp;&amp; mRemoteManager.asBinder().isBinderAlive()) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Log.i(TAG, <span class="string">"unregister listener: "</span> + mOnNewBookArrivedListener);</span><br><span class="line">                mRemoteBookManager.unregisterListener(mOnNewBookArrivedListener);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// unbind service</span></span><br><span class="line">        unbindService(mConnection);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>log日志：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">com.github.tianma8023.ipclearn:remote I/BMS: new book arrived, notify all listeners</span><br><span class="line">com.github.tianma8023.ipclearn D/BookManagerActivity: received new book: Book&#123;bookId=3, bookName=&apos;new book#3&apos;&#125;</span><br><span class="line"></span><br><span class="line">com.github.tianma8023.ipclearn I/BookManagerActivity: unregister listener: com.github.tianma8023.ipclearn.aidl.BookManagerActivity$4@80e21c1</span><br><span class="line">com.github.tianma8023.ipclearn:remote D/BMS: listener not found, unregister failed</span><br></pre></td></tr></table></figure><p>通过日志，可以看出，服务端每次的书籍推送确实收到，<span style="color:#ff4081">但是在服务端执行 <code>unregisterListener</code> 的时候却并没有正确执行</span>。问题的原因在于， <code>Binder</code> 会把客户端传递过来的对象重新转化成新的对象，在客户端注册/反注册过程中使用的是同一个客户端对象，但是通过 <code>Binder</code> 传递到服务端的对象则不一样，所以会存在反注册失败的现象。</p><p>上述问题的解决方案就是使用 <code>RemoteCallbackList</code>。<code>RemoteCallbackList</code> 由系统提供，专门用来删除跨进成的 listener 接口。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteCallbackList</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">IInterface</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">interface</span> <span class="title">IOnNewBookArrivedListener</span> <span class="keyword">extends</span> <span class="title">android</span>.<span class="title">os</span>.<span class="title">IInterface</span></span></span><br></pre></td></tr></table></figure><p>可以看出来，<code>RemoteCallbackList</code> 是一个泛型，可以管理任意的 AIDL 接口。</p><p><code>RemoteCallbackList</code> 部分源码：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteCallbackList</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">IInterface</span>&gt; </span>&#123;</span><br><span class="line">    ArrayMap&lt;IBinder, Callback&gt; mCallbacks = <span class="keyword">new</span> ArrayMap&lt;IBinder, Callback&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Callback</span> <span class="keyword">implements</span> <span class="title">IBinder</span>.<span class="title">DeathRecipent</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> E mCallback;</span><br><span class="line">        <span class="keyword">final</span> Object mCookie;</span><br><span class="line">        Callback(E callback, Object cookie) &#123;</span><br><span class="line">            mCallback = callback;</span><br><span class="line">            mCookie = cookie;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 省略...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>可以看出来 <code>RemoteCallbackList</code> 内部其实是一个 <code>Map</code>，建立起 <code>IBinder</code> 到 <code>Callback</code> 的映射，而 <code>Callback</code> 又封装了真正的 <code>IInterface</code> 的 <code>listener</code>，也就是实际上建立起了 <code>IBinder</code> 到 <code>listener</code> 的映射。</p><p>虽然之前的 <code>IOnNewBookArrivedListener</code> 会由客户端的一个对象会在服务端生成不一样的对象，但是其底层的 <code>Binder</code> 是一样的，所以 <code>RemoteCallbackListener</code> 正是利用了这个特性，真正地实现反注册。</p><p>正确姿势：<br>用 <code>RemoteCallbackList</code> 替换前面的 <code>CopyOnWriteArrayList</code>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// private CopyOnWiteArrayList&lt;IOnNewBookArrivedListener&gt; mListenerList = new CopyOnWriteArrayList&lt;&gt;();</span></span><br><span class="line"><span class="keyword">private</span> RemoteCallbackList&lt;IOnNewBookArrivedListener&gt; mListenerList = <span class="keyword">new</span> RemoteCallbackList&lt;&gt;();</span><br></pre></td></tr></table></figure><p>修改 <code>registerListener</code> 和 <code>unregisterListener</code>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerListener</span><span class="params">(IOnNewBookArrivedListener listener)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">    mListenerList.register(listener);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unregisterListener</span><span class="params">(IOnNewBookArrivedListener listener)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">    mListenerList.unregister(listener);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>修改通知所有已注册的 listener 的 <code>onNewBookArrived</code> 方法：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onNewBookArrived</span><span class="params">(Book book)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">    mBookList.add(book);</span><br><span class="line">    <span class="comment">// 通知所有listener</span></span><br><span class="line">    Log.i(TAG, <span class="string">"new book arrived, notify all listeners"</span>);</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> N = mListenerList.beginBroadcast();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        IOnNewBookArrivedListener listener = mListenerList.getBroadcastItem(i);</span><br><span class="line">        <span class="keyword">if</span>(listener != <span class="keyword">null</span>) &#123;</span><br><span class="line">            listener.onNewBookArrived(book);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mListenerList.finishBroadcast();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意，遍历 <code>RemoteCallbackList</code> 必须要用上述方式进行，即 <code>begiinBroadcast</code> 和 <code>finishBroadcast</code> 必须配对使用。</p><h3 id="AIDL-重连-Service"><a href="#AIDL-重连-Service" class="headerlink" title="AIDL 重连 Service"></a>AIDL 重连 Service</h3><p>当服务端程序意外停止时，<code>Binder</code> 会意外死亡，需要重新连接 <code>Service</code>，有两种解决方案：</p><ol><li>给 <code>Binder</code> 设置 <code>DeathRecipient</code> 监听，当 <code>Binder</code> 死亡时，会回调 <code>DeathRecipient#binderDied()</code>，这时可以重连 Service；</li><li>在 <code>ServiceConnection#onServiceDisconnected()</code> 中重连 Service。</li></ol><p>两者的区别在于在 <code>bindDied</code> 中是在客户端的 <code>Binder</code> 线程池被调用，而 <code>onServiceDisconnected</code> 是在UI线程中被回调。</p><p><code>BookManagerActivity</code> 中加入：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookManagerActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">private</span> IBookManager mRemoteBookManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> IBinder.DeathRecipient mDeathRecipient = <span class="keyword">new</span> IBinder.DeathRecipient() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">binderDied</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          <span class="comment">// 子线程，binder线程</span></span><br><span class="line">            <span class="keyword">if</span> (mRemoteBookManager == <span class="keyword">null</span>) </span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            mRemoteBookManager.asBinder().unlinkToDeath(mDeathRecipient, <span class="number">0</span>);</span><br><span class="line">            mRemoteBookManager = <span class="keyword">null</span>;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> 重新绑定 Service</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ServiceConnection mConnection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName name, IBinder service)</span> </span>&#123;</span><br><span class="line">            IBookManager bookManager = IBookManager.Stub.asInterface(service);</span><br><span class="line">            mRemoteBookManager = bookManager;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mRemoteBookManager.asBinder().linkToDeath(mDeathRecipient, <span class="number">0</span>); </span><br><span class="line">                <span class="comment">// ... 省略</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName name)</span> </span>&#123;</span><br><span class="line">            mRemoteBookManager = <span class="keyword">null</span>;</span><br><span class="line">            <span class="comment">// 主线程</span></span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> 重连 Service</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="权限验证"><a href="#权限验证" class="headerlink" title="权限验证"></a>权限验证</h3><p>默认情况下，远程服务可以被其他外部组件连接上，所以，必要的时候需要加入权限验证。通常有以下几种方案：</p><ol><li><p>在远程 Service 的 onBind 中进行验证，这里的验证方式也有很多，常用的是使用 <code>permission</code> 进行验证：<br>在 AndroidManifest 中声明所需要的权限：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">permission</span> </span></span><br><span class="line"><span class="tag">   <span class="attr">android:name</span>=<span class="string">"com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:level</span>=<span class="string">"normal"</span> /&gt;</span></span><br></pre></td></tr></table></figure><p>在 <code>BookManagerService</code> 的 <code>onBind</code> 中做权限验证：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 权限验证</span></span><br><span class="line">   <span class="keyword">int</span> result = checkCallingOrSelfPermission (com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE);</span><br><span class="line">   <span class="keyword">if</span> (result == PackageManager.PERMISSION_DENIED)</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   <span class="keyword">return</span> mBinder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这样就完成了权限的验证，当有客户端需要连接该服务时，需要申请权限：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:name</span>=<span class="string">"com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE"</span> /&gt;</span></span><br></pre></td></tr></table></figure></li><li><p>在服务端的 <code>Binder#onTransact()</code> 中进行权限验证：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Binder mBinder = <span class="keyword">new</span> IBookManager.Stub() &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTransact</span><span class="params">(<span class="keyword">int</span> code, Parcel data, Parcel reply, <span class="keyword">int</span> flags)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">      <span class="comment">// 权限验证</span></span><br><span class="line">      <span class="comment">// 1. 需要声明自定权限 "com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE"</span></span><br><span class="line">      <span class="comment">// 2. 包名前缀必须是 "com.github.tianma8023"</span></span><br><span class="line">      <span class="keyword">int</span> check = checkCallingOrSelfPermission(<span class="string">"com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE"</span>);</span><br><span class="line">      <span class="keyword">if</span> (check == PackageManager.PERMISSION_DENIED)</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      String packageName = <span class="keyword">null</span>;</span><br><span class="line">      String[] packages = getPackageManager().getPackagesForUid(getCallingUid());</span><br><span class="line">      <span class="keyword">if</span> (packages != <span class="keyword">null</span> &amp;&amp; packages.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">          packageName = packages[<span class="number">0</span>];</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (packageName == <span class="keyword">null</span> || !packageName.startsWith(<span class="string">"com.github.tianma8023"</span>)) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">super</span>.onTransact(code, data, reply, flags);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>上述代码片段，验证了 permission，还验证了包名前缀，只有都满足要求的才能验证通过。</p></li><li><p>为 <code>Service</code> 指定 <code>android:permission</code> 属性。</p></li></ol><h3 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h3><p><a href="https://github.com/tianma8023/IPCLearn" target="_blank" rel="noopener">IPCLearn</a></p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/3246519744/" title="Android 笔记：AIDL进阶">https://tianma.space/post/3246519744/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/android-notes/" rel="tag"><i class="fa fa-tag"></i> android notes</a><a href="/tags/AIDL/" rel="tag"><i class="fa fa-tag"></i> AIDL</a><a href="/tags/IPC/" rel="tag"><i class="fa fa-tag"></i> IPC</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/3352500871/" rel="next" title="Android笔记：IPC"><i class="fa fa-chevron-left"></i> Android笔记：IPC</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/2251443378/" rel="prev" title="Xposed 碎碎念">Xposed 碎碎念<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description motion-element" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">58</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">7</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">68</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AIDL-中的注册与反注册"><span class="nav-number">1.</span> <span class="nav-text">AIDL 中的注册与反注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AIDL-重连-Service"><span class="nav-number">2.</span> <span class="nav-text">AIDL 重连 Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限验证"><span class="nav-number">3.</span> <span class="nav-text">权限验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码参考"><span class="nav-number">4.</span> <span class="nav-text">代码参考</span></a></li></ol></div></div></div></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span id="scrollpercent"><span>0</span>%</span></div></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script src="/lib/jquery/index.js?v=3.4.1"></script><script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-reading-progress@1.1.1/reading_progress.min.js"></script><script src="/js/utils.js?v=7.1.2"></script><script src="/js/motion.js?v=7.1.2"></script><script src="/js/schemes/muse.js?v=7.1.2"></script><script src="/js/scrollspy.js?v=7.1.2"></script><script src="/js/post-details.js?v=7.1.2"></script><script src="/js/next-boot.js?v=7.1.2"></script><script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script><script>var gitalk=new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:[""],id:md5(location.pathname),language:"zh-CN",distractionFreeMode:"true"});gitalk.render("gitalk-container")</script><script>// Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
 
-import com.github.tianma8023.ipclearn.aidl.Book;
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
 
-interface IOnNewBookArrivedListener {
-    void onNewBookArrived(in Book newBook);
-}
-</code></pre><p><code>IBookManager.aidl</code> 接口中添加新的注册监听/取消监听的方法：</p><pre><code class="java">package com.github.tianma8023.ipclearn.aidl;
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
 
-import com.github.tianma8023.ipclearn.aidl.Book;
-import com.github.tianma8023.ipclearn.aidl.IOnNewBookArrivedListener;
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
 
-interface IBookManager {
-    List&lt;Book&gt; getBookList();
-    void addBook(in Book book);
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
 
-    void registerListener(IOnNewBookArrivedListener listener);
-    void unregisterListener(IOnNewBookArrivedListener listener);
-}
-</code></pre><p>远程服务端实现 <code>BookManagerService</code>, 实现新加的两个方法，在 Service 中开启线程，定时加入一本新书通知所有注册者：</p><pre><code class="java">public class BookManagerService extends Service {
-    private static final String TAG = &quot;BMS&quot;;
+      
 
-    // 当前Service是否被销毁
-    private AtomicBoolean mIsServiceDestroyed = new AtomicBoolean(false);
-    // 书籍列表
-    private CopyOnWriteArrayList&lt;Book&gt; mBookList = new CopyOnWriteArrayList&lt;&gt;();
-    // 观察者列表
-    private CopyOnWriteArrayList&lt;IOnNewBookArrivedListener&gt; mListenerList = new CopyOnWriteArrayList&lt;&gt;();
-
-    private Binder mBinder = new IBookManager.Stub() {
-        @Override
-        public List&lt;Book&gt; getBookList() throws RemoteException {
-            return mBookList;      
-        }
-
-        @Override
-        public void addBook(Book book) throws RemoteException {
-            mBookList.add(book);
-        }
-
-        @Override
-        public void registerListener(IOnNewBookArrivedListener listener) throws RemoteException {
-            if (!mListenerList.contains(listener)) {
-                mListenerList.add(listener);
-            } else {
-                Log.d(TAG, &quot;listener already exists &quot; + listener);
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
             }
-        }
-
-        @Override
-        public void unregisterListener(IOnNewBookArrivedListener) throws RemoteException {
-            if (mListenerList.contains(listener)) {
-                mListenerList.remove(listener);
-                Log.d(TAG, &quot;unregister listener succeed.&quot;);
-            } else {
-                Log.d(TAG, &quot;listener not found, unregiser failed&quot;);
-            }
-        }
-    };
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        mBookList.add(new Book(1, &quot;Think in Java&quot;));
-        mBookList.add(new Book(2, &quot;Android Programming&quot;));
-        new Thread(new ServiceWorker).start();
-    }
-
-    @Override
-    public void onDestroy() {
-        mIsServiceDestroyed.set(true);
-        super.onDestroy();
-    }
-
-    private void onNewBookArrived(Book book) throws RemoteException {
-        mBookList.add(book);
-        // 通知所有Listener
-        Log.d(TAG, &quot;new book arrived, notify all listeners&quot;);
-        for (IOnNewBookArrivedListener listener : mListenerList) {
-            listener.onNewBookArrived(book);
-        }
-    }
-
-    private class ServiceWorker implements Runnable {
-        @Override
-        public void run() {
-            // 每5s在后台生成一本新书
-            while(!mIsServiceDestroyed.get()) {
-                try {
-                    TimeUnit.SECONDS.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                int bookId = mBookList.size() + 1;
-                Book newBook = new Book(bookId, &quot;new book#&quot; + bookId);
-                try {
-                    onNewBookArrived(newBook);
-                } catch (RemoteExcption e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-}
-</code></pre><p><code>BookManagerServicce</code> 置于独立进程中：</p><pre><code class="xml">&lt;service 
-  android:name=&quot;.aidl.BookManagerService&quot;
-  android:process=&quot;:remote&quot; /&gt;
-</code></pre><p>客户端 <code>BookManagerActivity</code>：</p><pre><code class="java">public class BookManagerActivity extends Activity {
-
-    private static final String TAG = &quot;BookManagerActivity&quot;;
-    private static final int MSG_NEW_BOOK_ARRIVED = 1;
-
-    private IBookManager mRemoteBookManager;
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            IBookManager bookManager = IBookManager.Stub.asInterface(service);
-            mRemoteBookManager = bookManager;
-            try {
-                // 服务端的 getBookList() 方法可能会比较耗时，所以需要酌情考虑是否在子线程中进行访问
-                List&lt;Book&gt; bookList = bookManager.getBookList();
-                Log.i(TAG, &quot;book list type: &quot; + bookList.getClass().getCanonicalName());
-                Log.i(TAG, &quot;query book list: &quot; + bookList);
-
-                bookManager.registerListener(mOnNewBookArrivedListener);
-            } catch(RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void onServiceDisconnected(ComponentName name) {
-          mRemoteBookManager = null;
-        }
-    };
-
-    private Handler mHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_NEW_BOOK_ARRIVED:
-                    String message = &quot;received new book: &quot; + msg.obj;
-                    Log.d(TAG, message);
-                    break;
-            }
-            return true;
-        }
-    });
-
-    private IOnNewBookArrivedListener mOnNewBookArrivedListener = new IOnNewBookArrivedListener.Stub() {
-        @Override
-        public void onNewBookArrived(Book newBook) throws RemoteException {
-            mHandler.obtainMessage(MSG_NEW_BOOK_ARRIVED, newBook).sendToTarget();
-        }
-    };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_manager);
-
-        Intent intent = new Intent(this, BookManagerService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        preDestroy();
-        super.onDestroy();
-    }
-
-    private void preDestroy() {
-        // unregister listener
-        if (mRemoteBookManager != null &amp;&amp; mRemoteManager.asBinder().isBinderAlive()) {
-            try {
-                Log.i(TAG, &quot;unregister listener: &quot; + mOnNewBookArrivedListener);
-                mRemoteBookManager.unregisterListener(mOnNewBookArrivedListener);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        // unbind service
-        unbindService(mConnection);
-    }
-}
-</code></pre><p>log日志：</p><pre><code>com.github.tianma8023.ipclearn:remote I/BMS: new book arrived, notify all listeners
-com.github.tianma8023.ipclearn D/BookManagerActivity: received new book: Book{bookId=3, bookName=&#39;new book#3&#39;}
-
-com.github.tianma8023.ipclearn I/BookManagerActivity: unregister listener: com.github.tianma8023.ipclearn.aidl.BookManagerActivity$4@80e21c1
-com.github.tianma8023.ipclearn:remote D/BMS: listener not found, unregister failed
-</code></pre><p>通过日志，可以看出，服务端每次的书籍推送确实收到，<span style="color:#ff4081">但是在服务端执行 <code>unregisterListener</code> 的时候却并没有正确执行</span>。问题的原因在于， <code>Binder</code> 会把客户端传递过来的对象重新转化成新的对象，在客户端注册/反注册过程中使用的是同一个客户端对象，但是通过 <code>Binder</code> 传递到服务端的对象则不一样，所以会存在反注册失败的现象。</p><p>上述问题的解决方案就是使用 <code>RemoteCallbackList</code>。<code>RemoteCallbackList</code> 由系统提供，专门用来删除跨进成的 listener 接口。</p><pre><code class="java">public class RemoteCallbackList&lt;E extends IInterface&gt;
-
-public interface IOnNewBookArrivedListener extends android.os.IInterface
-</code></pre><p>可以看出来，<code>RemoteCallbackList</code> 是一个泛型，可以管理任意的 AIDL 接口。</p><p><code>RemoteCallbackList</code> 部分源码：</p><pre><code class="java">public class RemoteCallbackList&lt;E extends IInterface&gt; {
-    ArrayMap&lt;IBinder, Callback&gt; mCallbacks = new ArrayMap&lt;IBinder, Callback&gt;();
-
-    private final class Callback implements IBinder.DeathRecipent {
-        final E mCallback;
-        final Object mCookie;
-        Callback(E callback, Object cookie) {
-            mCallback = callback;
-            mCookie = cookie;
-        }
-        // 省略...
-    }
-}
-</code></pre><p>可以看出来 <code>RemoteCallbackList</code> 内部其实是一个 <code>Map</code>，建立起 <code>IBinder</code> 到 <code>Callback</code> 的映射，而 <code>Callback</code> 又封装了真正的 <code>IInterface</code> 的 <code>listener</code>，也就是实际上建立起了 <code>IBinder</code> 到 <code>listener</code> 的映射。</p><p>虽然之前的 <code>IOnNewBookArrivedListener</code> 会由客户端的一个对象会在服务端生成不一样的对象，但是其底层的 <code>Binder</code> 是一样的，所以 <code>RemoteCallbackListener</code> 正是利用了这个特性，真正地实现反注册。</p><p>正确姿势：<br>用 <code>RemoteCallbackList</code> 替换前面的 <code>CopyOnWriteArrayList</code>：</p><pre><code class="java">// private CopyOnWiteArrayList&lt;IOnNewBookArrivedListener&gt; mListenerList = new CopyOnWriteArrayList&lt;&gt;();
-private RemoteCallbackList&lt;IOnNewBookArrivedListener&gt; mListenerList = new RemoteCallbackList&lt;&gt;();
-</code></pre><p>修改 <code>registerListener</code> 和 <code>unregisterListener</code>：</p><pre><code class="java">@Override
-public void registerListener(IOnNewBookArrivedListener listener) throws RemoteException {
-    mListenerList.register(listener);
-}
-
-@Override
-public void unregisterListener(IOnNewBookArrivedListener listener) throws RemoteException {
-    mListenerList.unregister(listener);
-}
-</code></pre><p>修改通知所有已注册的 listener 的 <code>onNewBookArrived</code> 方法：</p><pre><code class="java">private void onNewBookArrived(Book book) throws RemoteException {
-    mBookList.add(book);
-    // 通知所有listener
-    Log.i(TAG, &quot;new book arrived, notify all listeners&quot;);
-    final int N = mListenerList.beginBroadcast();
-    for (int i = 0; i &lt; N; i++) {
-        IOnNewBookArrivedListener listener = mListenerList.getBroadcastItem(i);
-        if(listener != null) {
-            listener.onNewBookArrived(book);
-        }
-    }
-    mListenerList.finishBroadcast();
-}
-</code></pre><p>注意，遍历 <code>RemoteCallbackList</code> 必须要用上述方式进行，即 <code>begiinBroadcast</code> 和 <code>finishBroadcast</code> 必须配对使用。</p><h3 id="AIDL-重连-Service"><a href="#AIDL-重连-Service" class="headerlink" title="AIDL 重连 Service"></a>AIDL 重连 Service</h3><p>当服务端程序意外停止时，<code>Binder</code> 会意外死亡，需要重新连接 <code>Service</code>，有两种解决方案：</p><ol><li>给 <code>Binder</code> 设置 <code>DeathRecipient</code> 监听，当 <code>Binder</code> 死亡时，会回调 <code>DeathRecipient#binderDied()</code>，这时可以重连 Service；</li><li>在 <code>ServiceConnection#onServiceDisconnected()</code> 中重连 Service。</li></ol><p>两者的区别在于在 <code>bindDied</code> 中是在客户端的 <code>Binder</code> 线程池被调用，而 <code>onServiceDisconnected</code> 是在UI线程中被回调。</p><p><code>BookManagerActivity</code> 中加入：</p><pre><code class="java">public class BookManagerActivity extends Activity {
-    // ...
-    private IBookManager mRemoteBookManager;
-
-    private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
-        @Override
-        public void binderDied() {
-          // 子线程，binder线程
-            if (mRemoteBookManager == null) 
-                return;
-            mRemoteBookManager.asBinder().unlinkToDeath(mDeathRecipient, 0);
-            mRemoteBookManager = null;
-            // TODO: 重新绑定 Service
-        }
-    }
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-      @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            IBookManager bookManager = IBookManager.Stub.asInterface(service);
-            mRemoteBookManager = bookManager;
-            try {
-                mRemoteBookManager.asBinder().linkToDeath(mDeathRecipient, 0); 
-                // ... 省略
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mRemoteBookManager = null;
-            // 主线程
-            // TODO: 重连 Service
-        }
-    }
-}
-</code></pre><h3 id="权限验证"><a href="#权限验证" class="headerlink" title="权限验证"></a>权限验证</h3><p>默认情况下，远程服务可以被其他外部组件连接上，所以，必要的时候需要加入权限验证。通常有以下几种方案：</p><ol><li>在远程 Service 的 onBind 中进行验证，这里的验证方式也有很多，常用的是使用 <code>permission</code> 进行验证：<br>在 AndroidManifest 中声明所需要的权限：<pre><code class="xml">&lt;permission 
-   android:name=&quot;com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE&quot;
-   android:level=&quot;normal&quot; /&gt;
-</code></pre>在 <code>BookManagerService</code> 的 <code>onBind</code> 中做权限验证：<pre><code class="java">public IBinder onBind(Intent intent) {
-   // 权限验证
-   int result = checkCallingOrSelfPermission (com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE);
-   if (result == PackageManager.PERMISSION_DENIED)
-       return null;
-   return mBinder;
-}
-</code></pre>这样就完成了权限的验证，当有客户端需要连接该服务时，需要申请权限：<pre><code class="xml">&lt;uses-permission
-   android:name=&quot;com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE&quot; /&gt;
-</code></pre></li><li>在服务端的 <code>Binder#onTransact()</code> 中进行权限验证：<pre><code class="java">private Binder mBinder = new IBookManager.Stub() {
- // ...
- @Override
- public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-     // 权限验证
-     // 1. 需要声明自定权限 &quot;com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE&quot;
-     // 2. 包名前缀必须是 &quot;com.github.tianma8023&quot;
-     int check = checkCallingOrSelfPermission(&quot;com.github.tianma8023.ipclearn.permission.ACCESS_BOOK_SERVICE&quot;);
-     if (check == PackageManager.PERMISSION_DENIED)
-         return false;
-     String packageName = null;
-     String[] packages = getPackageManager().getPackagesForUid(getCallingUid());
-     if (packages != null &amp;&amp; packages.length &gt; 0) {
-         packageName = packages[0];
-     }
-     if (packageName == null || !packageName.startsWith(&quot;com.github.tianma8023&quot;)) {
-         return false;
-     }
-     return super.onTransact(code, data, reply, flags);
- }
-}
-</code></pre>上述代码片段，验证了 permission，还验证了包名前缀，只有都满足要求的才能验证通过。</li><li>为 <code>Service</code> 指定 <code>android:permission</code> 属性。</li></ol><h3 id="代码参考"><a href="#代码参考" class="headerlink" title="代码参考"></a>代码参考</h3><p><a href="https://github.com/tianma8023/IPCLearn" target="_blank" rel="noopener">IPCLearn</a></p><div><br><ul id="post-license" class="post-license"><li class="post-license-author"><strong>本文作者：</strong> <a href="https://tianma.space">Tianma</a></li><li class="post-license-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/3246519744/">Android 笔记：AIDL进阶</a></li><li class="post-license-statement"><strong>版权声明：</strong> 本文由 Tianma 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="license" target="_blank">署名-非商业性使用-相同方式共享（CC BY-NC-SA）4.0 国际许可协议</a><br>转载请保留以上声明信息！</li></ul></div></div><div id="gitalk-comment"><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk=new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:["tianma8023"],id:"/post/3246519744",title:"Android 笔记：AIDL进阶",body:"https://tianma.space/post/3246519744/",distractionFreeMode:!1});gitalk.render("gitalk-container")</script></div><style>#gitalk-comment{background-color:#eee;padding:2pc}</style></div><nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col"><a href="/post/2251443378/" id="post_nav-newer" class="prev-content"><button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_back</i></button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新篇</a><div class="section-spacer"></div><a href="/post/3352500871/" id="post_nav-older" class="next-content">旧篇 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation"><i class="material-icons">arrow_forward</i></button></a></nav></div></div><div class="sidebar-overlay"></div><aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation"><div id="sidebar-main"><div class="sidebar-header header-cover" style="background-image:url(/img/sidebar_header.jpg)"><div class="top-bar"></div><button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display:initial" data-upgraded=",MaterialButton,MaterialRipple"><i class="material-icons">clear_all</i><span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button><div class="sidebar-image"><img src="/img/kousei.jpg" alt="Tianma's avatar"></div><a class="sidebar-brand">lovelymer#foxmail.com</a></div><ul class="nav sidebar-nav"><li class="dropdown"><ul id="settings-dropdown" class="dropdown-menu"></ul></li><li id="sidebar-first-li"><a href="/"><i class="material-icons sidebar-material-icons">home</i> 主页</a></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">inbox</i> 归档<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/10/">十月 2018<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/07/">七月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/04/">四月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/02/">二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/01/">一月 2018<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/07/">七月 2017<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/06/">六月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">1</span></a></li></ul></li><li class="dropdown"><a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown"><i class="material-icons sidebar-material-icons">chrome_reader_mode</i> 分类<b class="caret"></b></a><ul class="dropdown-menu"><li><a class="sidebar_archives-link" href="/categories/Algorithm-Data-Structure/">Algorithm & Data Structure<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/categories/Android/">Android<span class="sidebar_archives-count">26</span></a></li><li><a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/Java/">Java<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/漫谈/">漫谈<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/科学上网/">科学上网<span class="sidebar_archives-count">6</span></a></li></ul></li><li><a href="/tags" title="标签"><i class="material-icons sidebar-material-icons">label_outline</i> 标签</a></li><li><a href="/timeline" title="Timeline"><i class="material-icons sidebar-material-icons">timeline</i> Timeline</a></li><li><a href="/darling" title="Darling" target="_blank"><i class="material-icons sidebar-material-icons">favorite_border</i> Darling</a></li><li><a href="/about" title="关于"><i class="material-icons sidebar-material-icons">person_outline</i> 关于</a></li><li><a href="https://github.com/viosey/hexo-theme-material" title="主题" target="_blank"><i class="material-icons sidebar-material-icons">stars</i> 主题</a></li></ul></div></aside><div id="back-to-top" class="toTop-wrap"><a href="#top" class="toTop"><i class="material-icons footer_top-i">expand_less</i></a></div><footer class="mdl-mini-footer" id="bottom"><div class="mdl-mini-footer--left-section sns-list"><a href="https://github.com/tianma8023" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-github"><span class="visuallyhidden">Github</span></button></a><a href="https://space.bilibili.com/4504127#/" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-bilibili"><span class="visuallyhidden">Bilibili</span></button></a><a href="https://www.jianshu.com/u/9b3c643402b6" class="footer-jianshu" target="_blank"><button class="mdl-mini-footer--social-btn social-btn footer-sns-jianshu"><span class="visuallyhidden">Jianshu</span></button></a></div><div id="copyright">Copyright&nbsp;©&nbsp;<script>var curYear=(new Date).getFullYear(),since=2016;curYear!=since?document.write(since+" ~ "+curYear):document.write(curYear)</script>&nbsp;❤&nbsp;Tianma<br>Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>, Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div></footer><script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==",!0)</script><script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==",!0)</script><script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==",!0)</script><script type="text/ls-javascript" id="NProgress-script">NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#FF4081'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#FF4081',
-        'border-left-color': '#FF4081'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("o5BQOrzP48nkdkyfJYQ8mRRf-gzGzoHsz","ypNURFLzI6NMQwz1OVl782d5")</script><script type="text/ls-javascript" id="leancloud-views-script">function showTime(Counter) {
-        var query = new AV.Query(Counter);
-        $('.leancloud-views_num').each(function() {
-            var url = $(this).attr('id').trim();
-            query.equalTo('url', url);
-            query.find({
-                success: function(results) {
-                    if (results.length === 0) {
-                        var content = '0 ' + $(document.getElementById(url)).text();
-                        $(document.getElementById(url)).text(content);
-                        return;
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
                     }
-                    for (var i = 0; i < results.length; i++) {
-                        var object = results[i];
-                        var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
-                        $(document.getElementById(url)).text(content);
-                    }
-                },
-                error: function(object, error) {
-                    console.log('Error: ' + error.code + ' ' + error.message);
-                }
-            });
-        });
-    }
 
-    function addCount(Counter) {
-      var Counter = AV.Object.extend('Counter');
-      url = $('.leancloud-views_num').attr('id').trim();
-      title = $('.leancloud-views_num').attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-      query.equalTo('url', url);
-      query.find({
-          success: function(results) {
-            if (results.length > 0) {
-                var counter = results[0];
-                counter.fetchWhenSave(true);
-                counter.increment('time');
-                counter.save(null, {
-                    success: function(counter) {
-                        var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
-                        $(document.getElementById(url)).text(content);
-                    },
-                    error: function(counter, error) {
-                        console.log('Failed to save Visitor num, with error message: ' + error.message);
-                    }
-                });
-            } else {
-              var newcounter = new Counter();
-              newcounter.set('title', title);
-              newcounter.set('url', url);
-              newcounter.set('time', 1);
-              newcounter.save(null, {
-                  success: function(newcounter) {
-                      console.log('newcounter.get(\'time\')='+newcounter.get('time'));
-                      var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
-                      $(document.getElementById(url)).text(content);
-                  },
-                  error: function(newcounter, error) {
-                      console.log('Failed to create');
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
                   }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
               });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
             }
-        },
-        error: function(error) {
-            console.log('Error:' + error.code + ' ' + error.message);
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
         }
       });
     }
-    $(function() {
-        var Counter = AV.Object.extend('Counter');
-        if ($('.leancloud-views_num').length === 1) {
-            addCount(Counter);
-        } else if ($('.post-title-link').length > 1) {
-            showTime(Counter);
-        }
-    });</script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script>var agent=navigator.userAgent.toLowerCase();0<agent.indexOf("ucbrowser")&&(document.write('<link rel="stylesheet" href="/css/uc.css">'),alert("由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。"))</script><script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==",!0)</script><script type="text/ls-javascript" id="window-load">$(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
     });
 
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })</script><script type="text/ls-javascript" id="lazy-load">// Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
     });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });</script><script>!function(){for(var r=document.querySelectorAll('script[type="text/ls-javascript"]'),t=0;t<r.length;++t){var e=r[t];lsloader.runInlineScript(e.id,e.id)}}()</script></main></div></body></html>
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });</script></body></html>
