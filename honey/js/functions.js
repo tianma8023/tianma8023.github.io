@@ -1,1 +1,83 @@
-var $win=$(window),clientWidth=$win.width(),clientHeight=$win.height();function timeElapse(t){var e=new Date;if(e.getMonth()==t.getMonth()&&e.getDate()==t.getDate()){var a=e.getYear()-t.getYear(),i=a%10,n="";n+="To celebrate our: ",n+=1==i?a+"st ":2==i?a+"nd ":3==i?a+"rd ":a+"th ",n+="Love Day",$("#clock").html(n)}else{var r=(Date.parse(e)-Date.parse(t))/1e3,s=Math.floor(r/86400);r%=86400;var l=Math.floor(r/3600);l<10&&(l="0"+l),r%=3600;var o=Math.floor(r/60);o<10&&(o="0"+o),(r%=60)<10&&(r="0"+r);n="";n+="To celebrate our: <br>",n+='<span class="digit">'+s+'</span> Day <span class="digit">'+l+'</span> Hour <span class="digit">'+o+'</span> Min <span class="digit">'+r+"</span> Sec",$("#clock").html(n)}}$(window).resize(function(){var t=$win.width(),e=$win.height();t!=clientWidth&&e!=clientHeight&&location.replace(location)}),function(n){n.fn.typewriter=function(){return this.each(function(){var t=n(this),e=t.html(),a=0;t.html("");var i=setInterval(function(){"<"==e.substr(a,1)?a=e.indexOf(">",a)+1:a++,t.html(e.substring(0,a)+(1&a?"_":"")),a>=e.length&&clearInterval(i)},150)}),this}}(jQuery);
+/*
+ * http://love.hackerzhou.me
+ */
+
+// variables
+var $win = $(window);
+var clientWidth = $win.width();
+var clientHeight = $win.height();
+
+$(window).resize(function() {
+    var newWidth = $win.width();
+    var newHeight = $win.height();
+    if (newWidth != clientWidth && newHeight != clientHeight) {
+        location.replace(location);
+    }
+});
+
+(function($) {
+    $.fn.typewriter = function() {
+        this.each(function() {
+            var $ele = $(this),
+                str = $ele.html(),
+                progress = 0;
+            $ele.html('');
+            var timer = setInterval(function() {
+                var current = str.substr(progress, 1);
+                if (current == '<') {
+                    progress = str.indexOf('>', progress) + 1;
+                } else {
+                    progress++;
+                }
+                $ele.html(str.substring(0, progress) + (progress & 1 ? '_' : ''));
+                if (progress >= str.length) {
+                    clearInterval(timer);
+                }
+            }, 150);
+        });
+        return this;
+    };
+})(jQuery);
+
+function timeElapse(date) {
+    var current = new Date();
+    var isAnniversary = (current.getMonth() == date.getMonth() && current.getDate() == date.getDate());
+    if (isAnniversary) {
+        var year = current.getYear() - date.getYear();
+        var suffix = year % 10;
+        var result = "";
+        result += "To celebrate our: ";
+        if (suffix == 1) {
+            result += year + "st ";
+        } else if (suffix == 2) {
+            result += year + "nd ";
+        } else if (suffix == 3) {
+            result += year + "rd ";
+        } else {
+            result += year + "th ";
+        }
+        result += "Love Day";
+        $("#clock").html(result);
+    } else {
+        var seconds = (Date.parse(current) - Date.parse(date)) / 1000;
+        var days = Math.floor(seconds / (3600 * 24));
+        seconds = seconds % (3600 * 24);
+        var hours = Math.floor(seconds / 3600);
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        seconds = seconds % 3600;
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        seconds = seconds % 60;
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        var result = "";
+        result += "To celebrate our: <br>";
+        result += "<span class=\"digit\">" + days + "</span> Day <span class=\"digit\">" + hours + "</span> Hour <span class=\"digit\">" + minutes + "</span> Min <span class=\"digit\">" + seconds + "</span> Sec";
+        $("#clock").html(result);
+    }
+}

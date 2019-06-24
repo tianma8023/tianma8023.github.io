@@ -1,1 +1,556 @@
-!function(t){function g(t,e){return t+Math.floor(Math.random()*(e-t+1))}function o(t,e){var i=t[0].mul((1-e)*(1-e)),o=t[1].mul(2*e*(1-e)),n=t[2].mul(e*e);return i.add(o).add(n)}Point=function(t,e){this.x=t||0,this.y=e||0},Point.prototype={clone:function(){return new Point(this.x,this.y)},add:function(t){return p=this.clone(),p.x+=t.x,p.y+=t.y,p},sub:function(t){return p=this.clone(),p.x-=t.x,p.y-=t.y,p},div:function(t){return p=this.clone(),p.x/=t,p.y/=t,p},mul:function(t){return p=this.clone(),p.x*=t,p.y*=t,p}},Heart=function(){for(var t,e,i,o=[],n=10;n<30;n+=.2)i=n/Math.PI,t=16*Math.pow(Math.sin(i),3),e=13*Math.cos(i)-5*Math.cos(2*i)-2*Math.cos(3*i)-Math.cos(4*i),o.push(new Point(t,e));this.points=o,this.length=o.length},Heart.prototype={get:function(t,e){return this.points[t].mul(e||1)}},Seed=function(t,e,i,o){this.tree=t;i=i||1,o=o||"#FF0000";this.heart={point:e,scale:i,color:o,figure:new Heart},this.cirle={point:e,scale:i,color:o,radius:5}},Seed.prototype={draw:function(){this.drawHeart(),this.drawText()},addPosition:function(t,e){this.cirle.point=this.cirle.point.add(new Point(t,e))},canMove:function(){return this.cirle.point.y<this.tree.height+20},move:function(t,e){this.clear(),this.drawCirle(),this.addPosition(t,e)},canScale:function(){return.2<this.heart.scale},setHeartScale:function(t){this.heart.scale*=t},scale:function(t){this.clear(),this.drawCirle(),this.drawHeart(),this.setHeartScale(t)},drawHeart:function(){var t=this.tree.ctx,e=this.heart,i=e.point,o=e.color,n=e.scale;t.save(),t.fillStyle=o,t.translate(i.x,i.y),t.beginPath(),t.moveTo(0,0);for(var r=0;r<e.figure.length;r++){var h=e.figure.get(r,n);t.lineTo(h.x,-h.y)}t.closePath(),t.fill(),t.restore()},drawCirle:function(){var t=this.tree.ctx,e=this.cirle,i=e.point,o=e.color,n=e.scale,r=e.radius;t.save(),t.fillStyle=o,t.translate(i.x,i.y),t.scale(n,n),t.beginPath(),t.moveTo(0,0),t.arc(0,0,r,0,2*Math.PI),t.closePath(),t.fill(),t.restore()},drawText:function(){var t=this.tree.ctx,e=this.heart,i=e.point,o=e.color,n=e.scale;t.save(),t.strokeStyle=o,t.fillStyle=o,t.translate(i.x,i.y),t.scale(n,n),t.moveTo(0,0),t.lineTo(15,15),t.lineTo(60,15),t.stroke(),t.moveTo(0,0),t.scale(.75,.75),t.font="12px 微软雅黑,Verdana",t.fillText("To Jasmin",23,10),t.restore()},clear:function(){var t=this.tree.ctx,e=this.cirle,i=e.point,o=e.scale,n=h=26*o;t.clearRect(i.x-n,i.y-h,4*n,4*h)},hover:function(t,e){return 255==this.tree.ctx.getImageData(t,e,1,1).data[3]}},Footer=function(t,e,i,o){this.tree=t,this.point=new Point(t.seed.heart.point.x,t.height-i/2),this.width=e,this.height=i,this.speed=o||2,this.length=0},Footer.prototype={draw:function(){var t=this.tree.ctx,e=this.point,i=this.length/2;t.save(),t.strokeStyle="rgb(35, 31, 32)",t.lineWidth=this.height,t.lineCap="round",t.lineJoin="round",t.translate(e.x,e.y),t.beginPath(),t.moveTo(0,0),t.lineTo(i,0),t.lineTo(-i,0),t.stroke(),t.restore(),this.length<this.width&&(this.length+=this.speed)}},Tree=function(t,e,i,o){this.canvas=t,this.ctx=t.getContext("2d"),this.width=e,this.height=i,this.opt=o||{},this.record={},this.initSeed(),this.initFooter(),this.initBranch(),this.initBloom()},Tree.prototype={initSeed:function(){var t=this.opt.seed||{},e=t.x||this.width/2,i=t.y||this.height/2,o=new Point(e,i),n=t.color||"#FF0000",r=t.scale||1;this.seed=new Seed(this,o,r,n)},initFooter:function(){var t=this.opt.footer||{},e=t.width||this.width,i=t.height||5,o=t.speed||2;this.footer=new Footer(this,e,i,o)},initBranch:function(){var t=this.opt.branch||[];this.branchs=[],this.addBranchs(t)},initBloom:function(){for(var t=this.opt.bloom||{},e=[],i=t.num||500,o=t.width||this.width,n=t.height||this.height,r=this.seed.heart.figure,h=0;h<i;h++)e.push(this.createBloom(o,n,240,r));this.blooms=[],this.bloomsCache=e},toDataURL:function(t){return this.canvas.toDataURL(t)},draw:function(t){var e=this.ctx,i=this.record[t];if(i){var o=i.point,n=i.image;e.save(),e.putImageData(n,o.x,o.y),e.restore()}},addBranch:function(t){this.branchs.push(t)},addBranchs:function(t){for(var e,i,o,n,r,h,s,a=0;a<t.length;a++)e=t[a],i=new Point(e[0],e[1]),o=new Point(e[2],e[3]),n=new Point(e[4],e[5]),r=e[6],h=e[7],s=e[8],this.addBranch(new Branch(this,i,o,n,r,h,s))},removeBranch:function(t){for(var e=this.branchs,i=0;i<e.length;i++)e[i]===t&&e.splice(i,1)},canGrow:function(){return!!this.branchs.length},grow:function(){for(var t=this.branchs,e=0;e<t.length;e++){var i=t[e];i&&i.grow()}},addBloom:function(t){this.blooms.push(t)},removeBloom:function(t){for(var e=this.blooms,i=0;i<e.length;i++)e[i]===t&&e.splice(i,1)},createBloom:function(t,e,i,o,n,r,h,s,a,l){for(var c,u,p,d,f;;)if(c=g(20,t-20),u=g(20,e-20),((p=c-t/2)/(f=i)*(p/f)+(d=e-(e-40)/2-u)/f*(d/f)-1)*(p/f*(p/f)+d/f*(d/f)-1)*(p/f*(p/f)+d/f*(d/f)-1)-p/f*(p/f)*(d/f)*(d/f)*(d/f)<0)return new Bloom(this,new Point(c,u),o,n,r,h,s,a,l)},canFlower:function(){return!!this.blooms.length},flower:function(t){for(var e=this.bloomsCache.splice(0,t),i=0;i<e.length;i++)this.addBloom(e[i]);e=this.blooms;for(var o=0;o<e.length;o++)e[o].flower()},snapshot:function(t,e,i,o,n){var r=this.ctx.getImageData(e,i,o,n);this.record[t]={image:r,point:new Point(e,i),width:o,height:n}},setSpeed:function(t,e){this.record[t||"move"].speed=e},move:function(t,e,o){var n=this.ctx,r=this.record[t||"move"],h=r.point,s=r.image,a=r.speed||10,l=r.width,c=r.height;return i=h.x+a<e?h.x+a:e,j=h.y+a<o?h.y+a:o,n.save(),n.clearRect(h.x,h.y,l,c),n.putImageData(s,i,j),n.restore(),r.point=new Point(i,j),r.speed=.95*a,r.speed<2&&(r.speed=2),i<e||j<o},jump:function(){var t=this.blooms;if(t.length)for(var e=0;e<t.length;e++)t[e].jump();if(t.length&&t.length<3||!t.length){var i=this.opt.bloom||{},o=i.width||this.width,n=i.height||this.height,r=this.seed.heart.figure;for(e=0;e<g(5,8);e++)t.push(this.createBloom(o/2+o,n,240,r,null,1,null,1,new Point(g(-100,600),720),g(200,300)))}}},Branch=function(t,e,i,o,n,r,h){this.tree=t,this.point1=e,this.point2=i,this.point3=o,this.radius=n,this.length=r||100,this.len=0,this.t=1/(this.length-1),this.branchs=h||[]},Branch.prototype={grow:function(){var t,e=this;e.len<=e.length?(t=o([e.point1,e.point2,e.point3],e.len*e.t),e.draw(t),e.len+=1,e.radius*=.97):(e.tree.removeBranch(e),e.tree.addBranchs(e.branchs))},draw:function(t){var e=this.tree.ctx;e.save(),e.beginPath(),e.fillStyle="rgb(35, 31, 32)",e.shadowColor="rgb(35, 31, 32)",e.shadowBlur=2,e.moveTo(t.x,t.y),e.arc(t.x,t.y,this.radius,0,2*Math.PI),e.closePath(),e.fill(),e.restore()}},Bloom=function(t,e,i,o,n,r,h,s,a){this.tree=t,this.point=e,this.color=o||"rgb(255,"+g(0,255)+","+g(0,255)+")",this.alpha=n||g(.3,1),this.angle=r||g(0,360),this.scale=h||.1,this.place=s,this.speed=a,this.figure=i},Bloom.prototype={setFigure:function(t){this.figure=t},flower:function(){var t=this;t.draw(),t.scale+=.1,1<t.scale&&t.tree.removeBloom(t)},draw:function(){var t=this,e=t.tree.ctx,i=t.figure;e.save(),e.fillStyle=t.color,e.globalAlpha=t.alpha,e.translate(t.point.x,t.point.y),e.scale(t.scale,t.scale),e.rotate(t.angle),e.beginPath(),e.moveTo(0,0);for(var o=0;o<i.length;o++){var n=i.get(o);e.lineTo(n.x,-n.y)}e.closePath(),e.fill(),e.restore()},jump:function(){var t=this,e=t.tree.height;t.point.x<-20||t.point.y>e+20?t.tree.removeBloom(t):(t.draw(),t.point=t.place.sub(t.point).div(t.speed).add(t.point),t.angle+=.05,t.speed-=1)}},t.random=g,t.bezier=o,t.Point=Point,t.Tree=Tree}(window);
+﻿(function(window) {
+
+    function random(min, max) {
+        return min + Math.floor(Math.random() * (max - min + 1));
+    }
+
+    function bezier(cp, t) {
+        var p1 = cp[0].mul((1 - t) * (1 - t));
+        var p2 = cp[1].mul(2 * t * (1 - t));
+        var p3 = cp[2].mul(t * t);
+        return p1.add(p2).add(p3);
+    }
+
+    function inheart(x, y, r) {
+        // x^2+(y-(x^2)^(1/3))^2 = 1
+        // http://www.wolframalpha.com/input/?i=x%5E2%2B%28y-%28x%5E2%29%5E%281%2F3%29%29%5E2+%3D+1
+        var z = ((x / r) * (x / r) + (y / r) * (y / r) - 1) * ((x / r) * (x / r) + (y / r) * (y / r) - 1) * ((x / r) * (x / r) + (y / r) * (y / r) - 1) - (x / r) * (x / r) * (y / r) * (y / r) * (y / r);
+        return z < 0;
+    }
+
+    Point = function(x, y) {
+        this.x = x || 0;
+        this.y = y || 0;
+    }
+    Point.prototype = {
+        clone: function() {
+            return new Point(this.x, this.y);
+        },
+        add: function(o) {
+            p = this.clone();
+            p.x += o.x;
+            p.y += o.y;
+            return p;
+        },
+        sub: function(o) {
+            p = this.clone();
+            p.x -= o.x;
+            p.y -= o.y;
+            return p;
+        },
+        div: function(n) {
+            p = this.clone();
+            p.x /= n;
+            p.y /= n;
+            return p;
+        },
+        mul: function(n) {
+            p = this.clone();
+            p.x *= n;
+            p.y *= n;
+            return p;
+        }
+    }
+
+    Heart = function() {
+        // x = 16 sin^3 t
+        // y = 13 cos t - 5 cos 2t - 2 cos 3t - cos 4t
+        // http://www.wolframalpha.com/input/?i=x+%3D+16+sin%5E3+t%2C+y+%3D+(13+cos+t+-+5+cos+2t+-+2+cos+3t+-+cos+4t)
+        var points = [],
+            x, y, t;
+        for (var i = 10; i < 30; i += 0.2) {
+            t = i / Math.PI;
+            x = 16 * Math.pow(Math.sin(t), 3);
+            y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+            points.push(new Point(x, y));
+        }
+        this.points = points;
+        this.length = points.length;
+    }
+    Heart.prototype = {
+        get: function(i, scale) {
+            return this.points[i].mul(scale || 1);
+        }
+    }
+
+    Seed = function(tree, point, scale, color) {
+        this.tree = tree;
+
+        var scale = scale || 1
+        var color = color || '#FF0000';
+
+        this.heart = {
+            point: point,
+            scale: scale,
+            color: color,
+            figure: new Heart(),
+        }
+
+        this.cirle = {
+            point: point,
+            scale: scale,
+            color: color,
+            radius: 5,
+        }
+    }
+    Seed.prototype = {
+        draw: function() {
+            this.drawHeart();
+            this.drawText();
+        },
+        addPosition: function(x, y) {
+            this.cirle.point = this.cirle.point.add(new Point(x, y));
+        },
+        canMove: function() {
+            return this.cirle.point.y < (this.tree.height + 20);
+        },
+        move: function(x, y) {
+            this.clear();
+            this.drawCirle();
+            this.addPosition(x, y);
+        },
+        canScale: function() {
+            return this.heart.scale > 0.2;
+        },
+        setHeartScale: function(scale) {
+            this.heart.scale *= scale;
+        },
+        scale: function(scale) {
+            this.clear();
+            this.drawCirle();
+            this.drawHeart();
+            this.setHeartScale(scale);
+        },
+        drawHeart: function() {
+            var ctx = this.tree.ctx,
+                heart = this.heart;
+            var point = heart.point,
+                color = heart.color,
+                scale = heart.scale;
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.translate(point.x, point.y);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            for (var i = 0; i < heart.figure.length; i++) {
+                var p = heart.figure.get(i, scale);
+                ctx.lineTo(p.x, -p.y);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        },
+        drawCirle: function() {
+            var ctx = this.tree.ctx,
+                cirle = this.cirle;
+            var point = cirle.point,
+                color = cirle.color,
+                scale = cirle.scale,
+                radius = cirle.radius;
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.translate(point.x, point.y);
+            ctx.scale(scale, scale);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        },
+        drawText: function() {
+            var ctx = this.tree.ctx,
+                heart = this.heart;
+            var point = heart.point,
+                color = heart.color,
+                scale = heart.scale;
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.translate(point.x, point.y);
+            ctx.scale(scale, scale);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(15, 15);
+            ctx.lineTo(60, 15);
+            ctx.stroke();
+
+            ctx.moveTo(0, 0);
+            ctx.scale(0.75, 0.75);
+            ctx.font = "12px 微软雅黑,Verdana";
+            ctx.fillText("To Jasmin", 23, 10);
+            ctx.restore();
+        },
+        clear: function() {
+            var ctx = this.tree.ctx,
+                cirle = this.cirle;
+            var point = cirle.point,
+                scale = cirle.scale,
+                radius = 26;
+            var w = h = (radius * scale);
+            ctx.clearRect(point.x - w, point.y - h, 4 * w, 4 * h);
+        },
+        hover: function(x, y) {
+            var ctx = this.tree.ctx;
+            var pixel = ctx.getImageData(x, y, 1, 1);
+            return pixel.data[3] == 255
+        }
+    }
+
+    Footer = function(tree, width, height, speed) {
+        this.tree = tree;
+        this.point = new Point(tree.seed.heart.point.x, tree.height - height / 2);
+        this.width = width;
+        this.height = height;
+        this.speed = speed || 2;
+        this.length = 0;
+    }
+    Footer.prototype = {
+        draw: function() {
+            var ctx = this.tree.ctx,
+                point = this.point;
+            var len = this.length / 2;
+
+            ctx.save();
+            ctx.strokeStyle = 'rgb(35, 31, 32)';
+            ctx.lineWidth = this.height;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.translate(point.x, point.y);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(len, 0);
+            ctx.lineTo(-len, 0);
+            ctx.stroke();
+            ctx.restore();
+
+            if (this.length < this.width) {
+                this.length += this.speed;
+            }
+        }
+    }
+
+    Tree = function(canvas, width, height, opt) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = width;
+        this.height = height;
+        this.opt = opt || {};
+
+        this.record = {};
+
+        this.initSeed();
+        this.initFooter();
+        this.initBranch();
+        this.initBloom();
+    }
+    Tree.prototype = {
+        initSeed: function() {
+            var seed = this.opt.seed || {};
+            var x = seed.x || this.width / 2;
+            var y = seed.y || this.height / 2;
+            var point = new Point(x, y);
+            var color = seed.color || '#FF0000';
+            var scale = seed.scale || 1;
+
+            this.seed = new Seed(this, point, scale, color);
+        },
+
+        initFooter: function() {
+            var footer = this.opt.footer || {};
+            var width = footer.width || this.width;
+            var height = footer.height || 5;
+            var speed = footer.speed || 2;
+            this.footer = new Footer(this, width, height, speed);
+        },
+
+        initBranch: function() {
+            var branchs = this.opt.branch || []
+            this.branchs = [];
+            this.addBranchs(branchs);
+        },
+
+        initBloom: function() {
+            var bloom = this.opt.bloom || {};
+            var cache = [],
+                num = bloom.num || 500,
+                width = bloom.width || this.width,
+                height = bloom.height || this.height,
+                figure = this.seed.heart.figure;
+            var r = 240,
+                x, y;
+            for (var i = 0; i < num; i++) {
+                cache.push(this.createBloom(width, height, r, figure));
+            }
+            this.blooms = [];
+            this.bloomsCache = cache;
+        },
+
+        toDataURL: function(type) {
+            return this.canvas.toDataURL(type);
+        },
+
+        draw: function(k) {
+            var s = this,
+                ctx = s.ctx;
+            var rec = s.record[k];
+            if (!rec) {
+                return;
+            }
+            var point = rec.point,
+                image = rec.image;
+
+            ctx.save();
+            ctx.putImageData(image, point.x, point.y);
+            ctx.restore();
+        },
+
+        addBranch: function(branch) {
+            this.branchs.push(branch);
+        },
+
+        addBranchs: function(branchs) {
+            var s = this,
+                b, p1, p2, p3, r, l, c;
+            for (var i = 0; i < branchs.length; i++) {
+                b = branchs[i];
+                p1 = new Point(b[0], b[1]);
+                p2 = new Point(b[2], b[3]);
+                p3 = new Point(b[4], b[5]);
+                r = b[6];
+                l = b[7];
+                c = b[8]
+                s.addBranch(new Branch(s, p1, p2, p3, r, l, c));
+            }
+        },
+
+        removeBranch: function(branch) {
+            var branchs = this.branchs;
+            for (var i = 0; i < branchs.length; i++) {
+                if (branchs[i] === branch) {
+                    branchs.splice(i, 1);
+                }
+            }
+        },
+
+        canGrow: function() {
+            return !!this.branchs.length;
+        },
+        grow: function() {
+            var branchs = this.branchs;
+            for (var i = 0; i < branchs.length; i++) {
+                var branch = branchs[i];
+                if (branch) {
+                    branch.grow();
+                }
+            }
+        },
+
+        addBloom: function(bloom) {
+            this.blooms.push(bloom);
+        },
+
+        removeBloom: function(bloom) {
+            var blooms = this.blooms;
+            for (var i = 0; i < blooms.length; i++) {
+                if (blooms[i] === bloom) {
+                    blooms.splice(i, 1);
+                }
+            }
+        },
+
+        createBloom: function(width, height, radius, figure, color, alpha, angle, scale, place, speed) {
+            var x, y;
+            while (true) {
+                x = random(20, width - 20);
+                y = random(20, height - 20);
+                if (inheart(x - width / 2, height - (height - 40) / 2 - y, radius)) {
+                    return new Bloom(this, new Point(x, y), figure, color, alpha, angle, scale, place, speed);
+                }
+            }
+        },
+
+        canFlower: function() {
+            return !!this.blooms.length;
+        },
+        flower: function(num) {
+            var s = this,
+                blooms = s.bloomsCache.splice(0, num);
+            for (var i = 0; i < blooms.length; i++) {
+                s.addBloom(blooms[i]);
+            }
+            blooms = s.blooms;
+            for (var j = 0; j < blooms.length; j++) {
+                blooms[j].flower();
+            }
+        },
+
+        snapshot: function(k, x, y, width, height) {
+            var ctx = this.ctx;
+            var image = ctx.getImageData(x, y, width, height);
+            this.record[k] = {
+                image: image,
+                point: new Point(x, y),
+                width: width,
+                height: height
+            }
+        },
+        setSpeed: function(k, speed) {
+            this.record[k || "move"].speed = speed;
+        },
+        move: function(k, x, y) {
+            var s = this,
+                ctx = s.ctx;
+            var rec = s.record[k || "move"];
+            var point = rec.point,
+                image = rec.image,
+                speed = rec.speed || 10,
+                width = rec.width,
+                height = rec.height;
+
+            i = point.x + speed < x ? point.x + speed : x;
+            j = point.y + speed < y ? point.y + speed : y;
+
+            ctx.save();
+            ctx.clearRect(point.x, point.y, width, height);
+            ctx.putImageData(image, i, j);
+            ctx.restore();
+
+            rec.point = new Point(i, j);
+            rec.speed = speed * 0.95;
+
+            if (rec.speed < 2) {
+                rec.speed = 2;
+            }
+            return i < x || j < y;
+        },
+
+        jump: function() {
+            var s = this,
+                blooms = s.blooms;
+            if (blooms.length) {
+                for (var i = 0; i < blooms.length; i++) {
+                    blooms[i].jump();
+                }
+            }
+            if ((blooms.length && blooms.length < 3) || !blooms.length) {
+                var bloom = this.opt.bloom || {},
+                    width = bloom.width || this.width,
+                    height = bloom.height || this.height,
+                    figure = this.seed.heart.figure;
+                var r = 240,
+                    x, y;
+                for (var i = 0; i < random(5, 8); i++) {
+                    blooms.push(this.createBloom(width / 2 + width, height, r, figure, null, 1, null, 1, new Point(random(-100, 600), 720), random(200, 300)));
+                }
+            }
+        }
+    }
+
+    Branch = function(tree, point1, point2, point3, radius, length, branchs) {
+        this.tree = tree;
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.radius = radius;
+        this.length = length || 100;
+        this.len = 0;
+        this.t = 1 / (this.length - 1);
+        this.branchs = branchs || [];
+    }
+
+    Branch.prototype = {
+        grow: function() {
+            var s = this,
+                p;
+            if (s.len <= s.length) {
+                p = bezier([s.point1, s.point2, s.point3], s.len * s.t);
+                s.draw(p);
+                s.len += 1;
+                s.radius *= 0.97;
+            } else {
+                s.tree.removeBranch(s);
+                s.tree.addBranchs(s.branchs);
+            }
+        },
+        draw: function(p) {
+            var s = this;
+            var ctx = s.tree.ctx;
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = 'rgb(35, 31, 32)';
+            ctx.shadowColor = 'rgb(35, 31, 32)';
+            ctx.shadowBlur = 2;
+            ctx.moveTo(p.x, p.y);
+            ctx.arc(p.x, p.y, s.radius, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    Bloom = function(tree, point, figure, color, alpha, angle, scale, place, speed) {
+        this.tree = tree;
+        this.point = point;
+        this.color = color || 'rgb(255,' + random(0, 255) + ',' + random(0, 255) + ')';
+        this.alpha = alpha || random(0.3, 1);
+        this.angle = angle || random(0, 360);
+        this.scale = scale || 0.1;
+        this.place = place;
+        this.speed = speed;
+
+        this.figure = figure;
+    }
+    Bloom.prototype = {
+        setFigure: function(figure) {
+            this.figure = figure;
+        },
+        flower: function() {
+            var s = this;
+            s.draw();
+            s.scale += 0.1;
+            if (s.scale > 1) {
+                s.tree.removeBloom(s);
+            }
+        },
+        draw: function() {
+            var s = this,
+                ctx = s.tree.ctx,
+                figure = s.figure;
+
+            ctx.save();
+            ctx.fillStyle = s.color;
+            ctx.globalAlpha = s.alpha;
+            ctx.translate(s.point.x, s.point.y);
+            ctx.scale(s.scale, s.scale);
+            ctx.rotate(s.angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            for (var i = 0; i < figure.length; i++) {
+                var p = figure.get(i);
+                ctx.lineTo(p.x, -p.y);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        },
+        jump: function() {
+            var s = this,
+                height = s.tree.height;
+
+            if (s.point.x < -20 || s.point.y > height + 20) {
+                s.tree.removeBloom(s);
+            } else {
+                s.draw();
+                s.point = s.place.sub(s.point).div(s.speed).add(s.point);
+                s.angle += 0.05;
+                s.speed -= 1;
+            }
+        }
+    }
+
+    window.random = random;
+    window.bezier = bezier;
+    window.Point = Point;
+    window.Tree = Tree;
+
+})(window);
