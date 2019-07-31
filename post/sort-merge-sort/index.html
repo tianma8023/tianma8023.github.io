@@ -1,4 +1,1168 @@
-<!DOCTYPE html><html class="theme-next mist use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/css/main.css?v=7.1.2"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.1.2"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2"><link rel="mask-icon" href="/images/favicon.png?v=7.1.2" color="#222"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.1.2",sidebar:{position:"left",display:"hide",offset:12,onmobile:!1,dimmer:!1},back2top:!0,back2top_sidebar:!1,fancybox:!0,fastclick:!1,lazyload:!0,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><meta name="description" content="概念归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。"><meta name="keywords" content="排序"><meta property="og:type" content="article"><meta property="og:title" content="排序-归并排序"><meta property="og:url" content="https://tianma.space/post/sort-merge-sort/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="概念归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-07-30T16:43:13.456Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="排序-归并排序"><meta name="twitter:description" content="概念归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。"><link rel="canonical" href="https://tianma.space/post/sort-merge-sort/"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>排序-归并排序 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">69</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">59</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i></span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><div class="reading-progress-bar"></div><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/sort-merge-sort/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">排序-归并排序</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2016-04-27 00:26:29" itemprop="dateCreated datePublished" datetime="2016-04-27T00:26:29+08:00">2016-04-27</time> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-07-31 00:43:13" itemprop="dateModified" datetime="2019-07-31T00:43:13+08:00">2019-07-31</time></span> <span class="post-category"><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Algorithm & Data Structure</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。<a id="more"></a></p><h2 id="递归式归并"><a href="#递归式归并" class="headerlink" title="递归式归并"></a>递归式归并</h2><p><strong><em>演示</em></strong><br>比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}，那么递归式的归并排序为流程为：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">                 [<span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">2</span>]</span><br><span class="line">                    ↓                    ↓</span><br><span class="line">          [<span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>]             [<span class="number">7</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">2</span>]</span><br><span class="line">           ↓            ↓              ↓         ↓ </span><br><span class="line">     [<span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>]        [<span class="number">8</span>, <span class="number">3</span>]      [<span class="number">7</span>, <span class="number">4</span>]      [<span class="number">6</span>, <span class="number">2</span>]</span><br><span class="line">      ↓      ↓        ↓    ↓       ↓   ↓      ↓   ↓  </span><br><span class="line"> [<span class="number">9</span>, <span class="number">1</span>]     [<span class="number">5</span>]      [<span class="number">8</span>]  [<span class="number">3</span>]     [<span class="number">7</span>] [<span class="number">4</span>]    [<span class="number">6</span>]  [<span class="number">2</span>]</span><br><span class="line">  ↓  ↓       ↓        ↓    ↓       ↓   ↓      ↓   ↓  </span><br><span class="line">[<span class="number">9</span>]  [<span class="number">1</span>]    [<span class="number">5</span>]      [<span class="number">8</span>]  [<span class="number">3</span>]     [<span class="number">7</span>] [<span class="number">4</span>]    [<span class="number">6</span>]  [<span class="number">2</span>] <span class="comment">// 上面为拆分，下面为归并(合并)</span></span><br><span class="line">    ↓        ↓        ↓    ↓       ↓   ↓      ↓   ↓  </span><br><span class="line"> [<span class="number">1</span>, <span class="number">9</span>]     [<span class="number">5</span>]      [<span class="number">8</span>]  [<span class="number">3</span>]     [<span class="number">7</span>] [<span class="number">4</span>]    [<span class="number">6</span>]  [<span class="number">2</span>]</span><br><span class="line">      ↓      ↓        ↓    ↓        ↓  ↓      ↓   ↓</span><br><span class="line">     [<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>]       [<span class="number">3</span>, <span class="number">8</span>]        [<span class="number">4</span>, <span class="number">7</span>]     [<span class="number">2</span>, <span class="number">6</span>]</span><br><span class="line">           ↓           ↓              ↓         ↓</span><br><span class="line">         [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">8</span>]              [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line">                   ↓                    ↓</span><br><span class="line">                 [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure><p><strong><em>Java实现</em></strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归式归并排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MergeSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		<span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[arr.length];</span><br><span class="line">		mergeSort(arr, result, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将乱序的src[start...end]归并排序为有序的des[start...end]</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">	 *            归并前乱序数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> des</span></span><br><span class="line"><span class="comment">	 *            归并后的有序数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> start</span></span><br><span class="line"><span class="comment">	 *            归并的起始位置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> end</span></span><br><span class="line"><span class="comment">	 *            归并的终止位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] src, <span class="keyword">int</span>[] des, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (start == end) &#123;</span><br><span class="line">			des[start] = src[start];</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span>[] tmp = <span class="keyword">new</span> <span class="keyword">int</span>[src.length];</span><br><span class="line">		<span class="comment">// 将src[start...end]分为src[start...mid]和src[mid+1...end]两部分</span></span><br><span class="line">		<span class="keyword">int</span> mid = (start + end) / <span class="number">2</span>;</span><br><span class="line">		mergeSort(src, tmp, start, mid); <span class="comment">// 递归，将src[start...mid]归并为有序的tmp[start...mid]</span></span><br><span class="line">		mergeSort(src, tmp, mid + <span class="number">1</span>, end); <span class="comment">// 递归，将src[mid+1...end]归并为有序的tmp[mid+1...end]</span></span><br><span class="line">		<span class="comment">// 将有序的tmp[start...mid]和tmp[mid+1...end]合并为des[start...end]</span></span><br><span class="line">		merge(tmp, des, start, mid, end);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将有序的src[start, mid]和有序的src[mid+1, end]合并为有序的des[start,end];</span></span><br><span class="line"><span class="comment">	 * src可能为乱序数组,但是src[start, mid]和src[mid+1, end]是有序的。</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">	 *            乱序的原数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> des</span></span><br><span class="line"><span class="comment">	 *            有序的目标数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> start</span></span><br><span class="line"><span class="comment">	 *            数组第一部分起始位置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> mid</span></span><br><span class="line"><span class="comment">	 *            数组第一部分结束位置（两部分的分界点）</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> end</span></span><br><span class="line"><span class="comment">	 *            数组第二部分结束位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] src, <span class="keyword">int</span>[] des, <span class="keyword">int</span> start, <span class="keyword">int</span> mid, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i; <span class="comment">// src数组第一部分下标</span></span><br><span class="line">		<span class="keyword">int</span> j; <span class="comment">// src数组第二部分下标</span></span><br><span class="line">		<span class="keyword">int</span> k; <span class="comment">// des数组下标</span></span><br><span class="line">		<span class="comment">// 将较小的数依次移动到目标数组中</span></span><br><span class="line">		<span class="keyword">for</span> (i = start, k = start, j = mid + <span class="number">1</span>; i &lt;= mid &amp;&amp; j &lt;= end;) &#123;</span><br><span class="line">			<span class="keyword">if</span> (src[i] &lt; src[j]) &#123;</span><br><span class="line">				des[k] = src[i++];</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				des[k] = src[j++];</span><br><span class="line">			&#125;</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 将剩余的src[i...mid]复制到des数组中</span></span><br><span class="line">		<span class="keyword">for</span> (; i &lt;= mid; i++) &#123;</span><br><span class="line">			des[k] = src[i];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 将剩余的src[j...end]复制到des数组中</span></span><br><span class="line">		<span class="keyword">for</span> (; j &lt;= end; j++) &#123;</span><br><span class="line">			des[k] = src[j];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong><em>复杂度</em></strong><br>时间复杂度：<br>因为归并的递归操作其实就是二叉树的结构，故而，最好情况 = 最坏情况 = 平均情况 = O(nlogn)</p><p>空间复杂度：<br>因为递归式归并需要(1)与原始记录相同大小的空间来存放归并的结果以及(2)深度为logn的栈空间，所以空间复杂度为O(n+logn)</p><h2 id="非递归式归并"><a href="#非递归式归并" class="headerlink" title="非递归式归并"></a>非递归式归并</h2><p><strong><em>演示</em></strong><br>又比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}，那么非递归式的归并排序为流程为：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[9] [1]    [5] [8]    [3] [7]   [4] [6]  [2]</span><br><span class="line">  ↓  ↓      ↓   ↓      ↓    ↓     ↓   ↓   ↓</span><br><span class="line"> [1, 9]    [5, 8]      [3, 7]    [4, 6]  [2]</span><br><span class="line">   ↓          ↓          ↓       ↓        ↓ </span><br><span class="line">   [1, 5, 8, 9]       [3, 4, 6, 7]       [2]</span><br><span class="line">            ↓            ↓                ↓</span><br><span class="line">       [1, 3, 4, 5, 6, 7, 8, 9]          [2]</span><br><span class="line">               ↓                         ↓</span><br><span class="line">               [1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure><p><strong><em>Java实现</em></strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非递归式归并排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NonRecursiveMergeSorter</span> <span class="keyword">extends</span> <span class="title">MergeSorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		mergeSort(arr);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> result[] = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">		<span class="keyword">int</span> k = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span> (k &lt; len) &#123;</span><br><span class="line">			mergePass(arr, result, k); <span class="comment">// arr归并至result,此时间隔为k</span></span><br><span class="line">			k = <span class="number">2</span> * k; <span class="comment">// 子序列长度加倍</span></span><br><span class="line">			mergePass(result, arr, k); <span class="comment">// result归并至arr,此时间隔翻倍</span></span><br><span class="line">			k = <span class="number">2</span> * k; <span class="comment">// 子序列长度加倍</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组src中相邻长度为interval的子序列两两归并到des数组中</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">	 *            源数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> des</span></span><br><span class="line"><span class="comment">	 *            目标数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> interval</span></span><br><span class="line"><span class="comment">	 *            两两合并的子序列长度</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergePass</span><span class="params">(<span class="keyword">int</span>[] src, <span class="keyword">int</span>[] des, <span class="keyword">int</span> interval)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> len = src.length;</span><br><span class="line">		<span class="keyword">while</span> (i + <span class="number">2</span> * interval - <span class="number">1</span> &lt; len) &#123;</span><br><span class="line">			<span class="comment">// 两两合并</span></span><br><span class="line">			merge(src, des, i, i + interval - <span class="number">1</span>, i + <span class="number">2</span> * interval - <span class="number">1</span>);</span><br><span class="line">			i = i + <span class="number">2</span> * interval;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (i + interval - <span class="number">1</span> &lt; len - <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="comment">// i+interval-1小于len-1，说明最后还剩余两个子序列，只不过最后的一个子序列长度不够interval</span></span><br><span class="line">			<span class="comment">// 那么将剩下的两个子序列进行合并</span></span><br><span class="line">			merge(src, des, i, i + interval - <span class="number">1</span>, len - <span class="number">1</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 否则，最后只剩下单个子序列，则直接将该子序列加入到des尾部</span></span><br><span class="line">			<span class="keyword">for</span> (; i &lt; len; i++) &#123;</span><br><span class="line">				des[i] = src[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong><em>复杂度</em></strong><br>时间复杂度：<br>同递归式归并，最好情况 = 最坏情况 = 平均情况 = O(nlogn)</p><p>空间复杂度：<br>非递归式归并不需要保存方法栈信息，所以空间复杂度为O(n)</p><p>所以非递归的递归算法性能要高于递归式归并算法。</p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/sort-merge-sort/" title="排序-归并排序">https://tianma.space/post/sort-merge-sort/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/排序/" rel="tag"><i class="fa fa-tag"></i> 排序</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/sort-heap-sort/" rel="next" title="排序-堆排序"><i class="fa fa-chevron-left"></i> 排序-堆排序</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/sort-quick-sort/" rel="prev" title="排序-快速排序及其优化">排序-快速排序及其优化<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description motion-element" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">59</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">7</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">69</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归式归并"><span class="nav-number">2.</span> <span class="nav-text">递归式归并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非递归式归并"><span class="nav-number">3.</span> <span class="nav-text">非递归式归并</span></a></li></ol></div></div></div></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span id="scrollpercent"><span>0</span>%</span></div></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script src="/lib/jquery/index.js?v=3.4.1"></script><script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-reading-progress@1.1.1/reading_progress.min.js"></script><script src="/js/utils.js?v=7.1.2"></script><script src="/js/motion.js?v=7.1.2"></script><script src="/js/schemes/muse.js?v=7.1.2"></script><script src="/js/scrollspy.js?v=7.1.2"></script><script src="/js/post-details.js?v=7.1.2"></script><script src="/js/next-boot.js?v=7.1.2"></script><script src="//cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.css"><script>var gitalk=new Gitalk({clientID:"55a5d9da39a7a1f372ab",clientSecret:"91f6174c3199a1181f423f93f88b2df5865b96a2",repo:"tianma8023.github.io",owner:"tianma8023",admin:[""],id:"/post/3453824605",body:"",title:"排序-归并排序",language:"zh-CN",distractionFreeMode:"true"});gitalk.render("gitalk-container")</script><script>// Popup Window;
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/favicon.png?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="概念归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。">
+<meta name="keywords" content="排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序-归并排序">
+<meta property="og:url" content="https://tianma.space/post/sort-merge-sort/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="概念归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-30T16:43:13.456Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序-归并排序">
+<meta name="twitter:description" content="概念归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://tianma.space/post/sort-merge-sort/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>排序-归并排序 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">69</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">7</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">59</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-honey">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/sort-merge-sort/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">排序-归并排序
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-04-27 00:26:29" itemprop="dateCreated datePublished" datetime="2016-04-27T00:26:29+08:00">2016-04-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-31 00:43:13" itemprop="dateModified" datetime="2019-07-31T00:43:13+08:00">2019-07-31</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Algorithm & Data Structure</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>归并排序就是利用归并的思想实现的排序算法。归并排序的原理：假设初始序列含有n个记录，该序列可以看成n个有序的子序列，其中每个子序列的长度为1，然后两两归并，得到⌈n/2⌉（⌈x⌉表示不小于x的最小整数）个长度为2或者1的子序列，然后再两两归并，……，如此重复直到得到1个长度为n的有序序列为止。 <a id="more"></a></p>
+<h2 id="递归式归并"><a href="#递归式归并" class="headerlink" title="递归式归并"></a>递归式归并</h2><p><strong><em>演示</em></strong><br>比如我们待排序的数组是  {9, 1, 5, 8, 3, 7, 4, 6, 2}，那么递归式的归并排序为流程为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">                 [<span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">2</span>]</span><br><span class="line">                    ↓                    ↓</span><br><span class="line">          [<span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">3</span>]             [<span class="number">7</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">2</span>]</span><br><span class="line">           ↓            ↓              ↓         ↓ </span><br><span class="line">     [<span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>]        [<span class="number">8</span>, <span class="number">3</span>]      [<span class="number">7</span>, <span class="number">4</span>]      [<span class="number">6</span>, <span class="number">2</span>]</span><br><span class="line">      ↓      ↓        ↓    ↓       ↓   ↓      ↓   ↓  </span><br><span class="line"> [<span class="number">9</span>, <span class="number">1</span>]     [<span class="number">5</span>]      [<span class="number">8</span>]  [<span class="number">3</span>]     [<span class="number">7</span>] [<span class="number">4</span>]    [<span class="number">6</span>]  [<span class="number">2</span>]</span><br><span class="line">  ↓  ↓       ↓        ↓    ↓       ↓   ↓      ↓   ↓  </span><br><span class="line">[<span class="number">9</span>]  [<span class="number">1</span>]    [<span class="number">5</span>]      [<span class="number">8</span>]  [<span class="number">3</span>]     [<span class="number">7</span>] [<span class="number">4</span>]    [<span class="number">6</span>]  [<span class="number">2</span>] <span class="comment">// 上面为拆分，下面为归并(合并)</span></span><br><span class="line">    ↓        ↓        ↓    ↓       ↓   ↓      ↓   ↓  </span><br><span class="line"> [<span class="number">1</span>, <span class="number">9</span>]     [<span class="number">5</span>]      [<span class="number">8</span>]  [<span class="number">3</span>]     [<span class="number">7</span>] [<span class="number">4</span>]    [<span class="number">6</span>]  [<span class="number">2</span>]</span><br><span class="line">      ↓      ↓        ↓    ↓        ↓  ↓      ↓   ↓</span><br><span class="line">     [<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>]       [<span class="number">3</span>, <span class="number">8</span>]        [<span class="number">4</span>, <span class="number">7</span>]     [<span class="number">2</span>, <span class="number">6</span>]</span><br><span class="line">           ↓           ↓              ↓         ↓</span><br><span class="line">         [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">8</span>]              [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line">                   ↓                    ↓</span><br><span class="line">                 [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>Java实现</em></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归式归并排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MergeSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		<span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[arr.length];</span><br><span class="line">		mergeSort(arr, result, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将乱序的src[start...end]归并排序为有序的des[start...end]</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">	 *            归并前乱序数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> des</span></span><br><span class="line"><span class="comment">	 *            归并后的有序数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> start</span></span><br><span class="line"><span class="comment">	 *            归并的起始位置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> end</span></span><br><span class="line"><span class="comment">	 *            归并的终止位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] src, <span class="keyword">int</span>[] des, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (start == end) &#123;</span><br><span class="line">			des[start] = src[start];</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span>[] tmp = <span class="keyword">new</span> <span class="keyword">int</span>[src.length];</span><br><span class="line">		<span class="comment">// 将src[start...end]分为src[start...mid]和src[mid+1...end]两部分</span></span><br><span class="line">		<span class="keyword">int</span> mid = (start + end) / <span class="number">2</span>;</span><br><span class="line">		mergeSort(src, tmp, start, mid); <span class="comment">// 递归，将src[start...mid]归并为有序的tmp[start...mid]</span></span><br><span class="line">		mergeSort(src, tmp, mid + <span class="number">1</span>, end); <span class="comment">// 递归，将src[mid+1...end]归并为有序的tmp[mid+1...end]</span></span><br><span class="line">		<span class="comment">// 将有序的tmp[start...mid]和tmp[mid+1...end]合并为des[start...end]</span></span><br><span class="line">		merge(tmp, des, start, mid, end);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将有序的src[start, mid]和有序的src[mid+1, end]合并为有序的des[start,end];</span></span><br><span class="line"><span class="comment">	 * src可能为乱序数组,但是src[start, mid]和src[mid+1, end]是有序的。</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">	 *            乱序的原数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> des</span></span><br><span class="line"><span class="comment">	 *            有序的目标数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> start</span></span><br><span class="line"><span class="comment">	 *            数组第一部分起始位置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> mid</span></span><br><span class="line"><span class="comment">	 *            数组第一部分结束位置（两部分的分界点）</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> end</span></span><br><span class="line"><span class="comment">	 *            数组第二部分结束位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] src, <span class="keyword">int</span>[] des, <span class="keyword">int</span> start, <span class="keyword">int</span> mid, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i; <span class="comment">// src数组第一部分下标</span></span><br><span class="line">		<span class="keyword">int</span> j; <span class="comment">// src数组第二部分下标</span></span><br><span class="line">		<span class="keyword">int</span> k; <span class="comment">// des数组下标</span></span><br><span class="line">		<span class="comment">// 将较小的数依次移动到目标数组中</span></span><br><span class="line">		<span class="keyword">for</span> (i = start, k = start, j = mid + <span class="number">1</span>; i &lt;= mid &amp;&amp; j &lt;= end;) &#123;</span><br><span class="line">			<span class="keyword">if</span> (src[i] &lt; src[j]) &#123;</span><br><span class="line">				des[k] = src[i++];</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				des[k] = src[j++];</span><br><span class="line">			&#125;</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 将剩余的src[i...mid]复制到des数组中</span></span><br><span class="line">		<span class="keyword">for</span> (; i &lt;= mid; i++) &#123;</span><br><span class="line">			des[k] = src[i];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 将剩余的src[j...end]复制到des数组中</span></span><br><span class="line">		<span class="keyword">for</span> (; j &lt;= end; j++) &#123;</span><br><span class="line">			des[k] = src[j];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>复杂度</em></strong><br>时间复杂度：<br>因为归并的递归操作其实就是二叉树的结构，故而，最好情况 = 最坏情况 = 平均情况 = O(nlogn)</p>
+<p>空间复杂度：<br>因为递归式归并需要(1)与原始记录相同大小的空间来存放归并的结果以及(2)深度为logn的栈空间，所以空间复杂度为O(n+logn)</p>
+<h2 id="非递归式归并"><a href="#非递归式归并" class="headerlink" title="非递归式归并"></a>非递归式归并</h2><p><strong><em>演示</em></strong><br>又比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}，那么非递归式的归并排序为流程为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[9] [1]    [5] [8]    [3] [7]   [4] [6]  [2]</span><br><span class="line">  ↓  ↓      ↓   ↓      ↓    ↓     ↓   ↓   ↓</span><br><span class="line"> [1, 9]    [5, 8]      [3, 7]    [4, 6]  [2]</span><br><span class="line">   ↓          ↓          ↓       ↓        ↓ </span><br><span class="line">   [1, 5, 8, 9]       [3, 4, 6, 7]       [2]</span><br><span class="line">            ↓            ↓                ↓</span><br><span class="line">       [1, 3, 4, 5, 6, 7, 8, 9]          [2]</span><br><span class="line">               ↓                         ↓</span><br><span class="line">               [1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>Java实现</em></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非递归式归并排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NonRecursiveMergeSorter</span> <span class="keyword">extends</span> <span class="title">MergeSorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		mergeSort(arr);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> result[] = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">		<span class="keyword">int</span> k = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span> (k &lt; len) &#123;</span><br><span class="line">			mergePass(arr, result, k); <span class="comment">// arr归并至result,此时间隔为k</span></span><br><span class="line">			k = <span class="number">2</span> * k; <span class="comment">// 子序列长度加倍</span></span><br><span class="line">			mergePass(result, arr, k); <span class="comment">// result归并至arr,此时间隔翻倍</span></span><br><span class="line">			k = <span class="number">2</span> * k; <span class="comment">// 子序列长度加倍</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组src中相邻长度为interval的子序列两两归并到des数组中</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">	 *            源数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> des</span></span><br><span class="line"><span class="comment">	 *            目标数组</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> interval</span></span><br><span class="line"><span class="comment">	 *            两两合并的子序列长度</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergePass</span><span class="params">(<span class="keyword">int</span>[] src, <span class="keyword">int</span>[] des, <span class="keyword">int</span> interval)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> len = src.length;</span><br><span class="line">		<span class="keyword">while</span> (i + <span class="number">2</span> * interval - <span class="number">1</span> &lt; len) &#123;</span><br><span class="line">			<span class="comment">// 两两合并</span></span><br><span class="line">			merge(src, des, i, i + interval - <span class="number">1</span>, i + <span class="number">2</span> * interval - <span class="number">1</span>);</span><br><span class="line">			i = i + <span class="number">2</span> * interval;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (i + interval - <span class="number">1</span> &lt; len - <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="comment">// i+interval-1小于len-1，说明最后还剩余两个子序列，只不过最后的一个子序列长度不够interval</span></span><br><span class="line">			<span class="comment">// 那么将剩下的两个子序列进行合并</span></span><br><span class="line">			merge(src, des, i, i + interval - <span class="number">1</span>, len - <span class="number">1</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 否则，最后只剩下单个子序列，则直接将该子序列加入到des尾部</span></span><br><span class="line">			<span class="keyword">for</span> (; i &lt; len; i++) &#123;</span><br><span class="line">				des[i] = src[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>复杂度</em></strong><br>时间复杂度：<br>同递归式归并，最好情况 = 最坏情况 = 平均情况 = O(nlogn)</p>
+<p>空间复杂度：<br>非递归式归并不需要保存方法栈信息，所以空间复杂度为O(n)</p>
+<p>所以非递归的递归算法性能要高于递归式归并算法。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://tianma.space/post/sort-merge-sort/" title="排序-归并排序">https://tianma.space/post/sort-merge-sort/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/排序/" rel="tag"><i class="fa fa-tag"></i> 排序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/sort-heap-sort/" rel="next" title="排序-堆排序">
+                <i class="fa fa-chevron-left"></i> 排序-堆排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/sort-quick-sort/" rel="prev" title="排序-快速排序及其优化">
+                排序-快速排序及其优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma">
+            
+              <p class="site-author-name" itemprop="name">Tianma</p>
+              <div class="site-description motion-element" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">59</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归式归并"><span class="nav-number">2.</span> <span class="nav-text">递归式归并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非递归式归并"><span class="nav-number">3.</span> <span class="nav-text">非递归式归并</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-reading-progress@1.1.1/reading_progress.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.css">
+
+
+
+<script>
+  console.log('location.pathname: ');
+  var gitalk = new Gitalk({
+    clientID: '55a5d9da39a7a1f372ab',
+    clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+    repo: 'tianma8023.github.io',
+    owner: 'tianma8023',
+    admin: [''],
+    
+	id: '/post/3453824605',
+	
+	title: '排序-归并排序',
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true',
+	labels: [],
+	pagerDirection: 'first'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
     var isfetched = false;
     var isXml = true;
     // Search DB path;
@@ -314,4 +1478,47 @@
       if (shouldDismissSearchPopup) {
         onPopupClose();
       }
-    });</script></body></html>
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
