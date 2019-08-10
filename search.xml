@@ -19,7 +19,10 @@
         <category>Android</category>
       </categories>
       <tags>
-        <tag>Classloader</tag>
+        <tag>源码分析</tag>
+        <tag>类加载器</tag>
+        <tag>插件化</tag>
+        <tag>热修复</tag>
       </tags>
   </entry>
   <entry>
