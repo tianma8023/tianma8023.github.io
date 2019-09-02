@@ -66,7 +66,7 @@
 <meta property="og:site_name" content="Tianma">
 <meta property="og:description" content="之前由于开发一个关于 MIUI 系统界面的 Xposed 插件，为了适配不同的 Rom，需要查看不同 Rom 中的 SystemUI.apk">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-12T06:25:41.721Z">
+<meta property="og:updated_time" content="2019-09-02T04:49:33.761Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 拆包，提取 APK 或 Framework 文件">
 <meta name="twitter:description" content="之前由于开发一个关于 MIUI 系统界面的 Xposed 插件，为了适配不同的 Rom，需要查看不同 Rom 中的 SystemUI.apk">
@@ -83,6 +83,9 @@
     isArchive: false
   };
 </script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
 
   <title>Android 拆包，提取 APK 或 Framework 文件 | Tianma</title>
   
@@ -322,7 +325,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-12 14:25:41" itemprop="dateModified" datetime="2019-08-12T14:25:41+08:00">2019-08-12</time>
+                <time title="修改时间：2019-09-02 12:49:33" itemprop="dateModified" datetime="2019-09-02T12:49:33+08:00">2019-09-02</time>
               </span>
             
           
@@ -358,10 +361,10 @@
 <li><p>在 5.0 之前，Android 的系统包（卡刷包）是可以直接解压出来 <code>system</code> 目录，从它里面就可以直接提取出 Rom 内部的 Apk 文件。</p>
 </li>
 <li><p>5.0 ~ 8.0 中，Android 的 Rom 包里面有 <code>system.new.dat</code> 文件，无法直接解压提取，很明显，我们要的 Rom 就在这里面：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None   24618314 1月   1 2009 boot.img</span><br><span class="line">-rwxrwx---+ 1 Tianma None    1734469 1月   1 2009 file_contexts.bin</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  11 17:42 firmware-update</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  11 17:42 META-INF</span><br><span class="line">-rwxrwx---+ 1 Tianma None 3089031168 1月   1 2009 system.new.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None          0 1月   1 2009 system.patch.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None      16288 1月   1 2009 system.transfer.list</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None   24618314 1月   1 2009 boot.img</span><br><span class="line">-rwxrwx---+ 1 Tianma None    1734469 1月   1 2009 file_contexts.bin</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  11 17:42 firmware-update</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  11 17:42 META-INF</span><br><span class="line">-rwxrwx---+ 1 Tianma None 3089031168 1月   1 2009 system.new.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None          0 1月   1 2009 system.patch.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None      16288 1月   1 2009 system.transfer.list</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>8.1 之后，Android 的 Rom 包里面有 <code>system.new.dat.br</code> 文件，这个是被压缩为 <code>.br</code>(brotli) 格式的 <code>system.new.dat</code> 文件，也无法直接提取：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None   50484554 1月   1 2009 boot.img</span><br><span class="line">-rwxrwx---+ 1 Tianma None       9230 1月   1 2009 compatibility.zip</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  14 23:26 firmware-update</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  14 23:26 META-INF</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1694882420 1月   1 2009 system.new.dat.br</span><br><span class="line">-rwxrwx---+ 1 Tianma None          0 1月   1 2009 system.patch.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None      15019 1月   1 2009 system.transfer.list</span><br><span class="line">-rwxrwx---+ 1 Tianma None  370088219 1月   1 2009 vendor.new.dat.br</span><br><span class="line">-rwxrwx---+ 1 Tianma None          0 1月   1 2009 vendor.patch.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None       3815 1月   1 2009 vendor.transfer.list</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None   50484554 1月   1 2009 boot.img</span><br><span class="line">-rwxrwx---+ 1 Tianma None       9230 1月   1 2009 compatibility.zip</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  14 23:26 firmware-update</span><br><span class="line">drwxrwx---+ 1 Tianma None          0 5月  14 23:26 META-INF</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1694882420 1月   1 2009 system.new.dat.br</span><br><span class="line">-rwxrwx---+ 1 Tianma None          0 1月   1 2009 system.patch.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None      15019 1月   1 2009 system.transfer.list</span><br><span class="line">-rwxrwx---+ 1 Tianma None  370088219 1月   1 2009 vendor.new.dat.br</span><br><span class="line">-rwxrwx---+ 1 Tianma None          0 1月   1 2009 vendor.patch.dat</span><br><span class="line">-rwxrwx---+ 1 Tianma None       3815 1月   1 2009 vendor.transfer.list</span><br></pre></td></tr></table></figure></div>
 
 </li>
 </ul>
@@ -382,7 +385,7 @@
 <li>打开 <code>system_image_extractor-V4.cmd</code> 文件，之后会自动解包，提取出来的文件存放在 <code>extracted_files</code> 目录下</li>
 </ol>
 <p>最终解压出来的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 app/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 bin/</span><br><span class="line">-rw-r--r-- 1 Tianma 197121  12843  5月 11 18:10 build.prop</span><br><span class="line">-rw-r--r-- 1 Tianma 197121  20961  5月 11 18:10 compatibility_matrix.xml</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 data-app/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 etc/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 fake-libs/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 fake-libs64/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 fonts/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 framework/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 lib/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 lib64/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 lost+found/</span><br><span class="line">-rw-r--r-- 1 Tianma 197121   2808  5月 11 18:10 manifest.xml</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 media/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 priv-app/</span><br><span class="line">-rw-r--r-- 1 Tianma 197121 830651  5月 11 18:10 recovery-from-boot.p</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 tts/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 usr/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 vendor/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 xbin/</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 app/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 bin/</span><br><span class="line">-rw-r--r-- 1 Tianma 197121  12843  5月 11 18:10 build.prop</span><br><span class="line">-rw-r--r-- 1 Tianma 197121  20961  5月 11 18:10 compatibility_matrix.xml</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 data-app/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 etc/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 fake-libs/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 fake-libs64/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 fonts/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 framework/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 lib/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 lib64/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 lost+found/</span><br><span class="line">-rw-r--r-- 1 Tianma 197121   2808  5月 11 18:10 manifest.xml</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 media/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 priv-app/</span><br><span class="line">-rw-r--r-- 1 Tianma 197121 830651  5月 11 18:10 recovery-from-boot.p</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 tts/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 usr/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 vendor/</span><br><span class="line">drwxr-xr-x 1 Tianma 197121      0  5月 11 18:10 xbin/</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://github.com/chiragkrishna/system.new.dat-extractor" target="_blank" rel="noopener">system.new.dat-extractor</a></li>
@@ -620,7 +623,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -628,56 +630,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -704,7 +656,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -737,6 +688,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

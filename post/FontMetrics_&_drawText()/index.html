@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android 文字绘制中的 FontMetrics 和 drawText() | Tianma</title>
   
 
@@ -364,7 +367,7 @@
 <li>bottom line: 文字可绘制区域最底部的线。</li>
 </ul>
 <p>而 <code>FontMetrics</code> 类中有 <code>[top, ascent, descent, bottom, leading]</code> 字段，与上面 5 条线的关系是： <strong>FontMetrics对象中的字段值 = 对应线条的 Y 坐标值 - baseline的 Y 坐标值</strong> ，如果用 <code>Y(line A)</code> 表示线条 A 的 Y 坐标的话，那么以下等式成立：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FontMetrics::top = Y(top line) - Y(baseline);</span><br><span class="line">FontMetrics::ascent = Y(ascent line) - Y(baseline);</span><br><span class="line">FontMetrics::descent = Y(descent line) - Y(baseline);</span><br><span class="line">FontMetrics::bottom = Y(bottom line) - Y(baseline);</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FontMetrics::top = Y(top line) - Y(baseline);</span><br><span class="line">FontMetrics::ascent = Y(ascent line) - Y(baseline);</span><br><span class="line">FontMetrics::descent = Y(descent line) - Y(baseline);</span><br><span class="line">FontMetrics::bottom = Y(bottom line) - Y(baseline);</span><br></pre></td></tr></table></figure></div>
 
 <p><font color="#ff4081">需要注意的是：</font> 通常情况下，Android 中的 y 轴的正方向是沿屏幕向下的，也就是越往下 y 坐标越大，所以 <code>FontMetrics</code> 的 <code>top</code> 和 <code>ascent</code> 值是负值， <code>descent</code> 和 <code>bottom</code> 的值是正值。</p>
 <p>余下的字段 <code>leading</code> 表示 系统推荐的行间距。</p>
@@ -613,7 +616,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -621,56 +623,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -697,7 +649,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -730,6 +681,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

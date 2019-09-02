@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>处理PopupWindow在Android 7.x中兼容性问题 | Tianma</title>
   
 
@@ -360,7 +363,7 @@
 <a id="more"></a>
 
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>如果出现上述分析中的兼容性问题，可以使用 showAtLocation() 方法替代 showAsDropDown() , 示例代码如下，详情可参见 <a href="https://github.com/tianma8023/PopupWindowCompat/blob/master/app/src/main/java/com/tianma/popupwindowsample/MainActivity.java" target="_blank" rel="noopener">PopupWindowCompatSample</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">24</span>) &#123; <span class="comment">// Android 7.x中,PopupWindow高度为match_parent时,会出现兼容性问题,需要处理兼容性</span></span><br><span class="line">    <span class="keyword">int</span>[] location = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>]; <span class="comment">// 记录anchor在屏幕中的位置</span></span><br><span class="line">    anchor.getLocationOnScreen(location);</span><br><span class="line">    <span class="keyword">int</span> offsetY = location[<span class="number">1</span>] + anchor.getHeight();</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT == <span class="number">25</span>) &#123; <span class="comment">// Android 7.1中，PopupWindow高度为 match_parent 时，会占据整个屏幕</span></span><br><span class="line">        <span class="comment">// 故而需要在 Android 7.1上再做特殊处理</span></span><br><span class="line">        <span class="keyword">int</span> screenHeight = ScreenUtils.getScreenHeight(context); <span class="comment">// 获取屏幕高度</span></span><br><span class="line">        popupWindow.setHeight(screenHeight - offsetY); <span class="comment">// 重新设置 PopupWindow 的高度</span></span><br><span class="line">    &#125;</span><br><span class="line">    popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, <span class="number">0</span>, offsetY);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    popupWindow.showAsDropDown(anchor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">24</span>) &#123; <span class="comment">// Android 7.x中,PopupWindow高度为match_parent时,会出现兼容性问题,需要处理兼容性</span></span><br><span class="line">    <span class="keyword">int</span>[] location = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>]; <span class="comment">// 记录anchor在屏幕中的位置</span></span><br><span class="line">    anchor.getLocationOnScreen(location);</span><br><span class="line">    <span class="keyword">int</span> offsetY = location[<span class="number">1</span>] + anchor.getHeight();</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT == <span class="number">25</span>) &#123; <span class="comment">// Android 7.1中，PopupWindow高度为 match_parent 时，会占据整个屏幕</span></span><br><span class="line">        <span class="comment">// 故而需要在 Android 7.1上再做特殊处理</span></span><br><span class="line">        <span class="keyword">int</span> screenHeight = ScreenUtils.getScreenHeight(context); <span class="comment">// 获取屏幕高度</span></span><br><span class="line">        popupWindow.setHeight(screenHeight - offsetY); <span class="comment">// 重新设置 PopupWindow 的高度</span></span><br><span class="line">    &#125;</span><br><span class="line">    popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, <span class="number">0</span>, offsetY);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    popupWindow.showAsDropDown(anchor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 
     </div>
@@ -592,7 +595,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -600,56 +602,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -676,7 +628,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -709,6 +660,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

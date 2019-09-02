@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android shell service 命令 | Tianma</title>
   
 
@@ -355,16 +358,16 @@
 <a id="more"></a>
 
 <h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>先看一下 <code>service</code> 用法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> adb shell service</span><br><span class="line">Usage: service [-h|-?]</span><br><span class="line">       service list</span><br><span class="line">       service check SERVICE</span><br><span class="line">       service call SERVICE CODE [i32 N | i64 N | f N | d N | s16 STR ] ...</span><br><span class="line">Options:</span><br><span class="line">   i32: Write the 32-bit integer N into the send parcel.</span><br><span class="line">   i64: Write the 64-bit integer N into the send parcel.</span><br><span class="line">   f:   Write the 32-bit single-precision number N into the send parcel.</span><br><span class="line">   d:   Write the 64-bit double-precision number N into the send parcel.</span><br><span class="line">   s16: Write the UTF-16 string STR into the send parcel.</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb shell service</span></span><br><span class="line">Usage: service [-h|-?]</span><br><span class="line">       service list</span><br><span class="line">       service check SERVICE</span><br><span class="line">       service call SERVICE CODE [i32 N | i64 N | f N | d N | s16 STR ] ...</span><br><span class="line">Options:</span><br><span class="line">   i32: Write the 32-bit integer N into the send parcel.</span><br><span class="line">   i64: Write the 64-bit integer N into the send parcel.</span><br><span class="line">   f:   Write the 32-bit single-precision number N into the send parcel.</span><br><span class="line">   d:   Write the 64-bit double-precision number N into the send parcel.</span><br><span class="line">   s16: Write the UTF-16 string STR into the send parcel.</span><br></pre></td></tr></table></figure></div>
 
 <ol>
 <li><p><code>service</code> / <code>service -h</code> / <code>service -?</code> 都是用来获取 <code>service</code> 命令帮助信息的命令。</p>
 </li>
 <li><p><code>service list</code> 用来列出当前可用的系统服务。<br>比如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> adb shell service list</span><br><span class="line">Found 126 services:</span><br><span class="line">0       sip: [android.net.sip.ISipService]</span><br><span class="line">1       Genyd: [com.genymotion.genyd.IGenydService]</span><br><span class="line">2       SystemPatcher: [com.genymotion.systempatcher.ISystemPatcher]</span><br><span class="line">3       carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]</span><br><span class="line">4       phone: [com.android.internal.telephony.ITelephony]</span><br><span class="line">...</span><br><span class="line">43      notification: [android.app.INotificationManager]</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb shell service list</span></span><br><span class="line">Found 126 services:</span><br><span class="line">0       sip: [android.net.sip.ISipService]</span><br><span class="line">1       Genyd: [com.genymotion.genyd.IGenydService]</span><br><span class="line">2       SystemPatcher: [com.genymotion.systempatcher.ISystemPatcher]</span><br><span class="line">3       carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]</span><br><span class="line">4       phone: [com.android.internal.telephony.ITelephony]</span><br><span class="line">...</span><br><span class="line">43      notification: [android.app.INotificationManager]</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p><code>service check SERVICE</code> 用来检测指定的服务是否可用。<br>比如:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> adb shell service check notification</span><br><span class="line">Service notification: found</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb shell service check notification</span></span><br><span class="line">Service notification: found</span><br></pre></td></tr></table></figure></div>
 
 <p>表示 <code>notification</code> 服务可用。</p>
 </li>
@@ -378,25 +381,25 @@
 <li><code>[i32 N | i64 N | f N | d N | s16 STR ] ...</code> 表示方法的参数，其中：<code>i32</code> 表示 <code>int</code> 类型，<code>i64</code> 表示 <code>long</code> 类型，<code>f</code> 表示 <code>float</code> 类型，<code>d</code> 表示 <code>double</code> 类型，<code>s16</code> 表示 <code>String</code> 类型。</li>
 </ul>
 <p>该命令语法如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service call &lt;your_service_name&gt; &lt;number at which the founction in your_service_name.aidl&gt; &lt;type of argument&gt; &lt;argument&gt;</span><br><span class="line">即</span><br><span class="line">service call &lt;服务名&gt; &lt;服务名.aidl中的第几个方法&gt; &lt;参数类型&gt; &lt;参数值&gt;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service call &lt;your_service_name&gt; &lt;number at which the founction in your_service_name.aidl&gt; &lt;type of argument&gt; &lt;argument&gt;</span><br><span class="line">即</span><br><span class="line">service call &lt;服务名&gt; &lt;服务名.aidl中的第几个方法&gt; &lt;参数类型&gt; &lt;参数值&gt;</span><br></pre></td></tr></table></figure></div>
 
 <p>那么 <code>SERVICE</code> 所代表的系统服务的 <code>aidl</code> 源文件到底在哪儿看呢？下文以 <code>notification</code> 系统服务为例。</p>
 <ol>
 <li><p>首先调用 <code>service list</code> 找到指定系统服务对应的 <code>aidl</code> ：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> adb shell service list</span><br><span class="line">43      notification: [android.app.INotificationManager]</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb shell service list</span></span><br><span class="line">43      notification: [android.app.INotificationManager]</span><br></pre></td></tr></table></figure></div>
 
 <p><code>notification</code> 命令对应的系统服务的 <code>aidl</code> 是 <code>android.app.INotificationManager.aidl</code></p>
 </li>
 <li><p>其次，在 <code>Android</code> 的 <code>framework</code> 源码中找到对应的 <code>aidl</code> 文件，详细步骤为：</p>
 <ul>
 <li><p><code>android framework</code> 源码地址为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/frameworks/base/</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/frameworks/base/</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>找到对应的系统版本，以 <code>android-9.0.0_r18</code> 为例，该版本源码地址为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/frameworks/base/+/android-9.0.0_r18</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/frameworks/base/+/android-9.0.0_r18</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p><code>android.app.INotificationManager.aidl</code> 对应的路径为 <code>/core/java/android/app/INotificationManager.aidl</code>，找到地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/frameworks/base/+/android-9.0.0_r18/core/java/android/app/INotificationManager.aidl</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://android.googlesource.com/platform/frameworks/base/+/android-9.0.0_r18/core/java/android/app/INotificationManager.aidl</span><br></pre></td></tr></table></figure></div>
 
 </li>
 </ul>
@@ -404,19 +407,19 @@
 </li>
 </ol>
 <p>我们看一下 <code>android-9.0.0_r18</code> 版本的 <code>INotificationManager.aidl</code> 部分片段：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">INotificationManager</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cancelAllNotifications</span><span class="params">(String pkg, <span class="keyword">int</span> userId)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearData</span><span class="params">(String pkg, <span class="keyword">int</span> uid, <span class="keyword">boolean</span> fromApp)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">enqueueToast</span><span class="params">(String pkg, ITransientNotification callback, <span class="keyword">int</span> duration)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cancelToast</span><span class="params">(String pkg, ITransientNotification callback)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">finishToken</span><span class="params">(String pkg, ITransientNotification callback)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">enqueueNotificationWithTag</span><span class="params">(String pkg, String opPkg, String tag, <span class="keyword">int</span> id,</span></span></span><br><span class="line"><span class="function"><span class="params">            in Notification notification, <span class="keyword">int</span> userId)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cancelNotificationWithTag</span><span class="params">(String pkg, String tag, <span class="keyword">int</span> id, <span class="keyword">int</span> userId)</span></span>;</span><br><span class="line">    <span class="comment">// ... 省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">INotificationManager</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cancelAllNotifications</span><span class="params">(String pkg, <span class="keyword">int</span> userId)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearData</span><span class="params">(String pkg, <span class="keyword">int</span> uid, <span class="keyword">boolean</span> fromApp)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">enqueueToast</span><span class="params">(String pkg, ITransientNotification callback, <span class="keyword">int</span> duration)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cancelToast</span><span class="params">(String pkg, ITransientNotification callback)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">finishToken</span><span class="params">(String pkg, ITransientNotification callback)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">enqueueNotificationWithTag</span><span class="params">(String pkg, String opPkg, String tag, <span class="keyword">int</span> id,</span></span></span><br><span class="line"><span class="function"><span class="params">            in Notification notification, <span class="keyword">int</span> userId)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cancelNotificationWithTag</span><span class="params">(String pkg, String tag, <span class="keyword">int</span> id, <span class="keyword">int</span> userId)</span></span>;</span><br><span class="line">    <span class="comment">// ... 省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p><code>cancelAllNotifications()</code> 对应的 <code>CODE</code> 就是 <code>1</code>。</p>
 <ul>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service call notification 1</span><br></pre></td></tr></table></figure>
+<li><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service call notification 1</span><br></pre></td></tr></table></figure></div>
 
 <p>表示清除当前所有的通知，其中 <code>pkg</code>, <code>userId</code> 参数缺省。</p>
 </li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service call notification 1 s16 'com.example.package'</span><br></pre></td></tr></table></figure>
+<li><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service call notification 1 s16 'com.example.package'</span><br></pre></td></tr></table></figure></div>
 
 <p>表示清除当前所有包名为 <code>com.example.package</code> 的 App 发出的通知。</p>
 </li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service call notification 2 s16 'com.example.package' i32 108 i32 1</span><br></pre></td></tr></table></figure>
+<li><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service call notification 2 s16 'com.example.package' i32 108 i32 1</span><br></pre></td></tr></table></figure></div>
 
 <p>表示调用 <code>clearData(&quot;com.example.package&quot;, 108, 1);</code> 其中布尔值 <code>true</code> 用 <code>132 1</code> 表示。</p>
 </li>
@@ -655,7 +658,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -663,56 +665,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -739,7 +691,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -772,6 +723,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

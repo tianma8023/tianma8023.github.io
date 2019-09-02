@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>消除Android 5.0 ~ 7.1.1原生系统中感叹号或叉号 | Tianma</title>
   
 
@@ -358,27 +361,27 @@
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>既然知晓了原理，那么解决方案也很明确了：</p>
 <ol>
 <li><p>完全关闭网络检查服务（不可取）：</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell settings put global captive_portal_detection_enabled 0</span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell settings put global captive_portal_detection_enabled 0</span><br></pre></td></tr></table></figure></div>
 
 <p> 缺点：&nbsp; 完全屏蔽该系统功能带来明显的问题，当你使用公共 Wi-Fi 这种需要使用 portal 验证的网络时，因为网络检查被关闭，系统在访问 portal 验证页面时无法返回正确的值，最终导致无法完成验证和上网。</p>
 </li>
 <li><p><strong>替换检查网络的网址（可取）：</strong><br> 通过ADB命令，将验证服务的网址替换为国内正常可以访问的网址</p>
 </li>
 </ol>
-<h3 id="Android-5-x-6-x-解决方案"><a href="#Android-5-x-6-x-解决方案" class="headerlink" title="Android 5.x ~ 6.x 解决方案"></a>Android 5.x ~ 6.x 解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell &quot;settings put global captive_portal_server www.v2ex.com&quot;</span><br><span class="line">adb shell reboot</span><br></pre></td></tr></table></figure>
+<h3 id="Android-5-x-6-x-解决方案"><a href="#Android-5-x-6-x-解决方案" class="headerlink" title="Android 5.x ~ 6.x 解决方案"></a>Android 5.x ~ 6.x 解决方案</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell &quot;settings put global captive_portal_server www.v2ex.com&quot;</span><br><span class="line">adb shell reboot</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="Android-7-0-0-7-1-0-解决方案"><a href="#Android-7-0-0-7-1-0-解决方案" class="headerlink" title="Android 7.0.0 ~ 7.1.0 解决方案"></a>Android 7.0.0 ~ 7.1.0 解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell &quot;settings put global captive_portal_server captive.v2ex.co&quot;</span><br><span class="line">adb shell reboot</span><br></pre></td></tr></table></figure>
+<h3 id="Android-7-0-0-7-1-0-解决方案"><a href="#Android-7-0-0-7-1-0-解决方案" class="headerlink" title="Android 7.0.0 ~ 7.1.0 解决方案"></a>Android 7.0.0 ~ 7.1.0 解决方案</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell &quot;settings put global captive_portal_server captive.v2ex.co&quot;</span><br><span class="line">adb shell reboot</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="Android-7-1-1-解决方案"><a href="#Android-7-1-1-解决方案" class="headerlink" title="Android 7.1.1 解决方案"></a>Android 7.1.1 解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell &quot;settings put global captive_portal_https_url https://captive.v2ex.co/generate_204&quot;</span><br><span class="line">adb shell reboot</span><br></pre></td></tr></table></figure>
+<h3 id="Android-7-1-1-解决方案"><a href="#Android-7-1-1-解决方案" class="headerlink" title="Android 7.1.1 解决方案"></a>Android 7.1.1 解决方案</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell &quot;settings put global captive_portal_https_url https://captive.v2ex.co/generate_204&quot;</span><br><span class="line">adb shell reboot</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>问题解决了，问题产生的根本源头在哪呢，在源码里面 :)</p>
-<h3 id="Android-5-x-6-x"><a href="#Android-5-x-6-x" class="headerlink" title="Android 5.x ~ 6.x"></a>Android 5.x ~ 6.x</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">isCaptivePortal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!mIsCaptivePortalCheckEnabled) <span class="keyword">return</span> <span class="number">204</span>;</span><br><span class="line">    HttpURLConnection urlConnection = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> httpResponseCode = <span class="number">599</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        URL url = <span class="keyword">new</span> URL(<span class="string">"http"</span>, mServer, <span class="string">"/generate_204"</span>);</span><br><span class="line">        <span class="keyword">if</span> (DBG) &#123;</span><br><span class="line">            log(<span class="string">"Checking "</span> + url.toString() + <span class="string">" on "</span> +</span><br><span class="line">                    mNetworkAgentInfo.networkInfo.getExtraInfo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Android-5-x-6-x"><a href="#Android-5-x-6-x" class="headerlink" title="Android 5.x ~ 6.x"></a>Android 5.x ~ 6.x</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">isCaptivePortal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!mIsCaptivePortalCheckEnabled) <span class="keyword">return</span> <span class="number">204</span>;</span><br><span class="line">    HttpURLConnection urlConnection = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> httpResponseCode = <span class="number">599</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        URL url = <span class="keyword">new</span> URL(<span class="string">"http"</span>, mServer, <span class="string">"/generate_204"</span>);</span><br><span class="line">        <span class="keyword">if</span> (DBG) &#123;</span><br><span class="line">            log(<span class="string">"Checking "</span> + url.toString() + <span class="string">" on "</span> +</span><br><span class="line">                    mNetworkAgentInfo.networkInfo.getExtraInfo());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>原来的 <code>mServer</code> 是 <code>clients3.google.com</code>，我们最终将其换为 <code>www.v2ex.com</code>.</p>
-<h3 id="Android-7-0-7-1-0"><a href="#Android-7-0-7-1-0" class="headerlink" title="Android 7.0 ~ 7.1.0"></a>Android 7.0 ~ 7.1.0</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getCaptivePortalServerUrl</span><span class="params">(Context context, <span class="keyword">boolean</span> isHttps)</span> </span>&#123;</span><br><span class="line">    String server = Settings.Global.getString(context.getContentResolver(),</span><br><span class="line">            Settings.Global.CAPTIVE_PORTAL_SERVER);</span><br><span class="line">    <span class="keyword">if</span> (server == <span class="keyword">null</span>) server = DEFAULT_SERVER;</span><br><span class="line">    <span class="keyword">return</span> (isHttps ? <span class="string">"https"</span> : <span class="string">"http"</span>) + <span class="string">"://"</span> + server + <span class="string">"/generate_204"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Android-7-0-7-1-0"><a href="#Android-7-0-7-1-0" class="headerlink" title="Android 7.0 ~ 7.1.0"></a>Android 7.0 ~ 7.1.0</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getCaptivePortalServerUrl</span><span class="params">(Context context, <span class="keyword">boolean</span> isHttps)</span> </span>&#123;</span><br><span class="line">    String server = Settings.Global.getString(context.getContentResolver(),</span><br><span class="line">            Settings.Global.CAPTIVE_PORTAL_SERVER);</span><br><span class="line">    <span class="keyword">if</span> (server == <span class="keyword">null</span>) server = DEFAULT_SERVER;</span><br><span class="line">    <span class="keyword">return</span> (isHttps ? <span class="string">"https"</span> : <span class="string">"http"</span>) + <span class="string">"://"</span> + server + <span class="string">"/generate_204"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>Android 7.0 ~ 7.1.0 新增了https的验证请求，所以我们把 <code>server</code> 的值改为支持https的 <code>captive.v2ex.co</code>.</p>
-<h3 id="Android-7-1-1"><a href="#Android-7-1-1" class="headerlink" title="Android 7.1.1"></a>Android 7.1.1</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getCaptivePortalServerHttpsUrl</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> getSetting(context, Settings.Global.CAPTIVE_PORTAL_HTTPS_URL, DEFAULT_HTTPS_URL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Android-7-1-1"><a href="#Android-7-1-1" class="headerlink" title="Android 7.1.1"></a>Android 7.1.1</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getCaptivePortalServerHttpsUrl</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> getSetting(context, Settings.Global.CAPTIVE_PORTAL_HTTPS_URL, DEFAULT_HTTPS_URL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p><code>DEFAULT_HTTPS_URL</code> 的值由原来的 <code>https://www.google.com/generate_204</code> 替换为 <code>https://captive.v2ex.co/generate_204</code>.</p>
 <p>源码链接：<br><a href="https://android.googlesource.com/platform/frameworks/base/+/android-5.0.0_r1/services/core/java/com/android/server/connectivity/NetworkMonitor.java#584" target="_blank" rel="noopener">5.x ~ 6.x</a><br><a href="https://android.googlesource.com/platform/frameworks/base/+/android-7.0.0_r1/services/core/java/com/android/server/connectivity/NetworkMonitor.java#691" target="_blank" rel="noopener">7.0.0 ~ 7.1.0</a><br><a href="https://android.googlesource.com/platform/frameworks/base/+/android-7.1.1_r1/services/core/java/com/android/server/connectivity/NetworkMonitor.java#611" target="_blank" rel="noopener">7.1.1</a></p>
@@ -618,7 +621,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -626,56 +628,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -702,7 +654,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -735,6 +686,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

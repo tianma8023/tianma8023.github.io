@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android获取图片压缩后的Bitmap避免OOM | Tianma</title>
   
 
@@ -352,14 +355,14 @@
 
       
         <p>OOM即Out Of Memory的简称，Android平台避免OOM异常的发生是非常有必要的。而在Android中加载大量大图便可能会导致OOM异常的出现，解决的办法之一就是加载图片之前对图片进行压缩然后再获取图片对应的Bitmap对象，那么应该如何操作呢？ <a id="more"></a>如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过图片的绝对路径来获取对应的压缩后的Bitmap对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">getCompressedBitmap</span><span class="params">(String filePath, <span class="keyword">int</span> requireWidth,</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">int</span> requireHeight)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 第一次解析将inJustDecodeBounds设置为true,用以获取图片大小,并且不需要将Bitmap对象加载到内存中</span></span><br><span class="line">	BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">	BitmapFactory.decodeFile(filePath, options); <span class="comment">// 第一次解析</span></span><br><span class="line">	<span class="comment">// 计算inSampleSize的值,并且赋值给Options.inSampleSize</span></span><br><span class="line">	options.inSampleSize = calculateInSampleSize(options, requireWidth,</span><br><span class="line">			requireHeight);</span><br><span class="line">	<span class="comment">// 使用获取到的inSampleSize再次解析图片</span></span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">	<span class="keyword">return</span> BitmapFactory.decodeFile(filePath, options);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过图片资源id获取图片对应的压缩后的Bitmap对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">getCompressedBitmap</span><span class="params">(Resources res, <span class="keyword">int</span> resId, <span class="keyword">int</span> requiredWidth, <span class="keyword">int</span> requiredHeight)</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">	</span><br><span class="line">	BitmapFactory.decodeResource(res, resId, options);<span class="comment">// 第一次解析</span></span><br><span class="line">	options.inSampleSize = calculateInSampleSize(options, requiredWidth,</span><br><span class="line">			requiredHeight);</span><br><span class="line">	</span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">	<span class="keyword">return</span> BitmapFactory.decodeResource(res, resId, options);<span class="comment">// 第一次解析</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 计算压缩的inSampleSize的值,该值会在宽高上都进行压缩(也就是压缩前后比例是inSampleSize的平方倍)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateInSampleSize</span><span class="params">(BitmapFactory.Options options,</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">int</span> requireWidth, <span class="keyword">int</span> requireHeight)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 获取源图片的实际的宽度和高度</span></span><br><span class="line">	<span class="keyword">int</span> realWidth = options.outWidth;</span><br><span class="line">	<span class="keyword">int</span> realHeight = options.outHeight;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> inSampleSize = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> (realWidth &gt; requireWidth || realHeight &gt; requireHeight) &#123;</span><br><span class="line">		<span class="comment">// 计算出实际的宽高与目标宽高的比例</span></span><br><span class="line">		<span class="keyword">int</span> widthRatio = Math.round((<span class="keyword">float</span>) realWidth</span><br><span class="line">				/ (<span class="keyword">float</span>) requireWidth);</span><br><span class="line">		<span class="keyword">int</span> heightRatio = Math.round((<span class="keyword">float</span>) realHeight</span><br><span class="line">				/ (<span class="keyword">float</span>) requireHeight);</span><br><span class="line">		<span class="comment">// 选择宽高比例最小的值赋值给inSampleSize,这样可以保证最终图片的宽高一定会大于或等于目标的宽高</span></span><br><span class="line">		inSampleSize = widthRatio &lt; heightRatio ? widthRatio : heightRatio;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> inSampleSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过图片的绝对路径来获取对应的压缩后的Bitmap对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">getCompressedBitmap</span><span class="params">(String filePath, <span class="keyword">int</span> requireWidth,</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">int</span> requireHeight)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 第一次解析将inJustDecodeBounds设置为true,用以获取图片大小,并且不需要将Bitmap对象加载到内存中</span></span><br><span class="line">	BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">	BitmapFactory.decodeFile(filePath, options); <span class="comment">// 第一次解析</span></span><br><span class="line">	<span class="comment">// 计算inSampleSize的值,并且赋值给Options.inSampleSize</span></span><br><span class="line">	options.inSampleSize = calculateInSampleSize(options, requireWidth,</span><br><span class="line">			requireHeight);</span><br><span class="line">	<span class="comment">// 使用获取到的inSampleSize再次解析图片</span></span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">	<span class="keyword">return</span> BitmapFactory.decodeFile(filePath, options);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过图片资源id获取图片对应的压缩后的Bitmap对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">getCompressedBitmap</span><span class="params">(Resources res, <span class="keyword">int</span> resId, <span class="keyword">int</span> requiredWidth, <span class="keyword">int</span> requiredHeight)</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">	</span><br><span class="line">	BitmapFactory.decodeResource(res, resId, options);<span class="comment">// 第一次解析</span></span><br><span class="line">	options.inSampleSize = calculateInSampleSize(options, requiredWidth,</span><br><span class="line">			requiredHeight);</span><br><span class="line">	</span><br><span class="line">	options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">	<span class="keyword">return</span> BitmapFactory.decodeResource(res, resId, options);<span class="comment">// 第一次解析</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 计算压缩的inSampleSize的值,该值会在宽高上都进行压缩(也就是压缩前后比例是inSampleSize的平方倍)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateInSampleSize</span><span class="params">(BitmapFactory.Options options,</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">int</span> requireWidth, <span class="keyword">int</span> requireHeight)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 获取源图片的实际的宽度和高度</span></span><br><span class="line">	<span class="keyword">int</span> realWidth = options.outWidth;</span><br><span class="line">	<span class="keyword">int</span> realHeight = options.outHeight;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> inSampleSize = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> (realWidth &gt; requireWidth || realHeight &gt; requireHeight) &#123;</span><br><span class="line">		<span class="comment">// 计算出实际的宽高与目标宽高的比例</span></span><br><span class="line">		<span class="keyword">int</span> widthRatio = Math.round((<span class="keyword">float</span>) realWidth</span><br><span class="line">				/ (<span class="keyword">float</span>) requireWidth);</span><br><span class="line">		<span class="keyword">int</span> heightRatio = Math.round((<span class="keyword">float</span>) realHeight</span><br><span class="line">				/ (<span class="keyword">float</span>) requireHeight);</span><br><span class="line">		<span class="comment">// 选择宽高比例最小的值赋值给inSampleSize,这样可以保证最终图片的宽高一定会大于或等于目标的宽高</span></span><br><span class="line">		inSampleSize = widthRatio &lt; heightRatio ? widthRatio : heightRatio;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> inSampleSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p><strong>以上代码中，有一点值得商榷</strong>：
 到底是要让图片显示完全还是让图片宽高和需要的宽高一致呢？<br>如果需要让图片宽高和需要的宽高一致的话，就选择比率小的:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inSampleSize = widthRatio &lt; heightRatio ? widthRatio : heightRatio;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inSampleSize = widthRatio &lt; heightRatio ? widthRatio : heightRatio;</span><br></pre></td></tr></table></figure></div>
 
 <p>如果需要让图片显示完全的话，就选择比率大的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inSampleSize = widthRatio &gt; heightRatio ? widthRatio : heightRatio;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inSampleSize = widthRatio &gt; heightRatio ? widthRatio : heightRatio;</span><br></pre></td></tr></table></figure></div>
 
 <p>如果两者都要兼顾的话，就让方法多设置参数，让调用者决定去吧！ :)</p>
 <p>参考链接：<br><a href="http://developer.android.com/training/displaying-bitmaps/index.html" target="_blank" rel="noopener">Displaying Bitmaps Efficiently</a><br><a href="http://blog.csdn.net/guolin_blog/article/details/9316683" target="_blank" rel="noopener">Android高效加载大图、多图解决方案，有效避免程序OOM</a></p>
@@ -593,7 +596,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -601,56 +603,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -677,7 +629,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -710,6 +661,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

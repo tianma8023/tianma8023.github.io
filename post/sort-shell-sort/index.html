@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>排序-希尔排序 | Tianma</title>
   
 
@@ -354,18 +357,18 @@
         <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>希尔排序是插入类排序算法，它的本质就是分组<a href="/post/1309789713">插入排序</a>，它采取分割策略：将相距某个“增量”的记录组成一个子序列，保证在每个子序列内部分别进行插入排序后得到的结果是基本有序。 <a id="more"></a></p>
 <p>该方法的基本思想是：先将整个待排元素序列分割成若干个子序列（由相隔某个“增量”的元素组成的）分别进行直接插入排序，然后依次缩减增量再进行排序，待整个序列中的元素基本有序（增量足够小）时，再对全体元素进行一次直接插入排序。</p>
 <p>因为直接插入排序在元素基本有序的情况下（接近最好情况），效率是很高的，因此希尔排序在时间效率上比插入排序有大幅度提高。</p>
-<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//希尔排序</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShellSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		shellSort(arr);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Shell排序的关键就是增量序列的选取：</span></span><br><span class="line">	<span class="comment">// 增量序列原则： 增量序列的最后一个增量必须等于1</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> increment = len;</span><br><span class="line">		<span class="keyword">for</span> (; increment != <span class="number">1</span>;) &#123;<span class="comment">// 循环直至increment=1</span></span><br><span class="line">			increment = increment / <span class="number">3</span> + <span class="number">1</span>; <span class="comment">// 计算增量序列(将整个序列分成increment组,在组内进行插入排序)</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = increment; i &lt; len; i++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (arr[i] &lt; arr[i - increment]) &#123;</span><br><span class="line">					<span class="keyword">int</span> tmp = arr[i]; <span class="comment">// 暂存arr[i]的值</span></span><br><span class="line">					<span class="keyword">int</span> j;</span><br><span class="line">					<span class="keyword">for</span> (j = i - increment; j &gt;= <span class="number">0</span> &amp;&amp; tmp &lt; arr[j]; j -= increment) &#123;</span><br><span class="line">						<span class="comment">// 组内记录后移,查找插入位置</span></span><br><span class="line">						arr[j + increment] = arr[j];</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">// 找到插入位置</span></span><br><span class="line">					arr[j + increment] = tmp;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//希尔排序</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShellSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		shellSort(arr);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Shell排序的关键就是增量序列的选取：</span></span><br><span class="line">	<span class="comment">// 增量序列原则： 增量序列的最后一个增量必须等于1</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> increment = len;</span><br><span class="line">		<span class="keyword">for</span> (; increment != <span class="number">1</span>;) &#123;<span class="comment">// 循环直至increment=1</span></span><br><span class="line">			increment = increment / <span class="number">3</span> + <span class="number">1</span>; <span class="comment">// 计算增量序列(将整个序列分成increment组,在组内进行插入排序)</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = increment; i &lt; len; i++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (arr[i] &lt; arr[i - increment]) &#123;</span><br><span class="line">					<span class="keyword">int</span> tmp = arr[i]; <span class="comment">// 暂存arr[i]的值</span></span><br><span class="line">					<span class="keyword">int</span> j;</span><br><span class="line">					<span class="keyword">for</span> (j = i - increment; j &gt;= <span class="number">0</span> &amp;&amp; tmp &lt; arr[j]; j -= increment) &#123;</span><br><span class="line">						<span class="comment">// 组内记录后移,查找插入位置</span></span><br><span class="line">						arr[j + increment] = arr[j];</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">// 找到插入位置</span></span><br><span class="line">					arr[j + increment] = tmp;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {9, 1, 5, 8, 3, 7, 4, 6, 2}<br>初始时increment=arr.length=9，increment != 1，执行第1次循环：<br>increment = 9/3+1 = 4，将整个序列分成4组，组内进行插入排序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第 1 组： 9 3 2    -----------&gt; 2 3 9</span><br><span class="line">第 2 组： 1 7      -----------&gt; 1 7</span><br><span class="line">第 3 组： 5 4      -----------&gt; 4 5</span><br><span class="line">第 4 组： 8 6      -----------&gt; 6 8</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第 1 组： 9 3 2    -----------&gt; 2 3 9</span><br><span class="line">第 2 组： 1 7      -----------&gt; 1 7</span><br><span class="line">第 3 组： 5 4      -----------&gt; 4 5</span><br><span class="line">第 4 组： 8 6      -----------&gt; 6 8</span><br></pre></td></tr></table></figure></div>
 
 <p>此时序列为 <strong>2 1 4 6 3 7 5 8 9</strong></p>
 <p>increment=4，increment != 1，执行第2次循环：<br>increment = 4/3+1 = 2，将整个序列分成2组，组内进行插入排序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第 1 组： 2 4 3 5 9    -----------&gt;  2 3 4 5 9</span><br><span class="line">第 2 组： 1 6 7 8      -----------&gt;  1 6 7 8</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第 1 组： 2 4 3 5 9    -----------&gt;  2 3 4 5 9</span><br><span class="line">第 2 组： 1 6 7 8      -----------&gt;  1 6 7 8</span><br></pre></td></tr></table></figure></div>
 
 <p>此时序列为 <strong>2 1 3 6 4 7 5 8 9</strong></p>
 <p>increment=2，increment != 1，执行第3次循环：<br>increment = 2/3+1 = 1，将整个序列分成1组，组内进行插入排序（演变为直接插入排序）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第 1 组 ： 2 1 3 6 4 7 5 8 9  -----------&gt; 1 2 3 4 5 6 7 8 9</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第 1 组 ： 2 1 3 6 4 7 5 8 9  -----------&gt; 1 2 3 4 5 6 7 8 9</span><br></pre></td></tr></table></figure></div>
 
 <p>increment=1，结束循环，排序完毕。</p>
 
@@ -598,7 +601,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -606,56 +608,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -682,7 +634,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -715,6 +666,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

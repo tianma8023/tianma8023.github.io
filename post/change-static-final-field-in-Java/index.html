@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Java反射修改final修饰的属性值 | Tianma</title>
   
 
@@ -353,10 +356,10 @@
       
         <p>之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&nbsp;<a id="more"></a></p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>使用Java反射，通过 <code>Field#setAccessible(true)</code> 将 private 修饰的字段变为 accessible；再将 final 修饰符去掉；最后再设置新值即可。当然，如果涉及到 Java 内联优化，则会失效。具体见示例代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.sample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChangeStaticFinalFieldSample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">changeStaticFinal</span><span class="params">(Field field, Object newValue)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		field.setAccessible(<span class="keyword">true</span>); <span class="comment">// 如果field为private,则需要使用该方法使其可被访问</span></span><br><span class="line"></span><br><span class="line">		Field modifersField = Field.class.getDeclaredField(<span class="string">"modifiers"</span>);</span><br><span class="line">		modifersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		<span class="comment">// 把指定的field中的final修饰符去掉</span></span><br><span class="line">		modifersField.setInt(field, field.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line"></span><br><span class="line">		field.set(<span class="keyword">null</span>, newValue); <span class="comment">// 为指定field设置新值</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		Sample.print();</span><br><span class="line">		</span><br><span class="line">		Field canChangeField = Sample.class.getDeclaredField(<span class="string">"CAN_CHANGE"</span>);</span><br><span class="line">		Field cannotChangeField = Sample.class.getDeclaredField(<span class="string">"CANNOT_CHANGE"</span>);</span><br><span class="line">		changeStaticFinal(canChangeField, <span class="number">2</span>);</span><br><span class="line">		changeStaticFinal(cannotChangeField, <span class="number">3</span>);</span><br><span class="line">		</span><br><span class="line">		Sample.print();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CAN_CHANGE = <span class="keyword">new</span> Integer(<span class="number">1</span>); <span class="comment">// 未内联优化</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANNOT_CHANGE = <span class="number">1</span>; <span class="comment">// 内联优化</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"CAN_CHANGE = "</span> + CAN_CHANGE);</span><br><span class="line">		System.out.println(<span class="string">"CANNOT_CHANGE = "</span> + CANNOT_CHANGE);</span><br><span class="line">		System.out.println(<span class="string">"------------------------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.sample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChangeStaticFinalFieldSample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">changeStaticFinal</span><span class="params">(Field field, Object newValue)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		field.setAccessible(<span class="keyword">true</span>); <span class="comment">// 如果field为private,则需要使用该方法使其可被访问</span></span><br><span class="line"></span><br><span class="line">		Field modifersField = Field.class.getDeclaredField(<span class="string">"modifiers"</span>);</span><br><span class="line">		modifersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		<span class="comment">// 把指定的field中的final修饰符去掉</span></span><br><span class="line">		modifersField.setInt(field, field.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line"></span><br><span class="line">		field.set(<span class="keyword">null</span>, newValue); <span class="comment">// 为指定field设置新值</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		Sample.print();</span><br><span class="line">		</span><br><span class="line">		Field canChangeField = Sample.class.getDeclaredField(<span class="string">"CAN_CHANGE"</span>);</span><br><span class="line">		Field cannotChangeField = Sample.class.getDeclaredField(<span class="string">"CANNOT_CHANGE"</span>);</span><br><span class="line">		changeStaticFinal(canChangeField, <span class="number">2</span>);</span><br><span class="line">		changeStaticFinal(cannotChangeField, <span class="number">3</span>);</span><br><span class="line">		</span><br><span class="line">		Sample.print();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CAN_CHANGE = <span class="keyword">new</span> Integer(<span class="number">1</span>); <span class="comment">// 未内联优化</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANNOT_CHANGE = <span class="number">1</span>; <span class="comment">// 内联优化</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"CAN_CHANGE = "</span> + CAN_CHANGE);</span><br><span class="line">		System.out.println(<span class="string">"CANNOT_CHANGE = "</span> + CANNOT_CHANGE);</span><br><span class="line">		System.out.println(<span class="string">"------------------------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>打印结果为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CAN_CHANGE = <span class="number">1</span></span><br><span class="line">CANNOT_CHANGE = <span class="number">1</span></span><br><span class="line">------------------------</span><br><span class="line">CAN_CHANGE = <span class="number">2</span></span><br><span class="line">CANNOT_CHANGE = <span class="number">1</span></span><br><span class="line">------------------------</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CAN_CHANGE = <span class="number">1</span></span><br><span class="line">CANNOT_CHANGE = <span class="number">1</span></span><br><span class="line">------------------------</span><br><span class="line">CAN_CHANGE = <span class="number">2</span></span><br><span class="line">CANNOT_CHANGE = <span class="number">1</span></span><br><span class="line">------------------------</span><br></pre></td></tr></table></figure></div>
 
 <p>通过以上输出结果可以看出， <code>CAN_CHANGE</code> 和 <code>CANNOT_CHANGE</code> 字段同属于 final 修饰符修饰的常量字段，但是由于 <code>CANNOT_CHANGE</code> 常量在 Java 编译过程中使用了内联优化，其值在编译阶段就被编译为常量值 <code>1</code>，故而使用内联优化的 final 字段更改其值是无效的； 而 <code>CAN_CHANGE</code> 字段未被内联优化，故而能通过 Java 反射对其值进行修改。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://stackoverflow.com/questions/3301635/change-private-static-final-field-using-java-reflection" target="_blank" rel="noopener">Change private static final field using Java reflection</a></p>
@@ -590,7 +593,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -598,56 +600,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -674,7 +626,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -707,6 +658,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

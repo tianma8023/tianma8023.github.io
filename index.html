@@ -82,6 +82,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Tianma</title>
   
 
@@ -445,10 +448,10 @@
       
           <p>在使用逆向工具（比如 <a href="https://github.com/skylot/jadx" target="_blank" rel="noopener">jdax</a> 等）反编译某些系统 App 的时候，会发现其代码其实是不全的，其实是因为系统应用的 APK 已经经过 <code>odex</code> 和 <code>vdex</code> 化，导致代码分离。</p>
 <p>比如在之前的文章（<a href="/post/android-extract-Rom/">Android 拆包，提取 APK 或 Framework 文件</a>）中，拆了 MIUI 的 Rom，其中小米系统界面（<code>MiuiSystemUI</code>）拆开后大致是这样的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tree -s priv-app/MiuiSystemUI/</span><br><span class="line">priv-app/MiuiSystemUI/</span><br><span class="line">├── [   17525476]  MiuiSystemUI.apk</span><br><span class="line">└── [          0]  oat</span><br><span class="line">    └── [          0]  arm64</span><br><span class="line">        ├── [   12669648]  MiuiSystemUI.odex</span><br><span class="line">        └── [    6418324]  MiuiSystemUI.vdex</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tree -s priv-app/MiuiSystemUI/</span></span><br><span class="line">priv-app/MiuiSystemUI/</span><br><span class="line">├── [   17525476]  MiuiSystemUI.apk</span><br><span class="line">└── [          0]  oat</span><br><span class="line">    └── [          0]  arm64</span><br><span class="line">        ├── [   12669648]  MiuiSystemUI.odex</span><br><span class="line">        └── [    6418324]  MiuiSystemUI.vdex</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure></div>
 
 <p>解压 <code>MiuiSystemUI.apk</code> 之后：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AndroidManifest.xml  assets/  META-INF/  res/  resources.arsc</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AndroidManifest.xml  assets/  META-INF/  res/  resources.arsc</span><br></pre></td></tr></table></figure></div>
 
 <p>可以看到 Apk 压缩文件中未包含 <code>.dex</code> 文件，而 <code>priv-app/MiuiSystemUI/oat/arm64/</code> 路径下存在 <code>.odex</code> 和 <code>.vdex</code> 的文件，我们要方便的查看其代码，就需要进行反编译（<code>deodex</code>）。</p>
           <!--noindex-->
@@ -523,7 +526,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-12 14:25:41" itemprop="dateModified" datetime="2019-08-12T14:25:41+08:00">2019-08-12</time>
+                <time title="修改时间：2019-09-02 12:49:33" itemprop="dateModified" datetime="2019-09-02T12:49:33+08:00">2019-09-02</time>
               </span>
             
           
@@ -1465,7 +1468,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -1473,56 +1475,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -1549,7 +1501,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -1582,6 +1533,5 @@ window.addEventListener('pjax:success', () => {
   
 
 
-    </div>
 </body>
 </html>

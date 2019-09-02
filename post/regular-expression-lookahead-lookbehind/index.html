@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>正则表达式 - 分组 & 前瞻 & 后瞻 | Tianma</title>
   
 
@@ -354,12 +357,12 @@
         <p>之前在处理短信验证码问题的时候，碰到了关于验证码正则的问题，其中涉及到正则表达中的 <code>前瞻（lookahead）</code> 和 <code>后瞻（lookbehind）</code>，借此机会总结一下正则表达式的这种高级用法。</p>
 <a id="more"></a>
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>先看以下案例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">您的验证码为 1247 ，请注意查收。</span><br><span class="line">您的验证码为1247，请注意查收。</span><br><span class="line">Your verification code is 1247 .</span><br><span class="line">您的验证码为 124789 ，请注意查收。</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">您的验证码为 1247 ，请注意查收。</span><br><span class="line">您的验证码为1247，请注意查收。</span><br><span class="line">Your verification code is 1247 .</span><br><span class="line">您的验证码为 124789 ，请注意查收。</span><br></pre></td></tr></table></figure></div>
 
 <p>针对以上 4 个例子，给出正则表达式，如何才能保证只提取其中的 4 位数验证码，并过滤掉 6 位数的验证码呢？（也就是对于情况123，提取出 1247，对于情况4，则返回无法提取。）</p>
 <p>最开始想当然的认为这个正则很好写，<code>[0-9]{4}</code> 就搞定了，然而在匹配第 4 条的时候，匹配出来的结果也是 1247，显然不满足要求。然后再考虑到，4 位数字的字符串两边是有边界的，所以可以用 <code>\b[0-9]{4}\b</code> 来表示，然而这却没办法满足情况 2，在情况 2 下，匹配出来的结果为空。</p>
 <p>最后的想法是，只要保证 <code>匹配 4 位数字字符串，且其前后都不再有数字</code>，则可以匹配以上所有情况。要满足这样的需求，则需要引申出 <code>分组</code> 以及 <code>前瞻</code>，<code>后瞻</code> 的概念。</p>
-<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><h3 id="分组（Group）"><a href="#分组（Group）" class="headerlink" title="分组（Group）"></a>分组（Group）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hellohellohello</span><br></pre></td></tr></table></figure>
+<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><h3 id="分组（Group）"><a href="#分组（Group）" class="headerlink" title="分组（Group）"></a>分组（Group）</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hellohellohello</span><br></pre></td></tr></table></figure></div>
 
 <p>针对以上文本，我们可以用 <code>hellohellohello</code> 正则表达式去匹配，更好的写法是 <code>(hello){3}</code>。其中被圆括号 <code>()</code> 括起来的部分称之为 <code>分组</code>。</p>
 <h3 id="分组的引用"><a href="#分组的引用" class="headerlink" title="分组的引用"></a>分组的引用</h3><p>对于一个正则表达式来说，其中的分组是有相应编号（引用）的。</p>
@@ -404,7 +407,7 @@
 </tr>
 </tbody></table>
 <p>关于分组的编号，其实<span style="color:#ff4081">就是二叉树的前序遍历（根节点 -&gt; 左子树 -&gt; 右子树），排除其中不是分组的部分</span>的即可：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">对于 (A(BC)(DE)F)G，我们可以在最外层先一对圆括号：</span><br><span class="line"></span><br><span class="line">                ((A(BC)(DE)F)G) -&gt;<span class="number">0</span></span><br><span class="line">                ↓               ↓ </span><br><span class="line">             (A(BC)(DE)F) -&gt;<span class="number">1</span>   G</span><br><span class="line">            ↓             ↓</span><br><span class="line">        (A(BC)) -&gt;<span class="number">2</span>     ((DE)F) -&gt;<span class="number">4</span></span><br><span class="line">        ↓    ↓          ↓        ↓</span><br><span class="line">        A   (BC) -&gt;<span class="number">3</span>  (DE) -&gt;<span class="number">5</span>   F</span><br><span class="line">             ↓         ↓</span><br><span class="line">             BC        DE</span><br><span class="line"></span><br><span class="line">根据编号 <span class="number">0</span>~<span class="number">5</span>, 可以找到对应编号的分组</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">对于 (A(BC)(DE)F)G，我们可以在最外层先一对圆括号：</span><br><span class="line"></span><br><span class="line">                ((A(BC)(DE)F)G) -&gt;<span class="number">0</span></span><br><span class="line">                ↓               ↓ </span><br><span class="line">             (A(BC)(DE)F) -&gt;<span class="number">1</span>   G</span><br><span class="line">            ↓             ↓</span><br><span class="line">        (A(BC)) -&gt;<span class="number">2</span>     ((DE)F) -&gt;<span class="number">4</span></span><br><span class="line">        ↓    ↓          ↓        ↓</span><br><span class="line">        A   (BC) -&gt;<span class="number">3</span>  (DE) -&gt;<span class="number">5</span>   F</span><br><span class="line">             ↓         ↓</span><br><span class="line">             BC        DE</span><br><span class="line"></span><br><span class="line">根据编号 <span class="number">0</span>~<span class="number">5</span>, 可以找到对应编号的分组</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="分组的种类"><a href="#分组的种类" class="headerlink" title="分组的种类"></a>分组的种类</h3><p>分组的种类可以分为两大类，即 <code>捕获型分组</code> 和 <code>非捕获型分组</code>:</p>
 <ol>
@@ -493,7 +496,7 @@
 </tr>
 </tbody></table>
 <h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>那么，针对文章开头的 <code>匹配 4 位数字字符串，且其前后都不再有数字</code> 的正则表达式的书写就迎刃而解了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(?&lt;![0-9])[0-9]&#123;4&#125;(?![0-9])</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(?&lt;![0-9])[0-9]&#123;4&#125;(?![0-9])</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.runoob.com/java/java-regular-expressions.html" target="_blank" rel="noopener">Java 正则表达式</a><br><a href="https://segmentfault.com/a/1190000004429477" target="_blank" rel="noopener">JavaScript 正则表达式的分组匹配</a><br><a href="http://www.imkevinyang.com/2009/08/%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%BE%E5%87%BA%E4%B8%8D%E5%8C%85%E5%90%AB%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9D%A1%E7%9B%AE.html" target="_blank" rel="noopener">使用正则表达式找出不包含特定字符串的条目</a></p>
 
@@ -726,7 +729,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -734,56 +736,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -810,7 +762,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -843,6 +794,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android 应用关联特定后缀名的文件 | Tianma</title>
   
 
@@ -360,12 +363,12 @@
 <p>需要解决的问题就变成了：应该怎样配置自家App，才能关联包含特定 <code>URI</code> 的 <code>Intent</code>。其实就等效于 Activity 如何能打开包含指定的 <code>Intent</code> 信息。</p>
 <ul>
 <li><p>Android 7.0 之前，分享文件的 <code>URI</code> 一般是通过如下示例代码得到：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File fileToShare = ...;</span><br><span class="line">Uri fileUri = Uri.fromFile(fileToShare);</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File fileToShare = ...;</span><br><span class="line">Uri fileUri = Uri.fromFile(fileToShare);</span><br></pre></td></tr></table></figure></div>
 
 <p>这里的 <code>Uri</code> 是 <code>file://</code> 格式的。</p>
 </li>
 <li><p>Android 7.0 起，文件分享加入了更加安全的机制，引入了 <code>FileProvider</code>，获取分享文件的 <code>URI</code>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File fileToShare = ...;</span><br><span class="line">Uri fileUri = FileProvider.getUriFromFile(Context, authority, fileToShare);</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File fileToShare = ...;</span><br><span class="line">Uri fileUri = FileProvider.getUriFromFile(Context, authority, fileToShare);</span><br></pre></td></tr></table></figure></div>
 
 <p>这里的 <code>Uri</code> 是 <code>content://</code> 格式的。</p>
 </li>
@@ -379,7 +382,7 @@
 </ul>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>比如，我们的 App 中的 <code>com.example.ActivityA</code> 要支持打开后缀名为 <code>.myext</code> 的文件，其 <code>mimeType</code> 为 <code>text/plain</code>。</p>
 <p>通过以上分析，我们需要在 <code>AndroidManifest.xml</code> 中配置：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">"com.example.ActivityA"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:scheme</span>=<span class="string">"content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:host</span>=<span class="string">"*"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:pathPattern</span>=<span class="string">"/.*\\.myext"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:scheme</span>=<span class="string">"file"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:host</span>=<span class="string">"*"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:pathPattern</span>=<span class="string">"/.*\\.myext"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="XML"><figure class="highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">"com.example.ActivityA"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:scheme</span>=<span class="string">"content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:host</span>=<span class="string">"*"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:pathPattern</span>=<span class="string">"/.*\\.myext"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:scheme</span>=<span class="string">"file"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:host</span>=<span class="string">"*"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:pathPattern</span>=<span class="string">"/.*\\.myext"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>需要注意的是，在接收读取 <code>Uri</code> 为 <code>file://</code> 形式的文件数据之前，需要获取 <code>READ_EXTERNAL_STORAGE</code> 权限。 <code>content://</code> 形式的文件数据则不需要该权限。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://developer.android.com/guide/components/intents-filters" target="_blank" rel="noopener">Intents and Intent Filters</a><br><a href="https://stackoverflow.com/questions/3760276/android-intent-filter-associate-app-with-file-extension" target="_blank" rel="noopener">Android intent filter: associate app with file extension</a><br><a href="https://developer.android.com/guide/topics/manifest/data-element" target="_blank" rel="noopener">dat element</a></p>
@@ -613,7 +616,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -621,56 +623,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -697,7 +649,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -730,6 +681,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

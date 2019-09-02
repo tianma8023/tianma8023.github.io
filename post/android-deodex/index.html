@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android Deodex | Tianma</title>
   
 
@@ -353,10 +356,10 @@
       
         <p>在使用逆向工具（比如 <a href="https://github.com/skylot/jadx" target="_blank" rel="noopener">jdax</a> 等）反编译某些系统 App 的时候，会发现其代码其实是不全的，其实是因为系统应用的 APK 已经经过 <code>odex</code> 和 <code>vdex</code> 化，导致代码分离。</p>
 <p>比如在之前的文章（<a href="/post/android-extract-Rom/">Android 拆包，提取 APK 或 Framework 文件</a>）中，拆了 MIUI 的 Rom，其中小米系统界面（<code>MiuiSystemUI</code>）拆开后大致是这样的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tree -s priv-app/MiuiSystemUI/</span><br><span class="line">priv-app/MiuiSystemUI/</span><br><span class="line">├── [   17525476]  MiuiSystemUI.apk</span><br><span class="line">└── [          0]  oat</span><br><span class="line">    └── [          0]  arm64</span><br><span class="line">        ├── [   12669648]  MiuiSystemUI.odex</span><br><span class="line">        └── [    6418324]  MiuiSystemUI.vdex</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tree -s priv-app/MiuiSystemUI/</span></span><br><span class="line">priv-app/MiuiSystemUI/</span><br><span class="line">├── [   17525476]  MiuiSystemUI.apk</span><br><span class="line">└── [          0]  oat</span><br><span class="line">    └── [          0]  arm64</span><br><span class="line">        ├── [   12669648]  MiuiSystemUI.odex</span><br><span class="line">        └── [    6418324]  MiuiSystemUI.vdex</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure></div>
 
 <p>解压 <code>MiuiSystemUI.apk</code> 之后：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AndroidManifest.xml  assets/  META-INF/  res/  resources.arsc</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AndroidManifest.xml  assets/  META-INF/  res/  resources.arsc</span><br></pre></td></tr></table></figure></div>
 
 <p>可以看到 Apk 压缩文件中未包含 <code>.dex</code> 文件，而 <code>priv-app/MiuiSystemUI/oat/arm64/</code> 路径下存在 <code>.odex</code> 和 <code>.vdex</code> 的文件，我们要方便的查看其代码，就需要进行反编译（<code>deodex</code>）。</p>
 <a id="more"></a>
@@ -384,44 +387,44 @@
 <p>最终正确编译之后会在 <code>bin/</code> 目录下生成可执行文件 (比如 <code>vdexExtractor.exe</code>)</p>
 <p><code>vdexExtractor</code> 在反编译 Android 9.0 P 中的 <code>vdex</code> 时，会生成 <code>cdex</code>(CompatDex) 文件而不是 <code>dex</code> 文件, <code>cdex</code> 只能在 GNU/Linux 系统 或者 MacOS 系统中才能转换为 <code>dex</code>。即 Windows 系统中，没办法反编译 Android P 中的 <code>vdex</code>。</p>
 <h3 id="反编译系统App中的vdex"><a href="#反编译系统App中的vdex" class="headerlink" title="反编译系统App中的vdex"></a>反编译系统App中的vdex</h3><p>这里以前面提到的 <code>MiuiSystemUI</code> 这个系统 App 为例。当前目录结构如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None      0 6月  11 18:21 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None 458972 6月  11 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None      0 6月  11 18:21 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None 458972 6月  11 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure></div>
 
 <p>其中的 <code>MiuiSystemUI</code> 就在 <code>priv-app/MiuiSystemUI/</code> 路径下。</p>
 <ol>
 <li><p>复制 <code>MiuiSystemUI.apk</code> 到当前路径下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp priv-app/MiuiSystemUI/MiuiSystemUI.apk MiuiSystemUI.apk</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp priv-app/MiuiSystemUI/MiuiSystemUI.apk MiuiSystemUI.apk</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用 <code>vdexExtractor</code> 将 <code>MiuiSystemUI</code> 中的 <code>vdex</code> 反编译成 <code>dex</code>，并生成在当前路径下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./vdexExtractor.exe -i priv-app/MiuiSystemUI/oat/[arch]/MiuiSystemUI.vdex -o ./ --ignore-crc-error</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./vdexExtractor.exe -i priv-app/MiuiSystemUI/oat/[arch]/MiuiSystemUI.vdex -o ./ --ignore-crc-error</span><br></pre></td></tr></table></figure></div>
 
 <p>其中 <code>[arch]</code> 代表 CPU 架构（比如 <code>arm</code> <code>arm64</code> 等），后面不再赘述。成功之后当前路径如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None        0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None 17525476 6月  17 18:49 MiuiSystemUI.apk</span><br><span class="line">-rw-r--r--+ 1 Tianma None  6229928 6月  17 18:54 MiuiSystemUI_classes.dex</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  11 18:21 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None   458972 6月  17 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None        0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None 17525476 6月  17 18:49 MiuiSystemUI.apk</span><br><span class="line">-rw-r--r--+ 1 Tianma None  6229928 6月  17 18:54 MiuiSystemUI_classes.dex</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  11 18:21 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None   458972 6月  17 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure></div>
 
 <p>多了一个 <code>MiuiSystemUI_classes.dex</code>。这个时候就已经可以使用 <code>jadx</code> 等工具查看其代码了。</p>
 </li>
 <li><p>将生成的 <code>.dex</code> 打包到 <code>.apk</code> 中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv MiuiSystemUI_classes.dex classes.dex</span><br><span class="line">zip MiuiSystemUI.apk classes*.dex</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv MiuiSystemUI_classes.dex classes.dex</span><br><span class="line">zip MiuiSystemUI.apk classes*.dex</span><br></pre></td></tr></table></figure></div>
 
 <p>需要注意的是，如果步骤 2 中反编译出来的 <code>dex</code> 文件是多个（&gt;= 2）的话，需要按照 <code>classes1.dex</code>, <code>classes2.dex</code> 等方式重命名之后，再将所有的 <code>.dex</code> 打包进 <code>.apk</code> 中</p>
 </li>
 </ol>
 <h3 id="反编译-framework-下的-vdex"><a href="#反编译-framework-下的-vdex" class="headerlink" title="反编译 framework 下的 vdex"></a>反编译 framework 下的 vdex</h3><p>这里以 <code>services.jar</code> 为例，其中 <code>services.jar</code> 包含各种系统服务(AMS PMS 等等)，是很值得对其进行研究的 jar 包。由于反编译 <code>framework</code> 下的 <code>jar</code> 包 <code>framework</code> 相关环境（主要是用作 ClassLoader 的路径），所以需要的目录结构如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None      0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None 458972 6月  11 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None      0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None 458972 6月  11 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure></div>
 
 <ol>
 <li><p>复制 <code>services.jar</code> 到当前目录下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp framework/services.jar services.jar</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp framework/services.jar services.jar</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用 <code>vdexExtractor</code> 将 <code>/framework/oat/[arch]/services.vdex</code> 反编译成 <code>dex</code>，并生成在当前目录下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./vdexExtractor.exe -i framework/oat/[arch]/services.vdex -o ./ --ignore-crc-error</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./vdexExtractor.exe -i framework/oat/[arch]/services.vdex -o ./ --ignore-crc-error</span><br></pre></td></tr></table></figure></div>
 
 <p>会在当前路径生成 <code>services_classes.dex</code> 文件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None     318 6月  17 19:58 services.jar</span><br><span class="line">-rw-r--r--+ 1 Tianma None 9455876 6月  17 20:01 services_classes.dex</span><br><span class="line">-rwxrwx---+ 1 Tianma None  458972 6月  11 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None     318 6月  17 19:58 services.jar</span><br><span class="line">-rw-r--r--+ 1 Tianma None 9455876 6月  17 20:01 services_classes.dex</span><br><span class="line">-rwxrwx---+ 1 Tianma None  458972 6月  11 20:16 vdexExtractor.exe</span><br></pre></td></tr></table></figure></div>
 
 <p>此时就已经可以使用 <code>jadx</code> 等工具查看其代码了。</p>
 </li>
 <li><p>将生成的 <code>.dex</code> 打包到 <code>.jar</code> 中去：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv services_classes.dex classes.dex</span><br><span class="line">zip services.jar classes*.dex</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv services_classes.dex classes.dex</span><br><span class="line">zip services.jar classes*.dex</span><br></pre></td></tr></table></figure></div>
 
 <p>最终生成的 <code>services.jar</code> 会包含 <code>.dex</code>。</p>
 </li>
@@ -432,39 +435,39 @@
 </ul>
 <p>这里下载的是 <code>2.2.7</code> 版本。</p>
 <h3 id="反编译系统App中的odex"><a href="#反编译系统App中的odex" class="headerlink" title="反编译系统App中的odex"></a>反编译系统App中的odex</h3><p>仍然以 <code>MiuiSystemUI</code> 这个系统 App 为例，需要 <code>framework</code> 环境，故当前目录结构如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None 1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  17 20:50 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None 1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  17 20:50 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure></div>
 
 <ol>
 <li><p>复制 <code>MiuiSystemUI.apk</code> 到当前目录：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp priv-app/MiuiSystemUI/MiuiSystemUI.apk MiuiSystemUI.apk</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp priv-app/MiuiSystemUI/MiuiSystemUI.apk MiuiSystemUI.apk</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用 <code>baksmali</code> 将 <code>odex</code> 反编译成 <code>.smali</code> 文件，再用 <code>smali</code> 将 <code>.smali</code> 转换成 <code>dex</code>:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar baksmali-2.2.7.jar x priv-app/MiuiSystemUI/oat/[arch]/MiuiSystemUI.odex -d framework/[arch]/ -d framework/ -o MiuiSystemUI</span><br><span class="line">java -jar smali-2.2.7.jar a MiuiSystemUI -o classes.dex</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar baksmali-2.2.7.jar x priv-app/MiuiSystemUI/oat/[arch]/MiuiSystemUI.odex -d framework/[arch]/ -d framework/ -o MiuiSystemUI</span><br><span class="line">java -jar smali-2.2.7.jar a MiuiSystemUI -o classes.dex</span><br></pre></td></tr></table></figure></div>
 
 <p>最终会在当前路径下生成 <code>classes.dex</code>：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None  1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">-rwxrwx---+ 1 Tianma None  6234640 6月  17 20:57 classes.dex</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  11 18:21 framework</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  17 20:56 MiuiSystemUI</span><br><span class="line">-rwxrwx---+ 1 Tianma None 17525476 6月  17 20:55 MiuiSystemUI.apk</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  17 20:50 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None  1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None  1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">-rwxrwx---+ 1 Tianma None  6234640 6月  17 20:57 classes.dex</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  11 18:21 framework</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  17 20:56 MiuiSystemUI</span><br><span class="line">-rwxrwx---+ 1 Tianma None 17525476 6月  17 20:55 MiuiSystemUI.apk</span><br><span class="line">drwxrwx---+ 1 Tianma None        0 6月  17 20:50 priv-app</span><br><span class="line">-rwxrwx---+ 1 Tianma None  1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>将 <code>.dex</code> 打包进 <code>.apk</code> 中：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip MiuiSystemUI.apk classes*.dex</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip MiuiSystemUI.apk classes*.dex</span><br></pre></td></tr></table></figure></div>
 
 <p>最终 <code>.apk</code> 会包含 <code>.dex</code></p>
 </li>
 </ol>
 <h3 id="反编译-framework-下的-odex"><a href="#反编译-framework-下的-odex" class="headerlink" title="反编译 framework 下的 odex"></a>反编译 framework 下的 odex</h3><p>仍然以 <code>services.jar</code> 为例，当前目录结构：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None 1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None 1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure></div>
 
 <ol>
 <li><p>复制 <code>services.jar</code> 到当前目录：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp framework/services.jar services.jar</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp framework/services.jar services.jar</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用 <code>baksmali</code> 将 <code>odex</code> 反编译成 <code>.smali</code> 文件，再用 <code>smali</code> 将 <code>.smali</code> 转换成 <code>dex</code>:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar baksmali-2.2.7.jar x framework/oat/[arch]/services.odex -d framework/[arch]/ -d framework/ -o services</span><br><span class="line">java -jar smali-2.2.7.jar a services -o classes.dex</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar baksmali-2.2.7.jar x framework/oat/[arch]/services.odex -d framework/[arch]/ -d framework/ -o services</span><br><span class="line">java -jar smali-2.2.7.jar a services -o classes.dex</span><br></pre></td></tr></table></figure></div>
 
 <p>最终会在当前路径下生成 <code>classes.dex</code>：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None 1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">-rwxrwx---+ 1 Tianma None 9447036 6月  17 20:44 classes.dex</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  17 20:42 services</span><br><span class="line">-rwxrwx---+ 1 Tianma None     318 6月  17 20:38 services.jar</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwx---+ 1 Tianma None 1367549 6月  11 11:48 baksmali-2.2.7.jar</span><br><span class="line">-rwxrwx---+ 1 Tianma None 9447036 6月  17 20:44 classes.dex</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  11 18:21 framework</span><br><span class="line">drwxrwx---+ 1 Tianma None       0 6月  17 20:42 services</span><br><span class="line">-rwxrwx---+ 1 Tianma None     318 6月  17 20:38 services.jar</span><br><span class="line">-rwxrwx---+ 1 Tianma None 1120101 6月  11 11:48 smali-2.2.7.jar</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>将生成的 <code>.dex</code> 打包到 <code>.jar</code> 中去：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip services.jar classes*.dex</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip services.jar classes*.dex</span><br></pre></td></tr></table></figure></div>
 
 <p>最终生成的 <code>services.jar</code> 会包含 <code>.dex</code>。</p>
 </li>
@@ -718,7 +721,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -726,56 +728,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -802,7 +754,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -835,6 +786,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

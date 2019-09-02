@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android 笔记：Activity 二三事 | Tianma</title>
   
 
@@ -401,13 +404,13 @@
 <li><p><code>singleTop</code>：栈顶复用模式，要启动的 <code>Activity</code> 已经有实例在栈顶，则不会生成新实例，不会调用 <code>onCreate()</code> 和 <code>onStart()</code> 而会调用该 <code>Activity</code> 的 <code>onNewIntent()</code> 方法；其他情况，参考 <code>standard</code> 模式；</p>
 </li>
 <li><p><code>singleTask</code>：栈内复用模式。比如 <code>Activity</code> A 的 <code>TaskAffinity</code> 属性指定的任务栈为 a，当启动 A 时，如果任务栈 a 不存在，则创建 a 任务栈，并创建 <code>Activity</code> A 让其入栈；如果任务栈 a 存在，且 A 实例不存在，则 A 入栈；如果任务栈 a 存在，且 A 实例存在，则清空（pop）在 A 之上的所有 <code>Activity</code> 让 A 置于栈顶，并回调 A 的 <code>onNewIntent()</code> 方法；<br><br><code>TaskAffinity</code> 即 任务相关性，这个参数标识 <code>Activity</code> 所需要的任务栈的名字，默认情况下，这个值是应用包名。 <code>TaskAffinity</code> 主要和 <code>singleTask</code> 启动模式配对使用，<code>singleTask</code> 启动模式的 <code>Activity</code> 会启动在 <code>TaskAffinity</code> 指定的任务栈中。比如：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:name</span>=<span class="string">"com.example.ExampleActivity"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:taskAffinity</span>=<span class="string">"com.exmple.exampleTask"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="XML"><figure class="highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:name</span>=<span class="string">"com.example.ExampleActivity"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:taskAffinity</span>=<span class="string">"com.exmple.exampleTask"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span>/&gt;</span></span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p><code>singleInstance</code>：单实例模式。可以看做是特殊的 <code>singleTask</code> 模式，除了具有 <code>singleTask</code> 特性外，此种模式的 <code>Activity</code> 只能单独在一个任务栈。</p>
 </li>
 </ol>
 <h2 id="IntentFilter-匹配规则"><a href="#IntentFilter-匹配规则" class="headerlink" title="IntentFilter 匹配规则"></a>IntentFilter 匹配规则</h2><p><code>IntentFilter</code> 用在 <code>Activity</code> 的隐式调用上，先看 <code>IntentFilter</code> 示例：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">"com.example.ExampleActivity"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.SEND"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.SEND"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.SEND_MULTIPLE"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.example.intent.category.CUSTOM_1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.example.intent.category.CUSTOM_2"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"http"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:host</span>=<span class="string">"com.example.com"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:port</span>=<span class="string">"4000"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:path</span>=<span class="string">"folder"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"content"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:host</span>=<span class="string">"com.example.project"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android.port</span>=<span class="string">"1080"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:path</span>=<span class="string">"images"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:mimeType</span>=<span class="string">"image/*"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="XML"><figure class="highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">"com.example.ExampleActivity"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.SEND"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.SEND"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.SEND_MULTIPLE"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.example.intent.category.CUSTOM_1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.example.intent.category.CUSTOM_2"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"http"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:host</span>=<span class="string">"com.example.com"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:port</span>=<span class="string">"4000"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:path</span>=<span class="string">"folder"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"content"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:host</span>=<span class="string">"com.example.project"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android.port</span>=<span class="string">"1080"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:path</span>=<span class="string">"images"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:mimeType</span>=<span class="string">"image/*"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>可以看出一个 <code>Activity</code> 可以包含多个 <code>IntentFilter</code>，即形成一个 <code>IntentFilter</code> 列表，只要匹配任何一个 <code>IntentFilter</code> 就可以启动该 <code>Activity</code>。而 <code>IntentFilter</code> 中可以包含 <code>action</code>、 <code>category</code>、 <code>data</code> 三元素，只有这三个都匹配成功，整个 <code>IntentFilter</code> 才能匹配成功。</p>
 <h3 id="action-匹配规则"><a href="#action-匹配规则" class="headerlink" title="action 匹配规则"></a>action 匹配规则</h3><p><code>Intent</code> 中的 <code>action</code> 必须和 <code>IntentFilter</code> 中包含的 <code>action</code> 之一匹配就可以匹配成功。如果，把 <code>Intent</code> 中指定的 <code>action</code> 看做元素 a，把 <code>IntentFilter</code> 中指定的 <code>action</code> 所构成的集合看成集合 A，则 当 a ∈ A 时， <code>action</code> 匹配成功。</p>
@@ -416,10 +419,10 @@
 <li>如果 <code>Intent</code> 不指定 <code>category</code>, 则默认的 <code>category</code> 为 <code>android.intent.category.DEFAULT</code>, 也会匹配成功。</li>
 </ol>
 <h3 id="data-匹配规则"><a href="#data-匹配规则" class="headerlink" title="data 匹配规则"></a>data 匹配规则</h3><p><code>data</code> 部分由 <code>mimeType</code> 和 <code>URI</code> 组成，<code>mimeType</code> 表示媒体类型，比如图片、音频、视频、文本等格式，<code>URI</code> 的结构为：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scheme</span>&gt;</span>://<span class="tag">&lt;<span class="name">host</span>&gt;</span>:<span class="tag">&lt;<span class="name">port</span>&gt;</span>[<span class="tag">&lt;<span class="name">path</span>&gt;</span>|<span class="tag">&lt;<span class="name">pathPrefix</span>&gt;</span>|<span class="tag">&lt;<span class="name">pathPattern</span>&gt;</span>]</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="XML"><figure class="highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scheme</span>&gt;</span>://<span class="tag">&lt;<span class="name">host</span>&gt;</span>:<span class="tag">&lt;<span class="name">port</span>&gt;</span>[<span class="tag">&lt;<span class="name">path</span>&gt;</span>|<span class="tag">&lt;<span class="name">pathPrefix</span>&gt;</span>|<span class="tag">&lt;<span class="name">pathPattern</span>&gt;</span>]</span><br></pre></td></tr></table></figure></div>
 
 <p>比如：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://com.example.com:8080/search/info</span><br><span class="line">content://com.example.project:200/folder/subfolder/etc</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="XML"><figure class="highlight /xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://com.example.com:8080/search/info</span><br><span class="line">content://com.example.project:200/folder/subfolder/etc</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li><code>scheme</code>：<code>URI</code> 的模式，比如 http、file、content，也可以是自定义字符串，如果没有指定 <code>scheme</code> 的值，则整个 <code>URI</code> 无效；</li>
@@ -661,7 +664,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -669,56 +671,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -745,7 +697,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -778,6 +729,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

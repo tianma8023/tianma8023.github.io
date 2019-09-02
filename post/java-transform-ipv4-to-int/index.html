@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Java-IPv4地址和int类型数字的互相转换 | Tianma</title>
   
 
@@ -363,7 +366,7 @@
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>对于ipv4地址： 192.168.1.3：<br>每段都用二进制表示： 192(10) = 11000000(2) ; 168(10) = 10101000(2) ; 1(10) = 00000001(2) ;  3(10) = 00000011(2) 。<br>所以连在一起就是：11000000101010000000000100000011，对应的int数字就是-1062731775 。</p>
 <p>具体算法分析：<br>192左移24位： 11000000 00000000 00000000 00000000<br>168左移16位： 00000000 10101000 00000000 00000000<br>001左移08位： 00000000 00000000 00000001 00000000<br>003左移00位： 00000000 00000000 00000000 00000011<br>按位或的结果： 11000000 10101000  00000001 00000011<br>即 -1062731775</p>
 <p>将int类型的数字转换成ip地址，其实就是上述过程的逆过程，这里就不再赘述。</p>
-<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * IPv4地址和int数字的互相转换</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Tianma</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IPv4IntTransformer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * IPv4地址转换为int类型数字</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">ip2Integer</span><span class="params">(String ipv4Addr)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 判断是否是ip格式的</span></span><br><span class="line">		<span class="keyword">if</span> (!isIPv4Address(ipv4Addr))</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Invalid ip address"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 匹配数字</span></span><br><span class="line">		Pattern pattern = Pattern.compile(<span class="string">"\\d+"</span>);</span><br><span class="line">		Matcher matcher = pattern.matcher(ipv4Addr);</span><br><span class="line">		<span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> counter = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (matcher.find()) &#123;</span><br><span class="line">			<span class="keyword">int</span> value = Integer.parseInt(matcher.group());</span><br><span class="line">			result = (value &lt;&lt; <span class="number">8</span> * (<span class="number">3</span> - counter++)) | result;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 判断是否为ipv4地址</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isIPv4Address</span><span class="params">(String ipv4Addr)</span> </span>&#123;</span><br><span class="line">		String lower = <span class="string">"(\\d|[1-9]\\d|1\\d&#123;2&#125;|2[0-4]\\d|25[0-5])"</span>; <span class="comment">// 0-255的数字</span></span><br><span class="line">		String regex = lower + <span class="string">"(\\."</span> + lower + <span class="string">")&#123;3&#125;"</span>;</span><br><span class="line">		Pattern pattern = Pattern.compile(regex);</span><br><span class="line">		Matcher matcher = pattern.matcher(ipv4Addr);</span><br><span class="line">		<span class="keyword">return</span> matcher.matches();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将int数字转换成ipv4地址</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">integer2Ip</span><span class="params">(<span class="keyword">int</span> ip)</span> </span>&#123;</span><br><span class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">		<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">boolean</span> needPoint = <span class="keyword">false</span>; <span class="comment">// 是否需要加入'.'</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (needPoint) &#123;</span><br><span class="line">				sb.append(<span class="string">'.'</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			needPoint = <span class="keyword">true</span>;</span><br><span class="line">			<span class="keyword">int</span> offset = <span class="number">8</span> * (<span class="number">3</span> - i);</span><br><span class="line">			num = (ip &gt;&gt; offset) &amp; <span class="number">0xff</span>;</span><br><span class="line">			sb.append(num);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sb.toString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * IPv4地址和int数字的互相转换</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Tianma</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IPv4IntTransformer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * IPv4地址转换为int类型数字</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">ip2Integer</span><span class="params">(String ipv4Addr)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 判断是否是ip格式的</span></span><br><span class="line">		<span class="keyword">if</span> (!isIPv4Address(ipv4Addr))</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Invalid ip address"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 匹配数字</span></span><br><span class="line">		Pattern pattern = Pattern.compile(<span class="string">"\\d+"</span>);</span><br><span class="line">		Matcher matcher = pattern.matcher(ipv4Addr);</span><br><span class="line">		<span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> counter = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (matcher.find()) &#123;</span><br><span class="line">			<span class="keyword">int</span> value = Integer.parseInt(matcher.group());</span><br><span class="line">			result = (value &lt;&lt; <span class="number">8</span> * (<span class="number">3</span> - counter++)) | result;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 判断是否为ipv4地址</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isIPv4Address</span><span class="params">(String ipv4Addr)</span> </span>&#123;</span><br><span class="line">		String lower = <span class="string">"(\\d|[1-9]\\d|1\\d&#123;2&#125;|2[0-4]\\d|25[0-5])"</span>; <span class="comment">// 0-255的数字</span></span><br><span class="line">		String regex = lower + <span class="string">"(\\."</span> + lower + <span class="string">")&#123;3&#125;"</span>;</span><br><span class="line">		Pattern pattern = Pattern.compile(regex);</span><br><span class="line">		Matcher matcher = pattern.matcher(ipv4Addr);</span><br><span class="line">		<span class="keyword">return</span> matcher.matches();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将int数字转换成ipv4地址</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">integer2Ip</span><span class="params">(<span class="keyword">int</span> ip)</span> </span>&#123;</span><br><span class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">		<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">boolean</span> needPoint = <span class="keyword">false</span>; <span class="comment">// 是否需要加入'.'</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (needPoint) &#123;</span><br><span class="line">				sb.append(<span class="string">'.'</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			needPoint = <span class="keyword">true</span>;</span><br><span class="line">			<span class="keyword">int</span> offset = <span class="number">8</span> * (<span class="number">3</span> - i);</span><br><span class="line">			num = (ip &gt;&gt; offset) &amp; <span class="number">0xff</span>;</span><br><span class="line">			sb.append(num);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sb.toString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 
     </div>
@@ -595,7 +598,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -603,56 +605,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -679,7 +631,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -712,6 +663,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

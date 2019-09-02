@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Hexo 折腾：音乐播放 | Tianma</title>
   
 
@@ -364,7 +367,7 @@
 
 <h3 id="使用音乐平台官方插件"><a href="#使用音乐平台官方插件" class="headerlink" title="使用音乐平台官方插件"></a>使用音乐平台官方插件</h3><p>以网易云音乐为例，在Web网页上找到 歌单/单曲/专辑 页面，点击 <code>生成外链播放器</code> 即可跳转到官方提供的音乐播放插件使用引导页面，比如这个 <a href="http://music.163.com/#/outchain/0/827122421/" target="_blank" rel="noopener">外链插件</a>。
 可以在自己博客页面中嵌入插件:</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">330</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=0&amp;id=827122421&amp;auto=0&amp;height=430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="HTML"><figure class="highlight /html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">330</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=0&amp;id=827122421&amp;auto=0&amp;height=430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 <p>效果展示：</p>
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="330" src="//music.163.com/outchain/player?type=0&id=827122421&auto=0&height=430"></iframe>
@@ -378,16 +381,16 @@
 <p>以我目前的 <a href="https://github.com/viosey/hexo-theme-material" target="_blank" rel="noopener">hexo-theme-material</a> 主题为例：</p>
 <ol>
 <li><p>引入JS（最新的CDN请参考官网），创建 <code>/layout/_widget/aplayer.ejs</code> ：</p>
- <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Import APlayer --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Import meting.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/meting@1.1.1/dist/Meting.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="HTML"><figure class="highlight /html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Import APlayer --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/aplayer@1.9.0/dist/APlayer.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Import meting.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/meting@1.1.1/dist/Meting.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>考虑到不是所有的博客页面都需要嵌入 <code>aplayer</code>, 所以在 <code>/_partial/head.ejs</code> 中加入：</p>
- <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Import APlayer.js --&gt;</span><br><span class="line">&lt;% <span class="keyword">if</span> (page.aplayer === <span class="literal">true</span>) &#123; %&gt;</span><br><span class="line">    &lt;%- partial(<span class="string">'_widget/aplayer'</span>) %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JS"><figure class="highlight /js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Import APlayer.js --&gt;</span><br><span class="line">&lt;% <span class="keyword">if</span> (page.aplayer === <span class="literal">true</span>) &#123; %&gt;</span><br><span class="line">    &lt;%- partial(<span class="string">'_widget/aplayer'</span>) %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用，需要内嵌 <code>APlayer</code> 的页面中：<br> 在<code>Front-matter</code> 中加入：</p>
- <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">aplayer:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="YAML"><figure class="highlight /yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">aplayer:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
 
 <p> 嵌入 <code>APlayer</code>：</p>
- <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"aplayer"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-id</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-server</span>=<span class="string">"server"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-type</span>=<span class="string">"type"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="HTML"><figure class="highlight /html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"aplayer"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-id</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-server</span>=<span class="string">"server"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-type</span>=<span class="string">"type"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
 
 </li>
@@ -497,12 +500,12 @@
 <p>效果展示：</p>
 <ol>
 <li><p>单曲:</p>
- <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"aplayer"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-id</span>=<span class="string">"33911781"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-server</span>=<span class="string">"netease"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-type</span>=<span class="string">"song"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-mutex</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-loop</span>=<span class="string">"none"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="HTML"><figure class="highlight /html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"aplayer"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-id</span>=<span class="string">"33911781"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-server</span>=<span class="string">"netease"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-type</span>=<span class="string">"song"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-mutex</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-loop</span>=<span class="string">"none"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
  <div class="aplayer" data-id="33911781" data-server="netease" data-type="song" data-mutex="false" data-loop="none">
  </div></li>
 <li><p>歌单：</p>
- <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"aplayer"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-id</span>=<span class="string">"775701065"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-server</span>=<span class="string">"netease"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-type</span>=<span class="string">"playlist"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-order</span>=<span class="string">"random"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-listmaxheight</span>=<span class="string">"240px"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-theme</span>=<span class="string">"#FF4081"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="HTML"><figure class="highlight /html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"aplayer"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-id</span>=<span class="string">"775701065"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-server</span>=<span class="string">"netease"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-type</span>=<span class="string">"playlist"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-order</span>=<span class="string">"random"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">data-listmaxheight</span>=<span class="string">"240px"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">data-theme</span>=<span class="string">"#FF4081"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
 
  <div class="aplayer" data-id="775701065" data-server="netease" data-type="playlist" data-order="random" data-listmaxheight="240px" data-theme="#FF4081">
  </div>
@@ -512,10 +515,10 @@
 <h3 id="使用-hexo-tag-aplayer-插件"><a href="#使用-hexo-tag-aplayer-插件" class="headerlink" title="使用 hexo-tag-aplayer 插件"></a>使用 hexo-tag-aplayer 插件</h3><p><a href="https://github.com/MoePlayer/hexo-tag-aplayer" target="_blank" rel="noopener">hexo-tag-aplayer</a> 就是将 <a href="https://github.com/DIYgod/APlayer" target="_blank" rel="noopener">APlayer</a> 内嵌入博客页面的 Hexo 插件。</p>
 <ol>
 <li><p>安装</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-tag-aplayer</span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-tag-aplayer</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer title author url [picture_url, narrow, autoplay, width:xxx, lrc:xxx] %&#125;</span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer title author url [picture_url, narrow, autoplay, width:xxx, lrc:xxx] %&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p> 还支持其他参数，同时支持歌词、歌曲列表等功能，详情参考该项目主页。</p>
 </li>
@@ -527,14 +530,14 @@
 <p><span style="color:#ff4081">2018.03.31更新：</span><br>目前 <code>3.0</code> 版本的 <code>hexo-tag-aplayer</code> 已经支持了 <code>MetingJS</code>，因此可以解析网络平台的歌曲/歌单了。</p>
 <ol>
 <li><p>在<strong>站点配置文件</strong>中开启 <code>meting</code> 模式：</p>
- <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">aplayer:</span></span><br><span class="line"><span class="attr">  meting:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="YAML"><figure class="highlight /yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">aplayer:</span></span><br><span class="line"><span class="attr">  meting:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>使用 <code>meting</code> 标签插入在线音乐，例如：</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% meting &quot;27684881&quot; &quot;netease&quot; &quot;song&quot; &quot;theme:#FF4081&quot; &quot;mode:circulation&quot; &quot;mutex:true&quot; &quot;listmaxheight:340px&quot; &quot;preload:auto&quot; %&#125;</span><br></pre></td></tr></table></figure>
+ <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% meting &quot;27684881&quot; &quot;netease&quot; &quot;song&quot; &quot;theme:#FF4081&quot; &quot;mode:circulation&quot; &quot;mutex:true&quot; &quot;listmaxheight:340px&quot; &quot;preload:auto&quot; %&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p> 效果如下：</p>
  
-    <div id="aplayer-SMaOOGPQ" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="27684881" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-gzmMoEFN" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="27684881" data-server="netease" data-type="song" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 <p> <span style="color:#ff4081">需要注意：</span></p>
 <ul>
@@ -780,7 +783,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -788,56 +790,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -864,7 +816,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -897,6 +848,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

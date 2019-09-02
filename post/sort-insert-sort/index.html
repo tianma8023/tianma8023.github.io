@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>排序-插入排序 | Tianma</title>
   
 
@@ -356,7 +359,7 @@
 
 <p>具体算法：<br>整个序列分为两部分，左边部分为已排序的子序列，右边部分为未排序的子序列，取出第1个未排序元素存放在临时变量tmp中，在已经排序的元素序列中从后往前遍历，逐一比较，如果遍历到的元素大于tmp，则将该元素替换下一个位置的元素，直至遍历到的元素小于或等于tmp为止。相当于将未排序的第一个元素插入到已排序的数组中，故以插入排序为名。</p>
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>比如我们待排序的数组是 {0, 5, 3, 4, 6, 2}<br>第1趟排序，5大于0，无需插入： <strong>0 5</strong> 3 4 6 2<br>第2趟排序，3小于5，需要插入： <strong>0 3 5</strong> 4 6 2<br>第3趟排序，4小于5，需要插入： <strong>0 3 4 5</strong> 6 2<br>第4趟排序，6大于5，无需插入： <strong>0 3 4 5 6</strong> 2<br>第5趟排序，2小于6，需要插入： <strong>0 2 3 4 5 6</strong></p>
-<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//插入排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InsertSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		insertSort(arr);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> i, j;</span><br><span class="line">		<span class="keyword">int</span> tmp;</span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; len; i++) &#123; <span class="comment">// 从下标1开始遍历,因为下标0的已经排好序</span></span><br><span class="line">			<span class="keyword">if</span> (arr[i] &lt; arr[i - <span class="number">1</span>]) &#123;</span><br><span class="line">				<span class="comment">// 如果当前下标对应的记录小于前一位记录,则需要插入,否则不需要插入，直接将记录数增加1</span></span><br><span class="line">				tmp = arr[i]; <span class="comment">// 记录下标i对应的元素</span></span><br><span class="line">				<span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; arr[j] &gt; tmp; j--) &#123;</span><br><span class="line">					arr[j + <span class="number">1</span>] = arr[j]; <span class="comment">// 记录后移</span></span><br><span class="line">				&#125;</span><br><span class="line">				arr[j + <span class="number">1</span>] = tmp; <span class="comment">// 插入正确位置</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//插入排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InsertSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		insertSort(arr);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertSort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> len = arr.length;</span><br><span class="line">		<span class="keyword">int</span> i, j;</span><br><span class="line">		<span class="keyword">int</span> tmp;</span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; len; i++) &#123; <span class="comment">// 从下标1开始遍历,因为下标0的已经排好序</span></span><br><span class="line">			<span class="keyword">if</span> (arr[i] &lt; arr[i - <span class="number">1</span>]) &#123;</span><br><span class="line">				<span class="comment">// 如果当前下标对应的记录小于前一位记录,则需要插入,否则不需要插入，直接将记录数增加1</span></span><br><span class="line">				tmp = arr[i]; <span class="comment">// 记录下标i对应的元素</span></span><br><span class="line">				<span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; arr[j] &gt; tmp; j--) &#123;</span><br><span class="line">					arr[j + <span class="number">1</span>] = arr[j]; <span class="comment">// 记录后移</span></span><br><span class="line">				&#125;</span><br><span class="line">				arr[j + <span class="number">1</span>] = tmp; <span class="comment">// 插入正确位置</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间复杂度：<br>最好情况：当待排序的序列为顺序表时，会进行n-1次比较，0次替换，复杂度为O(n)；<br>最坏情况：当待排序的序列为逆序表时，会进行2+3+…+n=(n+2)*(n-1)/2次比较，2+3+…+n = (n+2)*(n-1)/2次替换，复杂度为O(n^2)；<br>平均情况：平均比较次数约为n^2/2, 平均移动次数为n^2/2，复杂度为O(n^2)。 </p>
 <p>空间复杂度：<br>最好情况=最坏情况=平均情况=O(1)</p>
@@ -590,7 +593,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -598,56 +600,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -674,7 +626,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -707,6 +658,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

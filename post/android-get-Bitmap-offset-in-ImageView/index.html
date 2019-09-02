@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>Android获取Bitmap在其ImageView中的偏移量 | Tianma</title>
   
 
@@ -357,13 +360,13 @@
 <li>fitStart:<br><img alt="" data-src="http://upload-images.jianshu.io/upload_images/448665-29940c94836deb90.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></li>
 </ul>
 <p>图片中的天蓝色是我给ImageView设置的backgroud属性，可以看出Bitmap相对于ImageView的位置与scaleType属性是相关的。<br>那么，如何获取Bitmap在其ImageView中的偏移量（也就是在x和y方向上的像素偏移量）呢？代码片段如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取Bitmap在ImageView中的偏移量数组,其中第0个值表示在水平方向上的偏移值,第1个值表示在垂直方向上的偏移值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> imageView</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> includeLayout 在计算偏移的时候是否要考虑到布局的因素,如果要考虑该因素则为true,否则为false</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the offsets of the bitmap inside the imageview, offset[0] means horizontal offset, offset[1] means vertical offset</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span>[] getBitmapOffset(ImageView imageView, <span class="keyword">boolean</span> includeLayout) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] offset = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">float</span>[] values = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">9</span>];</span><br><span class="line"></span><br><span class="line">    Matrix matrix = imageView.getImageMatrix();</span><br><span class="line">    matrix.getValues(values);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// x方向上的偏移量(单位px)</span></span><br><span class="line">    offset[<span class="number">0</span>] = (<span class="keyword">int</span>) values[<span class="number">2</span>];</span><br><span class="line">    <span class="comment">// y方向上的偏移量(单位px)</span></span><br><span class="line">    offset[<span class="number">1</span>] = (<span class="keyword">int</span>) values[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (includeLayout) &#123;</span><br><span class="line">        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) imageView.getLayoutParams();</span><br><span class="line">        <span class="keyword">int</span> paddingTop = imageView.getPaddingTop();</span><br><span class="line">        <span class="keyword">int</span> paddingLeft = imageView.getPaddingLeft();</span><br><span class="line"></span><br><span class="line">        offset[<span class="number">0</span>] += paddingLeft + params.leftMargin;</span><br><span class="line">        offset[<span class="number">1</span>] += paddingTop + params.topMargin;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> offset;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取Bitmap在ImageView中的偏移量数组,其中第0个值表示在水平方向上的偏移值,第1个值表示在垂直方向上的偏移值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> imageView</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> includeLayout 在计算偏移的时候是否要考虑到布局的因素,如果要考虑该因素则为true,否则为false</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the offsets of the bitmap inside the imageview, offset[0] means horizontal offset, offset[1] means vertical offset</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span>[] getBitmapOffset(ImageView imageView, <span class="keyword">boolean</span> includeLayout) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] offset = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">float</span>[] values = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">9</span>];</span><br><span class="line"></span><br><span class="line">    Matrix matrix = imageView.getImageMatrix();</span><br><span class="line">    matrix.getValues(values);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// x方向上的偏移量(单位px)</span></span><br><span class="line">    offset[<span class="number">0</span>] = (<span class="keyword">int</span>) values[<span class="number">2</span>];</span><br><span class="line">    <span class="comment">// y方向上的偏移量(单位px)</span></span><br><span class="line">    offset[<span class="number">1</span>] = (<span class="keyword">int</span>) values[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (includeLayout) &#123;</span><br><span class="line">        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) imageView.getLayoutParams();</span><br><span class="line">        <span class="keyword">int</span> paddingTop = imageView.getPaddingTop();</span><br><span class="line">        <span class="keyword">int</span> paddingLeft = imageView.getPaddingLeft();</span><br><span class="line"></span><br><span class="line">        offset[<span class="number">0</span>] += paddingLeft + params.leftMargin;</span><br><span class="line">        offset[<span class="number">1</span>] += paddingTop + params.topMargin;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> offset;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>上面的代码中<strong>Matrix</strong>类实际上是一个3*3的矩阵，看Android源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Matrix</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSCALE_X = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSKEW_X  = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MTRANS_X = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSKEW_Y  = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSCALE_Y = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MTRANS_Y = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MPERSP_0 = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MPERSP_1 = <span class="number">7</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MPERSP_2 = <span class="number">8</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Matrix</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSCALE_X = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSKEW_X  = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MTRANS_X = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSKEW_Y  = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSCALE_Y = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MTRANS_Y = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MPERSP_0 = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MPERSP_1 = <span class="number">7</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MPERSP_2 = <span class="number">8</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>其中<em>MTRANS_X</em>，<em>MTRANS_Y</em>字段分别表示x和y方向上的平移量。所以在代码片段中会出现：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">offset[<span class="number">0</span>] = (<span class="keyword">int</span>) values[<span class="number">2</span>];</span><br><span class="line">offset[<span class="number">1</span>] = (<span class="keyword">int</span>) values[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">offset[<span class="number">0</span>] = (<span class="keyword">int</span>) values[<span class="number">2</span>];</span><br><span class="line">offset[<span class="number">1</span>] = (<span class="keyword">int</span>) values[<span class="number">5</span>];</span><br></pre></td></tr></table></figure></div>
 
 <p>参考链接：<br><a href="http://stackoverflow.com/questions/6023549/android-how-to-get-the-image-edge-x-y-position-inside-imageview#answer-8740600" target="_blank" rel="noopener">android - how to get the image edge x/y position inside imageview</a><br><a href="http://biandroid.iteye.com/blog/1399462" target="_blank" rel="noopener">Android中图像变换Matrix的原理、代码验证和应用</a></p>
 
@@ -594,7 +597,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -602,56 +604,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -678,7 +630,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -711,6 +662,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>

@@ -84,6 +84,9 @@
   };
 </script>
 
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
   <title>炉石开包引发的血案（雾 | Tianma</title>
   
 
@@ -359,11 +362,11 @@
 <p>通过官方的说明，加上对开包已有的认知，可以将 <em>卡牌包抽取</em>&nbsp; 行为近似抽象为 <a href="http://baike.baidu.com/item/%E4%BC%AF%E5%8A%AA%E5%88%A9%E8%AF%95%E9%AA%8C" target="_blank" rel="noopener">伯努利试验(或 重复独立试验)</a>。由于卡牌包抽取数量的增大，获得传说（橙卡）的概率也会相应提高，也就是前面的试验结果会对后续的试验结果产生一定影响，故而这里的 <em>伯努利试验</em>&nbsp; 模型并不十分精确。但在开包数目相对较小的情况下，我们还是可以使用 <em>伯努利试验</em>&nbsp; 进行近似建模抽象的。毕竟，官方没有透露任何关于卡牌包出传说概率模型的消息，也只能用 <em>伯努利试验</em>&nbsp; 对其进行简单抽象了。</p>
 <p>另外，这里也可以得知，单包出橙卡的概率为 1/20 即 0.05。</p>
 <p>在 n 次重复独立试验中，用 $\xi$ 表示事件A发生的次数，用 p 表示事件A在单次试验中发生的概率，则事件A发生 k 次的概率 P 为：<br>$$P(\xi = k) = C_n^k \cdot p^k \cdot (1-p)^{n-k}$$<br>建立了数学模型，可以方便解决问题了。<del>\(≧▽≦)/</del></p>
-<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 重复独立试验</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Tianma</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BernoulliExperiment</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 重复独立试验(伯努利试验)，单次出现概率为p(0&lt;p&lt;1)的情况下，重复独立试验n次，返回命中k次的概率</span></span><br><span class="line"><span class="comment">	 * &lt;p&gt;</span></span><br><span class="line"><span class="comment">	 * P(k,n,p) = C(n,k)*(p^k)*((1-p)^(n-k)),其中(k = 0,1,2,...,n)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">probability</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k, <span class="keyword">double</span> p)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> combination(n, k) * Math.pow(p, k) * Math.pow(<span class="number">1</span> - p, n - k);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 计算C(n,m)组合数的值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">combination</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">long</span>[] arr = <span class="keyword">new</span> <span class="keyword">long</span>[m + <span class="number">1</span>];</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">			arr[i] = <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n - m; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; j++) &#123;</span><br><span class="line">				arr[j] += arr[j - <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> arr[m];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		BernoulliExperiment bernoulli = <span class="keyword">new</span> BernoulliExperiment();</span><br><span class="line">		<span class="keyword">double</span> p = <span class="number">0.05</span>;</span><br><span class="line">		<span class="keyword">int</span> n = <span class="number">50</span>;</span><br><span class="line">		<span class="keyword">double</span> oddProbability = <span class="number">0</span>, evenProbability = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">			<span class="keyword">double</span> probability = bernoulli.probability(n, i, p);</span><br><span class="line">			<span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">				evenProbability += probability;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				oddProbability += probability;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"Odd probability : "</span> + oddProbability);</span><br><span class="line">		System.out.println(<span class="string">"Even probability : "</span> + evenProbability);</span><br><span class="line">        System.out.println(<span class="string">"Odd + Even : "</span> + (evenProbability + oddProbability));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 重复独立试验</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Tianma</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BernoulliExperiment</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 重复独立试验(伯努利试验)，单次出现概率为p(0&lt;p&lt;1)的情况下，重复独立试验n次，返回命中k次的概率</span></span><br><span class="line"><span class="comment">	 * &lt;p&gt;</span></span><br><span class="line"><span class="comment">	 * P(k,n,p) = C(n,k)*(p^k)*((1-p)^(n-k)),其中(k = 0,1,2,...,n)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">probability</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k, <span class="keyword">double</span> p)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> combination(n, k) * Math.pow(p, k) * Math.pow(<span class="number">1</span> - p, n - k);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 计算C(n,m)组合数的值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">combination</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">long</span>[] arr = <span class="keyword">new</span> <span class="keyword">long</span>[m + <span class="number">1</span>];</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">			arr[i] = <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n - m; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; j++) &#123;</span><br><span class="line">				arr[j] += arr[j - <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> arr[m];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		BernoulliExperiment bernoulli = <span class="keyword">new</span> BernoulliExperiment();</span><br><span class="line">		<span class="keyword">double</span> p = <span class="number">0.05</span>;</span><br><span class="line">		<span class="keyword">int</span> n = <span class="number">50</span>;</span><br><span class="line">		<span class="keyword">double</span> oddProbability = <span class="number">0</span>, evenProbability = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">			<span class="keyword">double</span> probability = bernoulli.probability(n, i, p);</span><br><span class="line">			<span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">				evenProbability += probability;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				oddProbability += probability;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"Odd probability : "</span> + oddProbability);</span><br><span class="line">		System.out.println(<span class="string">"Even probability : "</span> + evenProbability);</span><br><span class="line">        System.out.println(<span class="string">"Odd + Even : "</span> + (evenProbability + oddProbability));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>上述代码中涉及到组合数的计算，详情可以看之前的博客 <a href="/post/285069090">组合数的计算</a>。</p>
 <p>运行结果如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Odd probability : <span class="number">0.497423112396339</span></span><br><span class="line">Even probability : <span class="number">0.502576887603659</span></span><br><span class="line">Odd + Even : <span class="number">0.999999999999998</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Odd probability : <span class="number">0.497423112396339</span></span><br><span class="line">Even probability : <span class="number">0.502576887603659</span></span><br><span class="line">Odd + Even : <span class="number">0.999999999999998</span></span><br></pre></td></tr></table></figure></div>
 
 <p>从运行结果我们可以看出，50个卡包开出橙卡数目的奇偶性的概率大致一样，但还是有略微差别。如果对 n 和 p 取不同的值，得到的奇偶性概率差又会不一致。也就是说，需要经过一定的计算才能判断最终结论走向。</p>
 <p>最后的最后，想说一句，芝士就是力量（大雾） ╰(￣▽￣)╮</p>
@@ -601,7 +604,6 @@
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
@@ -609,56 +611,6 @@
 <script src="/js/schemes/muse.js?v=7.4.0"></script>
 
 <script src="/js/next-boot.js?v=7.4.0"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var id = element.id || '';
-    var src = element.src || '';
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (id !=='') {
-      script.id = element.id;
-    }
-    if (src !== '') {
-      script.src = src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
@@ -685,7 +637,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
 
   
 
@@ -768,6 +719,5 @@ window.addEventListener('pjax:success', () => {
   }, window.Gitalk);
 </script>
 
-    </div>
 </body>
 </html>
