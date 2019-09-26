@@ -58,19 +58,18 @@
   };
 </script>
 
-  <meta name="description" content="之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&amp;nbsp;">
-<meta name="keywords" content="Java反射">
+  <meta name="description" content="一般公司都会内部有 Git 之类的版本控制仓库，如果你同时有在其他远程 Git 仓库(比如 GitHub) 提交代码的习惯。此时，你就需要在同一台机器上配置多个 Git 用户。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java反射修改final修饰的属性值">
-<meta property="og:url" content="https://tianma.space/post/change-static-final-field-in-Java/index.html">
+<meta property="og:title" content="Git多用户配置">
+<meta property="og:url" content="https://tianma.space/post/git-multi-users-configuration/index.html">
 <meta property="og:site_name" content="Tianma">
-<meta property="og:description" content="之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&amp;nbsp;">
+<meta property="og:description" content="一般公司都会内部有 Git 之类的版本控制仓库，如果你同时有在其他远程 Git 仓库(比如 GitHub) 提交代码的习惯。此时，你就需要在同一台机器上配置多个 Git 用户。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-06T20:04:40.950Z">
+<meta property="og:updated_time" content="2019-09-25T17:38:17.533Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java反射修改final修饰的属性值">
-<meta name="twitter:description" content="之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&amp;nbsp;">
-  <link rel="canonical" href="https://tianma.space/post/change-static-final-field-in-Java/">
+<meta name="twitter:title" content="Git多用户配置">
+<meta name="twitter:description" content="一般公司都会内部有 Git 之类的版本控制仓库，如果你同时有在其他远程 Git 仓库(比如 GitHub) 提交代码的习惯。此时，你就需要在同一台机器上配置多个 Git 用户。">
+  <link rel="canonical" href="https://tianma.space/post/git-multi-users-configuration/">
 
 
 <script id="page-configurations">
@@ -87,7 +86,7 @@
 
   <script async src="/js/cursor/fireworks.js"></script>
 
-  <title>Java反射修改final修饰的属性值 | Tianma</title>
+  <title>Git多用户配置 | Tianma</title>
   
 
 
@@ -286,7 +285,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/change-static-final-field-in-Java/">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/git-multi-users-configuration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tianma">
@@ -298,7 +297,7 @@
       <meta itemprop="name" content="Tianma">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Java反射修改final修饰的属性值
+        <h1 class="post-title" itemprop="name headline">Git多用户配置
 
           
         </h1>
@@ -314,7 +313,7 @@
                 
               
 
-              <time title="创建时间：2017-03-13 01:42:27" itemprop="dateCreated datePublished" datetime="2017-03-13T01:42:27+08:00">2017-03-13</time>
+              <time title="创建时间：2019-09-25 23:50:31" itemprop="dateCreated datePublished" datetime="2019-09-25T23:50:31+08:00">2019-09-25</time>
             </span>
           
             
@@ -325,22 +324,9 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-11-07 04:04:40" itemprop="dateModified" datetime="2018-11-07T04:04:40+08:00">2018-11-07</time>
+                <time title="修改时间：2019-09-26 01:38:17" itemprop="dateModified" datetime="2019-09-26T01:38:17+08:00">2019-09-26</time>
               </span>
             
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -354,15 +340,57 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>之前在阅读其他源码的时候，想要修改其中被 final 修饰符修饰的字段的值，可行吗？&nbsp;<a id="more"></a></p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>使用Java反射，通过 <code>Field#setAccessible(true)</code> 将 private 修饰的字段变为 accessible；再将 final 修饰符去掉；最后再设置新值即可。当然，如果涉及到 Java 内联优化，则会失效。具体见示例代码：</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.sample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChangeStaticFinalFieldSample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">changeStaticFinal</span><span class="params">(Field field, Object newValue)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		field.setAccessible(<span class="keyword">true</span>); <span class="comment">// 如果field为private,则需要使用该方法使其可被访问</span></span><br><span class="line"></span><br><span class="line">		Field modifersField = Field.class.getDeclaredField(<span class="string">"modifiers"</span>);</span><br><span class="line">		modifersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		<span class="comment">// 把指定的field中的final修饰符去掉</span></span><br><span class="line">		modifersField.setInt(field, field.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line"></span><br><span class="line">		field.set(<span class="keyword">null</span>, newValue); <span class="comment">// 为指定field设置新值</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		Sample.print();</span><br><span class="line">		</span><br><span class="line">		Field canChangeField = Sample.class.getDeclaredField(<span class="string">"CAN_CHANGE"</span>);</span><br><span class="line">		Field cannotChangeField = Sample.class.getDeclaredField(<span class="string">"CANNOT_CHANGE"</span>);</span><br><span class="line">		changeStaticFinal(canChangeField, <span class="number">2</span>);</span><br><span class="line">		changeStaticFinal(cannotChangeField, <span class="number">3</span>);</span><br><span class="line">		</span><br><span class="line">		Sample.print();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CAN_CHANGE = <span class="keyword">new</span> Integer(<span class="number">1</span>); <span class="comment">// 未内联优化</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANNOT_CHANGE = <span class="number">1</span>; <span class="comment">// 内联优化</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"CAN_CHANGE = "</span> + CAN_CHANGE);</span><br><span class="line">		System.out.println(<span class="string">"CANNOT_CHANGE = "</span> + CANNOT_CHANGE);</span><br><span class="line">		System.out.println(<span class="string">"------------------------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+        <p>一般公司都会内部有 Git 之类的版本控制仓库，如果你同时有在其他远程 Git 仓库(比如 GitHub) 提交代码的习惯。此时，你就需要在同一台机器上配置多个 Git 用户。</p>
+<a id="more"></a>
 
-<p>打印结果为：</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CAN_CHANGE = <span class="number">1</span></span><br><span class="line">CANNOT_CHANGE = <span class="number">1</span></span><br><span class="line">------------------------</span><br><span class="line">CAN_CHANGE = <span class="number">2</span></span><br><span class="line">CANNOT_CHANGE = <span class="number">1</span></span><br><span class="line">------------------------</span><br></pre></td></tr></table></figure></div>
+<h2 id="Git-多用户配置"><a href="#Git-多用户配置" class="headerlink" title="Git 多用户配置"></a>Git 多用户配置</h2><p>举个栗子： 张小天 的公司xx的 Git 仓库地址是 <code>git.xx.com</code> , 他公司的 Git 账号的用户名是 <code>zhangxiaotian</code>, 邮箱是 <code>zhangxiaotian@xx.com</code>。张小天 的 GitHub 用户名是 <code>LittleZhang</code>，邮箱是 <code>LittleZhang@gmail.com</code>。</p>
+<p>张小天可以这样设置：</p>
+<ul>
+<li><p>将 GitHub 的 Git 用户作为全局用户：</p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"LittleZhang"</span></span><br><span class="line">git config --global user.email <span class="string">"LittleZhang@gmail.com"</span></span><br></pre></td></tr></table></figure></div>
 
-<p>通过以上输出结果可以看出， <code>CAN_CHANGE</code> 和 <code>CANNOT_CHANGE</code> 字段同属于 final 修饰符修饰的常量字段，但是由于 <code>CANNOT_CHANGE</code> 常量在 Java 编译过程中使用了内联优化，其值在编译阶段就被编译为常量值 <code>1</code>，故而使用内联优化的 final 字段更改其值是无效的； 而 <code>CAN_CHANGE</code> 字段未被内联优化，故而能通过 Java 反射对其值进行修改。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://stackoverflow.com/questions/3301635/change-private-static-final-field-using-java-reflection" target="_blank" rel="noopener">Change private static final field using Java reflection</a></p>
+<p>这个全局的配置文件路径默认是 <code>~/.gitconfig</code></p>
+</li>
+<li><p>将 xx 公司的 Git 用户配置到 <code>~/.gitconfig-work</code> 文件中去：</p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config -f ~/.gitconfig-work user.name <span class="string">"zhangxiaotian"</span></span><br><span class="line">git config -f ~/.gitconfig-work user.email <span class="string">"zhangxiaotian@xx.com"</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>在全局配置(<code>~/.gitconfig</code>) 中使用 <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank" rel="noopener">conditional includes</a> 引用 <code>~/.gitconfig-work</code></p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global includeif.<span class="string">"gitdir:~/Work/"</span>.path .gitconfig-work</span><br></pre></td></tr></table></figure></div>
+
+<p>  最终，根据之前的配置，全局配置文件内容如下：</p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">    name = LittleZhang</span><br><span class="line">    email = LittleZhang@gmail.com</span><br><span class="line">[includeIf &quot;gitdir:~/Work/&quot;]</span><br><span class="line">    path = .gitconfig-work</span><br></pre></td></tr></table></figure></div>
+
+<p>  <code>gitdir</code> 表示 <code>.git</code>(本地带有版本控制的项目) 所在位置，<code>includeIf</code> 整个语句表示 <code>~/Work/</code> 路径下的所有的 Git 版本控制项目对应的 Git 用户信息都依据 <code>.gitconf-work</code> 来配置，即使用 <code>zhangxiaotian@xx.com</code> 这个用户。更多详细用法，请参考 Git 官方文档： <a href="https://git-scm.com/docs/git-config#_includes" target="_blank" rel="noopener">includes</a></p>
+</li>
+<li><p>把工作中的项目放在 <code>~/Work/</code> 路径下即可。</p>
+</li>
+</ul>
+<p>此时，张小天已经完成了 Git 的多用户配置，他只需要将工作中的项目放在 <code>~/Work/</code> 目录下即可，当然了，他也可以配置多个工作路径。但是只做好 Git 配置，只能使用 <code>http(s)</code> 来同步仓库，每次同步时还需要输入密码。接下来就需要进行多用户的 ssh 配置</p>
+<h2 id="ssh-多用户配置"><a href="#ssh-多用户配置" class="headerlink" title="ssh 多用户配置"></a>ssh 多用户配置</h2><ul>
+<li><p>生成 Github 的 Git 用户的 ssh 公钥私钥：</p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssk-keygen -t rsa -C <span class="string">"LittleZhang@gmail.com"</span> -f ~/.ssh/github</span><br></pre></td></tr></table></figure></div>
+
+<p>  会生成私钥 <code>~/.ssh/github</code> 和 公钥 <code>~/.ssh/github.pub</code></p>
+</li>
+<li><p>生成 xx 公司的 Git 用户的 ssh 公钥私钥：</p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssk-keygen -t rsa -C <span class="string">"zhangxiaotian@xx.com"</span> -f ~/.ssh/xx</span><br></pre></td></tr></table></figure></div>
+
+<p>  会生成私钥 <code>~/.ssh/xx</code> 和 公钥<code>~/.ssh/xx.pub</code> </p>
+</li>
+<li><p>生成 ssh 的 config 文件用于路由不同的配置：</p>
+  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Host git.xx.com</span><br><span class="line">HostName git.xx.com</span><br><span class="line">IdentityFile ~/.ssh/xx</span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line">HostName github.com</span><br><span class="line">IdentityFile ~/.ssh/github</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>将对应的 .pub 公钥信息添加到相对应的网站，不同的 Git 仓库网站，添加操作可能会不一样，但总体是一致的，网上有很多教程，就不再赘述了。</p>
+</li>
+<li><p>使用 <code>ssh -T git@github.com</code> 或者 <code>ssh -vT git@github.com</code>(<code>-v</code> 会包含更多改命令的操作细节) 来验证是否能通过 ssh 的方式正常连接到 GitHub。同理，也可以验证公司公司能否 ssh 连接成功。</p>
+</li>
+</ul>
+<p>至此，张小天完成了 Git 多用户配置 和 ssh 多用户配置的所有操作。撒花。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://git-scm.com/docs/git-config#_includes" target="_blank" rel="noopener">Git config - includes</a></li>
+<li><a href="https://stackoverflow.com/questions/4220416/can-i-specify-multiple-users-for-myself-in-gitconfig" target="_blank" rel="noopener">Can I specify multiple users for myself in .gitconfig?</a></li>
+<li><a href="http://chitanda.me/2015/06/11/tips-for-setup-hexo/#git多网站ssh部署方案" target="_blank" rel="noopener">git多网站ssh部署方案</a></li>
+</ul>
 
     </div>
 
@@ -379,7 +407,7 @@
     <strong>本文作者： </strong>Tianma</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://tianma.space/post/change-static-final-field-in-Java/" title="Java反射修改final修饰的属性值">https://tianma.space/post/change-static-final-field-in-Java/</a>
+    <a href="https://tianma.space/post/git-multi-users-configuration/" title="Git多用户配置">https://tianma.space/post/git-multi-users-configuration/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -389,23 +417,14 @@
       
 
       <footer class="post-footer">
-          
-            
-          
-          <div class="post-tags">
-            
-              <a href="/tags/Java反射/" rel="tag"><i class="fa fa-tag"></i> Java反射</a>
-            
-          </div>
-        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/post/PopupWindow-compat-on-Android-N/" rel="next" title="处理PopupWindow在Android 7.x中兼容性问题">
-                  <i class="fa fa-chevron-left"></i> 处理PopupWindow在Android 7.x中兼容性问题
+                <a href="/post/RxJava2-issues/" rel="next" title="关于RxJava2的一些问题">
+                  <i class="fa fa-chevron-left"></i> 关于RxJava2的一些问题
                 </a>
               
             </div>
@@ -413,10 +432,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/post/detect-when-RecyclerView-reaches-the-bottom/" rel="prev" title="监听RecyclerView是否滑动到底部">
-                  监听RecyclerView是否滑动到底部 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -468,7 +483,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方案"><span class="nav-number">1.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-多用户配置"><span class="nav-number">1.</span> <span class="nav-text">Git 多用户配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-多用户配置"><span class="nav-number">2.</span> <span class="nav-text">ssh 多用户配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -647,10 +662,10 @@
       owner: 'tianma8023',
       admin: ['tianma8023'],
       
-      id: '/post/463108745',
+      id: '/post/1729587124',
       
       body: '',
-      title: 'Java反射修改final修饰的属性值',
+      title: 'Git多用户配置',
         language: window.navigator.language || window.navigator.userLanguage,
       
       distractionFreeMode: 'true'

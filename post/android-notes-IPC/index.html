@@ -176,7 +176,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">79</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">80</span></a>
 
   </li>
       
@@ -202,7 +202,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">62</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">63</span></a>
 
   </li>
       
@@ -410,13 +410,10 @@
 <p><span style="color:#ff4081"> AS 自动生成的 aidl 对应的 java 类，可以很好的了解 Binder 的工作机制，所以有必要读一读这里的源码。</span> 这里大致介绍下各个字段及方法的含义：</p>
 <ul>
 <li><code>Stub#DESCRIPTOR</code>: <code>Binder</code> 的唯一标识</li>
-<li><code>Stub#asInterface(android.os.IBinader obj)</code>:
-将 <strong>服务端</strong> 的 Binder 对象转化成 <strong>客户端</strong> 所需要的 AIDL 接口类型的对象。当服务端和客户端位于同一进程中时，此方法返回的就是服务端对象本身。当它们不在同一个进程中时，返回的是由系统封装后的 <code>Stub.Proxy</code> 对象（也就是需要转换）</li>
+<li><code>Stub#asInterface(android.os.IBinader obj)</code>:<br>将 <strong>服务端</strong> 的 Binder 对象转化成 <strong>客户端</strong> 所需要的 AIDL 接口类型的对象。当服务端和客户端位于同一进程中时，此方法返回的就是服务端对象本身。当它们不在同一个进程中时，返回的是由系统封装后的 <code>Stub.Proxy</code> 对象（也就是需要转换）</li>
 <li><code>Stub#asBinder()</code>: 返回当前 Binder 对象</li>
-<li><code>Stub#onTransact(int code, Parcel data, Parcel reply, int flags)</code>：
-该方法会运行在<strong>服务端</strong>的 Binder 线程池中。客户端发起的跨进程请求会通过系统底层封装后交由此方法处理。服务端通过 code 参数确认接下来调用执行的目标方法。<br>如果该方法返回 false，则客户端的请求会失败，所以可以利用此特性进行权限认证。</li>
-<li><code>Proxy#getBookList()</code>:
-此方法运行在<strong>客户端</strong>。客户端使用此方法进行跨进程调用时，会转化为让服务端（远端）的 Binder 执行 <code>transact</code> 方法，与此同时客户端线程挂起，并最终调用服务端的 <code>onTransact</code>，即调用上一条的 <code>Stub#onTransact()</code> 方法，当服务端相应方法执行完毕后返回结果后，客户端当前线程结束挂起，继续执行，并取出服务端返回的结果。</li>
+<li><code>Stub#onTransact(int code, Parcel data, Parcel reply, int flags)</code>：<br>该方法会运行在<strong>服务端</strong>的 Binder 线程池中。客户端发起的跨进程请求会通过系统底层封装后交由此方法处理。服务端通过 code 参数确认接下来调用执行的目标方法。<br>如果该方法返回 false，则客户端的请求会失败，所以可以利用此特性进行权限认证。</li>
+<li><code>Proxy#getBookList()</code>:<br>此方法运行在<strong>客户端</strong>。客户端使用此方法进行跨进程调用时，会转化为让服务端（远端）的 Binder 执行 <code>transact</code> 方法，与此同时客户端线程挂起，并最终调用服务端的 <code>onTransact</code>，即调用上一条的 <code>Stub#onTransact()</code> 方法，当服务端相应方法执行完毕后返回结果后，客户端当前线程结束挂起，继续执行，并取出服务端返回的结果。</li>
 <li><code>Proxy#addBook()</code>：与上述的 <code>Proxy#getBookList()</code> 类似</li>
 </ul>
 <p><code>Binder</code> 的工作机制图：</p>
@@ -631,7 +628,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -657,7 +654,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-count">80</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

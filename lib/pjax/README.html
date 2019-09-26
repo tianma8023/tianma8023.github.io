@@ -36,16 +36,16 @@ $ git pull</code></pre>
 <p><em>Pjax does not rely on other libraries, like jQuery or similar. It is written entirely in vanilla JS.</em></p>
 <h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><ul>
 <li><p>You can link directly to the <a href="https://cdn.jsdelivr.net/npm/pjax/pjax.js">bundle</a>:</p>
-<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/pjax@VERSION/pjax.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
+<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/pjax@VERSION/pjax.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 </li>
 <li><p>Or the <a href="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js">minified bundle</a>:</p>
-<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/pjax@VERSION/pjax.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
+<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/pjax@VERSION/pjax.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 </li>
 <li><p>You can also install Pjax from <strong>npm</strong>:</p>
 <pre><code class="shell">npm install pjax</code></pre>
 <p><strong>Note</strong>: If you use this option, you will need to do one of the following:</p>
 <ul>
-<li>Link a script tag to either <code>pjax.js</code> or <code>pjax.min.js</code>. E.g.:<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./node_modules/pjax/pjax.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
+<li>Link a script tag to either <code>pjax.js</code> or <code>pjax.min.js</code>. E.g.:<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./node_modules/pjax/pjax.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 </li>
 <li>Use a bundler like Webpack. (<code>index.js</code> cannot be used in the browser without a bundler).</li>
 </ul>
@@ -56,7 +56,7 @@ cd pjax
 npm install
 npm run build</code></pre>
 <p>and then link a script tag to either <code>pjax.js</code> or <code>pjax.min.js</code>. E.g.:</p>
-<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./pjax.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
+<pre><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./pjax.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 </li>
 </ul>
 <hr>
@@ -123,10 +123,10 @@ npm run build</code></pre>
     &amp;copy; My Cool Blog
   <span class="tag">&lt;/<span class="name">footer</span>&gt;</span>
 
-  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"onDomReadystuff.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
-  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span>
-<span class="javascript">    <span class="comment">// analytics</span></span>
-<span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"onDomReadystuff.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">script</span>&gt;</span>
+    // analytics
+  <span class="tag">&lt;/<span class="name">script</span>&gt;</span>
 <span class="tag">&lt;/<span class="name">body</span>&gt;</span>
 <span class="tag">&lt;/<span class="name">html</span>&gt;</span></code></pre>
 <p>We want Pjax to intercept the URL <code>/about</code>, and replace <code>.the-content</code> with the resulting content of the request.</p>
@@ -240,7 +240,7 @@ pjax.refresh(newContent);</code></pre>
   <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">"js-Pjax"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">header</span>&gt;</span>
   <span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"js-Pjax"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">section</span>&gt;</span>
   <span class="tag">&lt;<span class="name">footer</span> <span class="attr">class</span>=<span class="string">"the-footer"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">footer</span>&gt;</span>
-  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">...</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">script</span>&gt;</span>...<span class="tag">&lt;/<span class="name">script</span>&gt;</span>
 <span class="tag">&lt;/<span class="name">body</span>&gt;</span>
 <span class="tag">&lt;/<span class="name">html</span>&gt;</span></code></pre>
 <p>This example is correct and should work “as expected”.</p>
@@ -262,14 +262,10 @@ pjax.refresh(newContent);</code></pre>
 })</code></pre>
 <p>Callbacks are bound to the Pjax instance itself to allow you to reuse it (ex: <code>this.onSwitch()</code>)</p>
 <h3 id="Existing-Switch-Callbacks"><a href="#Existing-Switch-Callbacks" class="headerlink" title="Existing Switch Callbacks"></a>Existing Switch Callbacks</h3><ul>
-<li><code>Pjax.switches.outerHTML</code>:
-The default behavior, replaces elements using <code>outerHTML</code>.</li>
-<li><code>Pjax.switches.innerHTML</code>:
-Replaces elements using <code>innerHTML</code> and copies <code>className</code>.</li>
-<li><code>Pjax.switches.replaceNode</code>:
-Replaces elements using <code>replaceChild</code></li>
-<li><code>Pjax.switches.sideBySide</code>:
-Smart replacing that allows you to have both elements in the same parent when you want to use CSS animations. Old elements are removed when all children have been fully animated (an <a href="http://www.w3.org/TR/css3-animations/#animationend">animationEnd</a> event is triggered).</li>
+<li><code>Pjax.switches.outerHTML</code>:<br>The default behavior, replaces elements using <code>outerHTML</code>.</li>
+<li><code>Pjax.switches.innerHTML</code>:<br>Replaces elements using <code>innerHTML</code> and copies <code>className</code>.</li>
+<li><code>Pjax.switches.replaceNode</code>:<br>Replaces elements using <code>replaceChild</code></li>
+<li><code>Pjax.switches.sideBySide</code>:<br>Smart replacing that allows you to have both elements in the same parent when you want to use CSS animations. Old elements are removed when all children have been fully animated (an <a href="http://www.w3.org/TR/css3-animations/#animationend">animationEnd</a> event is triggered).</li>
 </ul>
 <h3 id="Creating-a-Switch-Callback"><a href="#Creating-a-Switch-Callback" class="headerlink" title="Creating a Switch Callback"></a>Creating a Switch Callback</h3><p>Your callback function can do whatever you want, but you need to:</p>
 <ol>
@@ -390,7 +386,7 @@ Smart replacing that allows you to have both elements in the same parent when yo
 <span class="comment"></span>
 <span class="comment">    --&gt;</span>
   <span class="tag">&lt;/<span class="name">section</span>&gt;</span>
-  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">...</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+  <span class="tag">&lt;<span class="name">script</span>&gt;</span>...<span class="tag">&lt;/<span class="name">script</span>&gt;</span>
 <span class="tag">&lt;/<span class="name">body</span>&gt;</span>
 <span class="tag">&lt;/<span class="name">html</span>&gt;</span></code></pre>
 <h3 id="history-Boolean-default-true"><a href="#history-Boolean-default-true" class="headerlink" title="history (Boolean, default: true)"></a><code>history</code> (Boolean, default: <code>true</code>)</h3><p>Enable the use of <code>pushState()</code>. Disabling this will prevent Pjax from updating browser history. While possible, there is almost no use case where you would want to do this.</p>
@@ -441,8 +437,7 @@ Smart replacing that allows you to have both elements in the same parent when yo
 <ul>
 <li><code>X-Requested-With: &quot;XMLHttpRequest&quot;</code></li>
 <li><code>X-PJAX: &quot;true&quot;</code></li>
-<li><code>X-PJAX-Selectors</code>:
-  A serialized JSON array of selectors, taken from <code>options.selectors</code>. You can use this to send back only the elements that Pjax will use to switch, instead of sending the whole page. Note that you’ll need to deserialize this on the server (Such as by using <code>JSON.parse()</code>)</li>
+<li><code>X-PJAX-Selectors</code>:<br>  A serialized JSON array of selectors, taken from <code>options.selectors</code>. You can use this to send back only the elements that Pjax will use to switch, instead of sending the whole page. Note that you’ll need to deserialize this on the server (Such as by using <code>JSON.parse()</code>)</li>
 </ul>
 <h3 id="Response-Headers"><a href="#Response-Headers" class="headerlink" title="Response Headers"></a>Response Headers</h3><p>Pjax looks for the following headers on the response:</p>
 <ul>
@@ -480,44 +475,44 @@ whenContainerReady()
 <li><p>Edit your Disqus snippet like the one below.</p>
 </li>
 </ul>
-<h4 id="Disqus-snippet-before-Pjax-integration"><a href="#Disqus-snippet-before-Pjax-integration" class="headerlink" title="Disqus snippet before Pjax integration"></a>Disqus snippet <em>before</em> Pjax integration</h4><pre><code class="html"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span>
+<h4 id="Disqus-snippet-before-Pjax-integration"><a href="#Disqus-snippet-before-Pjax-integration" class="headerlink" title="Disqus snippet before Pjax integration"></a>Disqus snippet <em>before</em> Pjax integration</h4><pre><code class="html"><span class="tag">&lt;<span class="name">script</span>&gt;</span>
 <span class="javascript">  <span class="keyword">var</span> disqus_shortname = <span class="string">'YOURSHORTNAME'</span></span>
 <span class="javascript">  <span class="keyword">var</span> disqus_identifier = <span class="string">'PAGEID'</span></span>
 <span class="javascript">  <span class="keyword">var</span> disqus_url = <span class="string">'PAGEURL'</span></span>
 <span class="javascript">  <span class="keyword">var</span> disqus_script = <span class="string">'embed.js'</span></span>
-<span class="undefined"></span>
+
 <span class="javascript">  (<span class="function"><span class="keyword">function</span>(<span class="params">d,s</span>) </span>{</span>
 <span class="javascript">  s = d.createElement(<span class="string">'script'</span>);s.async=<span class="number">1</span>;s.src = <span class="string">'//'</span> + disqus_shortname + <span class="string">'.disqus.com/'</span>+disqus_script;</span>
 <span class="javascript">  (d.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>]).appendChild(s);</span>
 <span class="javascript">  })(<span class="built_in">document</span>)</span>
-<span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
+<span class="tag">&lt;/<span class="name">script</span>&gt;</span></code></pre>
 <h4 id="Disqus-snippet-after-Pjax-integration"><a href="#Disqus-snippet-after-Pjax-integration" class="headerlink" title="Disqus snippet after Pjax integration"></a>Disqus snippet <em>after</em> Pjax integration</h4><pre><code class="html"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"js-Pjax"</span>&gt;</span><span class="comment">&lt;!-- needs to be here on every Pjax-ified page, even if empty --&gt;</span>
 <span class="comment">&lt;!-- if (some condition) { // eventual server-side test to know whether or not you include this script --&gt;</span>
-  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span>
+  <span class="tag">&lt;<span class="name">script</span>&gt;</span>
 <span class="javascript">    <span class="keyword">var</span> disqus_shortname = <span class="string">'YOURSHORTNAME'</span></span>
 <span class="javascript">    <span class="keyword">var</span> disqus_identifier = <span class="string">'PAGEID'</span></span>
 <span class="javascript">    <span class="keyword">var</span> disqus_url = <span class="string">'PAGEURL'</span></span>
 <span class="javascript">    <span class="keyword">var</span> disqus_script = <span class="string">'embed.js'</span></span>
-<span class="undefined"></span>
+
 <span class="javascript">    <span class="comment">// here we will only load the disqus &lt;script&gt; if not already loaded</span></span>
 <span class="javascript">    <span class="keyword">if</span> (!<span class="built_in">window</span>.DISQUS) {</span>
 <span class="javascript">      (<span class="function"><span class="keyword">function</span>(<span class="params">d,s</span>) </span>{</span>
 <span class="javascript">      s = d.createElement(<span class="string">'script'</span>);s.async=<span class="number">1</span>;s.src = <span class="string">'//'</span> + disqus_shortname + <span class="string">'.disqus.com/'</span>+disqus_script;</span>
 <span class="javascript">      (d.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>]).appendChild(s);</span>
 <span class="javascript">      })(<span class="built_in">document</span>)</span>
-<span class="undefined">    }</span>
+    }
 <span class="javascript">    <span class="comment">// if disqus &lt;script&gt; is already loaded, we just reset disqus the right way</span></span>
 <span class="javascript">    <span class="comment">// see https://help.disqus.com/developer/using-disqus-on-ajax-sites</span></span>
 <span class="javascript">    <span class="keyword">else</span> {</span>
-<span class="undefined">      DISQUS.reset({</span>
+      DISQUS.reset({
 <span class="javascript">        reload: <span class="literal">true</span>,</span>
 <span class="javascript">        config: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span>
 <span class="javascript">          <span class="keyword">this</span>.page.identifier = disqus_identifier</span>
 <span class="javascript">          <span class="keyword">this</span>.page.url = disqus_url</span>
-<span class="undefined">        }</span>
-<span class="undefined">      })</span>
-<span class="undefined">    }</span>
-<span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+        }
+      })
+    }
+  <span class="tag">&lt;/<span class="name">script</span>&gt;</span>
 <span class="comment">&lt;!-- } --&gt;</span>
 <span class="tag">&lt;/<span class="name">div</span>&gt;</span></code></pre>
 <p><strong>Note: Pjax only handles inline <code>&lt;script&gt;</code> blocks for the container you are switching.</strong></p>
