@@ -1,4 +1,661 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="背景今天晚上在看秋日播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。"><meta name="keywords" content="概率学,Hearth Stone,排列组合"><meta property="og:type" content="article"><meta property="og:title" content="熊猫tv竞猜引发的组合问题"><meta property="og:url" content="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="背景今天晚上在看秋日播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2018-11-06T20:04:40.962Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="熊猫tv竞猜引发的组合问题"><meta name="twitter:description" content="背景今天晚上在看秋日播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。"><link rel="canonical" href="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>熊猫tv竞猜引发的组合问题 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">熊猫tv竞猜引发的组合问题</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2017-06-19 22:37:31" itemprop="dateCreated datePublished" datetime="2017-06-19T22:37:31+08:00">2017-06-19</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2018-11-07 04:04:40" itemprop="dateModified" datetime="2018-11-07T04:04:40+08:00">2018-11-07</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Algorithm & Data Structure</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>今天晚上在看<a href="http://weibo.com/qiurilushi" target="_blank" rel="noopener">秋日</a>播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。<a id="more"></a></p><p>这次秋日主要竞猜的内容有两个：</p><ol><li>远古雕文发现的三张法术牌费用总和是否小于某一值</li><li>秘法宝典开出来的三张法术牌费用总和是否小于某一值</li></ol><p>看到这个我就心血来潮了，这并不是以往的只能靠运气来赢得奖励的竞猜活动，而是可以通过<strong>数学分析</strong>进行量化的，因为其实这就是排列组合中的组合问题嘛：</p><ul><li>当前版本标准模式下，法师的法术牌一共有31张（除去任务橙 “打开时空之门”）</li><li>远古雕文发现的三张法术不可重复，也就是不可重复取的组合问题：从n个元素中不可重复抽m次</li><li>秘法宝典开出的三张法术牌可重复，也就是可重复取的组合问题：从m个元素中可重复抽m次</li></ul><p>上述问题可以用数学手段去解决，亦可以用编程去解决，因为懒得去分析各种可能的有效情况，所以直接用代码去解决了…</p><h2 id="代码解决"><a href="#代码解决" class="headerlink" title="代码解决"></a>代码解决</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tianma.exercise;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Combination</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 总组合数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> globalCounter = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">// 合法组合数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> validCounter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 从n个数据中选取m个的组合（不可重复取）, 小于临界值的有效</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combineUnrepeatable</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> threshold)</span> </span>&#123;</span><br><span class="line">		combine(input, m, threshold, <span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 从n个数中选取m次的组合（可重复取），小于临界值的有效</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combineRepeatable</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> threshold)</span> </span>&#123;</span><br><span class="line">		combine(input, m, threshold, <span class="keyword">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">combine</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> threshold, <span class="keyword">boolean</span> repeatable)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (input == <span class="keyword">null</span> || input.length == <span class="number">0</span> || m &lt;= <span class="number">0</span> || m &gt; input.length) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"参数错误"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span>[] out = <span class="keyword">new</span> <span class="keyword">int</span>[m];</span><br><span class="line">		innerCombine(input, m, <span class="number">0</span>, out, <span class="number">0</span>, threshold, repeatable);</span><br><span class="line">		<span class="keyword">float</span> ratio = <span class="number">1.0f</span> * validCounter / globalCounter;</span><br><span class="line">		System.out.println(<span class="string">"总次数 = "</span> + globalCounter + <span class="string">", 小于 "</span> + threshold + <span class="string">"的命中次数 = "</span> + validCounter + <span class="string">", 命中率 = "</span> + ratio);</span><br><span class="line">		globalCounter = validCounter = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">innerCombine</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> beginIdx, <span class="keyword">int</span>[] out, <span class="keyword">int</span> index, <span class="keyword">int</span> threshold, <span class="keyword">boolean</span> repeatable)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (m == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> total = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; index; i++) &#123;</span><br><span class="line">				System.out.print(out[i] + <span class="string">" "</span>);</span><br><span class="line">				total += out[i];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (total &lt; threshold) &#123;</span><br><span class="line">				validCounter++;</span><br><span class="line">				System.out.print(<span class="string">"*"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			globalCounter++;</span><br><span class="line">			System.out.println();</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = repeatable ? <span class="number">0</span> : beginIdx; i &lt; input.length; i++) &#123;</span><br><span class="line">			out[index] = input[i];</span><br><span class="line">			innerCombine(input, m - <span class="number">1</span>, i + <span class="number">1</span>, out, index + <span class="number">1</span>, threshold, repeatable);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 法师31张法术法力值数组</span></span><br><span class="line">		<span class="keyword">int</span>[] in = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">10</span> &#125;;</span><br><span class="line">		<span class="keyword">int</span> m = <span class="number">3</span>;</span><br><span class="line">		<span class="keyword">int</span> threshold = <span class="number">11</span>;</span><br><span class="line">		<span class="keyword">boolean</span> repeatable = <span class="keyword">true</span>;</span><br><span class="line">		Combination combination = <span class="keyword">new</span> Combination();</span><br><span class="line">		combination.combine(in, m, threshold, repeatable);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><h2 id="花絮"><a href="#花絮" class="headerlink" title="花絮"></a>花絮</h2><p>在后续的竞猜中我发现一个有趣的现象：</p><p>程序跑出的结果：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">总次数 = <span class="number">29791</span>, 小于 <span class="number">11</span>的命中次数 = <span class="number">16193</span>, 命中率 = <span class="number">0.5435534</span></span><br></pre></td></tr></table></figure></div><p>也就是说 “小于11” 的概率其实比 “大于10” 的概率要高，但是前者的”赔率”却比后者高。因为参加竞猜的大多数观众是凭直觉下注的，所以可以得出的结论是，有时候凭借直觉往往是错的，数学理论的支持才是王道，红红火火恍恍惚惚 ╰_╯</p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/" title="熊猫tv竞猜引发的组合问题">https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/概率学/" rel="tag"><i class="fa fa-tag"></i> 概率学</a><a href="/tags/Hearth-Stone/" rel="tag"><i class="fa fa-tag"></i> Hearth Stone</a><a href="/tags/排列组合/" rel="tag"><i class="fa fa-tag"></i> 排列组合</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/jump-to-show-user-info-in-weibo/" rel="next" title="Android 跳转至微博用户个人信息页面"><i class="fa fa-chevron-left"></i> Android 跳转至微博用户个人信息页面</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/calculate-combination-number-efficiently/" rel="prev" title="组合数的计算">组合数的计算<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码解决"><span class="nav-number">2.</span> <span class="nav-text">代码解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#花絮"><span class="nav-number">3.</span> <span class="nav-text">花絮</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="背景今天晚上在看秋日播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。">
+<meta name="keywords" content="排列组合,概率学,Hearth Stone">
+<meta property="og:type" content="article">
+<meta property="og:title" content="熊猫tv竞猜引发的组合问题">
+<meta property="og:url" content="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="背景今天晚上在看秋日播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-06T20:04:40.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="熊猫tv竞猜引发的组合问题">
+<meta name="twitter:description" content="背景今天晚上在看秋日播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。">
+  <link rel="canonical" href="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>熊猫tv竞猜引发的组合问题 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">熊猫tv竞猜引发的组合问题
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-19 22:37:31" itemprop="dateCreated datePublished" datetime="2017-06-19T22:37:31+08:00">2017-06-19</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-11-07 04:04:40" itemprop="dateModified" datetime="2018-11-07T04:04:40+08:00">2018-11-07</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Algorithm & Data Structure</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>今天晚上在看<a href="http://weibo.com/qiurilushi" target="_blank" rel="noopener">秋日</a>播炉石的时候，发现最近熊猫tv加入了竞猜活动，可以通过该活动来获取竹子（熊猫tv中货币之一），嘛~ 这就是一娱乐活动嘛。 <a id="more"></a></p>
+<p>这次秋日主要竞猜的内容有两个：</p>
+<ol>
+<li>远古雕文发现的三张法术牌费用总和是否小于某一值</li>
+<li>秘法宝典开出来的三张法术牌费用总和是否小于某一值</li>
+</ol>
+<p>看到这个我就心血来潮了，这并不是以往的只能靠运气来赢得奖励的竞猜活动，而是可以通过<strong>数学分析</strong>进行量化的，因为其实这就是排列组合中的组合问题嘛：</p>
+<ul>
+<li>当前版本标准模式下，法师的法术牌一共有31张（除去任务橙 “打开时空之门”）</li>
+<li>远古雕文发现的三张法术不可重复，也就是不可重复取的组合问题：从n个元素中不可重复抽m次</li>
+<li>秘法宝典开出的三张法术牌可重复，也就是可重复取的组合问题：从m个元素中可重复抽m次</li>
+</ul>
+<p>上述问题可以用数学手段去解决，亦可以用编程去解决，因为懒得去分析各种可能的有效情况，所以直接用代码去解决了…</p>
+<h2 id="代码解决"><a href="#代码解决" class="headerlink" title="代码解决"></a>代码解决</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tianma.exercise;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Combination</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 总组合数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> globalCounter = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">// 合法组合数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> validCounter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 从n个数据中选取m个的组合（不可重复取）, 小于临界值的有效</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combineUnrepeatable</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> threshold)</span> </span>&#123;</span><br><span class="line">		combine(input, m, threshold, <span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 从n个数中选取m次的组合（可重复取），小于临界值的有效</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combineRepeatable</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> threshold)</span> </span>&#123;</span><br><span class="line">		combine(input, m, threshold, <span class="keyword">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">combine</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> threshold, <span class="keyword">boolean</span> repeatable)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (input == <span class="keyword">null</span> || input.length == <span class="number">0</span> || m &lt;= <span class="number">0</span> || m &gt; input.length) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"参数错误"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span>[] out = <span class="keyword">new</span> <span class="keyword">int</span>[m];</span><br><span class="line">		innerCombine(input, m, <span class="number">0</span>, out, <span class="number">0</span>, threshold, repeatable);</span><br><span class="line">		<span class="keyword">float</span> ratio = <span class="number">1.0f</span> * validCounter / globalCounter;</span><br><span class="line">		System.out.println(<span class="string">"总次数 = "</span> + globalCounter + <span class="string">", 小于 "</span> + threshold + <span class="string">"的命中次数 = "</span> + validCounter + <span class="string">", 命中率 = "</span> + ratio);</span><br><span class="line">		globalCounter = validCounter = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">innerCombine</span><span class="params">(<span class="keyword">int</span>[] input, <span class="keyword">int</span> m, <span class="keyword">int</span> beginIdx, <span class="keyword">int</span>[] out, <span class="keyword">int</span> index, <span class="keyword">int</span> threshold, <span class="keyword">boolean</span> repeatable)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (m == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> total = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; index; i++) &#123;</span><br><span class="line">				System.out.print(out[i] + <span class="string">" "</span>);</span><br><span class="line">				total += out[i];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (total &lt; threshold) &#123;</span><br><span class="line">				validCounter++;</span><br><span class="line">				System.out.print(<span class="string">"*"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			globalCounter++;</span><br><span class="line">			System.out.println();</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = repeatable ? <span class="number">0</span> : beginIdx; i &lt; input.length; i++) &#123;</span><br><span class="line">			out[index] = input[i];</span><br><span class="line">			innerCombine(input, m - <span class="number">1</span>, i + <span class="number">1</span>, out, index + <span class="number">1</span>, threshold, repeatable);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 法师31张法术法力值数组</span></span><br><span class="line">		<span class="keyword">int</span>[] in = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">10</span> &#125;;</span><br><span class="line">		<span class="keyword">int</span> m = <span class="number">3</span>;</span><br><span class="line">		<span class="keyword">int</span> threshold = <span class="number">11</span>;</span><br><span class="line">		<span class="keyword">boolean</span> repeatable = <span class="keyword">true</span>;</span><br><span class="line">		Combination combination = <span class="keyword">new</span> Combination();</span><br><span class="line">		combination.combine(in, m, threshold, repeatable);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="花絮"><a href="#花絮" class="headerlink" title="花絮"></a>花絮</h2><p>在后续的竞猜中我发现一个有趣的现象：</p>
+
+<p>程序跑出的结果：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">总次数 = <span class="number">29791</span>, 小于 <span class="number">11</span>的命中次数 = <span class="number">16193</span>, 命中率 = <span class="number">0.5435534</span></span><br></pre></td></tr></table></figure></div>
+
+<p>也就是说 “小于11” 的概率其实比 “大于10” 的概率要高，但是前者的”赔率”却比后者高。因为参加竞猜的大多数观众是凭直觉下注的，所以可以得出的结论是，有时候凭借直觉往往是错的，数学理论的支持才是王道，红红火火恍恍惚惚 ╰_╯</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/" title="熊猫tv竞猜引发的组合问题">https://tianma.space/post/combination-problems-caused-by-Panda-Quiz/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/排列组合/" rel="tag"><i class="fa fa-tag"></i> 排列组合</a>
+            
+              <a href="/tags/概率学/" rel="tag"><i class="fa fa-tag"></i> 概率学</a>
+            
+              <a href="/tags/Hearth-Stone/" rel="tag"><i class="fa fa-tag"></i> Hearth Stone</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/jump-to-show-user-info-in-weibo/" rel="next" title="Android 跳转至微博用户个人信息页面">
+                  <i class="fa fa-chevron-left"></i> Android 跳转至微博用户个人信息页面
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/calculate-combination-number-efficiently/" rel="prev" title="组合数的计算">
+                  组合数的计算 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码解决"><span class="nav-number">2.</span> <span class="nav-text">代码解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#花絮"><span class="nav-number">3.</span> <span class="nav-text">花絮</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +672,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

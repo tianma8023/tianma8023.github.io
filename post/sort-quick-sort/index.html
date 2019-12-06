@@ -1,4 +1,765 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="概念快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。"><meta name="keywords" content="排序"><meta property="og:type" content="article"><meta property="og:title" content="排序-快速排序及其优化"><meta property="og:url" content="https://tianma.space/post/sort-quick-sort/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="概念快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-04T07:03:52.159Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="排序-快速排序及其优化"><meta name="twitter:description" content="概念快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。"><link rel="canonical" href="https://tianma.space/post/sort-quick-sort/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>排序-快速排序及其优化 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/sort-quick-sort/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">排序-快速排序及其优化</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2016-05-06 18:22:29" itemprop="dateCreated datePublished" datetime="2016-05-06T18:22:29+08:00">2016-05-06</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-08-04 15:03:52" itemprop="dateModified" datetime="2019-08-04T15:03:52+08:00">2019-08-04</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Algorithm & Data Structure</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。<a id="more"></a></p><p>具体算法步骤：</p><ol><li>在待排序的记录序列中选取一个记录作为枢轴(pivot)；</li><li>通过一趟排序，将所有小于枢轴的记录都移到枢轴的左边，将所有大于枢轴的记录都移到枢轴的右边，其实就是将当前待排序序列分为两部分，左边部分的记录均小于右边部分的记录，这样的操作叫做partition(分割)，分割操作结束后，枢轴所处的位置就是最终排序后它所处的位置；</li><li>对枢轴左右两边的子序列重复步骤1和2，直至所有子记录序列只剩下一个记录为止。</li></ol><p>以上步骤中，关键点是 1. 枢轴(pivot)的选取方式； 2. 对分割操作(partition)的细节处理。</p><h2 id="未优化的快速排序"><a href="#未优化的快速排序" class="headerlink" title="未优化的快速排序"></a>未优化的快速排序</h2><ol><li>枢轴的选取：将待排序序列的第1个记录作为枢轴；</li><li>分割操作 ： 分割操作中使用到了交换；</li></ol><p><strong><em>Java实现</em></strong></p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 未优化的快速排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QuickSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		quickSort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 对数组arr[low...high]的子序列作快速排序，使之有序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivotLoc; <span class="comment">// 记录枢轴(pivot)所在位置</span></span><br><span class="line">		<span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">			pivotLoc = partition(arr, low, high); <span class="comment">// 将arr[low...high]一分为二,并返回枢轴位置</span></span><br><span class="line"></span><br><span class="line">			quickSort(arr, low, pivotLoc - <span class="number">1</span>);<span class="comment">// 递归遍历arr[low...pivotLoc-1]</span></span><br><span class="line">			quickSort(arr, pivotLoc + <span class="number">1</span>, high); <span class="comment">// 递归遍历arr[pivotLoc+1...high]</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 在arr[low...high]选定pivot=arr[low]作为枢轴（中间位置），将arr[low...high]分成两部分，</span></span><br><span class="line"><span class="comment">	 * 前半部分的子序列的记录均小于pivot，后半部分的记录均大于pivot;最后返回pivot的位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivot;</span><br><span class="line">		pivot = arr[low]; <span class="comment">// 将arr[low]作为枢轴</span></span><br><span class="line">		<span class="keyword">while</span> (low &lt; high) &#123; <span class="comment">// 从数组的两端向中间扫描 // A</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[high] &gt;= pivot) &#123;  <span class="comment">// B</span></span><br><span class="line">				high--;</span><br><span class="line">			&#125;</span><br><span class="line">			swap(arr, low, high); <span class="comment">// 将比枢轴pivot小的元素交换到低位 // C</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[low] &lt;= pivot) &#123; <span class="comment">//D</span></span><br><span class="line">				low++;</span><br><span class="line">			&#125;</span><br><span class="line">			swap(arr, low, high); <span class="comment">// 将比枢轴pivot大的元素交换到高位 // E</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> low; <span class="comment">// 返回一趟下来后枢轴pivot所在的位置</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p><strong><em>演示</em></strong><br>为了方便演示，我对上面代码中的分割操作partition方法的代码进行了标注（分别标注为 A,B,C,D,E）。<br>对于待排序序列 {5, 1, 9, 3, 7, 4, 8, 6, 2}，我们来演示其第一趟排序过程：</p><p>low = 0, high = 8, pivot = arr[low] = 5;</p><ul><li><p>A处，low = 0, high = 8, low&lt;high，进行A循环；</p></li><li><p>B处，high的值不断递减，直至arr[high] = 2 小于pivot，跳出B循环：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pivot</span><br><span class="line">↓</span><br><span class="line">5  1  9  3  7  4  8  6  2</span><br><span class="line">↑                       ↑</span><br><span class="line">low                    high</span><br></pre></td></tr></table></figure></div></li><li><p>C处，执行low和high的元素交换：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                      pivot</span><br><span class="line">                        ↓</span><br><span class="line">2  1  9  3  7  4  8  6  5</span><br><span class="line">↑                       ↑</span><br><span class="line">low                    high</span><br></pre></td></tr></table></figure></div></li><li><p>D处，low的值不断递增，直至arr[low] = 9 大于 pivot，跳出D循环:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                      pivot</span><br><span class="line">                        ↓</span><br><span class="line">2  1  9  3  7  4  8  6  5</span><br><span class="line">      ↑                 ↑</span><br><span class="line">     low              high</span><br></pre></td></tr></table></figure></div></li><li><p>E处，执行low和high的元素交换：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    pivot</span><br><span class="line">      ↓</span><br><span class="line">2  1  5  3  7  4  8  6  9</span><br><span class="line">      ↑                 ↑</span><br><span class="line">     low              high</span><br></pre></td></tr></table></figure></div></li><li><p>A处，low =2, high = 8, low &lt; high，继续循环A；</p></li><li><p>B处，high的值不断递减，直至arr[high] = 4 小于pivot，跳出B循环：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    pivot</span><br><span class="line">      ↓</span><br><span class="line">2  1  5  3  7  4  8  6  9</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low     high</span><br></pre></td></tr></table></figure></div></li><li><p>C处，执行low和high的元素交换：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">             pivot</span><br><span class="line">               ↓</span><br><span class="line">2  1  4  3  7  5  8  6  9</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low      high</span><br></pre></td></tr></table></figure></div></li><li><p>D处，low的值不断递增，直至arr[low] = 7 大于 pivot，跳出D循环：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">             pivot</span><br><span class="line">               ↓</span><br><span class="line">2  1  4  3  7  5  8  6  9</span><br><span class="line">            ↑  ↑</span><br><span class="line">          low  high</span><br></pre></td></tr></table></figure></div></li><li><p>E处，执行low和high的元素交换：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">             pivot</span><br><span class="line">               ↓</span><br><span class="line">2  1  4  3  5  7  8  6  9</span><br><span class="line">            ↑  ↑</span><br><span class="line">          low  high</span><br></pre></td></tr></table></figure></div></li><li><p>A处，low = 4， high = 5， low &lt; high， 继续循环A：</p></li><li><p>B处，high不断递减，直至high=4 等于 low，不满足 low &lt; high，跳出B循环：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">          pivot</span><br><span class="line">            ↓</span><br><span class="line">2  1  4  3  5  7  8  6  9</span><br><span class="line">            ↑</span><br><span class="line">           low  </span><br><span class="line">           high</span><br></pre></td></tr></table></figure></div></li><li><p>因为low和high已经重合，所以在接下来的C、D、E操作中序列均未发生变化</p></li><li><p>A处，low=4, high = 4, 不满足 low &lt; high, 跳出A循环，最后返回low=4，即为pivot所在位置；</p></li></ul><p>所以第1趟排序下来之后，序列会变成 {2, 1, 4, 3, 5, 7, 8, 6, 9}；然后再对子序列{2, 1, 4, 3} 和 {7, 8, 6, 9} 做同样的操作即可完成整个排序。</p><p>对于partition方法中的low和high，可以这样理解：<strong>在low左边的记录都都小于等于枢轴pivot，在high右边的记录都大于等于枢轴pivot，那么当low和high重合时，则表示已经分割完毕，重合的位置（即low的值）就是枢轴pivot的位置。</strong></p><h2 id="快速排序的优化"><a href="#快速排序的优化" class="headerlink" title="快速排序的优化"></a>快速排序的优化</h2><p>(1) <strong>枢轴的选取方式的优化</strong>：<br>枢轴的选取方式有：(1) 固定位置选取；(2) 随机位置选取； (3) 三值取中法 等</p><p>固定位置选取：选取当前序列的第一个元素或者最后一个元素作为枢轴，上面的算法的枢轴选取方式即为固定位置选取。该方法不是一个好的选取方案，因为当整个序列有序时，每次分割(partition)操作只会将待排序序列减1，此时为最坏情况，算法复杂度沦为O(n^2)。然而，在待排序的序列中局部有序是相当常见的，所以固定位置选取枢轴不是一种好的选择。</p><p>随机位置选取：随机选取当前待排序序列的任意记录作为枢轴。由于采取随机，所以时间性能要强于固定位置选取。</p><p>三值取中法： 待排序序列的前(第一个位置)、中(中间位置)、后(最后一个位置)三个记录中的中间值(按大小排序)作为枢轴，比如:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">9 1 7 5 2 8 6 3 4</span><br><span class="line">↑       ↑       ↑</span><br><span class="line">low    mid    high</span><br><span class="line">前      中      后</span><br></pre></td></tr></table></figure></div><p>由于 9 &gt; 4 &gt; 2； 因此将4作为此次分割(partition)操作的枢轴。<br>三值取中操作后，整个序列变为：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4 1 7 5 2 8 6 3 9</span><br><span class="line">↑       ↑       ↑</span><br><span class="line">low    mid    high</span><br><span class="line">前      中      后</span><br></pre></td></tr></table></figure></div><p>三值取中本质上就是随机位置选取，但是由于随机位置选取过程中需要用到随机种子来产生随机数，而三值取中不需要，所以三值取中要优于随机位置选取。</p><p>所以优化枢轴的选取方式时，我们选择三值取中的方式。</p><p>(2) <strong>优化小数组时的排序方案</strong>：<br>当局部排序数组长度较小时，采用插入排序，而非快速排序，因为长度分割到够小后，继续分割的效率要低于直接插入排序。</p><p>(3) <strong>略去不必要的交换</strong><br>略去不必要的交换，将交换操作改为替换操作。<br>因为交换操作需要进行3次赋值操作，而替换操作只需要进行1次赋值操作。</p><p><strong><em>Java实现</em></strong></p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优化的快速排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OptimizedQuickSorter</span> <span class="keyword">extends</span> <span class="title">QuickSorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 插入排序最大数组长度值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_LENGTH_INSERT_SORT = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 对数组arr[low...high]的子序列作快速排序，使之有序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivotLoc; <span class="comment">// 记录枢轴(pivot)所在位置</span></span><br><span class="line">		<span class="keyword">if</span> ((high - low + <span class="number">1</span>) &gt; MAX_LENGTH_INSERT_SORT) &#123;</span><br><span class="line">			<span class="comment">// 待排序数组长度大于临界值，则进行快速排序</span></span><br><span class="line">			pivotLoc = partition(arr, low, high); <span class="comment">// 将arr[low...high]一分为二,并返回枢轴位置</span></span><br><span class="line"></span><br><span class="line">			quickSort(arr, low, pivotLoc - <span class="number">1</span>);<span class="comment">// 递归遍历arr[low...pivotLoc-1]</span></span><br><span class="line">			quickSort(arr, pivotLoc + <span class="number">1</span>, high); <span class="comment">// 递归遍历arr[pivotLoc+1...high]</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 2. 优化小数组时的排序方案，将快速排序改为插入排序</span></span><br><span class="line">			insertSort(arr, low, high); <span class="comment">// 对arr[low...high]子序列进行插入排序</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 在arr[low...high]中利用三值取中选取枢轴(pivot)，将arr[low...high]分成两部分，</span></span><br><span class="line"><span class="comment">	 * 前半部分的子序列的记录均小于pivot，后半部分的记录均大于pivot;最后返回pivot的位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivot;</span><br><span class="line">		pivot = medianOfThree(arr, low, high); <span class="comment">// 1. 优化排序基准，使用三值取中获取中值</span></span><br><span class="line">		<span class="keyword">while</span> (low &lt; high) &#123; <span class="comment">// 从数组的两端向中间扫描 // A</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[high] &gt;= pivot) &#123; <span class="comment">// B</span></span><br><span class="line">				high--;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// swap(arr, low, high); // 将比枢轴pivot小的元素交换到低位</span></span><br><span class="line">			arr[low] = arr[high]; <span class="comment">// 3. 优化不必要的交换，使用替换而不是交换  // C</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[low] &lt;= pivot) &#123; <span class="comment">// D</span></span><br><span class="line">				low++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// swap(arr, low, high); // 将比枢轴pivot大的元素交换到高位</span></span><br><span class="line">			arr[high] = arr[low]; <span class="comment">// 3. 优化不必要的交换，使用替换而不是交换 // E</span></span><br><span class="line">		&#125;</span><br><span class="line">		arr[low] = pivot; <span class="comment">// F</span></span><br><span class="line">		<span class="keyword">return</span> low; <span class="comment">// 返回一趟下来后枢轴pivot所在的位置</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 通过三值取中(从arr[low...high]子序列中)获取枢轴pivot的值，让arr[low]变成中值;并返回计算的枢轴(pivot)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">medianOfThree</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> mid = low + ((high - low) &gt;&gt; <span class="number">1</span>); <span class="comment">// mid = low + (high-low)/2, 中间元素下标</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 使用三值取中得到枢轴</span></span><br><span class="line">		<span class="keyword">if</span> (arr[low] &gt; arr[high]) &#123; <span class="comment">// 目的：让arr[low] &lt;= arr[high]</span></span><br><span class="line">			swap(arr, low, high);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (arr[mid] &gt; arr[high]) &#123; <span class="comment">// 目的：让arr[mid] &lt;= arr[high]</span></span><br><span class="line">			swap(arr, mid, high);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (arr[mid] &gt; arr[low]) &#123; <span class="comment">// 目的： 让arr[low] &gt;= arr[mid]</span></span><br><span class="line">			swap(arr, low, mid);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 经过上述变化，最终 arr[mid]&lt;=arr[low]&lt;=arr[high]，则arr[low]为中间值</span></span><br><span class="line">		<span class="keyword">return</span> arr[low];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 对子序列arr[low...high]进行插入排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i, j;</span><br><span class="line">		<span class="keyword">int</span> tmp;</span><br><span class="line">		<span class="keyword">for</span> (i = low + <span class="number">1</span>; i &lt;= high; i++) &#123; <span class="comment">// 从下标low+1开始遍历,因为下标为low的已经排好序</span></span><br><span class="line">			<span class="keyword">if</span> (arr[i] &lt; arr[i - <span class="number">1</span>]) &#123;</span><br><span class="line">				<span class="comment">// 如果当前下标对应的记录小于前一位记录,则需要插入,否则不需要插入，直接将记录数增加1</span></span><br><span class="line">				tmp = arr[i]; <span class="comment">// 记录下标i对应的元素</span></span><br><span class="line">				<span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= low &amp;&amp; arr[j] &gt; tmp; j--) &#123;</span><br><span class="line">					arr[j + <span class="number">1</span>] = arr[j]; <span class="comment">// 记录后移</span></span><br><span class="line">				&#125;</span><br><span class="line">				arr[j + <span class="number">1</span>] = tmp; <span class="comment">// 插入正确位置</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p><strong><em>演示</em></strong><br>为了方便演示，我对上面代码中的分割操作partition方法的代码仍然进行了标注（分别标注为 A,B,C,D,E,F）。<br>对于待排序序列 {5, 1, 9, 3, 7, 4, 8, 6, 2}，我们来演示其第一趟排序过程：</p><p>low = 0， high = 8， high-low+1=9 &gt; MAX_LENGTH_INSERT_SORT， 所以需要进行快速排序，接下来进行分割(partition)操作；</p><ul><li><p>此时待排序序列：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span>  <span class="number">1</span>  <span class="number">9</span>  <span class="number">3</span>  <span class="number">7</span>  <span class="number">4</span>  <span class="number">8</span>  <span class="number">6</span>  <span class="number">2</span></span><br><span class="line">↑                       ↑</span><br><span class="line">low                    high</span><br></pre></td></tr></table></figure></div></li><li><p>三值取中前：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">5  1  9  3  7  4  8  6  2</span><br><span class="line">↑           ↑           ↑</span><br><span class="line">low        mid        high</span><br></pre></td></tr></table></figure></div></li><li><p>三值取中后：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pivot</span><br><span class="line">↓</span><br><span class="line">5  1  9  3  2  4  8  6  7</span><br><span class="line">↑           ↑           ↑</span><br><span class="line">low        mid        high</span><br></pre></td></tr></table></figure></div></li></ul><p>pivot = 5；</p><ul><li><p>A处，low = 0, high = 8, low &lt; high, 进行A循环；</p></li><li><p>B处，high的值不断递减，直至arr[high] = 4 小于pivot，跳出B循环：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">5  1  9  3  2  4  8  6  7</span><br><span class="line">↑              ↑</span><br><span class="line">low           high</span><br></pre></td></tr></table></figure></div></li><li><p>C处，arr[low] = arr[high]，将低位的值替换成高位的值：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  4  8  6  7</span><br><span class="line">↑              ↑</span><br><span class="line">low           high</span><br></pre></td></tr></table></figure></div></li><li><p>D处，low的值不断递增，直至arr[low] = 9 大于 pivot，跳出D循环:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  4  8  6  7</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low     high</span><br></pre></td></tr></table></figure></div></li><li><p>E处，arr[high] = arr[low]， 将高位的值替换成低位的值：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  9  8  6  7</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low     high</span><br></pre></td></tr></table></figure></div></li><li><p>A处，low = 2, high = 5, low &lt; high, 进行A循环；</p></li><li><p>B处，high的值不断递减，直至arr[high] = 2 小于pivot，跳出B循环：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  9  8  6  7</span><br><span class="line">      ↑     ↑</span><br><span class="line">     low   high</span><br></pre></td></tr></table></figure></div></li><li><p>C处，arr[low] = arr[high]，将低位的值替换成高位的值：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  2  3  2  9  8  6  7</span><br><span class="line">      ↑     ↑</span><br><span class="line">     low   high</span><br></pre></td></tr></table></figure></div></li><li><p>D处，low的值不断递增，直至low = 4, high = 4, low == high，不满足 low &lt; high，跳出D循环:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4  1  2  3  2  9  8  6  7</span><br><span class="line">         ↑</span><br><span class="line">        low</span><br><span class="line">        high</span><br></pre></td></tr></table></figure></div></li><li><p>因为low和high已经重合，所以在接下来的E操作中序列未发生变化；</p></li><li><p>A处，low=4, high = 4, 不满足 low &lt; high, 跳出A循环；</p></li><li><p>F处， arr[low] = pivot:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4  1  2  3  5  9  8  6  7</span><br><span class="line">            ↑</span><br><span class="line">           low</span><br><span class="line">           high</span><br></pre></td></tr></table></figure></div></li><li><p>最后返回low = 4，即为pivot所在的位置。</p></li></ul><p>所以这趟排序下来之后，序列会变成 {4 1 2 3 5 9 8 6 7}；然后再对子序列{4, 1, 2, 3} 和 {9, 8, 6, 7} 做同样的操作即可完成整个排序。</p><h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间复杂度：<br>时间复杂度为O(nlogn)，在对快速排序进行各种细节性的优化后，快速排序的性能大大提高，在一般条件下超越了其它排序方法，故得此名。</p><p>空间复杂度：<br>就空间复杂度来说，主要是递归造成的栈空间的使用，最好情况，递归的深度为log2n，其空间复杂度也就为O(logn)，最坏情况，需要进行n‐1递归调用，其空间复杂度为O(n)，平均情况，空间复杂度也为O(logn)。</p><p>参考链接：<br><a href="http://bubkoo.com/2014/01/12/sort-algorithm/quick-sort/" target="_blank" rel="noopener">常见排序算法 - 快速排序 (Quick Sort)</a><br><a href="http://blog.csdn.net/insistgogo/article/details/7785038" target="_blank" rel="noopener">三种快速排序以及快速排序的优化</a></p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/sort-quick-sort/" title="排序-快速排序及其优化">https://tianma.space/post/sort-quick-sort/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/排序/" rel="tag"><i class="fa fa-tag"></i> 排序</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/sort-merge-sort/" rel="next" title="排序-归并排序"><i class="fa fa-chevron-left"></i> 排序-归并排序</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/free-shadowsocks-account/" rel="prev" title="免费ShadowSocks账号">免费ShadowSocks账号<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未优化的快速排序"><span class="nav-number">2.</span> <span class="nav-text">未优化的快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序的优化"><span class="nav-number">3.</span> <span class="nav-text">快速排序的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度"><span class="nav-number">4.</span> <span class="nav-text">复杂度</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="概念快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。">
+<meta name="keywords" content="排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序-快速排序及其优化">
+<meta property="og:url" content="https://tianma.space/post/sort-quick-sort/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="概念快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-04T07:03:52.159Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序-快速排序及其优化">
+<meta name="twitter:description" content="概念快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。">
+  <link rel="canonical" href="https://tianma.space/post/sort-quick-sort/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>排序-快速排序及其优化 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/sort-quick-sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">排序-快速排序及其优化
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2016-05-06 18:22:29" itemprop="dateCreated datePublished" datetime="2016-05-06T18:22:29+08:00">2016-05-06</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-04 15:03:52" itemprop="dateModified" datetime="2019-08-04T15:03:52+08:00">2019-08-04</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm-Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Algorithm & Data Structure</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>快速排序是交换类排序，采用分治思想，其基本原理是：通过一趟排序，将待排序数组分割成独立的两部分，其中一部分的关键字均比另一部分小；然后再分别对这两部分序列递归进行快速排序，从而使整个序列有序。 <a id="more"></a></p>
+<p>具体算法步骤：</p>
+<ol>
+<li>在待排序的记录序列中选取一个记录作为枢轴(pivot)；</li>
+<li>通过一趟排序，将所有小于枢轴的记录都移到枢轴的左边，将所有大于枢轴的记录都移到枢轴的右边，其实就是将当前待排序序列分为两部分，左边部分的记录均小于右边部分的记录，这样的操作叫做partition(分割)，分割操作结束后，枢轴所处的位置就是最终排序后它所处的位置；</li>
+<li>对枢轴左右两边的子序列重复步骤1和2，直至所有子记录序列只剩下一个记录为止。</li>
+</ol>
+<p>以上步骤中，关键点是 1. 枢轴(pivot)的选取方式； 2. 对分割操作(partition)的细节处理。</p>
+<h2 id="未优化的快速排序"><a href="#未优化的快速排序" class="headerlink" title="未优化的快速排序"></a>未优化的快速排序</h2><ol>
+<li>枢轴的选取：将待排序序列的第1个记录作为枢轴；</li>
+<li>分割操作 ： 分割操作中使用到了交换；</li>
+</ol>
+<p><strong><em>Java实现</em></strong></p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将数组按升序排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 交换数组arr中的第i个位置和第j个位置的关键字</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = arr[i];</span><br><span class="line">		arr[i] = arr[j];</span><br><span class="line">		arr[j] = tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 未优化的快速排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QuickSorter</span> <span class="keyword">implements</span> <span class="title">Sorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] sort(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">		quickSort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 对数组arr[low...high]的子序列作快速排序，使之有序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivotLoc; <span class="comment">// 记录枢轴(pivot)所在位置</span></span><br><span class="line">		<span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">			pivotLoc = partition(arr, low, high); <span class="comment">// 将arr[low...high]一分为二,并返回枢轴位置</span></span><br><span class="line"></span><br><span class="line">			quickSort(arr, low, pivotLoc - <span class="number">1</span>);<span class="comment">// 递归遍历arr[low...pivotLoc-1]</span></span><br><span class="line">			quickSort(arr, pivotLoc + <span class="number">1</span>, high); <span class="comment">// 递归遍历arr[pivotLoc+1...high]</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 在arr[low...high]选定pivot=arr[low]作为枢轴（中间位置），将arr[low...high]分成两部分，</span></span><br><span class="line"><span class="comment">	 * 前半部分的子序列的记录均小于pivot，后半部分的记录均大于pivot;最后返回pivot的位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivot;</span><br><span class="line">		pivot = arr[low]; <span class="comment">// 将arr[low]作为枢轴</span></span><br><span class="line">		<span class="keyword">while</span> (low &lt; high) &#123; <span class="comment">// 从数组的两端向中间扫描 // A</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[high] &gt;= pivot) &#123;  <span class="comment">// B</span></span><br><span class="line">				high--;</span><br><span class="line">			&#125;</span><br><span class="line">			swap(arr, low, high); <span class="comment">// 将比枢轴pivot小的元素交换到低位 // C</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[low] &lt;= pivot) &#123; <span class="comment">//D</span></span><br><span class="line">				low++;</span><br><span class="line">			&#125;</span><br><span class="line">			swap(arr, low, high); <span class="comment">// 将比枢轴pivot大的元素交换到高位 // E</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> low; <span class="comment">// 返回一趟下来后枢轴pivot所在的位置</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong><em>演示</em></strong><br>为了方便演示，我对上面代码中的分割操作partition方法的代码进行了标注（分别标注为 A,B,C,D,E）。<br>对于待排序序列 {5, 1, 9,  3, 7, 4, 8, 6, 2}，我们来演示其第一趟排序过程：</p>
+<p>low = 0, high = 8, pivot = arr[low] = 5;</p>
+<ul>
+<li><p>A处，low = 0, high = 8, low&lt;high，进行A循环；</p>
+</li>
+<li><p>B处，high的值不断递减，直至arr[high] = 2 小于pivot，跳出B循环：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pivot</span><br><span class="line">↓</span><br><span class="line">5  1  9  3  7  4  8  6  2</span><br><span class="line">↑                       ↑</span><br><span class="line">low                    high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>C处，执行low和high的元素交换：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                      pivot</span><br><span class="line">                        ↓</span><br><span class="line">2  1  9  3  7  4  8  6  5</span><br><span class="line">↑                       ↑</span><br><span class="line">low                    high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>D处，low的值不断递增，直至arr[low] = 9 大于 pivot，跳出D循环:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                      pivot</span><br><span class="line">                        ↓</span><br><span class="line">2  1  9  3  7  4  8  6  5</span><br><span class="line">      ↑                 ↑</span><br><span class="line">     low              high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>E处，执行low和high的元素交换：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    pivot</span><br><span class="line">      ↓</span><br><span class="line">2  1  5  3  7  4  8  6  9</span><br><span class="line">      ↑                 ↑</span><br><span class="line">     low              high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>A处，low =2, high = 8, low &lt; high，继续循环A；</p>
+</li>
+<li><p>B处，high的值不断递减，直至arr[high] = 4 小于pivot，跳出B循环：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    pivot</span><br><span class="line">      ↓</span><br><span class="line">2  1  5  3  7  4  8  6  9</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low     high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>C处，执行low和high的元素交换：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">             pivot</span><br><span class="line">               ↓</span><br><span class="line">2  1  4  3  7  5  8  6  9</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low      high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>D处，low的值不断递增，直至arr[low] = 7 大于 pivot，跳出D循环：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">             pivot</span><br><span class="line">               ↓</span><br><span class="line">2  1  4  3  7  5  8  6  9</span><br><span class="line">            ↑  ↑</span><br><span class="line">          low  high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>E处，执行low和high的元素交换：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">             pivot</span><br><span class="line">               ↓</span><br><span class="line">2  1  4  3  5  7  8  6  9</span><br><span class="line">            ↑  ↑</span><br><span class="line">          low  high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>A处，low = 4， high = 5， low &lt; high， 继续循环A：</p>
+</li>
+<li><p>B处，high不断递减，直至high=4 等于 low，不满足 low &lt; high，跳出B循环：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">          pivot</span><br><span class="line">            ↓</span><br><span class="line">2  1  4  3  5  7  8  6  9</span><br><span class="line">            ↑</span><br><span class="line">           low  </span><br><span class="line">           high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>因为low和high已经重合，所以在接下来的C、D、E操作中序列均未发生变化</p>
+</li>
+<li><p>A处，low=4, high = 4, 不满足 low &lt; high, 跳出A循环，最后返回low=4，即为pivot所在位置；</p>
+</li>
+</ul>
+<p>所以第1趟排序下来之后，序列会变成 {2, 1, 4, 3, 5, 7, 8, 6, 9}；然后再对子序列{2, 1, 4, 3} 和 {7, 8, 6, 9} 做同样的操作即可完成整个排序。</p>
+<p>对于partition方法中的low和high，可以这样理解：<strong>在low左边的记录都都小于等于枢轴pivot，在high右边的记录都大于等于枢轴pivot，那么当low和high重合时，则表示已经分割完毕，重合的位置（即low的值）就是枢轴pivot的位置。</strong></p>
+<h2 id="快速排序的优化"><a href="#快速排序的优化" class="headerlink" title="快速排序的优化"></a>快速排序的优化</h2><p>(1) <strong>枢轴的选取方式的优化</strong>：<br>枢轴的选取方式有：(1) 固定位置选取；(2) 随机位置选取； (3) 三值取中法 等</p>
+<p>固定位置选取：选取当前序列的第一个元素或者最后一个元素作为枢轴，上面的算法的枢轴选取方式即为固定位置选取。该方法不是一个好的选取方案，因为当整个序列有序时，每次分割(partition)操作只会将待排序序列减1，此时为最坏情况，算法复杂度沦为O(n^2)。然而，在待排序的序列中局部有序是相当常见的，所以固定位置选取枢轴不是一种好的选择。</p>
+<p>随机位置选取：随机选取当前待排序序列的任意记录作为枢轴。由于采取随机，所以时间性能要强于固定位置选取。</p>
+<p>三值取中法： 待排序序列的前(第一个位置)、中(中间位置)、后(最后一个位置)三个记录中的中间值(按大小排序)作为枢轴，比如:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">9 1 7 5 2 8 6 3 4</span><br><span class="line">↑       ↑       ↑</span><br><span class="line">low    mid    high</span><br><span class="line">前      中      后</span><br></pre></td></tr></table></figure></div>
+
+<p>由于 9 &gt; 4 &gt; 2； 因此将4作为此次分割(partition)操作的枢轴。<br>三值取中操作后，整个序列变为：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4 1 7 5 2 8 6 3 9</span><br><span class="line">↑       ↑       ↑</span><br><span class="line">low    mid    high</span><br><span class="line">前      中      后</span><br></pre></td></tr></table></figure></div>
+
+<p>三值取中本质上就是随机位置选取，但是由于随机位置选取过程中需要用到随机种子来产生随机数，而三值取中不需要，所以三值取中要优于随机位置选取。</p>
+<p>所以优化枢轴的选取方式时，我们选择三值取中的方式。</p>
+<p>(2) <strong>优化小数组时的排序方案</strong>：<br>当局部排序数组长度较小时，采用插入排序，而非快速排序，因为长度分割到够小后，继续分割的效率要低于直接插入排序。</p>
+<p>(3) <strong>略去不必要的交换</strong><br>略去不必要的交换，将交换操作改为替换操作。<br>因为交换操作需要进行3次赋值操作，而替换操作只需要进行1次赋值操作。</p>
+<p><strong><em>Java实现</em></strong></p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优化的快速排序</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OptimizedQuickSorter</span> <span class="keyword">extends</span> <span class="title">QuickSorter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 插入排序最大数组长度值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_LENGTH_INSERT_SORT = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 对数组arr[low...high]的子序列作快速排序，使之有序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivotLoc; <span class="comment">// 记录枢轴(pivot)所在位置</span></span><br><span class="line">		<span class="keyword">if</span> ((high - low + <span class="number">1</span>) &gt; MAX_LENGTH_INSERT_SORT) &#123;</span><br><span class="line">			<span class="comment">// 待排序数组长度大于临界值，则进行快速排序</span></span><br><span class="line">			pivotLoc = partition(arr, low, high); <span class="comment">// 将arr[low...high]一分为二,并返回枢轴位置</span></span><br><span class="line"></span><br><span class="line">			quickSort(arr, low, pivotLoc - <span class="number">1</span>);<span class="comment">// 递归遍历arr[low...pivotLoc-1]</span></span><br><span class="line">			quickSort(arr, pivotLoc + <span class="number">1</span>, high); <span class="comment">// 递归遍历arr[pivotLoc+1...high]</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 2. 优化小数组时的排序方案，将快速排序改为插入排序</span></span><br><span class="line">			insertSort(arr, low, high); <span class="comment">// 对arr[low...high]子序列进行插入排序</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 在arr[low...high]中利用三值取中选取枢轴(pivot)，将arr[low...high]分成两部分，</span></span><br><span class="line"><span class="comment">	 * 前半部分的子序列的记录均小于pivot，后半部分的记录均大于pivot;最后返回pivot的位置</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> pivot;</span><br><span class="line">		pivot = medianOfThree(arr, low, high); <span class="comment">// 1. 优化排序基准，使用三值取中获取中值</span></span><br><span class="line">		<span class="keyword">while</span> (low &lt; high) &#123; <span class="comment">// 从数组的两端向中间扫描 // A</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[high] &gt;= pivot) &#123; <span class="comment">// B</span></span><br><span class="line">				high--;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// swap(arr, low, high); // 将比枢轴pivot小的元素交换到低位</span></span><br><span class="line">			arr[low] = arr[high]; <span class="comment">// 3. 优化不必要的交换，使用替换而不是交换  // C</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[low] &lt;= pivot) &#123; <span class="comment">// D</span></span><br><span class="line">				low++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// swap(arr, low, high); // 将比枢轴pivot大的元素交换到高位</span></span><br><span class="line">			arr[high] = arr[low]; <span class="comment">// 3. 优化不必要的交换，使用替换而不是交换 // E</span></span><br><span class="line">		&#125;</span><br><span class="line">		arr[low] = pivot; <span class="comment">// F</span></span><br><span class="line">		<span class="keyword">return</span> low; <span class="comment">// 返回一趟下来后枢轴pivot所在的位置</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 通过三值取中(从arr[low...high]子序列中)获取枢轴pivot的值，让arr[low]变成中值;并返回计算的枢轴(pivot)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">medianOfThree</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> mid = low + ((high - low) &gt;&gt; <span class="number">1</span>); <span class="comment">// mid = low + (high-low)/2, 中间元素下标</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 使用三值取中得到枢轴</span></span><br><span class="line">		<span class="keyword">if</span> (arr[low] &gt; arr[high]) &#123; <span class="comment">// 目的：让arr[low] &lt;= arr[high]</span></span><br><span class="line">			swap(arr, low, high);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (arr[mid] &gt; arr[high]) &#123; <span class="comment">// 目的：让arr[mid] &lt;= arr[high]</span></span><br><span class="line">			swap(arr, mid, high);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (arr[mid] &gt; arr[low]) &#123; <span class="comment">// 目的： 让arr[low] &gt;= arr[mid]</span></span><br><span class="line">			swap(arr, low, mid);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 经过上述变化，最终 arr[mid]&lt;=arr[low]&lt;=arr[high]，则arr[low]为中间值</span></span><br><span class="line">		<span class="keyword">return</span> arr[low];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 对子序列arr[low...high]进行插入排序</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insertSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i, j;</span><br><span class="line">		<span class="keyword">int</span> tmp;</span><br><span class="line">		<span class="keyword">for</span> (i = low + <span class="number">1</span>; i &lt;= high; i++) &#123; <span class="comment">// 从下标low+1开始遍历,因为下标为low的已经排好序</span></span><br><span class="line">			<span class="keyword">if</span> (arr[i] &lt; arr[i - <span class="number">1</span>]) &#123;</span><br><span class="line">				<span class="comment">// 如果当前下标对应的记录小于前一位记录,则需要插入,否则不需要插入，直接将记录数增加1</span></span><br><span class="line">				tmp = arr[i]; <span class="comment">// 记录下标i对应的元素</span></span><br><span class="line">				<span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= low &amp;&amp; arr[j] &gt; tmp; j--) &#123;</span><br><span class="line">					arr[j + <span class="number">1</span>] = arr[j]; <span class="comment">// 记录后移</span></span><br><span class="line">				&#125;</span><br><span class="line">				arr[j + <span class="number">1</span>] = tmp; <span class="comment">// 插入正确位置</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong><em>演示</em></strong><br>为了方便演示，我对上面代码中的分割操作partition方法的代码仍然进行了标注（分别标注为 A,B,C,D,E,F）。<br>对于待排序序列 {5, 1, 9, 3, 7, 4, 8, 6, 2}，我们来演示其第一趟排序过程：</p>
+<p>low = 0， high = 8， high-low+1=9 &gt; MAX_LENGTH_INSERT_SORT， 所以需要进行快速排序，接下来进行分割(partition)操作；</p>
+<ul>
+<li><p>此时待排序序列：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span>  <span class="number">1</span>  <span class="number">9</span>  <span class="number">3</span>  <span class="number">7</span>  <span class="number">4</span>  <span class="number">8</span>  <span class="number">6</span>  <span class="number">2</span></span><br><span class="line">↑                       ↑</span><br><span class="line">low                    high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>三值取中前：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">5  1  9  3  7  4  8  6  2</span><br><span class="line">↑           ↑           ↑</span><br><span class="line">low        mid        high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>三值取中后：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pivot</span><br><span class="line">↓</span><br><span class="line">5  1  9  3  2  4  8  6  7</span><br><span class="line">↑           ↑           ↑</span><br><span class="line">low        mid        high</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ul>
+<p>pivot = 5；</p>
+<ul>
+<li><p>A处，low = 0, high = 8, low &lt; high, 进行A循环；</p>
+</li>
+<li><p>B处，high的值不断递减，直至arr[high] = 4 小于pivot，跳出B循环：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">5  1  9  3  2  4  8  6  7</span><br><span class="line">↑              ↑</span><br><span class="line">low           high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>C处，arr[low] = arr[high]，将低位的值替换成高位的值：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  4  8  6  7</span><br><span class="line">↑              ↑</span><br><span class="line">low           high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>D处，low的值不断递增，直至arr[low] = 9 大于 pivot，跳出D循环:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  4  8  6  7</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low     high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>E处，arr[high] = arr[low]， 将高位的值替换成低位的值：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  9  8  6  7</span><br><span class="line">      ↑        ↑</span><br><span class="line">     low     high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>A处，low = 2, high = 5, low &lt; high, 进行A循环；</p>
+</li>
+<li><p>B处，high的值不断递减，直至arr[high] = 2 小于pivot，跳出B循环：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  9  3  2  9  8  6  7</span><br><span class="line">      ↑     ↑</span><br><span class="line">     low   high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>C处，arr[low] = arr[high]，将低位的值替换成高位的值：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">4  1  2  3  2  9  8  6  7</span><br><span class="line">      ↑     ↑</span><br><span class="line">     low   high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>D处，low的值不断递增，直至low = 4, high = 4, low == high，不满足 low &lt; high，跳出D循环:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4  1  2  3  2  9  8  6  7</span><br><span class="line">         ↑</span><br><span class="line">        low</span><br><span class="line">        high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>因为low和high已经重合，所以在接下来的E操作中序列未发生变化；</p>
+</li>
+<li><p>A处，low=4, high = 4, 不满足 low &lt; high, 跳出A循环；</p>
+</li>
+<li><p>F处， arr[low] = pivot:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">4  1  2  3  5  9  8  6  7</span><br><span class="line">            ↑</span><br><span class="line">           low</span><br><span class="line">           high</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>最后返回low = 4，即为pivot所在的位置。</p>
+</li>
+</ul>
+<p>所以这趟排序下来之后，序列会变成 {4  1  2  3  5  9  8  6  7}；然后再对子序列{4, 1, 2, 3} 和 {9, 8, 6, 7} 做同样的操作即可完成整个排序。</p>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间复杂度：<br>时间复杂度为O(nlogn)，在对快速排序进行各种细节性的优化后，快速排序的性能大大提高，在一般条件下超越了其它排序方法，故得此名。</p>
+<p>空间复杂度：<br>就空间复杂度来说，主要是递归造成的栈空间的使用，最好情况，递归的深度为log2n，其空间复杂度也就为O(logn)，最坏情况，需要进行n‐1递归调用，其空间复杂度为O(n)，平均情况，空间复杂度也为O(logn)。</p>
+<p>参考链接：<br><a href="http://bubkoo.com/2014/01/12/sort-algorithm/quick-sort/" target="_blank" rel="noopener">常见排序算法 - 快速排序 (Quick Sort)</a><br><a href="http://blog.csdn.net/insistgogo/article/details/7785038" target="_blank" rel="noopener">三种快速排序以及快速排序的优化</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/sort-quick-sort/" title="排序-快速排序及其优化">https://tianma.space/post/sort-quick-sort/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/排序/" rel="tag"><i class="fa fa-tag"></i> 排序</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/sort-merge-sort/" rel="next" title="排序-归并排序">
+                  <i class="fa fa-chevron-left"></i> 排序-归并排序
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/free-shadowsocks-account/" rel="prev" title="免费ShadowSocks账号">
+                  免费ShadowSocks账号 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未优化的快速排序"><span class="nav-number">2.</span> <span class="nav-text">未优化的快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序的优化"><span class="nav-number">3.</span> <span class="nav-text">快速排序的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度"><span class="nav-number">4.</span> <span class="nav-text">复杂度</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +776,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

@@ -1,4 +1,641 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 迅雷极速版。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。"><meta name="keywords" content="下载工具,迅雷极速版"><meta property="og:type" content="article"><meta property="og:title" content="迅雷极速版 - 时代的眼泪"><meta property="og:url" content="https://tianma.space/post/thunder-speed-memory/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 迅雷极速版。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2018-11-06T20:04:41.074Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="迅雷极速版 - 时代的眼泪"><meta name="twitter:description" content="如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 迅雷极速版。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。"><link rel="canonical" href="https://tianma.space/post/thunder-speed-memory/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>迅雷极速版 - 时代的眼泪 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/thunder-speed-memory/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">迅雷极速版 - 时代的眼泪</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2017-07-28 22:38:17" itemprop="dateCreated datePublished" datetime="2017-07-28T22:38:17+08:00">2017-07-28</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2018-11-07 04:04:41" itemprop="dateModified" datetime="2018-11-07T04:04:41+08:00">2018-11-07</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/科学上网/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 <strong>迅雷极速版</strong>。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。<a id="more"></a></p><p>迅雷极速版 下架其实已经有很长一段时间了，之所以后知后觉，是因为 PC 上“绝版”的 迅雷极速版 仍然提供着高效的下载服务。最近手抽卸载了极速版，却发现她已经下架了。知乎上也有关于此事件的讨论， <a href="https://www.zhihu.com/question/52853014" target="_blank" rel="noopener">如何看待迅雷极速版下架？</a>。然后又尝试着下载了所谓的 <code>迅雷9</code>，整个一 浏览器 是闹哪样呢？呜呼哀哉！</p><p>最终还是找到了极速版的最后一版，版本号 <code>1.0.35.366</code> ，也许这个版本号应该被我们所铭记，毕竟又是一滴时代的眼泪不是吗？ :(</p><p>这里我提供最后一版的百度云链接: <a href="https://pan.baidu.com/s/1cyDJbg" target="_blank" rel="noopener">百度云 - ThunderSpeed-1.0.35.366.zip</a>, 提取密码 <code>vhxa</code> 。</p><p>我想，极速版我会用到其服务被关停为止，嗯。</p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/thunder-speed-memory/" title="迅雷极速版 - 时代的眼泪">https://tianma.space/post/thunder-speed-memory/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/下载工具/" rel="tag"><i class="fa fa-tag"></i> 下载工具</a><a href="/tags/迅雷极速版/" rel="tag"><i class="fa fa-tag"></i> 迅雷极速版</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/hexo-material-intergrate-image-display-feature/" rel="next" title="Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能"><i class="fa fa-chevron-left"></i> Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/baidu-net-disk-tricks/" rel="prev" title="百度云资源加速下载">百度云资源加速下载<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 迅雷极速版。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。">
+<meta name="keywords" content="下载工具,迅雷极速版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迅雷极速版 - 时代的眼泪">
+<meta property="og:url" content="https://tianma.space/post/thunder-speed-memory/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 迅雷极速版。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-06T20:04:41.074Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="迅雷极速版 - 时代的眼泪">
+<meta name="twitter:description" content="如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 迅雷极速版。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。">
+  <link rel="canonical" href="https://tianma.space/post/thunder-speed-memory/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>迅雷极速版 - 时代的眼泪 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/thunder-speed-memory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">迅雷极速版 - 时代的眼泪
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-28 22:38:17" itemprop="dateCreated datePublished" datetime="2017-07-28T22:38:17+08:00">2017-07-28</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-11-07 04:04:41" itemprop="dateModified" datetime="2018-11-07T04:04:41+08:00">2018-11-07</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/科学上网/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>如果说提供 高效迅捷的P2P 下载服务是迅雷的核心业务，那迅雷产品中从一而终的就是 <strong>迅雷极速版</strong>。然而，伴随着与QQ旋风 PK 的胜利，迅雷的产品理念逐渐多了些杂乱无章的东西，引发的的恶果之一就有 迅雷极速版 的下架。 <a id="more"></a></p>
+<p>迅雷极速版 下架其实已经有很长一段时间了，之所以后知后觉，是因为 PC 上“绝版”的 迅雷极速版 仍然提供着高效的下载服务。最近手抽卸载了极速版，却发现她已经下架了。知乎上也有关于此事件的讨论， <a href="https://www.zhihu.com/question/52853014" target="_blank" rel="noopener">如何看待迅雷极速版下架？</a>。然后又尝试着下载了所谓的 <code>迅雷9</code>，整个一 浏览器 是闹哪样呢？呜呼哀哉！</p>
+<p>最终还是找到了极速版的最后一版，版本号 <code>1.0.35.366</code> ，也许这个版本号应该被我们所铭记，毕竟又是一滴时代的眼泪不是吗？ :(   </p>
+<p>这里我提供最后一版的百度云链接: <a href="https://pan.baidu.com/s/1cyDJbg" target="_blank" rel="noopener">百度云 - ThunderSpeed-1.0.35.366.zip</a>, 提取密码 <code>vhxa</code> 。 </p>
+<p>我想，极速版我会用到其服务被关停为止，嗯。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/thunder-speed-memory/" title="迅雷极速版 - 时代的眼泪">https://tianma.space/post/thunder-speed-memory/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/下载工具/" rel="tag"><i class="fa fa-tag"></i> 下载工具</a>
+            
+              <a href="/tags/迅雷极速版/" rel="tag"><i class="fa fa-tag"></i> 迅雷极速版</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/hexo-material-intergrate-image-display-feature/" rel="next" title="Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能">
+                  <i class="fa fa-chevron-left"></i> Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/baidu-net-disk-tricks/" rel="prev" title="百度云资源加速下载">
+                  百度云资源加速下载 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +652,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

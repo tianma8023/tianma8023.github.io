@@ -1,4 +1,695 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="zsh 之所以被广为推荐，其中 oh-my-zsh 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。"><meta name="keywords" content="macOS,zsh,oh-my-zsh"><meta property="og:type" content="article"><meta property="og:title" content="zsh 神兵利器之 oh-my-zsh"><meta property="og:url" content="https://tianma.space/post/oh-my-zsh-instructions/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="zsh 之所以被广为推荐，其中 oh-my-zsh 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-11-22T11:02:56.633Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="zsh 神兵利器之 oh-my-zsh"><meta name="twitter:description" content="zsh 之所以被广为推荐，其中 oh-my-zsh 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。"><link rel="canonical" href="https://tianma.space/post/oh-my-zsh-instructions/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>zsh 神兵利器之 oh-my-zsh | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/oh-my-zsh-instructions/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">zsh 神兵利器之 oh-my-zsh</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-10-01 08:44:26" itemprop="dateCreated datePublished" datetime="2019-10-01T08:44:26+08:00">2019-10-01</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-11-22 19:02:56" itemprop="dateModified" datetime="2019-11-22T19:02:56+08:00">2019-11-22</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Others/" itemprop="url" rel="index"><span itemprop="name">Others</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>zsh 之所以被广为推荐，其中 <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh-my-zsh</a> 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。</p><a id="more"></a><p>安装 oh-my-zsh，因为安装 oh-my-zsh 过程中会直接覆盖 <code>~/.zshrc</code> 文件，所以在有必要的情况下需要提前备份该文件中的内容：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br></pre></td></tr></table></figure></div><p>安装完毕之后，会生成 <code>~/.oh-my-zsh</code> 目录，看一下该目录大致的结构：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- plugins   // oh-my-zsh 默认提供的插件存放位置</span><br><span class="line">- themes    // oh-my-zsh 默认提供的主题存放位置</span><br><span class="line">- custom    // 用户自定义目录</span><br><span class="line">  - plugins // 自定义的插件存放位置</span><br><span class="line">  - themes  // 自定义的主题存放位置</span><br></pre></td></tr></table></figure></div><p>前面说过，oh-my-zsh 会覆盖原有的 <code>~/.zshrc</code>, 它会将其默认的配置写在里面。其中就包括 主题 和 插件</p><h2 id="oh-my-zsh-主题"><a href="#oh-my-zsh-主题" class="headerlink" title="oh-my-zsh 主题"></a>oh-my-zsh 主题</h2><p><code>~/.oh-my-zsh/themes/</code> 下是默认支持的主题样式，可以找到你想要的主题，并在 <code>~/.zshrc</code> 中指定：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZSH_THEME=<span class="string">"xxx"</span></span><br></pre></td></tr></table></figure></div><p>如果不知道选取哪种，则建议使用随机主题：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZSH_THEME=<span class="string">"random"</span></span><br></pre></td></tr></table></figure></div><p>会在每次执行 <code>source ~/.zshrc</code> 或者 每次重新打开终端时随机加载一个主题，从而选择自己喜欢的主题。</p><h2 id="oh-my-zsh-插件"><a href="#oh-my-zsh-插件" class="headerlink" title="oh-my-zsh 插件"></a>oh-my-zsh 插件</h2><p>我们可以在 <code>~/.zshrc</code> 中指定需要使用的插件列表, 比如贴一下我目前 zsh 的插件列表:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">plugins = (</span><br><span class="line">    git</span><br><span class="line">    autojump</span><br><span class="line">    sudo</span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div><p>其中除了最后两个 <code>zsh-autosuggestions</code> 和 <code>zsh-syntax-highlighting</code> 之外，其他的插件都是 oh-my-zsh 内置的。</p><p>关于每个插件的具体用法，其实在对应的插件目录下面都会有相关 <code>README.md</code> 可供参考。</p><p>下面分别说介绍一下这些不同的插件，这些插件都需要在 <code>~/.zshrc</code> 的 <code>plugins</code> 字段中配置，就不再赘述。</p><h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>作用：</p><ul><li><p>如果当前是 git 项目，则会直接显示当前项目所在的 git 分支</p></li><li><p>可以使用各种 git 命令的缩写：<br>例如：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git ==&gt; g</span><br><span class="line">git add ==&gt; ga</span><br><span class="line">git add -all ==&gt; gaa</span><br></pre></td></tr></table></figure></div><p>具体有哪些 git 相关命令缩写，可以参考 <code>~/.oh-my-zsh/plugins/git/git.plugin.zsh</code></p></li></ul><h3 id="autojump"><a href="#autojump" class="headerlink" title="autojump"></a>autojump</h3><p>这是 <a href="https://github.com/wting/autojump" target="_blank" rel="noopener">autojump</a> 的官方仓库，autojump 可以非常方便的在各个历史目录中跳转切换。</p><p>除了需要在 <code>~/.zshrc</code> 中将 autojump 的 zsh 插件添加进来之外，还需要手动安装 autojump 命令：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install autojump</span><br></pre></td></tr></table></figure></div><p>autojump 是基于历史命令记录的，想要快速跳转必须之前访问过该目录。<code>autojump</code> 同时有命令缩写 <code>j</code>，比如：<br>之前的操作：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/work/HelloWorld</span><br></pre></td></tr></table></figure></div><p>有了之前的历史命令记录之后，下次再想切换到该目录，就可以方便的跳转：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">j HelloWorld</span><br></pre></td></tr></table></figure></div><h3 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h3><p>sudo 可以很方便地在之前的命令加上 <code>sudo</code> 前缀，只要按两次 <code>esc</code> 键即可。</p><h3 id="zsh-autosuggestions"><a href="#zsh-autosuggestions" class="headerlink" title="zsh-autosuggestions"></a>zsh-autosuggestions</h3><p><code>zsh-autosuggestions</code> 会在你输入命令时，给出建议的命令，默认按 <code>→</code> 即 TAB 键补全。</p><p>安装：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-autosuggestions</span><br></pre></td></tr></table></figure></div><p>我们还可以修改补全的按键，比如使用 <code>ctrl</code> + <code>space</code> 来补全：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bindkey</span> <span class="string">'^ '</span> autosuggest-accept</span><br></pre></td></tr></table></figure></div><h3 id="zsh-syntax-highlighting"><a href="#zsh-syntax-highlighting" class="headerlink" title="zsh-syntax-highlighting"></a>zsh-syntax-highlighting</h3><p>zsh-syntax-highlighting 可以分别高亮 正确 和 错误 的命令，让用户提前知道自己是否有输错命令。</p><p>安装：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-syntax-highlighting</span><br></pre></td></tr></table></figure></div><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh-my-zsh</a></li><li><a href="https://hufangyun.com/2017/zsh-plugin/" target="_blank" rel="noopener">zsh oh-my-zsh 插件推荐</a></li></ul></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/oh-my-zsh-instructions/" title="zsh 神兵利器之 oh-my-zsh">https://tianma.space/post/oh-my-zsh-instructions/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/macOS/" rel="tag"><i class="fa fa-tag"></i> macOS</a><a href="/tags/zsh/" rel="tag"><i class="fa fa-tag"></i> zsh</a><a href="/tags/oh-my-zsh/" rel="tag"><i class="fa fa-tag"></i> oh-my-zsh</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/macOS-configuration/" rel="next" title="macOS 系统配置篇"><i class="fa fa-chevron-left"></i> macOS 系统配置篇</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#oh-my-zsh-主题"><span class="nav-number">1.</span> <span class="nav-text">oh-my-zsh 主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#oh-my-zsh-插件"><span class="nav-number">2.</span> <span class="nav-text">oh-my-zsh 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git"><span class="nav-number">2.1.</span> <span class="nav-text">git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autojump"><span class="nav-number">2.2.</span> <span class="nav-text">autojump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo"><span class="nav-number">2.3.</span> <span class="nav-text">sudo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh-autosuggestions"><span class="nav-number">2.4.</span> <span class="nav-text">zsh-autosuggestions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh-syntax-highlighting"><span class="nav-number">2.5.</span> <span class="nav-text">zsh-syntax-highlighting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="zsh 之所以被广为推荐，其中 oh-my-zsh 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。">
+<meta name="keywords" content="macOS,zsh,oh-my-zsh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zsh 神兵利器之 oh-my-zsh">
+<meta property="og:url" content="https://tianma.space/post/oh-my-zsh-instructions/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="zsh 之所以被广为推荐，其中 oh-my-zsh 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-22T11:02:56.633Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="zsh 神兵利器之 oh-my-zsh">
+<meta name="twitter:description" content="zsh 之所以被广为推荐，其中 oh-my-zsh 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。">
+  <link rel="canonical" href="https://tianma.space/post/oh-my-zsh-instructions/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>zsh 神兵利器之 oh-my-zsh | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/oh-my-zsh-instructions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">zsh 神兵利器之 oh-my-zsh
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-01 08:44:26" itemprop="dateCreated datePublished" datetime="2019-10-01T08:44:26+08:00">2019-10-01</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-22 19:02:56" itemprop="dateModified" datetime="2019-11-22T19:02:56+08:00">2019-11-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Others/" itemprop="url" rel="index"><span itemprop="name">Others</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>zsh 之所以被广为推荐，其中 <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh-my-zsh</a> 功不可没。它支持大量方便的插件，可以让你的 Shell 玩出花来。</p>
+<a id="more"></a>
+
+<p>安装 oh-my-zsh，因为安装 oh-my-zsh 过程中会直接覆盖 <code>~/.zshrc</code> 文件，所以在有必要的情况下需要提前备份该文件中的内容：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>安装完毕之后，会生成 <code>~/.oh-my-zsh</code> 目录，看一下该目录大致的结构：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- plugins   // oh-my-zsh 默认提供的插件存放位置</span><br><span class="line">- themes    // oh-my-zsh 默认提供的主题存放位置</span><br><span class="line">- custom    // 用户自定义目录</span><br><span class="line">  - plugins // 自定义的插件存放位置</span><br><span class="line">  - themes  // 自定义的主题存放位置</span><br></pre></td></tr></table></figure></div>
+
+<p>前面说过，oh-my-zsh 会覆盖原有的 <code>~/.zshrc</code>, 它会将其默认的配置写在里面。其中就包括 主题 和 插件</p>
+<h2 id="oh-my-zsh-主题"><a href="#oh-my-zsh-主题" class="headerlink" title="oh-my-zsh 主题"></a>oh-my-zsh 主题</h2><p><code>~/.oh-my-zsh/themes/</code> 下是默认支持的主题样式，可以找到你想要的主题，并在 <code>~/.zshrc</code> 中指定：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZSH_THEME=<span class="string">"xxx"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>如果不知道选取哪种，则建议使用随机主题：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ZSH_THEME=<span class="string">"random"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>会在每次执行 <code>source ~/.zshrc</code> 或者 每次重新打开终端时随机加载一个主题，从而选择自己喜欢的主题。</p>
+<h2 id="oh-my-zsh-插件"><a href="#oh-my-zsh-插件" class="headerlink" title="oh-my-zsh 插件"></a>oh-my-zsh 插件</h2><p>我们可以在 <code>~/.zshrc</code> 中指定需要使用的插件列表, 比如贴一下我目前 zsh 的插件列表:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="PLAIN"><figure class="highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">plugins = (</span><br><span class="line">    git</span><br><span class="line">    autojump</span><br><span class="line">    sudo</span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p>其中除了最后两个 <code>zsh-autosuggestions</code> 和 <code>zsh-syntax-highlighting</code> 之外，其他的插件都是 oh-my-zsh 内置的。</p>
+<p>关于每个插件的具体用法，其实在对应的插件目录下面都会有相关 <code>README.md</code> 可供参考。    </p>
+<p>下面分别说介绍一下这些不同的插件，这些插件都需要在 <code>~/.zshrc</code> 的 <code>plugins</code> 字段中配置，就不再赘述。</p>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>作用：</p>
+<ul>
+<li><p>如果当前是 git 项目，则会直接显示当前项目所在的 git 分支</p>
+</li>
+<li><p>可以使用各种 git 命令的缩写：<br>例如：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git ==&gt; g</span><br><span class="line">git add ==&gt; ga</span><br><span class="line">git add -all ==&gt; gaa</span><br></pre></td></tr></table></figure></div>
+
+<p>具体有哪些 git 相关命令缩写，可以参考 <code>~/.oh-my-zsh/plugins/git/git.plugin.zsh</code></p>
+</li>
+</ul>
+<h3 id="autojump"><a href="#autojump" class="headerlink" title="autojump"></a>autojump</h3><p>这是 <a href="https://github.com/wting/autojump" target="_blank" rel="noopener">autojump</a> 的官方仓库，autojump 可以非常方便的在各个历史目录中跳转切换。</p>
+<p>除了需要在 <code>~/.zshrc</code> 中将 autojump 的 zsh 插件添加进来之外，还需要手动安装 autojump 命令：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install autojump</span><br></pre></td></tr></table></figure></div>
+
+<p>autojump 是基于历史命令记录的，想要快速跳转必须之前访问过该目录。<code>autojump</code> 同时有命令缩写 <code>j</code>，比如：<br>之前的操作：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/work/HelloWorld</span><br></pre></td></tr></table></figure></div>
+
+<p>有了之前的历史命令记录之后，下次再想切换到该目录，就可以方便的跳转：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">j HelloWorld</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h3><p>sudo 可以很方便地在之前的命令加上 <code>sudo</code> 前缀，只要按两次 <code>esc</code> 键即可。</p>
+<h3 id="zsh-autosuggestions"><a href="#zsh-autosuggestions" class="headerlink" title="zsh-autosuggestions"></a>zsh-autosuggestions</h3><p><code>zsh-autosuggestions</code> 会在你输入命令时，给出建议的命令，默认按 <code>→</code> 即 TAB 键补全。</p>
+<p>安装：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-autosuggestions</span><br></pre></td></tr></table></figure></div>
+
+<p>我们还可以修改补全的按键，比如使用 <code>ctrl</code> + <code>space</code> 来补全：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bindkey</span> <span class="string">'^ '</span> autosuggest-accept</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="zsh-syntax-highlighting"><a href="#zsh-syntax-highlighting" class="headerlink" title="zsh-syntax-highlighting"></a>zsh-syntax-highlighting</h3><p>zsh-syntax-highlighting 可以分别高亮 正确 和 错误 的命令，让用户提前知道自己是否有输错命令。</p>
+<p>安装：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="BASH"><figure class="highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-syntax-highlighting</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh-my-zsh</a></li>
+<li><a href="https://hufangyun.com/2017/zsh-plugin/" target="_blank" rel="noopener">zsh oh-my-zsh 插件推荐</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/oh-my-zsh-instructions/" title="zsh 神兵利器之 oh-my-zsh">https://tianma.space/post/oh-my-zsh-instructions/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/macOS/" rel="tag"><i class="fa fa-tag"></i> macOS</a>
+            
+              <a href="/tags/zsh/" rel="tag"><i class="fa fa-tag"></i> zsh</a>
+            
+              <a href="/tags/oh-my-zsh/" rel="tag"><i class="fa fa-tag"></i> oh-my-zsh</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/macOS-configuration/" rel="next" title="macOS 系统配置篇">
+                  <i class="fa fa-chevron-left"></i> macOS 系统配置篇
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#oh-my-zsh-主题"><span class="nav-number">1.</span> <span class="nav-text">oh-my-zsh 主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#oh-my-zsh-插件"><span class="nav-number">2.</span> <span class="nav-text">oh-my-zsh 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git"><span class="nav-number">2.1.</span> <span class="nav-text">git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autojump"><span class="nav-number">2.2.</span> <span class="nav-text">autojump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo"><span class="nav-number">2.3.</span> <span class="nav-text">sudo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh-autosuggestions"><span class="nav-number">2.4.</span> <span class="nav-text">zsh-autosuggestions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh-syntax-highlighting"><span class="nav-number">2.5.</span> <span class="nav-text">zsh-syntax-highlighting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +706,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

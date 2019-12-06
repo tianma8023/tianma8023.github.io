@@ -1,4 +1,673 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="最早接触 Xposed 是在 酷安网 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 WechatUI(链接已失效)，我们知道，在 Materail Design 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 MIUI 还有其它的国产 Rom 或者 App 来进行主题美化"><meta name="keywords" content="Xposed"><meta property="og:type" content="article"><meta property="og:title" content="Xposed 碎碎念"><meta property="og:url" content="https://tianma.space/post/xposed-ramble/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="最早接触 Xposed 是在 酷安网 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 WechatUI(链接已失效)，我们知道，在 Materail Design 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 MIUI 还有其它的国产 Rom 或者 App 来进行主题美化"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2018-11-06T20:04:41.086Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Xposed 碎碎念"><meta name="twitter:description" content="最早接触 Xposed 是在 酷安网 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 WechatUI(链接已失效)，我们知道，在 Materail Design 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 MIUI 还有其它的国产 Rom 或者 App 来进行主题美化"><link rel="canonical" href="https://tianma.space/post/xposed-ramble/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>Xposed 碎碎念 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/xposed-ramble/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Xposed 碎碎念</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-07-27 22:06:08" itemprop="dateCreated datePublished" datetime="2018-07-27T22:06:08+08:00">2018-07-27</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2018-11-07 04:04:41" itemprop="dateModified" datetime="2018-11-07T04:04:41+08:00">2018-11-07</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>最早接触 <a href="https://github.com/rovo89/Xposed" target="_blank" rel="noopener">Xposed</a> 是在 <a href="https://www.coolapk.com" target="_blank" rel="noopener">酷安网</a> 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 <a href="https://www.coolapk.com/apk/ce.hesh.wechatUI" target="_blank" rel="noopener">WechatUI(链接已失效)</a>，我们知道，在 <code>Materail Design</code> 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 <code>MIUI</code> 还有其它的国产 Rom 或者 App 来进行主题美化。而 Android 版微信还有很大的 iOS 风格，WeChatUI 却能将微信修改为 MD 风格，着实惊艳。</p><a id="more"></a><p>Xposed 的功能非常强大，不光能对其他 App 的 UI 进行修改，同时也能对其他 App 内部的逻辑进行修改，这些修改称之为 Hook，具体的修改方式包含增加，删减，替换等。Xposed 可以对几乎所有的 App 通过 Hook 的方式修改代码逻辑，应用方向也很广阔，基于 Xposed 开发的 App 一般称之为 <code>Xposed 模块</code> 或者 <code>Xposed 插件</code>。Xposed 模块可以增强系统功能（如 <a href="https://www.coolapk.com/apk/github.tornaco.xposedmoduletest" target="_blank" rel="noopener">应用管理</a> 治理国内毒瘤），能增删第三方 App 的功能（如 <a href="https://github.com/Gh0u1L5/WechatMagician" target="_blank" rel="noopener">Wechat Magician</a> 实现微信防撤回、增加图片发送上限、朋友圈关键字屏蔽功能等），甚至可以能用于第三方的逆向破解等。Xposed 功能非常强大，几乎无所不能，所以也是一把双刃剑。优点前面已说明，缺点也不少：</p><ul><li>Xposed 模块安装多了之后，手机会变卡，并且会因为 Xposed 插件没跟上App版本等缘故时不时出现FC的异常</li><li>Xposed 插件权限相当高，会被不良商家所利用（点名批评，斗恶龙的勇者最终成为恶龙的典型，也是良心App商业化后黑化的典型：<a href="https://www.coolapk.com/apk/me.piebridge.forcestopgb" target="_blank" rel="noopener">阻止运行</a>），所以使用时需要注意。</li><li>Xposed 权限高，所以忌惮。目前部分 App 会检测系统中是否安装了 Xposed 框架，如果安装则不让运行（如 下厨房，摩拜单车等），甚至可以引起封号（微信？ 此处存疑）。当然了，完全可以用 Xposed 去替换这些软件中检测 Xposed 框架是否存在的代码块，XD</li></ul><p>所以，合理的使用 Xposed，能让自己的手机和 App 用起来更舒心。</p><h3 id="Xposed-原理"><a href="#Xposed-原理" class="headerlink" title="Xposed 原理"></a>Xposed 原理</h3><p>Xposed 相关的三个核心项目均出自 <a href="https://github.com/rovo89" target="_blank" rel="noopener">rovo89</a> 大佬之手：</p><ul><li><a href="https://github.com/rovo89/Xposed" target="_blank" rel="noopener">Xposed</a>：Xposed的C++部分，用来替换 <code>/system/bin/app_process</code>，进而控制 <code>Zygote(受精卵)</code> 进程。同时为 XposedBridge 提供 JNI 方法调用，并在启动 <code>Zygote</code> 进程的过程中加载 XposedBridge.jar。Android 系统中所有的其他进程都由 <code>Zygote</code> 孵化（fork）而来，所以其他应用所在进程在加载启动过程中都会含有 XposedBridge。</li><li><a href="https://github.com/rovo89/XposedBridge" target="_blank" rel="noopener">XposedBridge</a>：加载 Xposed Modules（模块），并为 Xposed Modules（模块） 提供 API 用于开发。API 主要包括:<ol><li><code>IXposedHookZygoteInit</code>: 在 <code>Zygote</code> 进程启动（即 Android 启动）过程中 Hook 的接口</li><li><code>IXposedHookLoadPackage</code>: 在新的 App 加载过程中 Hook 的接口，可以 Hook 当前应用的 Java 方法</li><li><code>IXposedHookInitPackageResources</code>: 在初始化资源过程中 Hook 的接口，可以替换当前应用的资源（图标，样式等等）。</li></ol></li><li><a href="https://github.com/rovo89/XposedInstaller" target="_blank" rel="noopener">XposedInstaller</a>：Xposed 的安装程序，内含 <code>Xposed</code> 和 <code>XposedBridge</code>，并提供对 Xposed Modules 管理。</li></ul><h3 id="Xposed-模块推荐"><a href="#Xposed-模块推荐" class="headerlink" title="Xposed 模块推荐"></a>Xposed 模块推荐</h3><p>在这里推荐一些实用的或者有意思的 Xposed 模块：</p><ul><li><a href="https://www.coolapk.com/apk/github.tornaco.xposedmoduletest" target="_blank" rel="noopener">应用管理Xposed</a> 已开源 <a href="https://github.com/Tornaco/X-APM" target="_blank" rel="noopener">X-APM</a>，应用控制类（绿色守护，黑阈，MyAndroidTools等）模块应用，神器。</li><li><a href="https://www.coolapk.com/apk/fi.veetipaananen.android.disableflagsecure" target="_blank" rel="noopener">启用截图DisableFlagSecure</a> 已开源 <a href="https://github.com/veeti/DisableFlagSecure" target="_blank" rel="noopener">DisableFlagSecure</a>，关掉系统底层的 FLAG_SECURE ，这样之前不能截屏/录屏的都能截屏/录屏了，比如 QQ 里面的闪图。</li><li><a href="https://www.coolapk.com/apk/top.jowanxu.scanlogin" target="_blank" rel="noopener">ScanLogin</a> 已开源 <a href="https://github.com/wangzailfm/ScanLogin" target="_blank" rel="noopener">ScanLogin</a>，扫码自动登录，免去 PC 端微信登录后还需要在手机端再点一下确认登录的尴尬。</li><li><a href="https://play.google.com/store/apps/details?id=com.jozein.xedge" target="_blank" rel="noopener">Xposed Edge</a> 边缘手势操作模块，功能强大，有 pro 版。</li><li><a href="https://www.coolapk.com/apk/com.specher.music163" target="_blank" rel="noopener">网易云音乐插件</a> 如今的网易云音乐 Android 端越来越臃肿了，是时候用这个模块精简精简了。</li><li><a href="https://github.com/GravityBox/GravityBox" target="_blank" rel="noopener">GravityBox</a> 重力工具箱，非常棒的系统设置模块，按照自己喜欢的样子定制 Rom，需要下载对应 Android 版本的模块。</li><li><a href="https://www.coolapk.com/apk/com.surcumference.fingerprintpay" target="_blank" rel="noopener">指纹支付</a> 已开源 <a href="https://github.com/eritpchy/Xposed-Fingerprint-pay" target="_blank" rel="noopener">Xposed-Fingerprint-pay</a>, 指纹支付模块，让不支持微信，支付宝，QQ等指纹支付的原生Rom 也能体验指纹支付。</li><li><a href="https://github.com/Gh0u1L5/WechatMagician" target="_blank" rel="noopener">WechatMagician</a> 微信巫师，用于微信防撤回等众多有意思的扩展功能。特别值得一提的是，源码设计的很棒，汲取了其他微信相关模块每逢微信更新必崩溃的教训，自行设计一套 API，极大提高插件稳定性。</li><li><a href="https://github.com/Blankeer/MDWechat" target="_blank" rel="noopener">MDWechat</a> Material Design 的微信，很棒。</li></ul><p>最后再推荐一下自己开发的 Xposed 模块（凑表脸，还是后面再发文详细详解吧，摊手）：</p><ul><li><a href="https://github.com/tianma8023/XposedSmsCode" target="_blank" rel="noopener">验证码提取Xposed</a> 识别短信验证码，复制到系统剪切板，并能自动输入。</li></ul></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/xposed-ramble/" title="Xposed 碎碎念">https://tianma.space/post/xposed-ramble/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/android-notes-AIDL-advanced/" rel="next" title="Android 笔记：AIDL进阶"><i class="fa fa-chevron-left"></i> Android 笔记：AIDL进阶</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/regular-expression-lookahead-lookbehind/" rel="prev" title="正则表达式 - 分组 & 前瞻 & 后瞻">正则表达式 - 分组 & 前瞻 & 后瞻<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Xposed-原理"><span class="nav-number">1.</span> <span class="nav-text">Xposed 原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xposed-模块推荐"><span class="nav-number">2.</span> <span class="nav-text">Xposed 模块推荐</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最早接触 Xposed 是在 酷安网 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 WechatUI(链接已失效)，我们知道，在 Materail Design 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 MIUI 还有其它的国产 Rom 或者 App 来进行主题美化">
+<meta name="keywords" content="Xposed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xposed 碎碎念">
+<meta property="og:url" content="https://tianma.space/post/xposed-ramble/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="最早接触 Xposed 是在 酷安网 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 WechatUI(链接已失效)，我们知道，在 Materail Design 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 MIUI 还有其它的国产 Rom 或者 App 来进行主题美化">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-06T20:04:41.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xposed 碎碎念">
+<meta name="twitter:description" content="最早接触 Xposed 是在 酷安网 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 WechatUI(链接已失效)，我们知道，在 Materail Design 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 MIUI 还有其它的国产 Rom 或者 App 来进行主题美化">
+  <link rel="canonical" href="https://tianma.space/post/xposed-ramble/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>Xposed 碎碎念 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/xposed-ramble/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Xposed 碎碎念
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-27 22:06:08" itemprop="dateCreated datePublished" datetime="2018-07-27T22:06:08+08:00">2018-07-27</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-11-07 04:04:41" itemprop="dateModified" datetime="2018-11-07T04:04:41+08:00">2018-11-07</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最早接触 <a href="https://github.com/rovo89/Xposed" target="_blank" rel="noopener">Xposed</a> 是在 <a href="https://www.coolapk.com" target="_blank" rel="noopener">酷安网</a> 上，约摸是2014年，那个时候的酷安还叫酷市场。当时手里就一台小米2s，由于热衷于刷机尝鲜，稀里糊涂地就接触到了Xposed。当时最震撼的莫过于 <a href="https://www.coolapk.com/apk/ce.hesh.wechatUI" target="_blank" rel="noopener">WechatUI(链接已失效)</a>，我们知道，在 <code>Materail Design</code> 未流行的时候，国内市场通行各式各样的美化主题和美化App，也就是那个时候的 <code>MIUI</code> 还有其它的国产 Rom 或者 App 来进行主题美化。而 Android 版微信还有很大的 iOS 风格，WeChatUI 却能将微信修改为 MD 风格，着实惊艳。</p>
+<a id="more"></a>
+
+<p>Xposed 的功能非常强大，不光能对其他 App 的 UI 进行修改，同时也能对其他 App 内部的逻辑进行修改，这些修改称之为 Hook，具体的修改方式包含增加，删减，替换等。Xposed 可以对几乎所有的 App 通过 Hook 的方式修改代码逻辑，应用方向也很广阔，基于 Xposed 开发的 App 一般称之为 <code>Xposed 模块</code> 或者 <code>Xposed 插件</code>。Xposed 模块可以增强系统功能（如 <a href="https://www.coolapk.com/apk/github.tornaco.xposedmoduletest" target="_blank" rel="noopener">应用管理</a> 治理国内毒瘤），能增删第三方 App 的功能（如 <a href="https://github.com/Gh0u1L5/WechatMagician" target="_blank" rel="noopener">Wechat Magician</a> 实现微信防撤回、增加图片发送上限、朋友圈关键字屏蔽功能等），甚至可以能用于第三方的逆向破解等。Xposed 功能非常强大，几乎无所不能，所以也是一把双刃剑。优点前面已说明，缺点也不少：</p>
+<ul>
+<li>Xposed 模块安装多了之后，手机会变卡，并且会因为 Xposed 插件没跟上App版本等缘故时不时出现FC的异常</li>
+<li>Xposed 插件权限相当高，会被不良商家所利用（点名批评，斗恶龙的勇者最终成为恶龙的典型，也是良心App商业化后黑化的典型：<a href="https://www.coolapk.com/apk/me.piebridge.forcestopgb" target="_blank" rel="noopener">阻止运行</a>），所以使用时需要注意。</li>
+<li>Xposed 权限高，所以忌惮。目前部分 App 会检测系统中是否安装了 Xposed 框架，如果安装则不让运行（如 下厨房，摩拜单车等），甚至可以引起封号（微信？ 此处存疑）。当然了，完全可以用 Xposed 去替换这些软件中检测 Xposed 框架是否存在的代码块，XD</li>
+</ul>
+<p>所以，合理的使用 Xposed，能让自己的手机和 App 用起来更舒心。</p>
+<h3 id="Xposed-原理"><a href="#Xposed-原理" class="headerlink" title="Xposed 原理"></a>Xposed 原理</h3><p>Xposed 相关的三个核心项目均出自 <a href="https://github.com/rovo89" target="_blank" rel="noopener">rovo89</a> 大佬之手：</p>
+<ul>
+<li><a href="https://github.com/rovo89/Xposed" target="_blank" rel="noopener">Xposed</a>：Xposed的C++部分，用来替换 <code>/system/bin/app_process</code>，进而控制 <code>Zygote(受精卵)</code> 进程。同时为 XposedBridge 提供 JNI 方法调用，并在启动 <code>Zygote</code> 进程的过程中加载 XposedBridge.jar。Android 系统中所有的其他进程都由 <code>Zygote</code> 孵化（fork）而来，所以其他应用所在进程在加载启动过程中都会含有 XposedBridge。</li>
+<li><a href="https://github.com/rovo89/XposedBridge" target="_blank" rel="noopener">XposedBridge</a>：加载 Xposed Modules（模块），并为 Xposed Modules（模块） 提供 API 用于开发。API 主要包括:<ol>
+<li><code>IXposedHookZygoteInit</code>: 在 <code>Zygote</code> 进程启动（即 Android 启动）过程中 Hook 的接口</li>
+<li><code>IXposedHookLoadPackage</code>: 在新的 App 加载过程中 Hook 的接口，可以 Hook 当前应用的 Java 方法</li>
+<li><code>IXposedHookInitPackageResources</code>: 在初始化资源过程中 Hook 的接口，可以替换当前应用的资源（图标，样式等等）。</li>
+</ol>
+</li>
+<li><a href="https://github.com/rovo89/XposedInstaller" target="_blank" rel="noopener">XposedInstaller</a>：Xposed 的安装程序，内含 <code>Xposed</code> 和 <code>XposedBridge</code>，并提供对 Xposed Modules 管理。</li>
+</ul>
+<h3 id="Xposed-模块推荐"><a href="#Xposed-模块推荐" class="headerlink" title="Xposed 模块推荐"></a>Xposed 模块推荐</h3><p>在这里推荐一些实用的或者有意思的 Xposed 模块：</p>
+<ul>
+<li><a href="https://www.coolapk.com/apk/github.tornaco.xposedmoduletest" target="_blank" rel="noopener">应用管理Xposed</a>  已开源 <a href="https://github.com/Tornaco/X-APM" target="_blank" rel="noopener">X-APM</a>，应用控制类（绿色守护，黑阈，MyAndroidTools等）模块应用，神器。</li>
+<li><a href="https://www.coolapk.com/apk/fi.veetipaananen.android.disableflagsecure" target="_blank" rel="noopener">启用截图DisableFlagSecure</a> 已开源 <a href="https://github.com/veeti/DisableFlagSecure" target="_blank" rel="noopener">DisableFlagSecure</a>，关掉系统底层的 FLAG_SECURE ，这样之前不能截屏/录屏的都能截屏/录屏了，比如 QQ 里面的闪图。</li>
+<li><a href="https://www.coolapk.com/apk/top.jowanxu.scanlogin" target="_blank" rel="noopener">ScanLogin</a> 已开源 <a href="https://github.com/wangzailfm/ScanLogin" target="_blank" rel="noopener">ScanLogin</a>，扫码自动登录，免去 PC 端微信登录后还需要在手机端再点一下确认登录的尴尬。</li>
+<li><a href="https://play.google.com/store/apps/details?id=com.jozein.xedge" target="_blank" rel="noopener">Xposed Edge</a> 边缘手势操作模块，功能强大，有 pro 版。</li>
+<li><a href="https://www.coolapk.com/apk/com.specher.music163" target="_blank" rel="noopener">网易云音乐插件</a> 如今的网易云音乐 Android 端越来越臃肿了，是时候用这个模块精简精简了。</li>
+<li><a href="https://github.com/GravityBox/GravityBox" target="_blank" rel="noopener">GravityBox</a> 重力工具箱，非常棒的系统设置模块，按照自己喜欢的样子定制 Rom，需要下载对应 Android 版本的模块。</li>
+<li><a href="https://www.coolapk.com/apk/com.surcumference.fingerprintpay" target="_blank" rel="noopener">指纹支付</a> 已开源 <a href="https://github.com/eritpchy/Xposed-Fingerprint-pay" target="_blank" rel="noopener">Xposed-Fingerprint-pay</a>, 指纹支付模块，让不支持微信，支付宝，QQ等指纹支付的原生Rom 也能体验指纹支付。</li>
+<li><a href="https://github.com/Gh0u1L5/WechatMagician" target="_blank" rel="noopener">WechatMagician</a> 微信巫师，用于微信防撤回等众多有意思的扩展功能。特别值得一提的是，源码设计的很棒，汲取了其他微信相关模块每逢微信更新必崩溃的教训，自行设计一套 API，极大提高插件稳定性。</li>
+<li><a href="https://github.com/Blankeer/MDWechat" target="_blank" rel="noopener">MDWechat</a> Material Design 的微信，很棒。</li>
+</ul>
+<p>最后再推荐一下自己开发的 Xposed 模块（凑表脸，还是后面再发文详细详解吧，摊手）：</p>
+<ul>
+<li><a href="https://github.com/tianma8023/XposedSmsCode" target="_blank" rel="noopener">验证码提取Xposed</a> 识别短信验证码，复制到系统剪切板，并能自动输入。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/xposed-ramble/" title="Xposed 碎碎念">https://tianma.space/post/xposed-ramble/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/android-notes-AIDL-advanced/" rel="next" title="Android 笔记：AIDL进阶">
+                  <i class="fa fa-chevron-left"></i> Android 笔记：AIDL进阶
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/regular-expression-lookahead-lookbehind/" rel="prev" title="正则表达式 - 分组 & 前瞻 & 后瞻">
+                  正则表达式 - 分组 & 前瞻 & 后瞻 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Xposed-原理"><span class="nav-number">1.</span> <span class="nav-text">Xposed 原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xposed-模块推荐"><span class="nav-number">2.</span> <span class="nav-text">Xposed 模块推荐</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +684,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

@@ -1,4 +1,701 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="我们知道像 ClipboardManager, ActivityManager 实际上底层都是通过 Binder 以 aidl 接口的形式实现的，对应的服务端类名都是 xxxService 的形式，例如 ClipboardService, ActivityManagerService。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。"><meta name="keywords" content="源码分析,Xposed"><meta property="og:type" content="article"><meta property="og:title" content="Xposed注册系统服务"><meta property="og:url" content="https://tianma.space/post/xposed-inject-system-service/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="我们知道像 ClipboardManager, ActivityManager 实际上底层都是通过 Binder 以 aidl 接口的形式实现的，对应的服务端类名都是 xxxService 的形式，例如 ClipboardService, ActivityManagerService。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-07-17T09:20:26.827Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Xposed注册系统服务"><meta name="twitter:description" content="我们知道像 ClipboardManager, ActivityManager 实际上底层都是通过 Binder 以 aidl 接口的形式实现的，对应的服务端类名都是 xxxService 的形式，例如 ClipboardService, ActivityManagerService。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。"><link rel="canonical" href="https://tianma.space/post/xposed-inject-system-service/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>Xposed注册系统服务 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/xposed-inject-system-service/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Xposed注册系统服务</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-12-29 01:25:44" itemprop="dateCreated datePublished" datetime="2018-12-29T01:25:44+08:00">2018-12-29</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-07-17 17:20:26" itemprop="dateModified" datetime="2019-07-17T17:20:26+08:00">2019-07-17</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>我们知道像 <code>ClipboardManager</code>, <code>ActivityManager</code> 实际上底层都是通过 <code>Binder</code> 以 <code>aidl</code> 接口的形式实现的，对应的服务端类名都是 <code>xxxService</code> 的形式，例如 <code>ClipboardService</code>, <code>ActivityManagerService</code>。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。</p><a id="more"></a><h3 id="系统服务注册流程分析"><a href="#系统服务注册流程分析" class="headerlink" title="系统服务注册流程分析"></a>系统服务注册流程分析</h3><p>不想看源码分析过程的，可以直接跳到 <a href="#自定义系统服务实现">自定义系统服务实现</a>。</p><p>在这里以 <code>API 27(Android 8.1)</code> 的 <code>ActivityManagerService</code> 为例，<code>ActivityManagerService</code> 是系统主进程的开端，这个类是 “核心Java系统” 开始以及 “系统上下文” 创建的地方。</p><p><code>SystemServer</code> 由 <code>Zygote</code> 进程 fork 而来，其进程名为 <code>system_server</code>，大概流程为：<br><code>ZygoteInit#main()</code><br>&nbsp;-&gt; <code>Zygote#forkSystemServer()</code><br>&nbsp;&nbsp;-&gt; <code>com_android_internal_os_Zygote#nativeForkSystemServer()</code><br>&nbsp;&nbsp;&nbsp;-&gt; <code>com_android_internal_os_Zygote#ForkAndSpecializeCommon()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>ZygoteInit#handleSystemServerProcess()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>ZygoteInit#zygoteInit()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>RuntimeInit#applicationInit()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>RuntimeInit#findStaticMain()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>SystemServer#main()</code></p><p>关于 <code>SystemServer</code> 更详细的生成过程分析，请参看 <a href="http://gityuan.com/2016/02/14/android-system-server/" target="_blank" rel="noopener">Android系统启动-SystemServer上篇</a></p><p>下面分析 <code>SystemServer</code> 方法都做了什么：</p><ul><li><p><code>SystemServer#main()</code>：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">new</span> SystemServer().run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 创建主线程 Looper</span></span><br><span class="line">  Looper.prepareMainLooper();</span><br><span class="line">  <span class="comment">// 创建系统Context</span></span><br><span class="line">  createSystemContext();</span><br><span class="line">  <span class="comment">// 创建SystemServiceManager</span></span><br><span class="line">  mSystemServiceManager = <span class="keyword">new</span> SystemServiceManager(mSystemContext);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 启动各种系统服务</span></span><br><span class="line">  <span class="comment">// 1. 启动引导服务</span></span><br><span class="line">  startBootstrapServices();</span><br><span class="line">  <span class="comment">// 2. 启动核心服务</span></span><br><span class="line">  startCoreServices();</span><br><span class="line">  <span class="comment">// 3. 启动其他服务</span></span><br><span class="line">  startOtherServices();</span><br><span class="line"></span><br><span class="line">  Looper.loop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li><li><p>创建系统Context - <code>createSystemContext()</code></p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createSystemContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ActivityThread activityThread = ActivityThread.systemMain();</span><br><span class="line">  mSystemContext = activityThread.getSystemContext();</span><br><span class="line">  mSystemContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> Context systemUiContext = activityThread.getSystemUiContext();</span><br><span class="line">  systemUiContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>关于 <code>ActivityThread#systemMain()</code> 中创建了 <code>ActivityThread</code> 对象，并调用其 <code>attach</code> 方法：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ActivityThread <span class="title">systemMain</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ActivityThread thread = <span class="keyword">new</span> ActivityThread();</span><br><span class="line">  thread.attach(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ActivityThread() &#123;</span><br><span class="line">  mResoureceManager = ResoureceManager.getInstance();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(<span class="keyword">boolean</span> attach)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(!system) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 系统Context</span></span><br><span class="line">    android.ddm.DdmHandleAppName.setAppName(<span class="string">"system_process"</span>,UserHandle.myUserId());</span><br><span class="line">    mInstrumentation = <span class="keyword">new</span> Instrumentation();</span><br><span class="line">    ContextImpl context = ContextImpl.createAppContext(<span class="keyword">this</span>, getSystemContext().mPackageInfo);</span><br><span class="line">    mInitialApplication = context.mPackageInfo.makeApplication(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    mInitialApplication.onCreate();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>关于 <code>Application</code> 的创建过程，就不再分析了。</p></li><li><p>启动引导服务 - <code>startBootstrapServices()</code></p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化 ActivityManagerService</span></span><br><span class="line">mActivityManagerService = mSystemServiceManager.startService(ActivityManagerService.Lifecycle.class).getService();</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 设置系统进程</span></span><br><span class="line">mActivityManagerService.setSystemProcess();</span><br></pre></td></tr></table></figure></div><p>追踪 <code>SystemServiceManager#startService</code>:</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T extends SystemService&gt; <span class="function">T <span class="title">startService</span><span class="params">(Class&lt;T&gt; serviceClass)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> String name = serviceClass.getName();</span><br><span class="line">  <span class="keyword">final</span> T service;</span><br><span class="line">  Constructor&lt;T&gt; constructor = serviceClass.getConstructor(Context.class);</span><br><span class="line">  service = constructor.newInstance(mContext);</span><br><span class="line">  startService(service);</span><br><span class="line">  <span class="keyword">return</span> service;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startService</span><span class="params">(<span class="keyword">final</span> SystemService service)</span> </span>&#123;</span><br><span class="line">  service.onStart();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p><code>SystemServiceManager#startService()</code> 最终会调用 <code>SystemService</code> 实现类的 <code>onStart()</code> 方法。</p><p>也就是说，会调用 <code>ActivityManagerService.Lifecycle#onStart()</code> 方法：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Lifecycle</span> <span class="keyword">extends</span> <span class="title">SystemService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> ActivityManagerService mService;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Lifecycle</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context);</span><br><span class="line">    mService = <span class="keyword">new</span> ActivityManagerService();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mService.start();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> ActivityManagerService <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mService();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>最终会调用 <code>ActivityManagerService</code> 的构造方法和 <code>start</code> 方法，完成其初始化和初步配置。</p><p>再看一下 <code>ActivityManagerService#setSystemProcess()</code>：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSystemProcess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ServiceManager.addService(Context.ACTIVITY_SERVICE, <span class="keyword">this</span>, <span class="keyword">true</span>);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>至此，<code>ActivityServiceManager</code> 作为系统服务被注册添加到 <code>ServiceManager</code> 当中。</p></li></ul><h3 id="自定义系统服务实现"><a href="#自定义系统服务实现" class="headerlink" title="自定义系统服务实现"></a>自定义系统服务实现</h3><ol><li><p>自定义 <code>ICustomService.aidl</code>：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.customsystemservice.aidl;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ICustomService</span> </span>&#123;</span><br><span class="line">    <span class="comment">/* toUppercase */</span></span><br><span class="line">    <span class="function">String <span class="title">toUpperCase</span><span class="params">(String str)</span></span>;</span><br><span class="line">    <span class="comment">/* add numbers */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li><li><p>创建 <code>ICustomService.aidl</code> 的实现类 <code>CustomService.java</code>：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomService</span> <span class="keyword">extends</span> <span class="title">ICustomService</span>.<span class="title">Stub</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toUpperCase</span><span class="params">(String str)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> str.toUpperCase();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> num1 + num2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li><li><p>创建 <code>CustomServiceHook</code> 类实现 <code>IXposedHookZygoteInit</code>，用来注册系统服务：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomServiceHook</span> <span class="keyword">implements</span> <span class="title">IXposedHookZygoteInit</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initZygote</span><span class="params">(StartupParam startupParam)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">            <span class="comment">// android 5.0+</span></span><br><span class="line">            Class&lt;?&gt; activityThread = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">            XposedBridge.hookAllMethods(activityThread, <span class="string">"systemMain"</span>, <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                    <span class="keyword">final</span> ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">                    Class&lt;?&gt; ams = XposedHelpers.findClass(<span class="string">"com.android.server.am.ActivityManagerService"</span>, classLoader);</span><br><span class="line"></span><br><span class="line">                    XposedHelpers.findAndHookConstructor(ams,</span><br><span class="line">                            Context.class,</span><br><span class="line">                            <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                                <span class="meta">@Override</span></span><br><span class="line">                                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                                    CustomService.register((Context) param.args[<span class="number">0</span>], classLoader);</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">            Class&lt;?&gt; ams = XposedHelpers.findClass(<span class="string">"com.android.server.am.ActivityManagerService"</span>, classLoader);</span><br><span class="line">            XposedBridge.hookAllMethods(ams,</span><br><span class="line">                    <span class="string">"main"</span>,</span><br><span class="line">                    <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                            CustomService.register((Context) param.getResult(), classLoader);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>上述代码中，<code>ActivityManagerService</code> 是系统主进程的开端，这个类是 “核心Java系统” 开始以及 “系统上下文” 创建的地方。在 <code>Android L</code> 之前，可以直接访问 <code>ActivityManagerService</code> 这个类；从 <code>Android L</code> 起系统使用了独立的类加载器(ClassLoader)，需要先 Hook <code>ActivityThread</code>，因为 <code>ActivityThread</code> 中创建了可以用来访问 <code>ActivityManagerService</code> 的类加载器。</p></li><li><p><code>CustomService</code> 的 <code>register()</code> 方法用来注册系统服务：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Context context, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">    Class&lt;?&gt; svcManager = XposedHelpers.findClass(<span class="string">"android.os.ServiceManager"</span>, classLoader);</span><br><span class="line"></span><br><span class="line">    CustomService customService = <span class="keyword">new</span> CustomService(context);</span><br><span class="line">    XposedHelpers.callStaticMethod(svcManager,</span><br><span class="line">            <span class="comment">/* methodName */</span><span class="string">"addService"</span>,</span><br><span class="line">            <span class="comment">/* name       */</span>getServiceName(),</span><br><span class="line">            <span class="comment">/* service    */</span> customService,</span><br><span class="line">            <span class="comment">/* allowIsolated */</span> <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    log(<span class="string">"register service succeed"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getServiceName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 5.0 之后，selinux "user." 前缀</span></span><br><span class="line">    <span class="keyword">return</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP ? <span class="string">"user."</span> : <span class="string">""</span>) + <span class="string">"customservice"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>其实就是通过调用 <code>ServiceManager#addService()</code> 来实现，需要注意的是，<code>Android L</code> 起，系统服务名需要加 <code>user.</code> 前缀。</p></li></ol><p>完整的 <code>CustomService</code> 实现：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.customsystemservice.aidl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.os.Build;</span><br><span class="line"><span class="keyword">import</span> android.os.IBinder;</span><br><span class="line"><span class="keyword">import</span> android.os.RemoteException;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.XposedHelpers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomService</span> <span class="keyword">extends</span> <span class="title">ICustomService</span>.<span class="title">Stub</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"CustomService"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context mContext;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ICustomService mClient;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">CustomService</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toUpperCase</span><span class="params">(String str)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> str.toUpperCase();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> num1 + num2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Context context, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">        Class&lt;?&gt; svcManager = XposedHelpers.findClass(<span class="string">"android.os.ServiceManager"</span>, classLoader);</span><br><span class="line"></span><br><span class="line">        CustomService customService = <span class="keyword">new</span> CustomService(context);</span><br><span class="line">        XposedHelpers.callStaticMethod(svcManager,</span><br><span class="line">                <span class="comment">/* methodName */</span><span class="string">"addService"</span>,</span><br><span class="line">                <span class="comment">/* name       */</span>getServiceName(),</span><br><span class="line">                <span class="comment">/* service    */</span> customService,</span><br><span class="line">                <span class="comment">/* allowIsolated */</span> <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        log(<span class="string">"register service succeed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getServiceName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 5.0 之后，selinux "user." 前缀</span></span><br><span class="line">        <span class="keyword">return</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP ? <span class="string">"user."</span> : <span class="string">""</span>) + <span class="string">"customservice"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ICustomService <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mClient == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class&lt;?&gt; svcManager = Class.forName(<span class="string">"android.os.ServiceManager"</span>);</span><br><span class="line">                Method getServiceMethod = svcManager.getDeclaredMethod(<span class="string">"getService"</span>, String.class);</span><br><span class="line">                IBinder binder = (IBinder) getServiceMethod.invoke(<span class="keyword">null</span>, getServiceName());</span><br><span class="line">                mClient = ICustomService.Stub.asInterface(binder);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                log(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mClient;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(String text)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, text);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(Throwable t)</span> </span>&#123;</span><br><span class="line">        Log.e(TAG, Log.getStackTraceString(t));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>调用：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ICustomService customService = CustomService.getService();</span><br><span class="line"><span class="keyword">if</span> (customService != <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">int</span> sum = customService.add(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">  String upper = customService.toUpperCase(<span class="string">"hello world"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>完整示例源码：<a href="https://github.com/tianma8023/CustomSystemService" target="_blank" rel="noopener">CustomSystemService</a></p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://nameless-technology.blogspot.com/2013/11/custom-system-service-using-xposedbridge.html" target="_blank" rel="noopener">Custom System Service using XposedBridge</a><br><a href="https://github.com/M66B/XPrivacy/blob/db324f19b5b57583502aeb2d7f4cd9716d984594/src/biz/bokhorst/xprivacy/XPrivacy.java#L111" target="_blank" rel="noopener">XPrivacy - XPrivacy.java</a><br><a href="https://github.com/rovo89/XposedBridge/issues/72" target="_blank" rel="noopener">Xposed Issue - classLoader ClassNotFoundException</a><br><a href="http://gityuan.com/2016/02/14/android-system-server/" target="_blank" rel="noopener">Android系统启动-SystemServer上篇</a><br><a href="http://gityuan.com/2016/02/20/android-system-server-2/" target="_blank" rel="noopener">Android系统启动-SystemServer下篇</a><br><a href="https://www.cnblogs.com/wyxy2005/p/7987543.html" target="_blank" rel="noopener">基于xposed实现android注册系统服务，解决跨进程共享数据问题</a><br><a href="https://haoutil.com/topic/xposed-add-custom-system-service" target="_blank" rel="noopener">使用Xposed添加自定义系统服务</a></p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/xposed-inject-system-service/" title="Xposed注册系统服务">https://tianma.space/post/xposed-inject-system-service/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/源码分析/" rel="tag"><i class="fa fa-tag"></i> 源码分析</a><a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/android-shell-service-commands/" rel="next" title="Android shell service 命令"><i class="fa fa-chevron-left"></i> Android shell service 命令</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/installation-guide-of-eu-miui-for-dipper/" rel="prev" title="小米8 刷入 MIUI 欧洲版并 Root">小米8 刷入 MIUI 欧洲版并 Root<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统服务注册流程分析"><span class="nav-number">1.</span> <span class="nav-text">系统服务注册流程分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义系统服务实现"><span class="nav-number">2.</span> <span class="nav-text">自定义系统服务实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="我们知道像 ClipboardManager, ActivityManager 实际上底层都是通过 Binder 以 aidl 接口的形式实现的，对应的服务端类名都是 xxxService 的形式，例如 ClipboardService, ActivityManagerService。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。">
+<meta name="keywords" content="源码分析,Xposed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xposed注册系统服务">
+<meta property="og:url" content="https://tianma.space/post/xposed-inject-system-service/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="我们知道像 ClipboardManager, ActivityManager 实际上底层都是通过 Binder 以 aidl 接口的形式实现的，对应的服务端类名都是 xxxService 的形式，例如 ClipboardService, ActivityManagerService。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-17T09:20:26.827Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xposed注册系统服务">
+<meta name="twitter:description" content="我们知道像 ClipboardManager, ActivityManager 实际上底层都是通过 Binder 以 aidl 接口的形式实现的，对应的服务端类名都是 xxxService 的形式，例如 ClipboardService, ActivityManagerService。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。">
+  <link rel="canonical" href="https://tianma.space/post/xposed-inject-system-service/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>Xposed注册系统服务 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/xposed-inject-system-service/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Xposed注册系统服务
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-29 01:25:44" itemprop="dateCreated datePublished" datetime="2018-12-29T01:25:44+08:00">2018-12-29</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-07-17 17:20:26" itemprop="dateModified" datetime="2019-07-17T17:20:26+08:00">2019-07-17</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们知道像 <code>ClipboardManager</code>, <code>ActivityManager</code> 实际上底层都是通过 <code>Binder</code> 以 <code>aidl</code> 接口的形式实现的，对应的服务端类名都是 <code>xxxService</code> 的形式，例如 <code>ClipboardService</code>, <code>ActivityManagerService</code>。幸运的是，在 Xposed 框架支持下，我们也可以注册自定义的系统服务。</p>
+<a id="more"></a>
+
+<h3 id="系统服务注册流程分析"><a href="#系统服务注册流程分析" class="headerlink" title="系统服务注册流程分析"></a>系统服务注册流程分析</h3><p>不想看源码分析过程的，可以直接跳到 <a href="#自定义系统服务实现">自定义系统服务实现</a>。</p>
+<p>在这里以 <code>API 27(Android 8.1)</code> 的 <code>ActivityManagerService</code> 为例，<code>ActivityManagerService</code> 是系统主进程的开端，这个类是 “核心Java系统” 开始以及 “系统上下文” 创建的地方。</p>
+<p><code>SystemServer</code> 由 <code>Zygote</code> 进程 fork 而来，其进程名为 <code>system_server</code>，大概流程为：<br><code>ZygoteInit#main()</code><br>&nbsp;-&gt; <code>Zygote#forkSystemServer()</code><br>&nbsp;&nbsp;-&gt; <code>com_android_internal_os_Zygote#nativeForkSystemServer()</code><br>&nbsp;&nbsp;&nbsp;-&gt; <code>com_android_internal_os_Zygote#ForkAndSpecializeCommon()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>ZygoteInit#handleSystemServerProcess()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>ZygoteInit#zygoteInit()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>RuntimeInit#applicationInit()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;  <code>RuntimeInit#findStaticMain()</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; <code>SystemServer#main()</code></p>
+<p>关于 <code>SystemServer</code> 更详细的生成过程分析，请参看 <a href="http://gityuan.com/2016/02/14/android-system-server/" target="_blank" rel="noopener">Android系统启动-SystemServer上篇</a></p>
+<p>下面分析 <code>SystemServer</code> 方法都做了什么：</p>
+<ul>
+<li><p><code>SystemServer#main()</code>：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">new</span> SystemServer().run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 创建主线程 Looper</span></span><br><span class="line">  Looper.prepareMainLooper();</span><br><span class="line">  <span class="comment">// 创建系统Context</span></span><br><span class="line">  createSystemContext();</span><br><span class="line">  <span class="comment">// 创建SystemServiceManager</span></span><br><span class="line">  mSystemServiceManager = <span class="keyword">new</span> SystemServiceManager(mSystemContext);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 启动各种系统服务</span></span><br><span class="line">  <span class="comment">// 1. 启动引导服务</span></span><br><span class="line">  startBootstrapServices();</span><br><span class="line">  <span class="comment">// 2. 启动核心服务</span></span><br><span class="line">  startCoreServices();</span><br><span class="line">  <span class="comment">// 3. 启动其他服务</span></span><br><span class="line">  startOtherServices();</span><br><span class="line"></span><br><span class="line">  Looper.loop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>创建系统Context - <code>createSystemContext()</code></p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createSystemContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ActivityThread activityThread = ActivityThread.systemMain();</span><br><span class="line">  mSystemContext = activityThread.getSystemContext();</span><br><span class="line">  mSystemContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> Context systemUiContext = activityThread.getSystemUiContext();</span><br><span class="line">  systemUiContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>关于 <code>ActivityThread#systemMain()</code> 中创建了 <code>ActivityThread</code> 对象，并调用其 <code>attach</code> 方法：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ActivityThread <span class="title">systemMain</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ActivityThread thread = <span class="keyword">new</span> ActivityThread();</span><br><span class="line">  thread.attach(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ActivityThread() &#123;</span><br><span class="line">  mResoureceManager = ResoureceManager.getInstance();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(<span class="keyword">boolean</span> attach)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(!system) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 系统Context</span></span><br><span class="line">    android.ddm.DdmHandleAppName.setAppName(<span class="string">"system_process"</span>,UserHandle.myUserId());</span><br><span class="line">    mInstrumentation = <span class="keyword">new</span> Instrumentation();</span><br><span class="line">    ContextImpl context = ContextImpl.createAppContext(<span class="keyword">this</span>, getSystemContext().mPackageInfo);</span><br><span class="line">    mInitialApplication = context.mPackageInfo.makeApplication(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">    mInitialApplication.onCreate();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>关于 <code>Application</code> 的创建过程，就不再分析了。</p>
+</li>
+<li><p>启动引导服务 - <code>startBootstrapServices()</code></p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化 ActivityManagerService</span></span><br><span class="line">mActivityManagerService = mSystemServiceManager.startService(ActivityManagerService.Lifecycle.class).getService();</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 设置系统进程</span></span><br><span class="line">mActivityManagerService.setSystemProcess();</span><br></pre></td></tr></table></figure></div>
+
+<p>追踪 <code>SystemServiceManager#startService</code>:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T extends SystemService&gt; <span class="function">T <span class="title">startService</span><span class="params">(Class&lt;T&gt; serviceClass)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> String name = serviceClass.getName();</span><br><span class="line">  <span class="keyword">final</span> T service;</span><br><span class="line">  Constructor&lt;T&gt; constructor = serviceClass.getConstructor(Context.class);</span><br><span class="line">  service = constructor.newInstance(mContext);</span><br><span class="line">  startService(service);</span><br><span class="line">  <span class="keyword">return</span> service;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startService</span><span class="params">(<span class="keyword">final</span> SystemService service)</span> </span>&#123;</span><br><span class="line">  service.onStart();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>SystemServiceManager#startService()</code> 最终会调用 <code>SystemService</code> 实现类的 <code>onStart()</code> 方法。</p>
+<p>也就是说，会调用 <code>ActivityManagerService.Lifecycle#onStart()</code> 方法：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Lifecycle</span> <span class="keyword">extends</span> <span class="title">SystemService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> ActivityManagerService mService;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Lifecycle</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context);</span><br><span class="line">    mService = <span class="keyword">new</span> ActivityManagerService();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mService.start();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> ActivityManagerService <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mService();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>最终会调用 <code>ActivityManagerService</code> 的构造方法和 <code>start</code> 方法，完成其初始化和初步配置。</p>
+<p>再看一下 <code>ActivityManagerService#setSystemProcess()</code>：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSystemProcess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ServiceManager.addService(Context.ACTIVITY_SERVICE, <span class="keyword">this</span>, <span class="keyword">true</span>);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>至此，<code>ActivityServiceManager</code> 作为系统服务被注册添加到 <code>ServiceManager</code> 当中。</p>
+</li>
+</ul>
+<h3 id="自定义系统服务实现"><a href="#自定义系统服务实现" class="headerlink" title="自定义系统服务实现"></a>自定义系统服务实现</h3><ol>
+<li><p>自定义 <code>ICustomService.aidl</code>：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.customsystemservice.aidl;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ICustomService</span> </span>&#123;</span><br><span class="line">    <span class="comment">/* toUppercase */</span></span><br><span class="line">    <span class="function">String <span class="title">toUpperCase</span><span class="params">(String str)</span></span>;</span><br><span class="line">    <span class="comment">/* add numbers */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>创建 <code>ICustomService.aidl</code> 的实现类 <code>CustomService.java</code>：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomService</span> <span class="keyword">extends</span> <span class="title">ICustomService</span>.<span class="title">Stub</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toUpperCase</span><span class="params">(String str)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> str.toUpperCase();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> num1 + num2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>创建 <code>CustomServiceHook</code> 类实现 <code>IXposedHookZygoteInit</code>，用来注册系统服务：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomServiceHook</span> <span class="keyword">implements</span> <span class="title">IXposedHookZygoteInit</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initZygote</span><span class="params">(StartupParam startupParam)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">            <span class="comment">// android 5.0+</span></span><br><span class="line">            Class&lt;?&gt; activityThread = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">            XposedBridge.hookAllMethods(activityThread, <span class="string">"systemMain"</span>, <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                    <span class="keyword">final</span> ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">                    Class&lt;?&gt; ams = XposedHelpers.findClass(<span class="string">"com.android.server.am.ActivityManagerService"</span>, classLoader);</span><br><span class="line"></span><br><span class="line">                    XposedHelpers.findAndHookConstructor(ams,</span><br><span class="line">                            Context.class,</span><br><span class="line">                            <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                                <span class="meta">@Override</span></span><br><span class="line">                                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                                    CustomService.register((Context) param.args[<span class="number">0</span>], classLoader);</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">            Class&lt;?&gt; ams = XposedHelpers.findClass(<span class="string">"com.android.server.am.ActivityManagerService"</span>, classLoader);</span><br><span class="line">            XposedBridge.hookAllMethods(ams,</span><br><span class="line">                    <span class="string">"main"</span>,</span><br><span class="line">                    <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                            CustomService.register((Context) param.getResult(), classLoader);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>上述代码中，<code>ActivityManagerService</code> 是系统主进程的开端，这个类是 “核心Java系统” 开始以及 “系统上下文” 创建的地方。在 <code>Android L</code> 之前，可以直接访问 <code>ActivityManagerService</code> 这个类；从 <code>Android L</code> 起系统使用了独立的类加载器(ClassLoader)，需要先 Hook <code>ActivityThread</code>，因为 <code>ActivityThread</code> 中创建了可以用来访问 <code>ActivityManagerService</code> 的类加载器。</p>
+</li>
+<li><p><code>CustomService</code> 的 <code>register()</code> 方法用来注册系统服务：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Context context, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">    Class&lt;?&gt; svcManager = XposedHelpers.findClass(<span class="string">"android.os.ServiceManager"</span>, classLoader);</span><br><span class="line"></span><br><span class="line">    CustomService customService = <span class="keyword">new</span> CustomService(context);</span><br><span class="line">    XposedHelpers.callStaticMethod(svcManager,</span><br><span class="line">            <span class="comment">/* methodName */</span><span class="string">"addService"</span>,</span><br><span class="line">            <span class="comment">/* name       */</span>getServiceName(),</span><br><span class="line">            <span class="comment">/* service    */</span> customService,</span><br><span class="line">            <span class="comment">/* allowIsolated */</span> <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    log(<span class="string">"register service succeed"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getServiceName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 5.0 之后，selinux "user." 前缀</span></span><br><span class="line">    <span class="keyword">return</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP ? <span class="string">"user."</span> : <span class="string">""</span>) + <span class="string">"customservice"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>其实就是通过调用 <code>ServiceManager#addService()</code> 来实现，需要注意的是，<code>Android L</code> 起，系统服务名需要加 <code>user.</code> 前缀。</p>
+</li>
+</ol>
+<p>完整的 <code>CustomService</code> 实现：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tianma.customsystemservice.aidl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.os.Build;</span><br><span class="line"><span class="keyword">import</span> android.os.IBinder;</span><br><span class="line"><span class="keyword">import</span> android.os.RemoteException;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.XposedHelpers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomService</span> <span class="keyword">extends</span> <span class="title">ICustomService</span>.<span class="title">Stub</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"CustomService"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context mContext;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ICustomService mClient;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">CustomService</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toUpperCase</span><span class="params">(String str)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> str.toUpperCase();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> num1 + num2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Context context, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">        Class&lt;?&gt; svcManager = XposedHelpers.findClass(<span class="string">"android.os.ServiceManager"</span>, classLoader);</span><br><span class="line"></span><br><span class="line">        CustomService customService = <span class="keyword">new</span> CustomService(context);</span><br><span class="line">        XposedHelpers.callStaticMethod(svcManager,</span><br><span class="line">                <span class="comment">/* methodName */</span><span class="string">"addService"</span>,</span><br><span class="line">                <span class="comment">/* name       */</span>getServiceName(),</span><br><span class="line">                <span class="comment">/* service    */</span> customService,</span><br><span class="line">                <span class="comment">/* allowIsolated */</span> <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        log(<span class="string">"register service succeed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getServiceName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 5.0 之后，selinux "user." 前缀</span></span><br><span class="line">        <span class="keyword">return</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP ? <span class="string">"user."</span> : <span class="string">""</span>) + <span class="string">"customservice"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ICustomService <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mClient == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class&lt;?&gt; svcManager = Class.forName(<span class="string">"android.os.ServiceManager"</span>);</span><br><span class="line">                Method getServiceMethod = svcManager.getDeclaredMethod(<span class="string">"getService"</span>, String.class);</span><br><span class="line">                IBinder binder = (IBinder) getServiceMethod.invoke(<span class="keyword">null</span>, getServiceName());</span><br><span class="line">                mClient = ICustomService.Stub.asInterface(binder);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                log(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mClient;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(String text)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, text);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(Throwable t)</span> </span>&#123;</span><br><span class="line">        Log.e(TAG, Log.getStackTraceString(t));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>调用：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ICustomService customService = CustomService.getService();</span><br><span class="line"><span class="keyword">if</span> (customService != <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">int</span> sum = customService.add(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">  String upper = customService.toUpperCase(<span class="string">"hello world"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>完整示例源码：<a href="https://github.com/tianma8023/CustomSystemService" target="_blank" rel="noopener">CustomSystemService</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://nameless-technology.blogspot.com/2013/11/custom-system-service-using-xposedbridge.html" target="_blank" rel="noopener">Custom System Service using XposedBridge</a><br><a href="https://github.com/M66B/XPrivacy/blob/db324f19b5b57583502aeb2d7f4cd9716d984594/src/biz/bokhorst/xprivacy/XPrivacy.java#L111" target="_blank" rel="noopener">XPrivacy - XPrivacy.java</a><br><a href="https://github.com/rovo89/XposedBridge/issues/72" target="_blank" rel="noopener">Xposed Issue - classLoader ClassNotFoundException</a><br><a href="http://gityuan.com/2016/02/14/android-system-server/" target="_blank" rel="noopener">Android系统启动-SystemServer上篇</a><br><a href="http://gityuan.com/2016/02/20/android-system-server-2/" target="_blank" rel="noopener">Android系统启动-SystemServer下篇</a><br><a href="https://www.cnblogs.com/wyxy2005/p/7987543.html" target="_blank" rel="noopener">基于xposed实现android注册系统服务，解决跨进程共享数据问题</a><br><a href="https://haoutil.com/topic/xposed-add-custom-system-service" target="_blank" rel="noopener">使用Xposed添加自定义系统服务</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/xposed-inject-system-service/" title="Xposed注册系统服务">https://tianma.space/post/xposed-inject-system-service/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/源码分析/" rel="tag"><i class="fa fa-tag"></i> 源码分析</a>
+            
+              <a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/android-shell-service-commands/" rel="next" title="Android shell service 命令">
+                  <i class="fa fa-chevron-left"></i> Android shell service 命令
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/installation-guide-of-eu-miui-for-dipper/" rel="prev" title="小米8 刷入 MIUI 欧洲版并 Root">
+                  小米8 刷入 MIUI 欧洲版并 Root <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统服务注册流程分析"><span class="nav-number">1.</span> <span class="nav-text">系统服务注册流程分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义系统服务实现"><span class="nav-number">2.</span> <span class="nav-text">自定义系统服务实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +712,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

@@ -1,4 +1,695 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="简介aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，aira2 还是一款开源免费的软件。"><meta name="keywords" content="aria2,下载工具"><meta property="og:type" content="article"><meta property="og:title" content="下载工具aria2 - 配置和使用"><meta property="og:url" content="https://tianma.space/post/aria2-introduction-and-instruction/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="简介aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，aira2 还是一款开源免费的软件。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2018-11-06T20:04:40.916Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="下载工具aria2 - 配置和使用"><meta name="twitter:description" content="简介aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，aira2 还是一款开源免费的软件。"><link rel="canonical" href="https://tianma.space/post/aria2-introduction-and-instruction/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>下载工具aria2 - 配置和使用 | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/aria2-introduction-and-instruction/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">下载工具aria2 - 配置和使用</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2017-07-19 16:18:44" itemprop="dateCreated datePublished" datetime="2017-07-19T16:18:44+08:00">2017-07-19</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2018-11-07 04:04:40" itemprop="dateModified" datetime="2018-11-07T04:04:40+08:00">2018-11-07</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/科学上网/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，<a href="https://github.com/aria2/aria2" target="_blank" rel="noopener">aira2</a> 还是一款开源免费的软件。<a id="more"></a></p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>最新的 aria2 release版本下载地址 <a href="https://github.com/aria2/aria2/releases/latest" target="_blank" rel="noopener">aria2 release</a>。</p><blockquote><p><strong>注意</strong>：之前网上好多关于 aria2 的下载地址是在 sourceforge 上的，但是由于 aria2 已开源迁移至 GitHub，所以下载最新版本的还是需要找准地址。</p></blockquote><p>通过上方官方给的下载列表可以看出，aria2支持的平台有 Windows、MacOS、Linux、Android。注意，<font color="#FF4081">本文只介绍 Windows 平台下的，其他平台烦请另行查阅资料</font>。 Windows 平台只需下载对应位数的zip压缩包，解压缩即可。</p><p>解压后的目录结构如下，其体积是相当小的：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">aria2-1.32/</span><br><span class="line">├── aria2c.exe</span><br><span class="line">├── AUTHORS</span><br><span class="line">├── ChangeLog</span><br><span class="line">├── COPYING</span><br><span class="line">├── LICENSE.OpenSSL</span><br><span class="line">├── NEWS</span><br><span class="line">├── README.html</span><br><span class="line">└── README.mingw</span><br></pre></td></tr></table></figure></div><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>接下来，在 aria2 目录下新建如下几个<strong>空文件</strong>来进行后续配置：</p><ul><li>aria2.conf - 配置文件</li><li>aria2.log - 日志文件</li><li>aria2.session - 下载记录文件</li><li>HideRun.vbs - 隐藏cmd窗口运行aria2所需要的文件</li></ul><p>之后 aria2 的目录结构如下：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">aria2-1.32/</span><br><span class="line">├── aria2.conf</span><br><span class="line">├── aria2.log</span><br><span class="line">├── aria2.session</span><br><span class="line">├── aria2c.exe</span><br><span class="line">├── AUTHORS</span><br><span class="line">├── ChangeLog</span><br><span class="line">├── COPYING</span><br><span class="line">├── HideRun.vbs</span><br><span class="line">├── LICENSE.OpenSSL</span><br><span class="line">├── NEWS</span><br><span class="line">├── README.html</span><br><span class="line">└── README.mingw</span><br></pre></td></tr></table></figure></div><h3 id="配置-aria2-conf"><a href="#配置-aria2-conf" class="headerlink" title="配置 aria2.conf"></a>配置 aria2.conf</h3><p>aria2.conf 文件用于配置 aria2 运行时的相关参数，相关配置项可以参考 <a href="https://aria2c.com/archiver/aria2.conf" target="_blank" rel="noopener">aria2配置示例</a>。</p><p>aria2 有两种下载模式，一种是命令行下载模式，一种是 RPC Server 模式，前者不方便故不建议使用； RPC Server 模式就是把 aria2 当作服务端，通过 RPC 接口接受客户端的下载请求，因为是 Server 模式，aria2 下载完成并不会退出，会一直等待后续的下载请求。所以，需要在 aria2.conf 配置文件中将与 RPC 相关的配置项打开(enable)。 这里我贴出自己的配置文件：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="INI"><figure class="highlight /ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## '#'开头为注释内容, 选项都有相应的注释说明, 根据需要修改 ##</span></span><br><span class="line"><span class="comment">## 被注释的选项填写的是默认值, 建议在需要修改时再取消注释  ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 文件保存相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件的保存路径(可使用绝对路径或相对路径), 默认: 当前启动位置</span></span><br><span class="line"><span class="attr">dir</span>=E:\Downloads</span><br><span class="line"><span class="comment"># 启用磁盘缓存, 0为禁用缓存, 需1.16以上版本, 默认:16M</span></span><br><span class="line"><span class="comment">#disk-cache=32M</span></span><br><span class="line"><span class="comment"># 文件预分配方式, 能有效降低磁盘碎片, 默认:prealloc</span></span><br><span class="line"><span class="comment"># 预分配所需时间: none &lt; falloc ? trunc &lt; prealloc</span></span><br><span class="line"><span class="comment"># falloc和trunc则需要文件系统和内核支持</span></span><br><span class="line"><span class="comment"># NTFS建议使用falloc, EXT3/4建议trunc, MAC 下需要注释此项</span></span><br><span class="line"><span class="attr">file-allocation</span>=falloc</span><br><span class="line"><span class="comment"># 断点续传</span></span><br><span class="line"><span class="attr">continue</span>=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 下载连接相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最大同时下载任务数, 运行时可修改, 默认:5</span></span><br><span class="line"><span class="attr">max-concurrent-downloads</span>=<span class="number">4</span></span><br><span class="line"><span class="comment"># 同一服务器连接数, 添加时可指定, 默认:1</span></span><br><span class="line"><span class="attr">max-connection-per-server</span>=<span class="number">5</span></span><br><span class="line"><span class="comment"># 最小文件分片大小, 添加时可指定, 取值范围1M -1024M, 默认:20M</span></span><br><span class="line"><span class="comment"># 假定size=10M, 文件为20MiB 则使用两个来源下载; 文件为15MiB 则使用一个来源下载</span></span><br><span class="line"><span class="attr">min-split-size</span>=<span class="number">10</span>M</span><br><span class="line"><span class="comment"># 单个任务最大线程数, 添加时可指定, 默认:5</span></span><br><span class="line"><span class="attr">split</span>=<span class="number">5</span></span><br><span class="line"><span class="comment"># 整体下载速度限制, 运行时可修改, 默认:0</span></span><br><span class="line"><span class="comment">#max-overall-download-limit=0</span></span><br><span class="line"><span class="comment"># 单个任务下载速度限制, 默认:0</span></span><br><span class="line"><span class="comment">#max-download-limit=0</span></span><br><span class="line"><span class="comment"># 整体上传速度限制, 运行时可修改, 默认:0</span></span><br><span class="line"><span class="comment">#max-overall-upload-limit=0</span></span><br><span class="line"><span class="comment"># 单个任务上传速度限制, 默认:0</span></span><br><span class="line"><span class="comment">#max-upload-limit=0</span></span><br><span class="line"><span class="comment"># 禁用IPv6, 默认:false</span></span><br><span class="line"><span class="attr">disable-ipv6</span>=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 进度保存相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从会话文件中读取下载任务</span></span><br><span class="line"><span class="attr">input-file</span>=D:\aria2\aria2-<span class="number">1.32</span>\aria2.session</span><br><span class="line"><span class="comment"># 在Aria2退出时保存`错误/未完成`的下载任务到会话文件</span></span><br><span class="line"><span class="attr">save-session</span>=D:\aria2\aria2-<span class="number">1.32</span>\aria2.session</span><br><span class="line"><span class="comment"># 定时保存会话, 0为退出时才保存, 需1.16.1以上版本, 默认:0</span></span><br><span class="line"><span class="attr">save-session-interval</span>=<span class="number">60</span></span><br><span class="line"><span class="comment"># log日志路径 默认没有log</span></span><br><span class="line"><span class="comment"># log=D:\aria2\aria2-1.32\aria2.log</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## RPC相关设置 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用RPC, 默认:false</span></span><br><span class="line"><span class="attr">enable-rpc</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 允许所有来源, 默认:false</span></span><br><span class="line"><span class="attr">rpc-allow-origin-all</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 允许非外部访问, 默认:false</span></span><br><span class="line"><span class="attr">rpc-listen-all</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 事件轮询方式, 取值:[epoll, kqueue, port, poll, select], 不同系统默认值不同</span></span><br><span class="line"><span class="comment">#event-poll=select</span></span><br><span class="line"><span class="comment"># RPC监听端口, 端口被占用时可以修改, 默认:6800</span></span><br><span class="line"><span class="comment">#rpc-listen-port=6800</span></span><br><span class="line"><span class="comment"># 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项</span></span><br><span class="line"><span class="comment">#rpc-secret=&lt;TOKEN&gt;</span></span><br><span class="line"><span class="comment"># 设置的RPC访问用户名, 此选项新版已废弃, 建议改用 --rpc-secret 选项</span></span><br><span class="line"><span class="comment">#rpc-user=&lt;USER&gt;</span></span><br><span class="line"><span class="comment"># 设置的RPC访问密码, 此选项新版已废弃, 建议改用 --rpc-secret 选项</span></span><br><span class="line"><span class="comment">#rpc-passwd=&lt;PASSWD&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## BT/PT下载相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当下载的是一个种子(以.torrent结尾)时, 自动开始BT任务, 默认:true</span></span><br><span class="line"><span class="comment">#follow-torrent=true</span></span><br><span class="line"><span class="comment"># BT监听端口, 当端口被屏蔽时使用, 默认:6881-6999</span></span><br><span class="line"><span class="attr">listen-port</span>=<span class="number">51413</span></span><br><span class="line"><span class="comment"># 单个种子最大连接数, 默认:55</span></span><br><span class="line"><span class="comment">#bt-max-peers=55</span></span><br><span class="line"><span class="comment"># 打开DHT功能, PT需要禁用, 默认:true</span></span><br><span class="line"><span class="attr">enable-dht</span>=<span class="literal">false</span></span><br><span class="line"><span class="comment"># 打开IPv6 DHT功能, PT需要禁用</span></span><br><span class="line"><span class="comment">#enable-dht6=false</span></span><br><span class="line"><span class="comment"># DHT网络监听端口, 默认:6881-6999</span></span><br><span class="line"><span class="comment">#dht-listen-port=6881-6999</span></span><br><span class="line"><span class="comment"># 本地节点查找, PT需要禁用, 默认:false</span></span><br><span class="line"><span class="comment">#bt-enable-lpd=false</span></span><br><span class="line"><span class="comment"># 种子交换, PT需要禁用, 默认:true</span></span><br><span class="line"><span class="attr">enable-peer-exchange</span>=<span class="literal">false</span></span><br><span class="line"><span class="comment"># 每个种子限速, 对少种的PT很有用, 默认:50K</span></span><br><span class="line"><span class="comment">#bt-request-peer-speed-limit=50K</span></span><br><span class="line"><span class="comment"># 客户端伪装, PT需要</span></span><br><span class="line"><span class="attr">peer-id-prefix</span>=-TR2770-</span><br><span class="line"><span class="attr">user-agent</span>=Transmission/<span class="number">2.77</span></span><br><span class="line"><span class="comment"># 当种子的分享率达到这个数时, 自动停止做种, 0为一直做种, 默认:1.0</span></span><br><span class="line"><span class="attr">seed-ratio</span>=<span class="number">0</span></span><br><span class="line"><span class="comment"># 强制保存会话, 即使任务已经完成, 默认:false</span></span><br><span class="line"><span class="comment"># 较新的版本开启后会在任务完成后依然保留.aria2文件</span></span><br><span class="line"><span class="comment">#force-save=false</span></span><br><span class="line"><span class="comment"># BT校验相关, 默认:true</span></span><br><span class="line"><span class="comment">#bt-hash-check-seed=true</span></span><br><span class="line"><span class="comment"># 继续之前的BT任务时, 无需再次校验, 默认:false</span></span><br><span class="line"><span class="attr">bt-seed-unverified</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 保存磁力链接元数据为种子文件(.torrent文件), 默认:false</span></span><br><span class="line"><span class="attr">bt-save-metadata</span>=<span class="literal">true</span></span><br></pre></td></tr></table></figure></div><p>更多更详尽的配置项请参考官方 <a href="https://aria2.github.io/manual/en/html/aria2c.html#options" target="_blank" rel="noopener">manual</a></p><h3 id="配置-HideRun-vbs"><a href="#配置-HideRun-vbs" class="headerlink" title="配置 HideRun.vbs"></a>配置 HideRun.vbs</h3><p>HideRun.vbs 文件的目的是就是让 aria2 隐藏 cmd 窗口运行。<br>往 HideRun.vbs 写入如下脚本内容：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="VBSCRIPT"><figure class="highlight /vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CreateObject</span>(<span class="string">"WScript.Shell"</span>).Run <span class="string">"aria2c.exe --conf-path=aria2.conf -D"</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div><p>通过 HideRun.vbs 内容我们可以知道， aria2c.exe 每次在运行时是要去加载 aria2.conf 配置文件的，所以<font color="#FF4081">需要双击 HideRun.vbs 来启动aria2，而不是双击 aria2c.exe</font>。</p><h2 id="下载管理"><a href="#下载管理" class="headerlink" title="下载管理"></a>下载管理</h2><p>aria2 是基于命令行的下载工具，本身是没有用于管理的界面的，一切都基于命令行，但有基于网页的管理界面（webui）：</p><ol><li>aria2官网提及的 <a href="https://github.com/ziahamza/webui-aria2" target="_blank" rel="noopener">webui-aria2</a> 项目</li><li>Binux大大的 <a href="http://binux.github.io/yaaw/demo/" target="_blank" rel="noopener">YAAW</a></li></ol><p>在这里我推荐 aria2 官网提及的 <code>webui-aria2</code> 作为Web管理界面，因为就目前看来它更好用 XD。</p><h3 id="webui-aria2-的使用"><a href="#webui-aria2-的使用" class="headerlink" title="webui-aria2 的使用"></a>webui-aria2 的使用</h3><p>有以下方式使用 webui-aria2：</p><ol><li>直接访问 <a href="https://ziahamza.github.io/webui-aria2/" target="_blank" rel="noopener">在线的 webui-aria2 页面</a> 来进行 aria2 的下载管理，一般来说选用这个就行；</li><li>通过将 <a href="https://github.com/ziahamza/webui-aria2" target="_blank" rel="noopener">webui-aria2</a> 这个repo下载下来，然后打开 index.html 来进行 aria2 的下载管理；</li></ol><p>在使用 webui-aria2 进行 aria2 的下载管理前，可能需要在web管理页面进行相关配置：<br><code>设置 -&gt; 连接设置 -&gt; Aria2 RPC 主机和端口</code>，需要根据提示完成相应的配置（具体需要填什么内容取决于之前的 aria2.conf的配置）。</p><p>在这里贴上我的 webui-aria2 的连接设置，因为令牌等都未启用，所以都是空：</p><p>在 webui-aria2 管理界面上，可以点击 <code>添加</code> 来添加链接、种子或 Medialink，来新增 aria2 的下载任务。更多其他操作（包括暂定、删除、重新下载等），在web界面上都有相应的入口，很简单，这里就不再详细介绍了。</p><p>最后附一张 <code>webui-aria2</code> 管理界面截图：</p><h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><ul><li>结合 <code>BaiduExporter(网盘助手)</code> 越过某(bai)度网盘下载速度限制，从而高速下载网盘文件，详情请戳 <a href="/post/3364832428">BaiduExporter 介绍与使用</a></li></ul><h2 id="相关链接或参考"><a href="#相关链接或参考" class="headerlink" title="相关链接或参考"></a>相关链接或参考</h2><ul><li><a href="http://bbs.kafan.cn/thread-1686205-1-1.html" target="_blank" rel="noopener">用火狐我喜欢用aria2下载，写写windows下教程吧</a></li><li><a href="https://aria2c.com/usage.html" target="_blank" rel="noopener">Aria2 &amp; YAAW 使用说明</a></li><li><a href="https://github.com/aria2/aria2" target="_blank" rel="noopener">aria2</a></li><li><a href="https://github.com/ziahamza/webui-aria2" target="_blank" rel="noopener">webui-aria2</a></li></ul></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/aria2-introduction-and-instruction/" title="下载工具aria2 - 配置和使用">https://tianma.space/post/aria2-introduction-and-instruction/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/aria2/" rel="tag"><i class="fa fa-tag"></i> aria2</a><a href="/tags/下载工具/" rel="tag"><i class="fa fa-tag"></i> 下载工具</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/bernoulli-experiment-in-hearthstone-pack-opening/" rel="next" title="炉石开包引发的血案（雾"><i class="fa fa-chevron-left"></i> 炉石开包引发的血案（雾</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/baidu-exporter-introduction-and-instructions/" rel="prev" title="BaiduExporter 介绍与使用">BaiduExporter 介绍与使用<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-aria2-conf"><span class="nav-number">3.1.</span> <span class="nav-text">配置 aria2.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-HideRun-vbs"><span class="nav-number">3.2.</span> <span class="nav-text">配置 HideRun.vbs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载管理"><span class="nav-number">4.</span> <span class="nav-text">下载管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webui-aria2-的使用"><span class="nav-number">4.1.</span> <span class="nav-text">webui-aria2 的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶"><span class="nav-number">5.</span> <span class="nav-text">进阶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关链接或参考"><span class="nav-number">6.</span> <span class="nav-text">相关链接或参考</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="简介aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，aira2 还是一款开源免费的软件。">
+<meta name="keywords" content="aria2,下载工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="下载工具aria2 - 配置和使用">
+<meta property="og:url" content="https://tianma.space/post/aria2-introduction-and-instruction/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="简介aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，aira2 还是一款开源免费的软件。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-06T20:04:40.916Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="下载工具aria2 - 配置和使用">
+<meta name="twitter:description" content="简介aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，aira2 还是一款开源免费的软件。">
+  <link rel="canonical" href="https://tianma.space/post/aria2-introduction-and-instruction/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>下载工具aria2 - 配置和使用 | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">87</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/aria2-introduction-and-instruction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">下载工具aria2 - 配置和使用
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-19 16:18:44" itemprop="dateCreated datePublished" datetime="2017-07-19T16:18:44+08:00">2017-07-19</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-11-07 04:04:40" itemprop="dateModified" datetime="2018-11-07T04:04:40+08:00">2018-11-07</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/科学上网/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>aria2 是一款支持跨平台、多源、多协议的轻量级的命令行式的下载工具。它支持 HTTP/HTTPS、FTP、SFTP、磁力链接以及 Medialink等多种下载方式。不仅如此，更值得称赞的是，<a href="https://github.com/aria2/aria2" target="_blank" rel="noopener">aira2</a> 还是一款开源免费的软件。 <a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>最新的 aria2 release版本下载地址 <a href="https://github.com/aria2/aria2/releases/latest" target="_blank" rel="noopener">aria2 release</a>。</p>
+<blockquote>
+<p><strong>注意</strong>：之前网上好多关于 aria2 的下载地址是在 sourceforge 上的，但是由于 aria2 已开源迁移至 GitHub，所以下载最新版本的还是需要找准地址。</p>
+</blockquote>
+
+<p>通过上方官方给的下载列表可以看出，aria2支持的平台有 Windows、MacOS、Linux、Android。注意，<font color="#FF4081">本文只介绍 Windows 平台下的，其他平台烦请另行查阅资料</font>。 Windows 平台只需下载对应位数的zip压缩包，解压缩即可。</p>
+<p>解压后的目录结构如下，其体积是相当小的：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">aria2-1.32/</span><br><span class="line">├── aria2c.exe</span><br><span class="line">├── AUTHORS</span><br><span class="line">├── ChangeLog</span><br><span class="line">├── COPYING</span><br><span class="line">├── LICENSE.OpenSSL</span><br><span class="line">├── NEWS</span><br><span class="line">├── README.html</span><br><span class="line">└── README.mingw</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>接下来，在 aria2 目录下新建如下几个<strong>空文件</strong>来进行后续配置：</p>
+<ul>
+<li>aria2.conf - 配置文件</li>
+<li>aria2.log - 日志文件</li>
+<li>aria2.session - 下载记录文件</li>
+<li>HideRun.vbs - 隐藏cmd窗口运行aria2所需要的文件</li>
+</ul>
+<p>之后 aria2 的目录结构如下：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">aria2-1.32/</span><br><span class="line">├── aria2.conf</span><br><span class="line">├── aria2.log</span><br><span class="line">├── aria2.session</span><br><span class="line">├── aria2c.exe</span><br><span class="line">├── AUTHORS</span><br><span class="line">├── ChangeLog</span><br><span class="line">├── COPYING</span><br><span class="line">├── HideRun.vbs</span><br><span class="line">├── LICENSE.OpenSSL</span><br><span class="line">├── NEWS</span><br><span class="line">├── README.html</span><br><span class="line">└── README.mingw</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="配置-aria2-conf"><a href="#配置-aria2-conf" class="headerlink" title="配置 aria2.conf"></a>配置 aria2.conf</h3><p>aria2.conf 文件用于配置 aria2 运行时的相关参数，相关配置项可以参考 <a href="https://aria2c.com/archiver/aria2.conf" target="_blank" rel="noopener">aria2配置示例</a>。</p>
+<p>aria2 有两种下载模式，一种是命令行下载模式，一种是 RPC Server 模式，前者不方便故不建议使用； RPC Server 模式就是把 aria2 当作服务端，通过 RPC 接口接受客户端的下载请求，因为是 Server 模式，aria2 下载完成并不会退出，会一直等待后续的下载请求。所以，需要在 aria2.conf 配置文件中将与 RPC 相关的配置项打开(enable)。 这里我贴出自己的配置文件：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="INI"><figure class="highlight /ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## '#'开头为注释内容, 选项都有相应的注释说明, 根据需要修改 ##</span></span><br><span class="line"><span class="comment">## 被注释的选项填写的是默认值, 建议在需要修改时再取消注释  ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 文件保存相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件的保存路径(可使用绝对路径或相对路径), 默认: 当前启动位置</span></span><br><span class="line"><span class="attr">dir</span>=E:\Downloads</span><br><span class="line"><span class="comment"># 启用磁盘缓存, 0为禁用缓存, 需1.16以上版本, 默认:16M</span></span><br><span class="line"><span class="comment">#disk-cache=32M</span></span><br><span class="line"><span class="comment"># 文件预分配方式, 能有效降低磁盘碎片, 默认:prealloc</span></span><br><span class="line"><span class="comment"># 预分配所需时间: none &lt; falloc ? trunc &lt; prealloc</span></span><br><span class="line"><span class="comment"># falloc和trunc则需要文件系统和内核支持</span></span><br><span class="line"><span class="comment"># NTFS建议使用falloc, EXT3/4建议trunc, MAC 下需要注释此项</span></span><br><span class="line"><span class="attr">file-allocation</span>=falloc</span><br><span class="line"><span class="comment"># 断点续传</span></span><br><span class="line"><span class="attr">continue</span>=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 下载连接相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最大同时下载任务数, 运行时可修改, 默认:5</span></span><br><span class="line"><span class="attr">max-concurrent-downloads</span>=<span class="number">4</span></span><br><span class="line"><span class="comment"># 同一服务器连接数, 添加时可指定, 默认:1</span></span><br><span class="line"><span class="attr">max-connection-per-server</span>=<span class="number">5</span></span><br><span class="line"><span class="comment"># 最小文件分片大小, 添加时可指定, 取值范围1M -1024M, 默认:20M</span></span><br><span class="line"><span class="comment"># 假定size=10M, 文件为20MiB 则使用两个来源下载; 文件为15MiB 则使用一个来源下载</span></span><br><span class="line"><span class="attr">min-split-size</span>=<span class="number">10</span>M</span><br><span class="line"><span class="comment"># 单个任务最大线程数, 添加时可指定, 默认:5</span></span><br><span class="line"><span class="attr">split</span>=<span class="number">5</span></span><br><span class="line"><span class="comment"># 整体下载速度限制, 运行时可修改, 默认:0</span></span><br><span class="line"><span class="comment">#max-overall-download-limit=0</span></span><br><span class="line"><span class="comment"># 单个任务下载速度限制, 默认:0</span></span><br><span class="line"><span class="comment">#max-download-limit=0</span></span><br><span class="line"><span class="comment"># 整体上传速度限制, 运行时可修改, 默认:0</span></span><br><span class="line"><span class="comment">#max-overall-upload-limit=0</span></span><br><span class="line"><span class="comment"># 单个任务上传速度限制, 默认:0</span></span><br><span class="line"><span class="comment">#max-upload-limit=0</span></span><br><span class="line"><span class="comment"># 禁用IPv6, 默认:false</span></span><br><span class="line"><span class="attr">disable-ipv6</span>=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 进度保存相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从会话文件中读取下载任务</span></span><br><span class="line"><span class="attr">input-file</span>=D:\aria2\aria2-<span class="number">1.32</span>\aria2.session</span><br><span class="line"><span class="comment"># 在Aria2退出时保存`错误/未完成`的下载任务到会话文件</span></span><br><span class="line"><span class="attr">save-session</span>=D:\aria2\aria2-<span class="number">1.32</span>\aria2.session</span><br><span class="line"><span class="comment"># 定时保存会话, 0为退出时才保存, 需1.16.1以上版本, 默认:0</span></span><br><span class="line"><span class="attr">save-session-interval</span>=<span class="number">60</span></span><br><span class="line"><span class="comment"># log日志路径 默认没有log</span></span><br><span class="line"><span class="comment"># log=D:\aria2\aria2-1.32\aria2.log</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## RPC相关设置 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用RPC, 默认:false</span></span><br><span class="line"><span class="attr">enable-rpc</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 允许所有来源, 默认:false</span></span><br><span class="line"><span class="attr">rpc-allow-origin-all</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 允许非外部访问, 默认:false</span></span><br><span class="line"><span class="attr">rpc-listen-all</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 事件轮询方式, 取值:[epoll, kqueue, port, poll, select], 不同系统默认值不同</span></span><br><span class="line"><span class="comment">#event-poll=select</span></span><br><span class="line"><span class="comment"># RPC监听端口, 端口被占用时可以修改, 默认:6800</span></span><br><span class="line"><span class="comment">#rpc-listen-port=6800</span></span><br><span class="line"><span class="comment"># 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项</span></span><br><span class="line"><span class="comment">#rpc-secret=&lt;TOKEN&gt;</span></span><br><span class="line"><span class="comment"># 设置的RPC访问用户名, 此选项新版已废弃, 建议改用 --rpc-secret 选项</span></span><br><span class="line"><span class="comment">#rpc-user=&lt;USER&gt;</span></span><br><span class="line"><span class="comment"># 设置的RPC访问密码, 此选项新版已废弃, 建议改用 --rpc-secret 选项</span></span><br><span class="line"><span class="comment">#rpc-passwd=&lt;PASSWD&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## BT/PT下载相关 ##</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当下载的是一个种子(以.torrent结尾)时, 自动开始BT任务, 默认:true</span></span><br><span class="line"><span class="comment">#follow-torrent=true</span></span><br><span class="line"><span class="comment"># BT监听端口, 当端口被屏蔽时使用, 默认:6881-6999</span></span><br><span class="line"><span class="attr">listen-port</span>=<span class="number">51413</span></span><br><span class="line"><span class="comment"># 单个种子最大连接数, 默认:55</span></span><br><span class="line"><span class="comment">#bt-max-peers=55</span></span><br><span class="line"><span class="comment"># 打开DHT功能, PT需要禁用, 默认:true</span></span><br><span class="line"><span class="attr">enable-dht</span>=<span class="literal">false</span></span><br><span class="line"><span class="comment"># 打开IPv6 DHT功能, PT需要禁用</span></span><br><span class="line"><span class="comment">#enable-dht6=false</span></span><br><span class="line"><span class="comment"># DHT网络监听端口, 默认:6881-6999</span></span><br><span class="line"><span class="comment">#dht-listen-port=6881-6999</span></span><br><span class="line"><span class="comment"># 本地节点查找, PT需要禁用, 默认:false</span></span><br><span class="line"><span class="comment">#bt-enable-lpd=false</span></span><br><span class="line"><span class="comment"># 种子交换, PT需要禁用, 默认:true</span></span><br><span class="line"><span class="attr">enable-peer-exchange</span>=<span class="literal">false</span></span><br><span class="line"><span class="comment"># 每个种子限速, 对少种的PT很有用, 默认:50K</span></span><br><span class="line"><span class="comment">#bt-request-peer-speed-limit=50K</span></span><br><span class="line"><span class="comment"># 客户端伪装, PT需要</span></span><br><span class="line"><span class="attr">peer-id-prefix</span>=-TR2770-</span><br><span class="line"><span class="attr">user-agent</span>=Transmission/<span class="number">2.77</span></span><br><span class="line"><span class="comment"># 当种子的分享率达到这个数时, 自动停止做种, 0为一直做种, 默认:1.0</span></span><br><span class="line"><span class="attr">seed-ratio</span>=<span class="number">0</span></span><br><span class="line"><span class="comment"># 强制保存会话, 即使任务已经完成, 默认:false</span></span><br><span class="line"><span class="comment"># 较新的版本开启后会在任务完成后依然保留.aria2文件</span></span><br><span class="line"><span class="comment">#force-save=false</span></span><br><span class="line"><span class="comment"># BT校验相关, 默认:true</span></span><br><span class="line"><span class="comment">#bt-hash-check-seed=true</span></span><br><span class="line"><span class="comment"># 继续之前的BT任务时, 无需再次校验, 默认:false</span></span><br><span class="line"><span class="attr">bt-seed-unverified</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 保存磁力链接元数据为种子文件(.torrent文件), 默认:false</span></span><br><span class="line"><span class="attr">bt-save-metadata</span>=<span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
+
+<p>更多更详尽的配置项请参考官方 <a href="https://aria2.github.io/manual/en/html/aria2c.html#options" target="_blank" rel="noopener">manual</a></p>
+<h3 id="配置-HideRun-vbs"><a href="#配置-HideRun-vbs" class="headerlink" title="配置 HideRun.vbs"></a>配置 HideRun.vbs</h3><p>HideRun.vbs 文件的目的是就是让 aria2 隐藏 cmd 窗口运行。<br>往 HideRun.vbs 写入如下脚本内容：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="VBSCRIPT"><figure class="highlight /vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CreateObject</span>(<span class="string">"WScript.Shell"</span>).Run <span class="string">"aria2c.exe --conf-path=aria2.conf -D"</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+
+<p>通过 HideRun.vbs 内容我们可以知道， aria2c.exe 每次在运行时是要去加载 aria2.conf 配置文件的，所以<font color="#FF4081">需要双击  HideRun.vbs 来启动aria2，而不是双击 aria2c.exe</font>。</p>
+<h2 id="下载管理"><a href="#下载管理" class="headerlink" title="下载管理"></a>下载管理</h2><p>aria2 是基于命令行的下载工具，本身是没有用于管理的界面的，一切都基于命令行，但有基于网页的管理界面（webui）：</p>
+<ol>
+<li>aria2官网提及的 <a href="https://github.com/ziahamza/webui-aria2" target="_blank" rel="noopener">webui-aria2</a> 项目</li>
+<li>Binux大大的 <a href="http://binux.github.io/yaaw/demo/" target="_blank" rel="noopener">YAAW</a></li>
+</ol>
+<p>在这里我推荐 aria2 官网提及的 <code>webui-aria2</code> 作为Web管理界面，因为就目前看来它更好用 XD。</p>
+<h3 id="webui-aria2-的使用"><a href="#webui-aria2-的使用" class="headerlink" title="webui-aria2 的使用"></a>webui-aria2 的使用</h3><p>有以下方式使用 webui-aria2：</p>
+<ol>
+<li>直接访问 <a href="https://ziahamza.github.io/webui-aria2/" target="_blank" rel="noopener">在线的 webui-aria2 页面</a> 来进行 aria2 的下载管理，一般来说选用这个就行；</li>
+<li>通过将 <a href="https://github.com/ziahamza/webui-aria2" target="_blank" rel="noopener">webui-aria2</a> 这个repo下载下来，然后打开 index.html 来进行 aria2 的下载管理；</li>
+</ol>
+<p>在使用 webui-aria2 进行 aria2 的下载管理前，可能需要在web管理页面进行相关配置：<br><code>设置 -&gt; 连接设置 -&gt; Aria2 RPC 主机和端口</code>，需要根据提示完成相应的配置（具体需要填什么内容取决于之前的 aria2.conf的配置）。</p>
+<p>在这里贴上我的 webui-aria2 的连接设置，因为令牌等都未启用，所以都是空：</p>
+
+
+<p>在 webui-aria2 管理界面上，可以点击 <code>添加</code> 来添加链接、种子或 Medialink，来新增 aria2 的下载任务。更多其他操作（包括暂定、删除、重新下载等），在web界面上都有相应的入口，很简单，这里就不再详细介绍了。</p>
+<p>最后附一张 <code>webui-aria2</code> 管理界面截图：</p>
+
+
+<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><ul>
+<li>结合 <code>BaiduExporter(网盘助手)</code> 越过某(bai)度网盘下载速度限制，从而高速下载网盘文件，详情请戳 <a href="/post/3364832428">BaiduExporter 介绍与使用</a></li>
+</ul>
+<h2 id="相关链接或参考"><a href="#相关链接或参考" class="headerlink" title="相关链接或参考"></a>相关链接或参考</h2><ul>
+<li><a href="http://bbs.kafan.cn/thread-1686205-1-1.html" target="_blank" rel="noopener">用火狐我喜欢用aria2下载，写写windows下教程吧</a></li>
+<li><a href="https://aria2c.com/usage.html" target="_blank" rel="noopener">Aria2 &amp; YAAW 使用说明</a></li>
+<li><a href="https://github.com/aria2/aria2" target="_blank" rel="noopener">aria2</a></li>
+<li><a href="https://github.com/ziahamza/webui-aria2" target="_blank" rel="noopener">webui-aria2</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/aria2-introduction-and-instruction/" title="下载工具aria2 - 配置和使用">https://tianma.space/post/aria2-introduction-and-instruction/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/aria2/" rel="tag"><i class="fa fa-tag"></i> aria2</a>
+            
+              <a href="/tags/下载工具/" rel="tag"><i class="fa fa-tag"></i> 下载工具</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/bernoulli-experiment-in-hearthstone-pack-opening/" rel="next" title="炉石开包引发的血案（雾">
+                  <i class="fa fa-chevron-left"></i> 炉石开包引发的血案（雾
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/baidu-exporter-introduction-and-instructions/" rel="prev" title="BaiduExporter 介绍与使用">
+                  BaiduExporter 介绍与使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-aria2-conf"><span class="nav-number">3.1.</span> <span class="nav-text">配置 aria2.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-HideRun-vbs"><span class="nav-number">3.2.</span> <span class="nav-text">配置 HideRun.vbs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载管理"><span class="nav-number">4.</span> <span class="nav-text">下载管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webui-aria2-的使用"><span class="nav-number">4.1.</span> <span class="nav-text">webui-aria2 的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶"><span class="nav-number">5.</span> <span class="nav-text">进阶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关链接或参考"><span class="nav-number">6.</span> <span class="nav-text">相关链接或参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">87</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +706,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
