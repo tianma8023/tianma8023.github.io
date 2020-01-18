@@ -23,6 +23,10 @@ NexT.utils = {
     document.querySelectorAll('.post-body > img').forEach(element => {
       var $image = $(element);
       var imageLink = $image.attr('data-src') || $image.attr('src');
+      var index = imageLink.lastIndexOf('@');
+      if (index != -1) {
+        imageLink = imageLink.substring(0, index);
+      }
       var $imageWrapLink = $image.wrap(`<a class="fancybox fancybox.image" href="${imageLink}" itemscope itemtype="http://schema.org/ImageObject" itemprop="url"></a>`).parent('a');
       if ($image.is('.post-gallery img')) {
         $imageWrapLink.addClass('post-gallery-img');
