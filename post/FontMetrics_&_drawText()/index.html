@@ -1,4 +1,668 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 3.9.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0"><link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"><script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.4.0",exturl:!1,sidebar:{position:"right",display:"hide",offset:12,onmobile:!1,dimmer:!1},copycode:{enable:!1,show_result:!1,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!1},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="在绘制文字的时候，不可避免的用到 FontMetrics 类和 Canvas#drawText() 方法，这里详细介绍下。"><meta name="keywords" content="FontMetrics,Custom View"><meta property="og:type" content="article"><meta property="og:title" content="Android 文字绘制中的 FontMetrics 和 drawText()"><meta property="og:url" content="https://tianma.space/post/FontMetrics_&_drawText()/index.html"><meta property="og:site_name" content="Tianma"><meta property="og:description" content="在绘制文字的时候，不可避免的用到 FontMetrics 类和 Canvas#drawText() 方法，这里详细介绍下。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-01-02T05:52:27.458Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Android 文字绘制中的 FontMetrics 和 drawText()"><meta name="twitter:description" content="在绘制文字的时候，不可避免的用到 FontMetrics 类和 Canvas#drawText() 方法，这里详细介绍下。"><link rel="canonical" href="https://tianma.space/post/FontMetrics_&_drawText()/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><script async src="/js/cursor/fireworks.js"></script><title>Android 文字绘制中的 FontMetrics 和 drawText() | Tianma</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Tianma</span><span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">87</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">9</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-honey"><a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i><br>Honey</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://tianma.space/post/FontMetrics_&_drawText()/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="Tianma"><meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。"><meta itemprop="image" content="/images/kousei.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Tianma"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Android 文字绘制中的 FontMetrics 和 drawText()</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-01-26 21:23:43" itemprop="dateCreated datePublished" datetime="2018-01-26T21:23:43+08:00">2018-01-26</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-01-02 13:52:27" itemprop="dateModified" datetime="2019-01-02T13:52:27+08:00">2019-01-02</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>在绘制文字的时候，不可避免的用到 <code>FontMetrics</code> 类和 <code>Canvas#drawText()</code> 方法，这里详细介绍下。<a id="more"></a></p><h2 id="FontMetrics"><a href="#FontMetrics" class="headerlink" title="FontMetrics"></a>FontMetrics</h2><p>先看下面这张图：</p><img alt="FontMetrics Lines" class="post-image-center" data-src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/android_fontmetrics_lines.jpeg@!w640"><p>图中有五条线，自上而下分别是：</p><ul><li>top line: 文字可绘制区域最顶部的线；</li><li>ascent line: 系统推荐的，文字可绘制区域顶部的线；</li><li>baseline: 文字绘制的基线（在四线格上书写英文字母时的第三条线）；</li><li>descent line: 系统推荐的，文字可绘制区域底部的线；</li><li>bottom line: 文字可绘制区域最底部的线。</li></ul><p>而 <code>FontMetrics</code> 类中有 <code>[top, ascent, descent, bottom, leading]</code> 字段，与上面 5 条线的关系是： <strong>FontMetrics对象中的字段值 = 对应线条的 Y 坐标值 - baseline的 Y 坐标值</strong> ，如果用 <code>Y(line A)</code> 表示线条 A 的 Y 坐标的话，那么以下等式成立：</p><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FontMetrics::top = Y(top line) - Y(baseline);</span><br><span class="line">FontMetrics::ascent = Y(ascent line) - Y(baseline);</span><br><span class="line">FontMetrics::descent = Y(descent line) - Y(baseline);</span><br><span class="line">FontMetrics::bottom = Y(bottom line) - Y(baseline);</span><br></pre></td></tr></table></figure></div><p><font color="#ff4081">需要注意的是：</font> 通常情况下，Android 中的 y 轴的正方向是沿屏幕向下的，也就是越往下 y 坐标越大，所以 <code>FontMetrics</code> 的 <code>top</code> 和 <code>ascent</code> 值是负值， <code>descent</code> 和 <code>bottom</code> 的值是正值。</p><p>余下的字段 <code>leading</code> 表示 系统推荐的行间距。</p><p>在实际开发中，通常使用 <code>Paint</code> 的 <code>getFontMetrics()</code> 获得其对应的 <code>FontMetrics</code> 对象。</p><h2 id="drawText"><a href="#drawText" class="headerlink" title="drawText()"></a>drawText()</h2><p>绘制文字的时候，需要使用 <code>Canvas</code> 的 <code>drawText(String text, float x, float y, Paint paint)</code> 方法，其中的 <code>text</code> 表示 所需绘制的文字， <code>paint</code> 表示 画笔，这很好理解，那么 <code>x</code> 和 <code>y</code> 又是什么呢？</p><p>这里把 <code>x</code> 和 <code>y</code> 组成的点 <code>(x, y)</code> 称作 基点，用于控制文字绘制的基准位置，而 <code>Paint</code> 中的 <code>Align</code> 对象指定文字对齐方式。 基点 和 Align 共同作用从而成功绘制文字。特别地是：<font color="#ff4081">基点的 Y 坐标（也就是 y 值）其实就是前面提到的 baseline 的 Y 坐标</font>。</p><p>比如：上面图中 <code>baseline</code> 上的黄点就是基点，可以观察得出其对齐方式 <code>Align</code> 就是 <code>CENTER</code>。</p><h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h2><p>示例截图：</p><img alt="FontMetrics Sample" class="post-image-center" data-src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/FontMetrics_Sample_ss.jpeg@!w640"><p>GitHub: <a href="https://github.com/tianma8023/FontMetricsSample" target="_blank" rel="noopener">FontMetricsSample</a></p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://stackoverflow.com/questions/27631736/meaning-of-top-ascent-baseline-descent-bottom-and-leading-in-androids-font" target="_blank" rel="noopener">Meaning of top, ascent, baseline, descent, bottom, and leading in Android’s FontMetrics</a></li><li><a href="http://blog.csdn.net/harvic880925/article/details/50423762" target="_blank" rel="noopener">自定义控件之绘图篇（ 五）：drawText()详解</a></li></ul></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong> Tianma</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://tianma.space/post/FontMetrics_&_drawText()/" title="Android 文字绘制中的 FontMetrics 和 drawText()">https://tianma.space/post/FontMetrics_&_drawText()/</a></li><li class="post-copyright-license"><strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/FontMetrics/" rel="tag"><i class="fa fa-tag"></i> FontMetrics</a><a href="/tags/Custom-View/" rel="tag"><i class="fa fa-tag"></i> Custom View</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/post/hexo-embed-aplayer/" rel="next" title="Hexo 折腾：音乐播放"><i class="fa fa-chevron-left"></i> Hexo 折腾：音乐播放</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/post/hexo-notes/" rel="prev" title="Hexo 折腾记">Hexo 折腾记<i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FontMetrics"><span class="nav-number">1.</span> <span class="nav-text">FontMetrics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drawText"><span class="nav-number">2.</span> <span class="nav-text">drawText()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample"><span class="nav-number">3.</span> <span class="nav-text">Sample</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/kousei.jpg" alt="Tianma"><p class="site-author-name" itemprop="name">Tianma</p><div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">65</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">87</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a></span><span class="links-of-author-item"><a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> Mail</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span><span class="with-love" id="animate"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">Tianma</span></div></div></footer></div><script size="300" alpha="0.175" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script><script src="/lib/anime.min.js?v=3.1.0"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script src="/js/local-search.js?v=7.4.0"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script>NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在绘制文字的时候，不可避免的用到 FontMetrics 类和 Canvas#drawText() 方法，这里详细介绍下。">
+<meta name="keywords" content="FontMetrics,Custom View">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 文字绘制中的 FontMetrics 和 drawText()">
+<meta property="og:url" content="https://tianma.space/post/FontMetrics_&_drawText()/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="在绘制文字的时候，不可避免的用到 FontMetrics 类和 Canvas#drawText() 方法，这里详细介绍下。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-01-02T05:52:27.458Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 文字绘制中的 FontMetrics 和 drawText()">
+<meta name="twitter:description" content="在绘制文字的时候，不可避免的用到 FontMetrics 类和 Canvas#drawText() 方法，这里详细介绍下。">
+  <link rel="canonical" href="https://tianma.space/post/FontMetrics_&_drawText()/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>Android 文字绘制中的 FontMetrics 和 drawText() | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">89</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">65</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/FontMetrics_&_drawText()/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Android 文字绘制中的 FontMetrics 和 drawText()
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-26 21:23:43" itemprop="dateCreated datePublished" datetime="2018-01-26T21:23:43+08:00">2018-01-26</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-02 13:52:27" itemprop="dateModified" datetime="2019-01-02T13:52:27+08:00">2019-01-02</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在绘制文字的时候，不可避免的用到 <code>FontMetrics</code> 类和 <code>Canvas#drawText()</code> 方法，这里详细介绍下。 <a id="more"></a></p>
+<h2 id="FontMetrics"><a href="#FontMetrics" class="headerlink" title="FontMetrics"></a>FontMetrics</h2><p>先看下面这张图：</p>
+<img alt="FontMetrics Lines" class="post-image-center" data-src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/android_fontmetrics_lines.jpeg@!w640">
+
+<p>图中有五条线，自上而下分别是：</p>
+<ul>
+<li>top line: 文字可绘制区域最顶部的线；</li>
+<li>ascent line: 系统推荐的，文字可绘制区域顶部的线；</li>
+<li>baseline: 文字绘制的基线（在四线格上书写英文字母时的第三条线）；</li>
+<li>descent line: 系统推荐的，文字可绘制区域底部的线；</li>
+<li>bottom line: 文字可绘制区域最底部的线。</li>
+</ul>
+<p>而 <code>FontMetrics</code> 类中有 <code>[top, ascent, descent, bottom, leading]</code> 字段，与上面 5 条线的关系是： <strong>FontMetrics对象中的字段值 = 对应线条的 Y 坐标值 - baseline的 Y 坐标值</strong> ，如果用 <code>Y(line A)</code> 表示线条 A 的 Y 坐标的话，那么以下等式成立：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FontMetrics::top = Y(top line) - Y(baseline);</span><br><span class="line">FontMetrics::ascent = Y(ascent line) - Y(baseline);</span><br><span class="line">FontMetrics::descent = Y(descent line) - Y(baseline);</span><br><span class="line">FontMetrics::bottom = Y(bottom line) - Y(baseline);</span><br></pre></td></tr></table></figure></div>
+
+<p><font color="#ff4081">需要注意的是：</font> 通常情况下，Android 中的 y 轴的正方向是沿屏幕向下的，也就是越往下 y 坐标越大，所以 <code>FontMetrics</code> 的 <code>top</code> 和 <code>ascent</code> 值是负值， <code>descent</code> 和 <code>bottom</code> 的值是正值。</p>
+<p>余下的字段 <code>leading</code> 表示 系统推荐的行间距。</p>
+<p>在实际开发中，通常使用 <code>Paint</code> 的 <code>getFontMetrics()</code> 获得其对应的 <code>FontMetrics</code> 对象。</p>
+<h2 id="drawText"><a href="#drawText" class="headerlink" title="drawText()"></a>drawText()</h2><p>绘制文字的时候，需要使用 <code>Canvas</code> 的 <code>drawText(String text, float x, float y, Paint paint)</code> 方法，其中的 <code>text</code> 表示 所需绘制的文字， <code>paint</code> 表示 画笔，这很好理解，那么 <code>x</code> 和 <code>y</code> 又是什么呢？</p>
+<p>这里把 <code>x</code> 和 <code>y</code> 组成的点 <code>(x, y)</code> 称作 基点，用于控制文字绘制的基准位置，而 <code>Paint</code> 中的 <code>Align</code> 对象指定文字对齐方式。 基点 和 Align 共同作用从而成功绘制文字。特别地是：<font color="#ff4081">基点的 Y 坐标（也就是 y 值）其实就是前面提到的 baseline 的 Y 坐标</font>。</p>
+<p>比如：上面图中 <code>baseline</code> 上的黄点就是基点，可以观察得出其对齐方式 <code>Align</code> 就是 <code>CENTER</code>。</p>
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h2><p>示例截图：</p>
+<img alt="FontMetrics Sample" class="post-image-center" data-src="https://tianma-bucket.oss-cn-shanghai.aliyuncs.com/images/FontMetrics_Sample_ss.jpeg@!w640">
+
+<p>GitHub: <a href="https://github.com/tianma8023/FontMetricsSample" target="_blank" rel="noopener">FontMetricsSample</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://stackoverflow.com/questions/27631736/meaning-of-top-ascent-baseline-descent-bottom-and-leading-in-androids-font" target="_blank" rel="noopener">Meaning of top, ascent, baseline, descent, bottom, and leading in Android’s FontMetrics
+</a></li>
+<li><a href="http://blog.csdn.net/harvic880925/article/details/50423762" target="_blank" rel="noopener">自定义控件之绘图篇（ 五）：drawText()详解</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/FontMetrics_&_drawText()/" title="Android 文字绘制中的 FontMetrics 和 drawText()">https://tianma.space/post/FontMetrics_&_drawText()/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/FontMetrics/" rel="tag"><i class="fa fa-tag"></i> FontMetrics</a>
+            
+              <a href="/tags/Custom-View/" rel="tag"><i class="fa fa-tag"></i> Custom View</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/hexo-embed-aplayer/" rel="next" title="Hexo 折腾：音乐播放">
+                  <i class="fa fa-chevron-left"></i> Hexo 折腾：音乐播放
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/post/hexo-notes/" rel="prev" title="Hexo 折腾记">
+                  Hexo 折腾记 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FontMetrics"><span class="nav-number">1.</span> <span class="nav-text">FontMetrics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drawText"><span class="nav-number">2.</span> <span class="nav-text">drawText()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample"><span class="nav-number">3.</span> <span class="nav-text">Sample</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID: '55a5d9da39a7a1f372ab',
       clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
@@ -15,4 +679,8 @@
       distractionFreeMode: 'true'
     });
     gitalk.render('gitalk-container');
-  }, window.Gitalk);</script></body></html>
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
