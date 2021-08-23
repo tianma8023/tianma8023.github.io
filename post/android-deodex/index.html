@@ -202,7 +202,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">66</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">67</span></a>
 
   </li>
       
@@ -356,7 +356,7 @@
       
         <p>在使用逆向工具（比如 <a href="https://github.com/skylot/jadx" target="_blank" rel="noopener">jdax</a> 等）反编译某些系统 App 的时候，会发现其代码其实是不全的，其实是因为系统应用的 APK 已经经过 <code>odex</code> 和 <code>vdex</code> 化，导致代码分离。</p>
 <p>比如在之前的文章（<a href="/post/android-extract-Rom/">Android 拆包，提取 APK 或 Framework 文件</a>）中，拆了 MIUI 的 Rom，其中小米系统界面（<code>MiuiSystemUI</code>）拆开后大致是这样的：</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tree -s priv-app/MiuiSystemUI/</span></span><br><span class="line">priv-app/MiuiSystemUI/</span><br><span class="line">├── [   17525476]  MiuiSystemUI.apk</span><br><span class="line">└── [          0]  oat</span><br><span class="line">    └── [          0]  arm64</span><br><span class="line">        ├── [   12669648]  MiuiSystemUI.odex</span><br><span class="line">        └── [    6418324]  MiuiSystemUI.vdex</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tree -s priv-app/MiuiSystemUI/</span><br><span class="line">priv-app/MiuiSystemUI/</span><br><span class="line">├── [   17525476]  MiuiSystemUI.apk</span><br><span class="line">└── [          0]  oat</span><br><span class="line">    └── [          0]  arm64</span><br><span class="line">        ├── [   12669648]  MiuiSystemUI.odex</span><br><span class="line">        └── [    6418324]  MiuiSystemUI.vdex</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure></div>
 
 <p>解压 <code>MiuiSystemUI.apk</code> 之后：</p>
 <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SHELL"><figure class="highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AndroidManifest.xml  assets/  META-INF/  res/  resources.arsc</span><br></pre></td></tr></table></figure></div>
@@ -614,7 +614,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
