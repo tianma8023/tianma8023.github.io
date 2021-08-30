@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Kotlin 作为有高级特性的语言，凭借高阶函数也能支持实现 DSL 。">
+<meta name="keywords" content="Kotlin DSL,DSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin DSL 之 HTML DSL">
+<meta property="og:url" content="https://tianma.space/post/kotlin-DSL-first-sight-html/index.html">
+<meta property="og:site_name" content="Tianma">
+<meta property="og:description" content="Kotlin 作为有高级特性的语言，凭借高阶函数也能支持实现 DSL 。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-08-30T12:26:56.270Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin DSL 之 HTML DSL">
+<meta name="twitter:description" content="Kotlin 作为有高级特性的语言，凭借高阶函数也能支持实现 DSL 。">
+  <link rel="canonical" href="https://tianma.space/post/kotlin-DSL-first-sight/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+  <title>Kotlin DSL 之 HTML DSL | Tianma</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tianma</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">92</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">11</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">69</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-honey">
+      
+    
+      
+    
+
+    <a href="/honey/" rel="section"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>Honey</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/kotlin-DSL-first-sight-html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianma">
+      <meta itemprop="description" content="赵客缦胡缨，吴钩霜雪明。">
+      <meta itemprop="image" content="/images/kousei.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianma">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Kotlin DSL 之 HTML DSL
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2021-08-30 20:22:12 / 修改时间：20:26:56" itemprop="dateCreated datePublished" datetime="2021-08-30T20:22:12+08:00">2021-08-30</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Kotlin 作为有高级特性的语言，凭借高阶函数也能支持实现 DSL 。</p>
+<a id="more"></a>
+
+<h3 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h3><h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>Kotlin 中，函数是“一等公民”。</p>
+<p>定义一个函数 <code>sum</code>:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">sum</span><span class="params">(a: <span class="type">Int</span>, b: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h4><p>Kotlin 中，函数是有类型的。上面 <code>sum</code> 函数的类型是 <code>(Int, Int) -&gt; Int</code></p>
+<h4 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h4><p>函数参数中有函数，或者返回函数的函数，就是高阶函数。</p>
+<p>这里定义一个函数 <code>transform</code>，用于对 2 个 Int 值进行转换操作：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">transform</span><span class="params">(a: <span class="type">Int</span>, b: <span class="type">Int</span>, trans: (<span class="type">Int</span>, <span class="built_in">Int</span>)</span></span> -&gt; <span class="built_in">Int</span>): <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> trans(a, b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="函数引用"><a href="#函数引用" class="headerlink" title="函数引用"></a>函数引用</h4><p>既然函数是有类型的，那函数本身就是一个函数对象(参考类与对象的关系)，我们也可以通过引用的方式使用函数：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> func = ::sum</span><br><span class="line">func(<span class="number">1</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>上面定义的高阶函数 <code>transform</code>，便可以使用函数引用的方式来进行函数的调用:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform(<span class="number">1</span>, <span class="number">2</span>, ::sum)</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h4><p>Kotlin 在缺省函数名的情况下定义出来的函数就是匿名函数。</p>
+<p>对于上述的 <code>sum</code> 函数，其匿名函数形态:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> func = <span class="function"><span class="title">fun</span><span class="params">(a: <span class="type">Int</span>, b: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>对于上述的 <code>transform</code> 函数，便可以使用匿名函数的方式来调用:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">transform(<span class="number">1</span>, <span class="number">2</span>, <span class="function"><span class="title">fun</span><span class="params">(a: <span class="type">Int</span>, b: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Lambda语法糖"><a href="#Lambda语法糖" class="headerlink" title="Lambda语法糖"></a>Lambda语法糖</h4><p>匿名函数的表达方式较为繁琐，可以使用 <code>Lambda 演算</code> 来对齐进行简化，简化后的表达式就是 <code>Lambda 表达式</code>。</p>
+<p>上面的匿名函数的 Lambda 表达式形态:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> func : (<span class="built_in">Int</span>, <span class="built_in">Int</span>) -&gt; <span class="built_in">Int</span> = &#123;a: <span class="built_in">Int</span>, b: <span class="built_in">Int</span> -&gt; a + b&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>因为 Kotlin 支持类型推导，可以简化:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> func = &#123;a: <span class="built_in">Int</span>, b: <span class="built_in">Int</span> -&gt; a + b&#125;</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">val</span> func2: (<span class="built_in">Int</span>, <span class="built_in">Int</span>) -&gt; <span class="built_in">Int</span> = &#123;a, b -&gt; a + b&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>对于前述 <code>transform</code> 函数，便可以使用 Lambda 表达式的方式调用:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">transform(<span class="number">1</span>, <span class="number">2</span>, &#123;a, b -&gt;</span><br><span class="line">    a + b</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></div>
+
+<p>如果高阶函数最后一个参数是函数，可以将 Lambda 表达式移至函数外:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">transform(<span class="number">1</span>, <span class="number">2</span>) &#123; a, b -&gt;</span><br><span class="line">    a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="扩展函数"><a href="#扩展函数" class="headerlink" title="扩展函数"></a>扩展函数</h4><p>在不修改已有类的前提下，对其新增方法，可以通过扩展函数来实现。例如：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> View.<span class="title">isVisible</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.visibility == View.VISIBLE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>上面的 <code>View</code> 是 接收者(Receiver)类型。</p>
+<p>扩展函数也是函数，也有其函数类型:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> visibleFunc: (View) -&gt; <span class="built_in">Boolean</span> = View::isVisible</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看出，扩展函数函数类型的第一个参数就是 Receiver 类型。</p>
+<h4 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h4><p>Java 中没有运算符重载，Kotlin 能进行运算符重载。重载运算符能通过扩展函数或者成员函数来实现。</p>
+<p>看一个扩展函数实现的案例：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span></span>(<span class="keyword">val</span> x: <span class="built_in">Int</span>, <span class="keyword">val</span> y: <span class="built_in">Int</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重载 一元减号 运算符</span></span><br><span class="line"><span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> Point.<span class="title">unaryMinus</span><span class="params">()</span></span> = Point(-x, -y)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> point = Point(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">    print(-point)  <span class="comment">// Point(x=-1, y=-2)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>invoke</code> 运算符也可以重载：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ContentParser</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">parse</span><span class="params">(file: <span class="type">File</span>)</span></span>: String &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> <span class="title">invoke</span><span class="params">(file: <span class="type">File</span>)</span></span> = parse(file)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> parser = ContentParser()</span><br><span class="line">    <span class="keyword">val</span> file = File(<span class="string">"/path/to/file"</span>)</span><br><span class="line">    <span class="comment">// 方式1: invoke 函数</span></span><br><span class="line">    parser.invoke(file)</span><br><span class="line">    <span class="comment">// 方式2: 直接作为类似于函数的方式调用</span></span><br><span class="line">    parser(file)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="HTML-DSL-设计实现"><a href="#HTML-DSL-设计实现" class="headerlink" title="HTML DSL 设计实现"></a>HTML DSL 设计实现</h3><p>对于如下 <code>HTML</code> 代码:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="HTML"><figure class="highlight /html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span><span class="tag">&lt;/<span class="name">meta</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width: 200px; height: 200px; line-height: 200px; background-color: #FF4081; text-align: center;"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color: white; font-family: Microsoft YaHei;"</span>&gt;</span>Hello Kotlin DSL<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>可以看到 HTML 本身是非常结构化的，HTML 由标签组成，每个标签可以有属性(属性 key, 属性 value )和值，这里的值包括 子标签 和 文本。</p>
+<p>我们的目标是用 DSL 化的语言来描述上述 HTML:</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> htmlContent =</span><br><span class="line">    <span class="string">"html"</span> &#123;</span><br><span class="line">        <span class="string">"head"</span> &#123;</span><br><span class="line">            <span class="string">"meta"</span> &#123;</span><br><span class="line">                <span class="string">"charset"</span>(<span class="string">"utf-8"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="string">"body"</span> &#123;</span><br><span class="line">            <span class="string">"div"</span> &#123;</span><br><span class="line">                <span class="string">"style"</span>(<span class="string">"width: 200px; height: 200px; line-height: 200px; background-color: #FF4081; text-align: center;"</span>)</span><br><span class="line">                <span class="string">"span"</span> &#123;</span><br><span class="line">                    <span class="string">"style"</span>(<span class="string">"color: white; font-family: Microsoft YaHei;"</span>)</span><br><span class="line">                    +<span class="string">"Hello Kotlin DSL"</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">        .render()</span><br></pre></td></tr></table></figure></div>
+
+<p>分析下上面的 DSL：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"html"</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>原型应该是: <code>fun String.invoke(function: FunctionType)</code>，用来表示一个 HTML 节点</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"charset"</span>(<span class="string">"utf-8"</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>原型应该是: <code>operator fun String.invoke(propertyValue: String)</code>,用来表示一个 HTML 属性的 key 和 value</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+<span class="string">"Hello Kotlin DSL"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>原型应该是: <code>operator fun String.unaryPlus()</code>，用来表示 HTML 标签的文本。</p>
+<p>以上便是此 HTML DSL 的要点。</p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现:"></a>代码实现:</h4><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="KOTLIN"><figure class="highlight /kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.File</span><br><span class="line"></span><br><span class="line"><span class="comment">// Kotlin HTML DSL</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">()</span></span>: String</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StringNode</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> content: String) : Node &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">        <span class="keyword">return</span> content</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toString</span><span class="params">()</span></span> = render()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// TagNode 表示 HTML 中的任一标签</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TagNode</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> tagName: String) : Node &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 标签中的子元素</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> elements = ArrayList&lt;Node&gt;()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前标签的属性值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> properties = HashMap&lt;String, Any&gt;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"""&lt;<span class="variable">$tagName</span><span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">            properties.takeIf &#123; it.size &gt; <span class="number">0</span> &#125;</span>?.map &#123; "<span class="subst">$&#123;it.key&#125;</span>=\"<span class="subst">$&#123;it.value&#125;</span>\"" &#125;?.joinToString(" ", " ") ?: ""</span></span><br><span class="line"><span class="string">        &#125;&gt;<span class="subst">$&#123;elements.joinToString("") &#123; it.render() &#125;</span>&#125;&lt;/<span class="variable">$tagName</span>&gt;"""</span>.trimIndent()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> String.<span class="title">invoke</span><span class="params">(block: <span class="type">TagNode</span>.()</span></span> -&gt; <span class="built_in">Unit</span>): TagNode &#123;</span><br><span class="line">        <span class="keyword">val</span> tagNode = TagNode(<span class="keyword">this</span>)</span><br><span class="line">        tagNode.block()</span><br><span class="line">        <span class="keyword">this</span><span class="symbol">@TagNode</span>.elements += tagNode</span><br><span class="line">        <span class="keyword">return</span> tagNode</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> String.<span class="title">invoke</span><span class="params">(propertyValue: <span class="type">Any</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">this</span><span class="symbol">@TagNode</span>.properties[<span class="keyword">this</span>] = propertyValue</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> String.<span class="title">unaryPlus</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">this</span><span class="symbol">@TagNode</span>.elements += StringNode(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toString</span><span class="params">()</span></span> = render()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> String.<span class="title">invoke</span><span class="params">(block: <span class="type">TagNode</span>.()</span></span> -&gt; <span class="built_in">Unit</span>): Node &#123;</span><br><span class="line">    <span class="keyword">val</span> tagNode = TagNode(<span class="keyword">this</span>)</span><br><span class="line">    tagNode.block()</span><br><span class="line">    <span class="keyword">return</span> tagNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> htmlContent =</span><br><span class="line">        <span class="string">"html"</span> &#123;</span><br><span class="line">            <span class="string">"head"</span> &#123;</span><br><span class="line">                <span class="string">"meta"</span> &#123;</span><br><span class="line">                    <span class="string">"charset"</span>(<span class="string">"utf-8"</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="string">"body"</span> &#123;</span><br><span class="line">                <span class="string">"div"</span> &#123;</span><br><span class="line">                    <span class="string">"style"</span>(<span class="string">"width: 200px; height: 200px; line-height: 200px; background-color: #FF4081; text-align: center;"</span>)</span><br><span class="line">                    <span class="string">"span"</span> &#123;</span><br><span class="line">                        <span class="string">"style"</span>(<span class="string">"color: white; font-family: Microsoft YaHei;"</span>)</span><br><span class="line">                        +<span class="string">"Hello Kotlin DSL"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            .render()</span><br><span class="line"></span><br><span class="line">    println(htmlContent)</span><br><span class="line"></span><br><span class="line">    File(<span class="string">"HelloKotlinDSL.html"</span>).writeText(htmlContent)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> bodyContent = <span class="string">"body"</span> &#123;</span><br><span class="line">        <span class="string">"h1"</span> &#123;</span><br><span class="line">            +<span class="string">"Hello Kotlin"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    println(bodyContent)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> relativeLayout = <span class="string">"RelativeLayout"</span> &#123;</span><br><span class="line">        <span class="string">"android:layout_width"</span>(<span class="string">"match_parent"</span>)</span><br><span class="line">        <span class="string">"android:layout_height"</span>(<span class="string">"wrap_content"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="string">"TextView"</span> &#123;</span><br><span class="line">            <span class="string">"android:id"</span>(<span class="string">"@+id/textview"</span>)</span><br><span class="line">            <span class="string">"android:layout_width"</span>(<span class="string">"200dp"</span>)</span><br><span class="line">            <span class="string">"android:height"</span>(<span class="string">"wrap_content"</span>)</span><br><span class="line">            <span class="string">"android:text"</span>(<span class="string">"Hello Kotlin DSL"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    println(relativeLayout)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://kotlinlang.org/docs/operator-overloading.html" target="_blank" rel="noopener">Operator overloading</a></li>
+<li><a href="https://github.com/jaredrummler/HtmlDsl" target="_blank" rel="noopener">HTML DSL - GitHub</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Tianma</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://tianma.space/post/kotlin-DSL-first-sight-html/" title="Kotlin DSL 之 HTML DSL">https://tianma.space/post/kotlin-DSL-first-sight-html/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Kotlin-DSL/" rel="tag"><i class="fa fa-tag"></i> Kotlin DSL</a>
+            
+              <a href="/tags/DSL/" rel="tag"><i class="fa fa-tag"></i> DSL</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/post/how-to-extract-boot-image-from-android-device/" rel="next" title="从 Android 手机中提取 boot.img">
+                  <i class="fa fa-chevron-left"></i> 从 Android 手机中提取 boot.img
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#知识储备"><span class="nav-number">1.</span> <span class="nav-text">知识储备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数"><span class="nav-number">1.1.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数类型"><span class="nav-number">1.2.</span> <span class="nav-text">函数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高阶函数"><span class="nav-number">1.3.</span> <span class="nav-text">高阶函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数引用"><span class="nav-number">1.4.</span> <span class="nav-text">函数引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#匿名函数"><span class="nav-number">1.5.</span> <span class="nav-text">匿名函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lambda语法糖"><span class="nav-number">1.6.</span> <span class="nav-text">Lambda语法糖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展函数"><span class="nav-number">1.7.</span> <span class="nav-text">扩展函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运算符重载"><span class="nav-number">1.8.</span> <span class="nav-text">运算符重载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML-DSL-设计实现"><span class="nav-number">2.</span> <span class="nav-text">HTML DSL 设计实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">2.1.</span> <span class="nav-text">代码实现:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/kousei.jpg"
+      alt="Tianma">
+  <p class="site-author-name" itemprop="name">Tianma</p>
+  <div class="site-description" itemprop="description">赵客缦胡缨，吴钩霜雪明。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/tianma8023" title="Tianma &rarr; https://github.com/tianma8023" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Tianma</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:lovelymer#foxmail.com" title="Mail &rarr; mailto:lovelymer#foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianma</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script size="300" alpha="0.175" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '55a5d9da39a7a1f372ab',
+      clientSecret: '91f6174c3199a1181f423f93f88b2df5865b96a2',
+      repo: 'tianma8023.github.io',
+      owner: 'tianma8023',
+      admin: ['tianma8023'],
+      
+      id: '/post/1213436594',
+      
+      body: '',
+      title: 'Kotlin DSL 之 HTML DSL',
+        language: window.navigator.language || window.navigator.userLanguage,
+      
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
