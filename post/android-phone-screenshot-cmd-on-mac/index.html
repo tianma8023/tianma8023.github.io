@@ -58,19 +58,18 @@
   };
 </script>
 
-  <meta name="description" content="问题分析对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。">
-<meta name="keywords" content="Tips">
+  <meta name="description" content="背景因为 UI 验收等需求的存在，我们经常需要将测试机上的屏幕截屏然后发送给其他小伙伴。所以需要快捷高效的方式来获取屏幕截图。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java-IPv4地址和int类型数字的互相转换">
-<meta property="og:url" content="https://tianma.space/post/java-transform-ipv4-to-int/index.html">
+<meta property="og:title" content="自定义 MacOS 上的 Android 手机截屏命令">
+<meta property="og:url" content="https://tianma.space/post/android-phone-screenshot-cmd-on-mac/index.html">
 <meta property="og:site_name" content="Tianma">
-<meta property="og:description" content="问题分析对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。">
+<meta property="og:description" content="背景因为 UI 验收等需求的存在，我们经常需要将测试机上的屏幕截屏然后发送给其他小伙伴。所以需要快捷高效的方式来获取屏幕截图。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-30T16:48:45.501Z">
+<meta property="og:updated_time" content="2021-08-30T12:18:48.509Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java-IPv4地址和int类型数字的互相转换">
-<meta name="twitter:description" content="问题分析对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。">
-  <link rel="canonical" href="https://tianma.space/post/java-transform-ipv4-to-int/">
+<meta name="twitter:title" content="自定义 MacOS 上的 Android 手机截屏命令">
+<meta name="twitter:description" content="背景因为 UI 验收等需求的存在，我们经常需要将测试机上的屏幕截屏然后发送给其他小伙伴。所以需要快捷高效的方式来获取屏幕截图。">
+  <link rel="canonical" href="https://tianma.space/post/android-phone-screenshot-cmd-on-mac/">
 
 
 <script id="page-configurations">
@@ -87,7 +86,7 @@
 
   <script async src="/js/cursor/fireworks.js"></script>
 
-  <title>Java-IPv4地址和int类型数字的互相转换 | Tianma</title>
+  <title>自定义 MacOS 上的 Android 手机截屏命令 | Tianma</title>
   
 
 
@@ -286,7 +285,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/java-transform-ipv4-to-int/">
+    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/android-phone-screenshot-cmd-on-mac/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tianma">
@@ -298,7 +297,7 @@
       <meta itemprop="name" content="Tianma">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Java-IPv4地址和int类型数字的互相转换
+        <h1 class="post-title" itemprop="name headline">自定义 MacOS 上的 Android 手机截屏命令
 
           
         </h1>
@@ -314,7 +313,7 @@
                 
               
 
-              <time title="创建时间：2016-04-21 15:00:37" itemprop="dateCreated datePublished" datetime="2016-04-21T15:00:37+08:00">2016-04-21</time>
+              <time title="创建时间：2021-02-25 20:12:06" itemprop="dateCreated datePublished" datetime="2021-02-25T20:12:06+08:00">2021-02-25</time>
             </span>
           
             
@@ -325,22 +324,9 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-07-31 00:48:45" itemprop="dateModified" datetime="2019-07-31T00:48:45+08:00">2019-07-31</time>
+                <time title="修改时间：2021-08-30 20:18:48" itemprop="dateModified" datetime="2021-08-30T20:18:48+08:00">2021-08-30</time>
               </span>
             
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -354,20 +340,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对于ipv4的地址来说，如果用字符串的形式存储的话，其占用字节就比较大，比如对于IPv4地址0.0.0.0的字符串，就需要7个字节，IPv4为255.255.255.255 的字符串，需要15个字节，也就是说存储一个ip需要占用7~15个字节。 <a id="more"></a></p>
-<p>那么有没有更节省空间的存储方式呢？答案是有。</p>
-<ul>
-<li><p>方案1： 直接把字符串中的’.’去掉，不就变成一个数字了嘛，比如 “255.255.255.255” 变成 255255255255，然而我们知道int所能表示的最大值 = Integer.MAX_VALUE = 2^31-1 = 2147483647， 255255255255 &gt; 2^31-1，所以需要用长整形long来表示，长整形占用8个字节，也就是说我们将7~15个字节转换为8字节，在绝大多数情况下是节省空间了的。</p>
-</li>
-<li><p>方案2： 因为考虑到IPv4的地址本质上就是32位的二进制串，而一个int类型的数字刚好为4个字节32个bit位，所以刚好可以用一个int类型的数字转表示IPv4地址。所以，我们可以用4个字节的int数字表示一个ip地址，这样可以大大节省空间。</p>
-</li>
-</ul>
-<p>这里只讨论方案2 :)</p>
-<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>对于ipv4地址： 192.168.1.3：<br>每段都用二进制表示： 192(10) = 11000000(2) ; 168(10) = 10101000(2) ; 1(10) = 00000001(2) ;  3(10) = 00000011(2) 。<br>所以连在一起就是：11000000101010000000000100000011，对应的int数字就是-1062731775 。</p>
-<p>具体算法分析：<br>192左移24位： 11000000 00000000 00000000 00000000<br>168左移16位： 00000000 10101000 00000000 00000000<br>001左移08位： 00000000 00000000 00000001 00000000<br>003左移00位： 00000000 00000000 00000000 00000011<br>按位或的结果： 11000000 10101000  00000001 00000011<br>即 -1062731775</p>
-<p>将int类型的数字转换成ip地址，其实就是上述过程的逆过程，这里就不再赘述。</p>
-<h2 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h2><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="JAVA"><figure class="highlight /java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * IPv4地址和int数字的互相转换</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Tianma</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IPv4IntTransformer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * IPv4地址转换为int类型数字</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">ip2Integer</span><span class="params">(String ipv4Addr)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 判断是否是ip格式的</span></span><br><span class="line">		<span class="keyword">if</span> (!isIPv4Address(ipv4Addr))</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Invalid ip address"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 匹配数字</span></span><br><span class="line">		Pattern pattern = Pattern.compile(<span class="string">"\\d+"</span>);</span><br><span class="line">		Matcher matcher = pattern.matcher(ipv4Addr);</span><br><span class="line">		<span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> counter = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (matcher.find()) &#123;</span><br><span class="line">			<span class="keyword">int</span> value = Integer.parseInt(matcher.group());</span><br><span class="line">			result = (value &lt;&lt; <span class="number">8</span> * (<span class="number">3</span> - counter++)) | result;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 判断是否为ipv4地址</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isIPv4Address</span><span class="params">(String ipv4Addr)</span> </span>&#123;</span><br><span class="line">		String lower = <span class="string">"(\\d|[1-9]\\d|1\\d&#123;2&#125;|2[0-4]\\d|25[0-5])"</span>; <span class="comment">// 0-255的数字</span></span><br><span class="line">		String regex = lower + <span class="string">"(\\."</span> + lower + <span class="string">")&#123;3&#125;"</span>;</span><br><span class="line">		Pattern pattern = Pattern.compile(regex);</span><br><span class="line">		Matcher matcher = pattern.matcher(ipv4Addr);</span><br><span class="line">		<span class="keyword">return</span> matcher.matches();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将int数字转换成ipv4地址</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">integer2Ip</span><span class="params">(<span class="keyword">int</span> ip)</span> </span>&#123;</span><br><span class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">		<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">boolean</span> needPoint = <span class="keyword">false</span>; <span class="comment">// 是否需要加入'.'</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (needPoint) &#123;</span><br><span class="line">				sb.append(<span class="string">'.'</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			needPoint = <span class="keyword">true</span>;</span><br><span class="line">			<span class="keyword">int</span> offset = <span class="number">8</span> * (<span class="number">3</span> - i);</span><br><span class="line">			num = (ip &gt;&gt; offset) &amp; <span class="number">0xff</span>;</span><br><span class="line">			sb.append(num);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sb.toString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>因为 UI 验收等需求的存在，我们经常需要将测试机上的屏幕截屏然后发送给其他小伙伴。所以需要快捷高效的方式来获取屏幕截图。</p>
+<a id="more"></a>
 
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>以华为手机为例，华为系统截屏之后，图片保存在 <code>/sdcard/Pictures/Screenshots/</code> 目录下，所以每次截屏之后，可以通过 <code>adb pull</code> 的方式把手机截屏导出，然后发送出去</li>
+<li>利用 adb 自带的截屏命令直接截屏，并导出到电脑上，然后发送出去</li>
+</ol>
+<p>这里采用方案2。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>在 <code>~/.bash_profile</code> 或者 <code>~/.zshrc</code> 文件中添加：</p>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="SH"><figure class="highlight /sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制文件到剪贴板 (不限制文件是否是纯文本文件)</span></span><br><span class="line">file-to-<span class="function"><span class="title">clipboard</span></span>() &#123;</span><br><span class="line">    osascript \</span><br><span class="line">        -e <span class="string">'on run args'</span> \</span><br><span class="line">        -e <span class="string">'set the clipboard to POSIX file (first item of args)'</span> \</span><br><span class="line">        -e end \</span><br><span class="line">        <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制文件到剪贴板</span></span><br><span class="line"><span class="built_in">alias</span> ftc=<span class="string">'file-to-clipboard'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 截屏命令</span></span><br><span class="line"><span class="function"><span class="title">phoneshot</span></span>() &#123;</span><br><span class="line">    copy_to_clipboard=0</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$#</span> -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        :</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">if</span> [[ <span class="variable">$1</span> == <span class="string">'-c'</span> ]] || [[ <span class="variable">$1</span> == <span class="string">'--copy'</span> ]]; <span class="keyword">then</span></span><br><span class="line">            copy_to_clipboard=1</span><br><span class="line">        <span class="keyword">elif</span> [[ <span class="variable">$1</span> == <span class="string">'-h'</span> ]] || [[ <span class="variable">$1</span> == <span class="string">'--h'</span> ]]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">'usage: '</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">'phoneshot/pshot     将手机截屏并保存为 ~/Downlodas/screenshots.png'</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">'phoneshot/pshot -c  将手机截屏并保存，然后复制图片到剪贴板'</span></span><br><span class="line">            <span class="built_in">return</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    name=<span class="string">"screenshot.png"</span></span><br><span class="line">    adb shell screencap -p /sdcard/<span class="variable">$name</span></span><br><span class="line">    out_file=~/Downloads/<span class="variable">$name</span></span><br><span class="line">    adb pull /sdcard/<span class="variable">$name</span> <span class="variable">$out_file</span></span><br><span class="line">    adb shell rm /sdcard/<span class="variable">$name</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"save screenshot to <span class="variable">$out_file</span>"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$copy_to_clipboard</span> == 1 ]]; <span class="keyword">then</span></span><br><span class="line">        ftc <span class="variable">$out_file</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"copy screenshot file to clipboard"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 截屏命令，别名</span></span><br><span class="line"><span class="built_in">alias</span> pshot=<span class="string">'phoneshot'</span></span><br></pre></td></tr></table></figure></div>
+
+<p>使用 <code>source ~/.bash_profile</code> 或者 <code>source ~/.zshrc</code> 重新加载 profile, 让自定义命令生效</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li><code>phoneshot/pshot</code><br>将手机截屏并保存为 ~/Downlodas/screenshots.png</li>
+<li><code>phoneshot/pshot -c</code><br>将手机截屏并保存，然后复制图片到剪贴板</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://apple.stackexchange.com/a/15542" target="_blank" rel="noopener">How to use terminal to copy a file to the clipboard?</a></li>
+<li><a href="https://stackoverflow.com/a/39464569" target="_blank" rel="noopener">Using ADB to capture the screen</a></li>
+</ol>
 
     </div>
 
@@ -384,7 +376,7 @@
     <strong>本文作者： </strong>Tianma</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://tianma.space/post/java-transform-ipv4-to-int/" title="Java-IPv4地址和int类型数字的互相转换">https://tianma.space/post/java-transform-ipv4-to-int/</a>
+    <a href="https://tianma.space/post/android-phone-screenshot-cmd-on-mac/" title="自定义 MacOS 上的 Android 手机截屏命令">https://tianma.space/post/android-phone-screenshot-cmd-on-mac/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -394,23 +386,14 @@
       
 
       <footer class="post-footer">
-          
-            
-          
-          <div class="post-tags">
-            
-              <a href="/tags/Tips/" rel="tag"><i class="fa fa-tag"></i> Tips</a>
-            
-          </div>
-        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/post/sort-selection-sort/" rel="next" title="排序-选择排序">
-                  <i class="fa fa-chevron-left"></i> 排序-选择排序
+                <a href="/post/source-code-analysis-android-lifecycles/" rel="next" title="Lifecycle 源码分析">
+                  <i class="fa fa-chevron-left"></i> Lifecycle 源码分析
                 </a>
               
             </div>
@@ -419,8 +402,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/post/sort-insert-sort/" rel="prev" title="排序-插入排序">
-                  排序-插入排序 <i class="fa fa-chevron-right"></i>
+                <a href="/post/how-to-extract-boot-image-from-android-device/" rel="prev" title="从 Android 手机中提取 boot.img">
+                  从 Android 手机中提取 boot.img <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -473,7 +456,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">1.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#演示"><span class="nav-number">2.</span> <span class="nav-text">演示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java实现"><span class="nav-number">3.</span> <span class="nav-text">Java实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">4.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -652,10 +635,10 @@
       owner: 'tianma8023',
       admin: ['tianma8023'],
       
-      id: '/post/1779625018',
+      id: '/post/2094895527',
       
       body: '',
-      title: 'Java-IPv4地址和int类型数字的互相转换',
+      title: '自定义 MacOS 上的 Android 手机截屏命令',
         language: window.navigator.language || window.navigator.userLanguage,
       
       distractionFreeMode: 'true'
