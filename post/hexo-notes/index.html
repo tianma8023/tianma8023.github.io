@@ -62,7 +62,7 @@
 <meta name="keywords" content="hexo,hexo-theme-material">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo 折腾记">
-<meta property="og:url" content="https://tianma.space/post/hexo-notes/index.html">
+<meta property="og:url" content="https://tianma8023.github.io/post/hexo-notes/index.html">
 <meta property="og:site_name" content="Tianma">
 <meta property="og:description" content="本博客以 Hexo 3.2.2 为静态博客框架，以 material 1.3.0 为主题搭建而成。 参阅这两个的官方文档便可以初步搭建一个美美哒的博客了。 本文主要记录一下所折腾的东西。&amp;nbsp;">
 <meta property="og:locale" content="zh-CN">
@@ -70,7 +70,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo 折腾记">
 <meta name="twitter:description" content="本博客以 Hexo 3.2.2 为静态博客框架，以 material 1.3.0 为主题搭建而成。 参阅这两个的官方文档便可以初步搭建一个美美哒的博客了。 本文主要记录一下所折腾的东西。&amp;nbsp;">
-  <link rel="canonical" href="https://tianma.space/post/hexo-notes/">
+  <link rel="canonical" href="https://tianma8023.github.io/post/hexo-notes/">
 
 
 <script id="page-configurations">
@@ -286,7 +286,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://tianma.space/post/hexo-notes/">
+    <link itemprop="mainEntityOfPage" href="https://tianma8023.github.io/post/hexo-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tianma">
@@ -364,10 +364,10 @@
 <p>使用 <code>hexo-abbrlink</code> 插件格式是:</p>
 <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="YAML"><figure class="highlight /yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">post/:abbrlink/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># abbrlink config</span></span><br><span class="line"><span class="attr">abbrlink:</span></span><br><span class="line"><span class="attr">  alg:</span> <span class="string">crc32</span>  <span class="comment">#算法 support crc16(default) and crc32</span></span><br><span class="line"><span class="attr">  rep:</span> <span class="string">dec</span>    <span class="comment">#进制 support dec(default) and hex</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如： http://tianma.space/post/3678283086/</span></span><br></pre></td></tr></table></figure></div>
 
-<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>当访问博客网站 <a href="https://tianma.space">Tianma</a></p>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>当访问博客网站 <a href="https://tianma.space" target="_blank" rel="noopener">Tianma</a></p>
 <ul>
 <li>国内IP走的 <code>coding</code>:  <a href="http://tianma8023.coding.me" target="_blank" rel="noopener">tianma8023.coding.me</a></li>
-<li>国外IP走的 <code>GitHub</code>:  <a href="http://tianma8023.github.io" target="_blank" rel="noopener">tianma8023.github.io</a></li>
+<li>国外IP走的 <code>GitHub</code>:  <a href="http://tianma8023.github.io">tianma8023.github.io</a></li>
 </ul>
 <p>这样一定程度上能加快网站加载速度。</p>
 <p>达到以上效果，大致来说，需要以下步骤：</p>
@@ -385,7 +385,7 @@
 <p>详细请参考 <a href="https://yuchen-lea.github.io/2016-01-21-use-qiniu-store-file-for-hexo/" target="_blank" rel="noopener">使用七牛为Hexo存储图片等资源</a>。</p>
 <p>更新：由于七牛云现行规定是，使用了内容存储服务的必须要绑定在中国大陆已备案的域名，而我目前的域名是在 <code>GoDaddy</code> 上注册的，没法备案，所以已将 <code>CDN</code> 从七牛云迁移至 <a href="https://cn.aliyun.com/product/oss" target="_blank" rel="noopener">阿里云OSS</a>。</p>
 <h3 id="音乐播放"><a href="#音乐播放" class="headerlink" title="音乐播放"></a>音乐播放</h3><p>音乐播放器采用的是 <a href="https://github.com/DIYgod" target="_blank" rel="noopener">DIYGod</a> 的 <a href="https://github.com/MoePlayer/APlayer" target="_blank" rel="noopener">APlayer</a>, 以 <a href="https://github.com/metowolf/MetingJS" target="_blank" rel="noopener">MetingJS</a> 为辅助配合食用。</p>
-<p>详情参考: <a href="http://tianma.space/post/3998746934/">Hexo 折腾：音乐播放</a></p>
+<p>详情参考: <a href="http://tianma.space/post/3998746934/" target="_blank" rel="noopener">Hexo 折腾：音乐播放</a></p>
 <h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><ol>
 <li><p>图片描述(description)：因为 <code>material</code> 主题本身没有对图片做过多处理，当使用:</p>
  <div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="false" data-rel="MARKDOWN"><figure class="highlight /markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">description</span>](<span class="link">xxx.jpg</span>)</span><br></pre></td></tr></table></figure></div>
@@ -396,7 +396,7 @@
 <p> 从而展示 <code>description</code>，当然了，出于美观，需要对 <code>.image-caption</code> 元素指定相应的 css 样式。</p>
 <p> 更多配置参考其文档。</p>
 </li>
-<li><p>图片放大查看： 由于 <code>material</code> 主题没有该功能，这里便采用 <code>FancyBox</code> 库实现该功能，详情参考 <a href="http://tianma.space/post/2208308547/">Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能</a></p>
+<li><p>图片放大查看： 由于 <code>material</code> 主题没有该功能，这里便采用 <code>FancyBox</code> 库实现该功能，详情参考 <a href="http://tianma.space/post/2208308547/" target="_blank" rel="noopener">Hexo 折腾：利用 Fancybox 添加图片放大预览查看功能</a></p>
 </li>
 </ol>
 <h3 id="看板娘"><a href="#看板娘" class="headerlink" title="看板娘"></a>看板娘</h3><p>看板娘采用的以 <a href="http://www.live2d.com/en/" target="_blank" rel="noopener">live2d</a> 技术为核心，以 <a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="noopener">hexo-helper-live2d</a> 为插件，配合 <code>live2d</code> 模型制作而成。</p>
@@ -461,7 +461,7 @@
     <strong>本文作者： </strong>Tianma</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://tianma.space/post/hexo-notes/" title="Hexo 折腾记">https://tianma.space/post/hexo-notes/</a>
+    <a href="https://tianma8023.github.io/post/hexo-notes/" title="Hexo 折腾记">https://tianma8023.github.io/post/hexo-notes/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
